@@ -1,5 +1,4 @@
 from controller import *
-import servos_msg_pb2
 import sys
 
 maxServAngle = 4.712
@@ -74,16 +73,7 @@ class Kondocontr():
 
                 #print(sD.data)
         #time.sleep(0.001)
-    def sendServos (self, servoDatas, frame):
-        servos = servos_msg_pb2.ActuatorRequests()
-        for sD in servoDatas:
-                serv = servos.motor_positions.add() 
-                serv.name = str(sD.name)
-                serv.position = sD.data
-        f = open("msg", "wb")
-        f.write(servos.SerializeToString())
-        f.close()   
-
+  
 
 #  Walking engine for Starkit Kondo OpenMV
 #  Copyright STARKIT Soccer team of MIPT
@@ -287,7 +277,6 @@ class Motion:
                     servoDatas.append(ServoData(self.ACTIVESERVOS[i][0],self.ACTIVESERVOS[i][1],pos))
                 servoDatas = self.reOrderServoData(servoDatas)
                 a=self.kondo.setServoPos (servoDatas, self.frames_per_cycle)
-                a=self.kondo.sendServos (servoDatas, self.frames_per_cycle)
                 time1 = time.perf_counter() - start1
                 robot.step(timestep)
                 time.sleep(time1)
