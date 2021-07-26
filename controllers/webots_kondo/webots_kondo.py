@@ -443,17 +443,17 @@ if __name__=="__main__":
     stepLength = 64
     sideLength = 0
     rotation = 0
-    #motion.walk_Initial_Pose()
+    motion.walk_Initial_Pose()
     robot.step(timestep)
 
     number_Of_Cycles += 1
-  # for cycle in range(number_Of_Cycles):    
-        #robot.step(timestep)      
-    #    stepLength1 = stepLength
-    #    if cycle ==0 : stepLength1 = stepLength/3
-    #    if cycle ==1 : stepLength1 = stepLength/3 * 2
-    #    motion.walk_Cycle(stepLength1,sideLength, rotation,cycle, number_Of_Cycles)
-    #motion.walk_Final_Pose()
+    for cycle in range(number_Of_Cycles):    
+        robot.step(timestep)      
+        stepLength1 = stepLength
+        if cycle ==0 : stepLength1 = stepLength/3
+        if cycle ==1 : stepLength1 = stepLength/3 * 2
+        motion.walk_Cycle(stepLength1,sideLength, rotation,cycle, number_Of_Cycles)
+        motion.walk_Final_Pose()
     ###
     while(True):
         #пример вызова иму 
