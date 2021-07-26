@@ -1,0 +1,53 @@
+{
+  "name": "Rhoban",
+  "players": {
+    "1": {
+      "proto": "RobocupRobot",
+      "needToBePlacedByRefereeInReady": false,      
+      "borderStartingPose": {
+        "translation": [-1.5, -1.06, 0.24],
+        "rotation": [0, 0, 1, 1.57]
+      },
+      "readyStartingPose": {
+        "translation": [-1.47, 0, 0.24],
+        "rotation": [0, 0, 1, 0]
+      }, 
+      "reentryStartingPose": {
+        "translation": [-1.5, -1.11, 0.24],
+        "rotation": [0, 0, 1, 1.57]
+      },
+      "shootoutStartingPose": {
+        "translation": [2.6, 0, 0.24],
+        "rotation": [0, 0, 1, 0]
+      },
+      "goalKeeperStartingPose": {
+        "translation": [-4.47, 0, 0.24],
+        "rotation": [0, 0, 1, 0]
+      }
+    },
+    "2": {
+      "proto": "RobocupRobot",
+      "needToBePlacedByRefereeInReady": false,      
+      "borderStartingPose": {
+        "translation": [-1.5, 1.06, 0.24],
+        "rotation": [0, 0, 1, 1.57]
+      },
+      "readyStartingPose": {
+        "translation": [-0.47, 0, 0.24],
+        "rotation": [0, 0, 1, 0]
+      }, 
+      "reentryStartingPose": {
+        "translation": [-1.5, 1.11, 0.24],
+        "rotation": [0, 0, 1, -1.57]
+      },
+      "shootoutStartingPose": {
+        "translation": [2.6, 0, 0.24],
+        "rotation": [0, 0, 1, 0]
+      },
+      "goalKeeperStartingPose": {
+        "translation": [-4.47, 0, 0.24],
+        "rotation": [0, 0, 1, 0]
+      }
+    }
+  }
+}
