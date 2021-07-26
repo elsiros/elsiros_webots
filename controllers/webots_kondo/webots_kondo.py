@@ -62,6 +62,9 @@ class ServoData:
 class Kondocontr():
     def __init__(self, robot):
         self.robot = robot
+        #инициализация иму сенсоров
+        self.robot.getDevice("imu_head").enable(1)
+        self.robot.getDevice("imu_body").enable(1)
 
     def setServoPos (self, servoDatas, frame):
         for f in range(1):
@@ -73,7 +76,10 @@ class Kondocontr():
 
                 #print(sD.data)
         #time.sleep(0.001)
-  
+
+    #функция получения данных roll pitch yaw с сенсора с именем name    
+    def getData(self, name):
+        return self.robot.getDevice(name).getRollPitchYaw()
 
 #  Walking engine for Starkit Kondo OpenMV
 #  Copyright STARKIT Soccer team of MIPT
@@ -279,12 +285,12 @@ class Motion:
                 a=self.kondo.setServoPos (servoDatas, self.frames_per_cycle)
                 time1 = time.perf_counter() - start1
                 robot.step(timestep)
-                time.sleep(time1)
                 
-                time.sleep(0.001)
 
     def walk_Cycle(self, stepLength,sideLength, rotation,cycle, number_Of_Cycles):
-
+        #получение углов
+        print("head imu", self.kondo.getData("imu_head"))
+        print("body imu", self.kondo.getData("imu_head"))
         self.stepLength = stepLength
         self.sideLength = sideLength
         self.rotation = math.degrees(rotation)
@@ -398,7 +404,6 @@ class Motion:
             #time.sleep(0.001)
             #print('disp[4] = ', disp[4], 'disp[15]=', disp[15])
             time1 = time.perf_counter() - start1
-            time.sleep(time1)
         # returning xr, xl, yr, yl to initial value
         self.xr, self.xl, self.yr, self.yl = xr_old, xl_old, yr_old, yl_old
 
@@ -428,29 +433,33 @@ class Motion:
                 #print(servoDatas)
                 #print(clock.avg())
                 time1 = time.perf_counter() - start1
-                time.sleep(time1)
+               
 
 
 
 if __name__=="__main__":
     motion = Motion()
-    number_Of_Cycles = 2
+    number_Of_Cycles = 0
     stepLength = 64
     sideLength = 0
     rotation = 0
-    motion.walk_Initial_Pose()
+    #motion.walk_Initial_Pose()
     robot.step(timestep)
-    time.sleep(0.01)
+
     number_Of_Cycles += 1
-    for cycle in range(number_Of_Cycles):
-       
-        #robot.step(timestep)
-       
-        stepLength1 = stepLength
-        if cycle ==0 : stepLength1 = stepLength/3
-        if cycle ==1 : stepLength1 = stepLength/3 * 2
-        motion.walk_Cycle(stepLength1,sideLength, rotation,cycle, number_Of_Cycles)
-    motion.walk_Final_Pose()
+  # for cycle in range(number_Of_Cycles):    
+        #robot.step(timestep)      
+    #    stepLength1 = stepLength
+    #    if cycle ==0 : stepLength1 = stepLength/3
+    #    if cycle ==1 : stepLength1 = stepLength/3 * 2
+    #    motion.walk_Cycle(stepLength1,sideLength, rotation,cycle, number_Of_Cycles)
+    #motion.walk_Final_Pose()
+    ###
+    while(True):
+        #пример вызова иму 
+        print("head imu", motion.kondo.getData("imu_head"))
+        print("body imu", motion.kondo.getData("imu_head"))
+        robot.step(timestep)
     
 
 

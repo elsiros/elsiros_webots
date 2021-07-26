@@ -8,7 +8,7 @@ PROTO RobokitRobot [
   field  SFVec3f     translation     0 0 0
   field  SFRotation  rotation        0 1 0 0
   field  SFString    name            "RobokitRobot"  # Is `Robot.name`.
-  field  SFString    controller      "webots_kondo"        # Is `Robot.controller`.
+  field  SFString    controller      "void"        # Is `Robot.controller`.
   field  MFString    controllerArgs  []            # Is `Robot.controllerArgs`.
   field  SFString    customData      ""            # Is `Robot.customData`.
   field  SFBool      supervisor      FALSE         # Is `Robot.supervisor`.
@@ -446,6 +446,9 @@ Robot {
                             density -1
                             mass 0.055
                           }
+                        }
+                        InertialUnit{
+                          name "imu_head"
                         }
                         Camera {
                           translation 0 0.413 0
@@ -3299,6 +3302,10 @@ Robot {
                 }
               }
             }
+            InertialUnit{
+              name "imu_body"
+              yAxis FALSE
+            }
           ]
           boundingObject Group {
             children [
@@ -3313,14 +3320,14 @@ Robot {
     }
   ]
   name IS name 
-  #boundingObject Transform {
-  #  translation 0 0.2 0
-  #  children [
-  #    Box {
-  #      size 0.001 0.001 0.001
-  #    }
-  #  ]
-  #}
+  boundingObject Transform {
+    translation 0 0.2 0
+    children [
+      Box {
+        size 0.001 0.001 0.001
+      }
+    ]
+  }
   physics Physics {
     mass 0.001
     density -1
