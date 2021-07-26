@@ -3,7 +3,8 @@ import sys
 
 maxServAngle = 4.712
 
-robot = Robot()
+#для получения информации о мире robot->supervisor
+robot = Supervisor()
 
 timestep = int(robot.getBasicTimeStep())
 
@@ -80,6 +81,13 @@ class Kondocontr():
     #функция получения данных roll pitch yaw с сенсора с именем name    
     def getData(self, name):
         return self.robot.getDevice(name).getRollPitchYaw()
+
+    #функции получения координат мяча и робота
+    def getPositionBall(self):
+        return self.robot.getFromDef("ball").getPosition()
+
+    def getPositionRobot(self):
+        return self.robot.getSelf().getPosition()
 
 #  Walking engine for Starkit Kondo OpenMV
 #  Copyright STARKIT Soccer team of MIPT
@@ -456,9 +464,12 @@ if __name__=="__main__":
     #motion.walk_Final_Pose()
     ###
     while(True):
+        #пример вызова получения координат
+        print("position of robot", motion.kondo.getPositionRobot())
+        print("position of ball", motion.kondo.getPositionBall())
         #пример вызова иму 
-        print("head imu", motion.kondo.getData("imu_head"))
-        print("body imu", motion.kondo.getData("imu_head"))
+        #print("head imu", motion.kondo.getData("imu_head"))
+        #print("body imu", motion.kondo.getData("imu_head"))
         robot.step(timestep)
     
 
