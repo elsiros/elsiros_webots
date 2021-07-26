@@ -45,5 +45,5 @@ TexturedBackgroundLight {
 }
 Robot {
   supervisor TRUE
-  controller "referee_hsjl"
+  controller "referee"
 }
