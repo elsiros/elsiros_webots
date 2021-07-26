@@ -37,7 +37,7 @@ TexturedBackgroundLight {
 }
 RobocupSoccerField {
   rotation -1 0 0 1.5709000000000002
-  coloredPosts FALSE
+  coloredPosts TRUE
 }
 RobokitRobot {
 }
