@@ -139,7 +139,7 @@ class Motion_sim(Motion_real):
                              "left_ankle_pitch", "left_knee", "left_hip_pitch", "left_hip_roll", "left_hip_yaw",
                              "left_elbow_pitch", "left_shoulder_twirl", "left_shoulder_roll",
                              "left_shoulder_pitch", "head_yaw", "head_pitch"]
-        self.FACTOR =  [ 1,-1,-1,-1, 1, 1, -1,1,1,-1,-1, 1,-1, -1,-1, 1, 1, -1,1,1,-1, 1, 1]
+        self.FACTOR =  [ 1,1,1,1, 1, 1, 1,1,1,1, 1, 1,1, 1,1, 1, 1, 1,1,1,1, 1, 1]
         self.trims = [ 0,0,0,0, 0, 0, 0, 0, -0.12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.12, 0, 0, 0]
         self.WBservos = {
                     (10,2) : "right_ankle_roll",
