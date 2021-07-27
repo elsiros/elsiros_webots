@@ -30,11 +30,11 @@ PROTO RobocupGoal [
     else
       -- juniorSize dimensions
       C = 0.15
-      D = 1.0
+      D = 0.8
       goal_height = 0.6
     end
 
-    post_radius = 0.05 -- Diameter/width/depth must be between 0.08-0.12
+    post_radius = 0.03 -- Diameter/width/depth must be between 0.08-0.12
     post_spacing = D + 2 * post_radius
     post_height = goal_height + post_radius
     backpost_radius = 0.02 -- Not defined in rules
