@@ -61,7 +61,7 @@ PROTO RobocupSoccerField [
       K = 0
     end
     if fields.turfPhysics.value then
-      DEPTH = 0.01
+      DEPTH = 0.003
     else
       DEPTH = 0
     end
