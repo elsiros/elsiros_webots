@@ -1,0 +1,11 @@
+Webots Proto Cache File version 1.5
+protoFileHash: ae54e2fe0ef1ab4e9184922e1a408875
+needsRobotAncestor: 0
+baseType: Shape
+slotType: 
+parameters: 
+tags: hidden
+license:  Apache License 2.0
+licenseUrl:  http://www.apache.org/licenses/LICENSE-2.0
+documentationUrl: 
+info: Extracted\sfrom:\sKondo_006/urdf/Kondo_006.urdf
