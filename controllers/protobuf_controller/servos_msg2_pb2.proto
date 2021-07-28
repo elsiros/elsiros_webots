@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package servos;
+
+message MotorPosition {
+  string name = 1;
+  double position = 2;  // linear or angular target position expressed in [m] or [rad]
+}
+
+message ActuatorRequests {
+  repeated MotorPosition motor_positions = 1;
+}
+
+message ImuMeasurement {
+  string name = 1;
+  double roll = 2;
+  double pitch = 3;
+  double yaw = 4;
+}
+
+message SensorMeasurements {
+  repeated ImuMeasurement imu_measurement = 1;  
+}
+
+message Position {
+  double X = 1;
+  double Y = 2;
+}
+
+message RobotPosition {
+  repeated Position robot_position = 1;
+  repeated Position  ball_position = 2;
+}
+
