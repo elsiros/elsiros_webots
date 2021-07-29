@@ -1,8 +1,8 @@
 """
-Possible of values of 1-st argument role: 
+Possible values of 1-st argument role: 
 forward, goalkeeper, penalty_Shooter, penalty_Goalkeeper, run_test
-Possible of values of 2-nd argument: 1-8
-Possible of values of 3-rd argument: [0.0, 0.0, 0.0]
+Possible values of 2-nd argument: 1-8
+Possible values of 3-rd argument: [0.0, 0.0, 0.0]
 """
 
 import sys
