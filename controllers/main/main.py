@@ -28,18 +28,27 @@ from class_Glob import Glob
 from class_Local import *
 from strategy import Player
 from class_Motion_Webots_inner import Motion_sim as Motion
+from launcher import *
 
 
 arguments = sys.argv
 role = arguments[1]
 second_pressed_button = int(arguments[2])
-if len(arguments) > 2:
-    initial_coord = list(eval(arguments[3]))
-else:
-    initial_coord = [0, 0, 0]
+initial_coord = list(eval(arguments[3]))
+team = int(arguments[4])
+player_number = int(arguments[5])
+is_goalkeeper = bool(arguments[6])
 
 
+receiver = init_gcreceiver(team, player, is_goalkeeper)
+for i in range(5):
+    if receiver.team_state != None:
+        player_super_cycle()
+    else: 
+        print('Game Controller Receiver returns "None"')
+        time.sleep(1)
 
+print('Player is going to play without Game Controller')
 glob = Glob(SIMULATION, current_work_directory)
 glob.pf_coord = initial_coord
 motion = Motion(glob)
@@ -52,4 +61,6 @@ local.coordinate_record(odometry = True)
 motion.falling_Flag = 0
 player = Player(role, second_pressed_button, glob, motion, local)
 player.play_game()
+
+
 

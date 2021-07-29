@@ -11,12 +11,7 @@ if current_work_directory.find('Soccer') >= 0:
     current_work_directory = current_work_directory[:-14]
 
 current_work_directory += '/'
-#with open(current_work_directory + "simulator_lib_directory.txt", "r") as f:
-#    simulator_lib_directory = f.read()
-#simulator_lib_directory = simulator_lib_directory.replace('\\', '/')
-#sys.path.append(simulator_lib_directory)
 import random
-#import sim, threading
 
 sys.path.append( current_work_directory + 'Soccer/')
 sys.path.append( current_work_directory + 'Soccer/Motion/')
@@ -35,52 +30,6 @@ class Transfer_Data():
         self.pause = False
         self.stop = 0
         self.finish = 0
-
-
-#def sim_Enable(ip_address, port):
-#    simThreadCycleInMs = 2
-#    print ('Simulation started')
-#    #sim.simxFinish(-1) # just in case, close all opened connections
-#    clientID = sim.simxStart(ip_address, port, True, True, 5000, simThreadCycleInMs)
-#    if clientID != -1:
-#        print ('Connected to remote API server')
-#    else:
-#        print ('Failed connecting to remote API server')
-#        print ('Program ended')
-#        exit(0)
-#    return clientID
-
-#def simulation_Trigger_Accumulator(clientIDs, events, transfer_Datas, lock):
-#    while(True):
-#        finish = False
-#        while(True):
-#            for transfer_Data in transfer_Datas:
-#                if transfer_Data.stop_Flag == True:
-#                    finish = True
-#                    for transfer_Data in transfer_Datas:
-#                        if transfer_Data.finish_Flag == False: finish = False
-#                    for transfer in transfer_Datas:
-#                        transfer.stop_Flag = True
-#                    break
-#            event_flag = True
-#            for i in range(len(events)):
-#                if (not events[i].is_set()): event_flag = False
-#                if transfer_Datas[i].finish_Flag == True:
-#                    event_flag = True
-#                    break
-#            if event_flag == True: break
-#            time.sleep(0.001)
-#        lock.acquire()
-#        lock.release()
-#        for clientID in clientIDs:
-#            sim.simxSynchronousTrigger(clientID)
-#        for event in events: event.clear()
-#        if finish == True:
-#            for clientID in clientIDs:
-#                sim.simxFinish(clientID)
-#            break
-#    pass
-
 
 class Motion_sim(Motion_real):
     def __init__(self, glob):
@@ -109,14 +58,7 @@ class Motion_sim(Motion_real):
         self.BallHandle = None
         self.VisionHandle = None
         self.Ballposition = []
-        #self.transfer_Data = transfer_Data
-        #self.lock = lock
-        #self.motion_Event = motion_EventID
-        #self.clientID = clientID
-        #self.robot_Number = robot_Number
-        #self.Vision_Sensor_Display_On = True
         self.sim_step_counter = 0
-        #self.numberOfRobots = numberOfRobots
         super().__init__(glob)
         with open(current_work_directory + "Init_params/Sim_calibr.json", "r") as f:
             data1 = json.loads(f.read())
@@ -186,17 +128,6 @@ class Motion_sim(Motion_real):
         self.body_euler_angle['roll'] = body_euler[0]
         self.body_euler_angle['pitch'] = body_euler[1]
         self.body_euler_angle['yaw'] = body_euler[2]
-        #time.sleep(0.1)
-        #if self.glob.SIMULATION != 0:
-        #    self.sim.simxStartSimulation(self.clientID,self.sim.simx_opmode_oneshot)
-        #returnCode, Dummy_1quaternion= self.sim.simxGetObjectQuaternion(self.clientID, self.Dummy_1Handle , -1, self.sim.simx_opmode_buffer)
-        #Dummy_1quaternion = self.from_vrep_quat_to_conventional_quat(Dummy_1quaternion)
-        #self.body_euler_angle = self.quaternion_to_euler_angle(Dummy_1quaternion)
-        #self.read_head_imu_euler_angle()
-        ##print('body_euler_angle = ', self.body_euler_angle)
-        #returnCode, Dummy_Hposition= self.sim.simxGetObjectPosition(self.clientID, self.Dummy_HHandle , -1, self.sim.simx_opmode_buffer)
-        #self.Dummy_HData.append(Dummy_Hposition)
-        #returnCode, self.Ballposition= self.sim.simxGetObjectPosition(self.clientID, self.BallHandle , -1, self.sim.simx_opmode_buffer)
         return self.euler_angle
 
     def read_head_imu_euler_angle(self):
@@ -205,10 +136,6 @@ class Motion_sim(Motion_real):
         self.euler_angle['roll'] = head_euler[0]
         self.euler_angle['pitch'] = head_euler[1]
         self.euler_angle['yaw'] = head_euler[2]
-        #print('self.euler_angle[yaw] =', self.euler_angle['yaw'])
-        #returnCode, Dummy_Hquaternion= self.sim.simxGetObjectQuaternion(self.clientID, self.Dummy_HHandle , -1, self.sim.simx_opmode_buffer)
-        #Dummy_Hquaternion = self.from_vrep_quat_to_conventional_quat(Dummy_Hquaternion)
-        #self.euler_angle = self.quaternion_to_euler_angle(Dummy_Hquaternion)
 
     def falling_Test(self):
         key = 0
@@ -217,7 +144,6 @@ class Motion_sim(Motion_real):
         if key == b'p' :
             self.lock.acquire()
             if self.glob.SIMULATION == 3:
-                #self.sim.simxPauseSimulation(self.clientID, self.sim.simx_opmode_oneshot)
                 pass
             key = 0
             while (True):
@@ -226,7 +152,6 @@ class Motion_sim(Motion_real):
                 if key == b'p':
                     self.lock.release()
                     if self.glob.SIMULATION == 3:
-                        #self.sim.simxStartSimulation(self.clientID, self.sim.simx_opmode_oneshot)
                         pass
                     key = 0
                     break
@@ -235,9 +160,6 @@ class Motion_sim(Motion_real):
             self.sim_Stop()
             self.falling_Flag = 3
             return self.falling_Flag
-        #returnCode, Dummy_1quaternion= self.sim.simxGetObjectQuaternion(self.clientID, self.Dummy_1Handle , -1, self.sim.simx_opmode_buffer)
-        #Dummy_1quaternion = self.from_vrep_quat_to_conventional_quat(Dummy_1quaternion)
-        #self.body_euler_angle = self.quaternion_to_euler_angle(Dummy_1quaternion)
         self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.getDevice("imu_body").getRollPitchYaw()
         #print('self.body_euler_angle[pitch] =', self.body_euler_angle['pitch'])
         #print('self.body_euler_angle[roll] =', self.body_euler_angle['roll'])
@@ -261,93 +183,10 @@ class Motion_sim(Motion_real):
             self.robot.getDevice(self.WBservosList[i]).setPosition(angles[i] * self.FACTOR[i] + self.trims[i])
         self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.getDevice("imu_body").getRollPitchYaw()
         self.robot.step(20)
-        #if self.glob.SIMULATION == 1 or self.glob.SIMULATION  == 0 or self.glob.SIMULATION == 3:
-        #    if self.glob.SIMULATION == 3: self.wait_sim_step()
-        #    for i in range(len(angles)):
-        #        if self.glob.SIMULATION == 1 or self.glob.SIMULATION == 3:
-        #            returnCode = self.sim.simxSetJointTargetPosition(self.clientID,
-        #                        self.jointHandle[i] , angles[i]*self.FACTOR[i]+self.trims[i],
-        #                        self.sim.simx_opmode_oneshot)
-        #        elif self.glob.SIMULATION == 0:
-        #            returnCode = self.sim.simxSetJointPosition(self.clientID,
-        #                        self.jointHandle[i] , angles[i]*self.FACTOR[i]+self.trims[i],
-        #                        self.sim.simx_opmode_oneshot)
-        #    if self.glob.SIMULATION == 1 or self.glob.SIMULATION  == 0 or self.glob.SIMULATION == 3:
-        #        time.sleep(self.slowTime)
-        #        returnCode, Dummy_Hposition= self.sim.simxGetObjectPosition(self.clientID, self.Dummy_HHandle , -1, self.sim.simx_opmode_buffer)
-        #        self.Dummy_HData.append(Dummy_Hposition)
-        #        returnCode, self.Ballposition= self.sim.simxGetObjectPosition(self.clientID, self.BallHandle , -1, self.sim.simx_opmode_buffer)
-        #        self.BallData.append(self.Ballposition)
-        #        returnCode, Dummy_1quaternion= self.sim.simxGetObjectQuaternion(self.clientID, self.Dummy_1Handle , -1, self.sim.simx_opmode_buffer)
-        #        Dummy_1quaternion = self.from_vrep_quat_to_conventional_quat(Dummy_1quaternion)
-        #        self.body_euler_angle = self.quaternion_to_euler_angle(Dummy_1quaternion)
-        #        #print(self.euler_angle)
-        #        self.timeElapsed = self.timeElapsed +1
-        #        #print(Dummy_Hposition)
-        #        if self.glob.SIMULATION == 1 or self.glob.SIMULATION  == 0:
-        #            self.vision_Sensor_Display(self.vision_Sensor_Get_Image())
-        #        if self.glob.SIMULATION == 1:
-        #            self.sim_simxSynchronousTrigger(self.clientID)
 
     def move_head(self, pan, tilt):
         self.robot.getDevice(self.WBservosList[21]).setPosition(pan * self.TIK2RAD * self.FACTOR[21] + self.trims[21])
         self.robot.getDevice(self.WBservosList[22]).setPosition(tilt * self.TIK2RAD * self.FACTOR[22] + self.trims[22])
-        #returnCode = self.sim.simxSetJointTargetPosition(self.clientID,
-        #            self.jointHandle[21] , pan * self.TIK2RAD * self.FACTOR[21], self.sim.simx_opmode_oneshot)   # Шея поворот
-        #returnCode = self.sim.simxSetJointTargetPosition(self.clientID,
-        #            self.jointHandle[22] , tilt * self.TIK2RAD * self.FACTOR[22], self.sim.simx_opmode_oneshot)  # Шея Наклон
-        #for j in range(20):
-        #    self.sim_simxSynchronousTrigger(self.clientID)
-
-    #def wait_sim_step(self):
-    #    while True:
-    #        self.sim.simxGetIntegerParameter(self.clientID, self.sim.sim_intparam_program_version, self.sim.simx_opmode_buffer)
-    #        tim = self.sim.simxGetLastCmdTime(self.clientID)
-    #        #print ('Simulation time: ', tim)
-    #        if tim > self.sim_step_counter:
-    #            self.sim_step_counter = tim 
-    #            break
-    #        time.sleep(0.004)
-    #        if self.transfer_Data.stop > 0:
-    #            self.transfer_Data.stop += 1
-    #            self.sim_Stop()
-    #            while True:
-    #                if self.transfer_Data.stop == self.numberOfRobots:
-    #                    self.sim_Disable()
-    #                    sys.exit(0)
-    #                time.sleep(0.1)
-
-    #def getSimTime(self):
-    #    inputInts=[]
-    #    inputFloats=[]
-    #    inputStrings=[]
-    #    inputBuffer=bytearray()
-    #    name = 'Telo_Surrogat'+ self.robot_Number
-    #    self.sim.simxPauseSimulation(self.clientID, self.sim.simx_opmode_oneshot)
-    #    res,retInts,retFloats,retStrings,retBuffer=sim.simxCallScriptFunction(self.clientID,name,sim.sim_scripttype_childscript,
-    #                    'getSimTime',inputInts,inputFloats,inputStrings,inputBuffer,sim.simx_opmode_blocking)
-    #    self.sim.simxStartSimulation(self.clientID, self.sim.simx_opmode_oneshot)   
-    #    if len(retFloats) == 0: return 0
-    #    return retFloats[0]
-
-    #def sim_simxSynchronousTrigger(self, clientID):
-    #    if  self.glob.SIMULATION == 1 :
-    #        if self.transfer_Data.stop > 0:
-    #                self.transfer_Data.stop += 1
-    #                self.sim_Stop()
-    #                while True:
-    #                    if self.transfer_Data.stop == self.numberOfRobots:
-    #                        self.sim_Disable()
-    #                        sys.exit(0)
-    #                    time.sleep(0.1)
-    #    if  self.glob.SIMULATION == 3 : 
-    #        self.wait_sim_step()
-    #        return
-    #    if self.motion_Event == 0:
-    #        self.sim.simxSynchronousTrigger(clientID)
-    #    else:
-    #        self.motion_Event.set()
-    #        while (self.motion_Event.is_set()): time.sleep(0.001)
 
     def vision_Sensor_Get_Image(self):
         if self.Vision_Sensor_Display_On:
