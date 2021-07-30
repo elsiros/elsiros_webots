@@ -237,6 +237,7 @@ def init_team(team):
 def spawn_team(team, red_on_right, children):
     color = team['color']
     nb_players = len(team['players'])
+    team_id = game.red.id if color == 'red' else game.blue.id
     for number in team['players']:
         player = team['players'][number]
         model = player['proto']
@@ -247,6 +248,7 @@ def spawn_team(team, red_on_right, children):
         defname = color.upper() + '_PLAYER_' + number
         halfTimeStartingTranslation = player['borderStartingPose']['translation']
         halfTimeStartingRotation = player['borderStartingPose']['rotation']
+        '''
         string = f'DEF {defname} {model}{{name "{color} player {number}" translation ' + \
             f'{halfTimeStartingTranslation[0]} {halfTimeStartingTranslation[1]} {halfTimeStartingTranslation[2]} rotation ' + \
             f'{halfTimeStartingRotation[0]} {halfTimeStartingRotation[1]} {halfTimeStartingRotation[2]} ' + \
@@ -255,6 +257,13 @@ def spawn_team(team, red_on_right, children):
         for h in hosts:
             string += f', "{h}"'
         string += '] }}'
+        '''
+        # Controller args by referee: 0 0 0 team_id robot_number
+        string = f'DEF {defname} {model}{{name "{color} player {number}" translation ' + \
+            f'{halfTimeStartingTranslation[0]} {halfTimeStartingTranslation[1]} {halfTimeStartingTranslation[2]} rotation ' + \
+            f'{halfTimeStartingRotation[0]} {halfTimeStartingRotation[1]} {halfTimeStartingRotation[2]} ' + \
+            f'{halfTimeStartingRotation[3]} controllerArgs [ "0" "0" "0" "{team_id}" "{number}" ] }}'
+
         children.importMFNodeFromString(-1, string)
         player['robot'] = supervisor.getFromDef(defname)
         #player['position'] = player['robot'].getCenterOfMass()
