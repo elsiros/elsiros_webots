@@ -40,7 +40,7 @@ player_number = int(arguments[5])
 is_goalkeeper = bool(arguments[6])
 
 
-receiver = init_gcreceiver(team, player, is_goalkeeper)
+receiver = init_gcreceiver(team, player_number, is_goalkeeper)
 for i in range(5):
     if receiver.team_state != None:
         player_super_cycle()
@@ -51,7 +51,7 @@ for i in range(5):
 print('Player is going to play without Game Controller')
 glob = Glob(SIMULATION, current_work_directory)
 glob.pf_coord = initial_coord
-motion = Motion(glob)
+motion = Motion(glob, None)
 motion.sim_Start()
 motion.direction_To_Attack = -initial_coord[2]
 motion.activation()

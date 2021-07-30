@@ -1,19 +1,16 @@
-#VRML_SIM R2021a utf8
+#VRML_SIM R2021b utf8
 # license: Apache License 2.0
 # license url: http://www.apache.org/licenses/LICENSE-2.0
 # tags: hidden
 # Extracted from: Kondo_006/urdf/Kondo_006.urdf
 
 PROTO Kondo006_trunk_1Mesh [
+  field SFColor color 0.792157 0.819608 0.933333 
 ]
 {
   Shape {
-    appearance DEF trunk_1_material PBRAppearance {
-      baseColor 0.792157 0.819608 0.933333
-      transparency 0.000000
-      roughness 1.000000
-      metalness 0
-      emissiveColor 0.000000 0.000000 0.000000
+    appearance Plastic {
+      colorOverride IS color
     }
     geometry DEF trunk_1 IndexedFaceSet {
       coord Coordinate {

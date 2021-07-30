@@ -32,7 +32,7 @@ class Transfer_Data():
         self.finish = 0
 
 class Motion_sim(Motion_real):
-    def __init__(self, glob):
+    def __init__(self, glob, gcreceiver):
         self.FRAMELENGTH = 0.02
         import random as random
         self.random = random

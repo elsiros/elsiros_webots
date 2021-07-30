@@ -1,7 +1,7 @@
 Info: Minimum real time factor is set to 0.
 Info: Simulation will run as fast as possible, real time waiting times will be minimal.
-Info: Spawned RED_PLAYER_1 Kondo006 on port 10001 at borderStartingPose: translation (1.5 -1.06 0.24), rotation (0 0 1 1.571592653589793).
-Info: Spawned RED_PLAYER_2 Kondo006 on port 10002 at borderStartingPose: translation (1.5 1.06 0.24), rotation (0 0 1 4.711592653589793).
+Info: Spawned RED_PLAYER_1 Kondo006 on port 10001 at borderStartingPose: translation (0.9 -1.3 0.3), rotation (0 0 1 1.571592653589793).
+Info: Spawned RED_PLAYER_2 Kondo006 on port 10002 at borderStartingPose: translation (0.9 1.3 0.3), rotation (0 0 1 4.711592653589793).
 Info: Spawned BLUE_PLAYER_1 RobocupRobot on port 10021 at borderStartingPose: translation (-1.5 -1.06 0.24), rotation (0 0 1 1.57).
 Info: Spawned BLUE_PLAYER_2 RobocupRobot on port 10022 at borderStartingPose: translation (-1.5 1.06 0.24), rotation (0 0 1 1.57).
 Info: Killing all Java instances
@@ -14,6 +14,7 @@ Info: Blue team is "Rhoban", playing on left side.
 Info: Sending 1:SIDE_LEFT:25 to GameController.
 Info: Waiting for GameController to answer to 1:SIDE_LEFT:25.
 Info: Waiting for GameController to answer to 1:SIDE_LEFT:25.
+Info: Waiting for GameController to answer to 1:SIDE_LEFT:25.
 Info: New state received from GameController: STATE_INITIAL.
 Info: State has succesfully changed to INITIAL
 Info: New secondary state received from GameController: STATE_NORMAL, phase 0.
@@ -21,964 +22,589 @@ Info: Regular start: Waiting 5 seconds (real-time) before going to READY
 Info: Kick-off is blue.
 Info: Moved ball out of the field temporarily
 Info: Ball not in play, will be kicked by a player from the blue team.
-Info: Sending 4:KICKOFF:25 to GameController.
-Info: Waiting for GameController to answer to 4:KICKOFF:25.
-Info: Waiting for GameController to answer to 4:KICKOFF:25.
-Info: STATUS: Avg speed factor: 0.947 (over last 20.01 seconds)
+Info: Sending 5:KICKOFF:25 to GameController.
+Info: Waiting for GameController to answer to 5:KICKOFF:25.
+Info: Waiting for GameController to answer to 5:KICKOFF:25.
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
 Info: STATUS: state: STATE_INITIAL, remaining time: 300
 Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
 Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.944 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.939 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.939 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Error: Cannot split 3173
+Error: Received acknowledgment message for unknown message: 317384
+Error: Received acknowledgment message for unknown message: 85
+Info: STATUS: Avg speed factor: 0.939 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.949 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.937 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.938 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.939 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.944 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Error: Cannot split 4714
+Error: Received acknowledgment message for unknown message: 471406
+Error: Received acknowledgment message for unknown message: 07
+Error: Received unknown answer from GameController: 471509:O.
+Error: Cannot split K
+Error: Received acknowledgment message for unknown message: 471509
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.944 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.944 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Error: Cannot split 5688
+Error: Received acknowledgment message for unknown message: 568805
+Error: Received acknowledgment message for unknown message: 06
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.939 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
 Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_READY.
-Info: New state received from GameController: STATE_INITIAL.
+Info: STATUS: Avg speed factor: 0.939 (over last 20.00 seconds)
+Info: STATUS: state: STATE_READY, remaining time: 300
 Info: New state received from GameController: STATE_SET.
 Info: Ball respawned at 0 0 0.07.
-Info: Red player 1 reset to readyStartingPose: translation (1.47 0 0.24), rotation (0 0 1 3.141592653589793).
+Info: Red player 1 reset to readyStartingPose: translation (1.8 0 0.3), rotation (0 0 1 3.141592653589793).
 Info: Disabling actuators of red player 1.
 Info: red1 needToBePlacedByRefereeInReady=true, doing placement
-Info: Red player 2 reset to readyStartingPose: translation (0.47 0 0.24), rotation (0 0 1 3.141592653589793).
+Info: Red player 2 reset to readyStartingPose: translation (0.4 0 0.3), rotation (0 0 1 3.141592653589793).
 Info: Disabling actuators of red player 2.
 Info: red2 needToBePlacedByRefereeInReady=true, doing placement
 Info: blue1 needToBePlacedByRefereeInReady=false
 Info: blue2 needToBePlacedByRefereeInReady=false
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_SET.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: STATUS: Avg speed factor: 0.946 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: 288
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New state received from GameController: STATE_PLAYING.
-Info: STATUS: Avg speed factor: 0.944 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: 269
 Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: 251
-Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: 232
-Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: 213
-Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: 194
-Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: 175
-Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: 157
-Info: STATUS: Avg speed factor: 0.942 (over last 20.03 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: 138
-Info: STATUS: Avg speed factor: 0.914 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: 119
-Info: STATUS: Avg speed factor: 0.944 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: 100
-Info: STATUS: Avg speed factor: 0.948 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: 82
-Info: STATUS: Avg speed factor: 0.939 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: 63
-Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: 44
-Info: STATUS: Avg speed factor: 0.880 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: 26
-Info: STATUS: Avg speed factor: 0.926 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: 8
-Info: STATUS: Avg speed factor: 0.953 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -11
-Info: STATUS: Avg speed factor: 0.951 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -30
-Info: STATUS: Avg speed factor: 0.941 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -49
-Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -68
-Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -87
-Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -106
-Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -124
-Info: STATUS: Avg speed factor: 0.939 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -143
-Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -162
-Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -181
-Info: STATUS: Avg speed factor: 0.928 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -199
-Info: STATUS: Avg speed factor: 0.931 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -218
-Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -237
-Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -256
-Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -275
-Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -293
-Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -312
-Info: STATUS: Avg speed factor: 0.944 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -331
-Info: STATUS: Avg speed factor: 0.843 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -348
-Info: STATUS: Avg speed factor: 0.613 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -360
-Info: STATUS: Avg speed factor: 0.933 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -379
-Info: STATUS: Avg speed factor: 0.929 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -398
-Info: STATUS: Avg speed factor: 0.948 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -417
-Info: STATUS: Avg speed factor: 0.952 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -436
-Info: STATUS: Avg speed factor: 0.923 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -454
-Info: STATUS: Avg speed factor: 0.950 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -473
-Info: STATUS: Avg speed factor: 0.952 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -492
-Info: STATUS: Avg speed factor: 0.948 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -511
-Info: STATUS: Avg speed factor: 0.896 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -529
-Info: STATUS: Avg speed factor: 0.951 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -548
-Info: STATUS: Avg speed factor: 0.950 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -567
-Info: STATUS: Avg speed factor: 0.946 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -586
-Info: STATUS: Avg speed factor: 0.950 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -605
-Info: STATUS: Avg speed factor: 0.951 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -624
-Info: STATUS: Avg speed factor: 0.949 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -643
-Info: STATUS: Avg speed factor: 0.946 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -662
-Info: STATUS: Avg speed factor: 0.950 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -681
-Info: STATUS: Avg speed factor: 0.948 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -700
-Info: STATUS: Avg speed factor: 0.945 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -719
-Info: STATUS: Avg speed factor: 0.951 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -738
-Info: STATUS: Avg speed factor: 0.949 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -757
-Info: STATUS: Avg speed factor: 0.923 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -775
-Info: STATUS: Avg speed factor: 0.952 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -794
-Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -813
-Info: STATUS: Avg speed factor: 0.942 (over last 20.06 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -832
-Info: STATUS: Avg speed factor: 0.950 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -851
-Info: STATUS: Avg speed factor: 0.939 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -870
-Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -889
-Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -907
-Info: STATUS: Avg speed factor: 0.949 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -926
-Info: STATUS: Avg speed factor: 0.945 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -945
-Info: STATUS: Avg speed factor: 0.939 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -964
-Info: STATUS: Avg speed factor: 0.949 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -983
-Info: STATUS: Avg speed factor: 0.947 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1002
-Info: STATUS: Avg speed factor: 0.954 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1021
-Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1040
-Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1059
-Info: STATUS: Avg speed factor: 0.945 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1078
-Info: STATUS: Avg speed factor: 0.948 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1097
-Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1116
-Info: STATUS: Avg speed factor: 0.945 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1134
-Info: STATUS: Avg speed factor: 0.944 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1153
-Info: STATUS: Avg speed factor: 0.952 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1172
-Info: STATUS: Avg speed factor: 0.953 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1191
-Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1210
-Info: STATUS: Avg speed factor: 0.944 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1229
-Info: STATUS: Avg speed factor: 0.944 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1248
-Info: STATUS: Avg speed factor: 0.946 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1267
-Info: STATUS: Avg speed factor: 0.952 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1286
-Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1305
-Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1324
-Info: STATUS: Avg speed factor: 0.937 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1342
-Info: STATUS: Avg speed factor: 0.946 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1361
-Info: STATUS: Avg speed factor: 0.949 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1380
-Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1399
-Info: STATUS: Avg speed factor: 0.948 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1418
-Info: STATUS: Avg speed factor: 0.772 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1434
-Info: STATUS: Avg speed factor: 0.945 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1453
-Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1471
-Info: STATUS: Avg speed factor: 0.938 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1490
-Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1509
-Info: STATUS: Avg speed factor: 0.944 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1528
-Info: STATUS: Avg speed factor: 0.946 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1547
-Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1566
-Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1584
-Info: STATUS: Avg speed factor: 0.948 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1603
-Info: STATUS: Avg speed factor: 0.948 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1622
-Info: STATUS: Avg speed factor: 0.941 (over last 20.02 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1641
-Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1660
-Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1679
-Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1698
-Info: STATUS: Avg speed factor: 0.945 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1717
-Info: STATUS: Avg speed factor: 0.938 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1735
-Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1754
-Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1773
-Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1792
-Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1811
-Info: STATUS: Avg speed factor: 0.947 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1830
-Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1849
-Info: STATUS: Avg speed factor: 0.948 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1868
-Info: STATUS: Avg speed factor: 0.946 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1886
-Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1905
-Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1924
-Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1943
-Info: STATUS: Avg speed factor: 0.946 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1962
-Info: STATUS: Avg speed factor: 0.952 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -1981
-Info: STATUS: Avg speed factor: 0.946 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2000
-Info: STATUS: Avg speed factor: 0.946 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2019
-Info: STATUS: Avg speed factor: 0.945 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2038
-Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2057
-Info: STATUS: Avg speed factor: 0.946 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2075
-Info: STATUS: Avg speed factor: 0.946 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2094
-Info: STATUS: Avg speed factor: 0.945 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2113
-Info: STATUS: Avg speed factor: 0.945 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2132
-Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2151
-Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2170
-Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2189
-Info: STATUS: Avg speed factor: 0.939 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2207
-Info: STATUS: Avg speed factor: 0.944 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2226
-Info: STATUS: Avg speed factor: 0.944 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2245
-Info: STATUS: Avg speed factor: 0.945 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2264
-Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2283
-Info: STATUS: Avg speed factor: 0.930 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2302
-Info: STATUS: Avg speed factor: 0.939 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2320
-Info: STATUS: Avg speed factor: 0.938 (over last 20.02 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2339
-Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2358
-Info: STATUS: Avg speed factor: 0.944 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2377
-Info: STATUS: Avg speed factor: 0.945 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2396
-Info: STATUS: Avg speed factor: 0.939 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2414
-Info: STATUS: Avg speed factor: 0.944 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2433
-Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2452
-Info: STATUS: Avg speed factor: 0.933 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2471
-Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2490
-Info: STATUS: Avg speed factor: 0.935 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2508
-Info: STATUS: Avg speed factor: 0.944 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2527
-Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2546
-Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2565
-Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2584
-Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2603
+Info: STATUS: state: STATE_SET, remaining time: 300
+Info: New state received from GameController: STATE_PLAYING.
+Info: Ball in play, can be touched by any player (10 seconds elapsed after kickoff).
 Info: STATUS: Avg speed factor: 0.937 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2621
+Info: STATUS: state: STATE_PLAYING, remaining time: 286
+Info: Robot red 2 penalized by GC
+Info: Red player 1 reset to reentryStartingPose: translation (0.9 -1.3 0.3), rotation (0 0 1 1.571592653589793).
+Info: Disabling actuators of red player 1.
+Info: STATUS: Avg speed factor: 0.935 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 267
+Info: STATUS: Avg speed factor: 0.939 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 249
+Info: Robot red 2 is NOT penalized by GC anymore
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 230
+Info: STATUS: Avg speed factor: 0.929 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 211
+Info: New state received from GameController: STATE_READY.
 Info: STATUS: Avg speed factor: 0.944 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2640
-Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2659
-Info: STATUS: Avg speed factor: 0.954 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2678
-Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2697
-Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2716
-Info: STATUS: Avg speed factor: 0.944 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2735
-Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2754
-Info: STATUS: Avg speed factor: 0.944 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2772
-Info: STATUS: Avg speed factor: 0.945 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2791
-Info: STATUS: Avg speed factor: 0.944 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2810
-Info: STATUS: Avg speed factor: 0.932 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2829
-Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2848
-Info: STATUS: Avg speed factor: 0.938 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2866
-Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2885
-Info: STATUS: Avg speed factor: 0.950 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2904
-Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2923
+Info: STATUS: state: STATE_READY, remaining time: 192
+Info: New state received from GameController: STATE_SET.
+Info: New state received from GameController: STATE_PLAYING.
+Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 173
+Info: New state received from GameController: STATE_INITIAL.
 Info: STATUS: Avg speed factor: 0.939 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2942
-Info: STATUS: Avg speed factor: 0.947 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2961
-Info: STATUS: Avg speed factor: 0.946 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2980
-Info: STATUS: Avg speed factor: 0.938 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -2999
-Info: STATUS: Avg speed factor: 0.945 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3017
-Info: STATUS: Avg speed factor: 0.946 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3036
-Info: STATUS: Avg speed factor: 0.943 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3055
-Info: STATUS: Avg speed factor: 0.948 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3074
-Info: STATUS: Avg speed factor: 0.944 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3093
-Info: STATUS: Avg speed factor: 0.944 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3112
-Info: STATUS: Avg speed factor: 0.948 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3131
-Info: STATUS: Avg speed factor: 0.945 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3150
-Info: STATUS: Avg speed factor: 0.943 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3169
-Info: STATUS: Avg speed factor: 0.946 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3188
-Info: STATUS: Avg speed factor: 0.944 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3206
-Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3225
-Info: STATUS: Avg speed factor: 0.947 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3244
-Info: STATUS: Avg speed factor: 0.944 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3263
-Info: STATUS: Avg speed factor: 0.940 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3282
-Info: STATUS: Avg speed factor: 0.940 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3301
-Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3320
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: STATUS: Avg speed factor: 0.942 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
 Info: STATUS: Avg speed factor: 0.942 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3338
-Info: STATUS: Avg speed factor: 0.941 (over last 20.00 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3357
-Info: STATUS: Avg speed factor: 0.938 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3376
-Info: STATUS: Avg speed factor: 0.939 (over last 20.01 seconds)
-Info: STATUS: state: STATE_PLAYING, remaining time: -3395
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: New state received from GameController: STATE_READY.
+Info: New state received from GameController: STATE_SET.
+Info: New state received from GameController: STATE_PLAYING.
+Info: New state received from GameController: STATE_FINISHED.

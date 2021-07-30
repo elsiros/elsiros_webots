@@ -1,4 +1,4 @@
-#VRML_SIM R2021a utf8
+#VRML_SIM R2021b utf8
 # license: Apache License 2.0
 # license url: http://www.apache.org/licenses/LICENSE-2.0
 # tags: hidden
@@ -8,12 +8,8 @@ PROTO Kondo006_head_baseMesh [
 ]
 {
   Shape {
-    appearance DEF head_base_material PBRAppearance {
-      baseColor 0.792157 0.819608 0.933333
-      transparency 0.000000
-      roughness 1.000000
-      metalness 0
-      emissiveColor 0.000000 0.000000 0.000000
+    appearance BrushedAluminium {
+      colorOverride    0.8 0.8 0.8
     }
     geometry DEF head_base IndexedFaceSet {
       coord Coordinate {
