@@ -10,6 +10,7 @@ import os
 import math
 import json
 import time
+import wx
 
 current_work_directory = os.getcwd()
 current_work_directory = current_work_directory.replace('\\', '/')
@@ -19,16 +20,20 @@ SIMULATION = 4                       # 0 - Simulation without physics,
                                      # 3 - Simulation streaming with physics
                                      # 4 - Simulation in Webots
 
-sys.path.append( current_work_directory + 'Soccer/')
-sys.path.append( current_work_directory + 'Soccer/Motion/')
-sys.path.append( current_work_directory + 'Soccer/Localisation/')
-sys.path.append( current_work_directory)
+#sys.path.append( current_work_directory + 'Soccer/')
+#sys.path.append( current_work_directory + 'Soccer/Motion/')
+#sys.path.append( current_work_directory + 'Soccer/Localisation/')
+#sys.path.append( current_work_directory)
+sys.path.append(os.path.abspath('../Soccer'))
         
-from class_Glob import Glob
-from class_Local import *
-from strategy import Player
-from class_Motion_Webots_inner import Motion_sim as Motion
+from Soccer.Localisation.class_Glob import Glob
+from Soccer.Localisation.class_Local import *
+from Soccer.strategy import Player
+from Soccer.Motion.class_Motion_Webots_inner import Motion_sim as Motion
 from launcher import *
+
+
+
 
 
 arguments = sys.argv
@@ -37,13 +42,18 @@ second_pressed_button = int(arguments[2])
 initial_coord = list(eval(arguments[3]))
 team = int(arguments[4])
 player_number = int(arguments[5])
-is_goalkeeper = bool(arguments[6])
 
+class Falling:
+    def __init__(self):
+        self.Flag = 0
+falling = Falling()
 
+if player_number == 1: is_goalkeeper = True
+else: is_goalkeeper = False
 receiver = init_gcreceiver(team, player_number, is_goalkeeper)
 for i in range(5):
     if receiver.team_state != None:
-        player_super_cycle()
+        player_super_cycle(falling)
     else: 
         print('Game Controller Receiver returns "None"')
         time.sleep(1)

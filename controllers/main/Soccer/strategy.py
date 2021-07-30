@@ -3,7 +3,7 @@ import os
 import math
 import json
 import time
-import utility
+from . import utility
 
 
 

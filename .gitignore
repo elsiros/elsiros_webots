@@ -133,3 +133,5 @@ dmypy.json
 *.sqlite
 *.sqlite
 controllers/main/.vs/slnx.sqlite
+controllers/main/.vs/slnx.sqlite
+*.sqlite
