@@ -3,7 +3,7 @@
 # license url: http://www.apache.org/licenses/LICENSE-2.0
 # Official soccer field for the Robocup Humanoid League 2021.
 
-PROTO RobocupSoccerFieldKidSize [
+PROTO ElsirosField [
   field SFVec3f                     translation 0 0 0
   field SFRotation                  rotation    0 1 0 0
   field SFString                    name        "soccer_field"
