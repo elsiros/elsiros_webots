@@ -8,3 +8,19 @@ Info: Killing all Java instances
 Info: Launching GameController
 Info: Connecting to GameControllerSimulator at localhost:8750.
 Info: Connected to GameControllerSimulator at localhost:8750.
+Info: Game type is NORMAL.
+Info: Red team is "Robokit", playing on right side.
+Info: Blue team is "Rhoban", playing on left side.
+Info: Sending 1:SIDE_LEFT:25 to GameController.
+Info: Waiting for GameController to answer to 1:SIDE_LEFT:25.
+Info: Waiting for GameController to answer to 1:SIDE_LEFT:25.
+Info: New state received from GameController: STATE_INITIAL.
+Info: State has succesfully changed to INITIAL
+Info: New secondary state received from GameController: STATE_NORMAL, phase 0.
+Info: Regular start: Waiting 5 seconds (real-time) before going to READY
+Info: Kick-off is blue.
+Info: Moved ball out of the field temporarily
+Info: Ball not in play, will be kicked by a player from the blue team.
+Info: Sending 4:KICKOFF:25 to GameController.
+Info: Waiting for GameController to answer to 4:KICKOFF:25.
+Info: Waiting for GameController to answer to 4:KICKOFF:25.

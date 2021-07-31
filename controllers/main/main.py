@@ -11,6 +11,7 @@ import math
 import json
 import time
 import wx
+import threading
 
 current_work_directory = os.getcwd()
 current_work_directory = current_work_directory.replace('\\', '/')
@@ -24,53 +25,128 @@ SIMULATION = 4                       # 0 - Simulation without physics,
 #sys.path.append( current_work_directory + 'Soccer/Motion/')
 #sys.path.append( current_work_directory + 'Soccer/Localisation/')
 #sys.path.append( current_work_directory)
-sys.path.append(os.path.abspath('../Soccer'))
+#sys.path.append(os.path.abspath('../Soccer'))
         
 from Soccer.Localisation.class_Glob import Glob
 from Soccer.Localisation.class_Local import *
 from Soccer.strategy import Player
 from Soccer.Motion.class_Motion_Webots_inner import Motion_sim as Motion
 from launcher import *
+from controller import *
 
-
-
-
-
-arguments = sys.argv
-role = arguments[1]
-second_pressed_button = int(arguments[2])
-initial_coord = list(eval(arguments[3]))
-team = int(arguments[4])
-player_number = int(arguments[5])
 
 class Falling:
     def __init__(self):
         self.Flag = 0
-falling = Falling()
 
-if player_number == 1: is_goalkeeper = True
-else: is_goalkeeper = False
-receiver = init_gcreceiver(team, player_number, is_goalkeeper)
-for i in range(5):
-    if receiver.team_state != None:
-        player_super_cycle(falling)
-    else: 
-        print('Game Controller Receiver returns "None"')
-        time.sleep(1)
+def main_procedure():
+    arguments = sys.argv
+    second_pressed_button = int(arguments[2])
+    team = int(arguments[4])
+    player_number = int(arguments[5])
+    falling = Falling()
+    #if player_number == 1: is_goalkeeper = True
+    #else: is_goalkeeper = False
+    #receiver = init_gcreceiver(team, player_number, is_goalkeeper)
+    #for i in range(5):
+    if second_pressed_button == 0:
+        player_super_cycle(falling, team, player_number, SIMULATION, current_work_directory)
+    #else: 
+    #    #receiver.stop()
+    #    print('Game Controller Receiver returns "None"')
+    #    time.sleep(1)
+    robot = Supervisor()
+    print('Player is going to play without Game Controller')
+    role = arguments[1]
+    initial_coord = list(eval(arguments[3]))
+    glob = Glob(SIMULATION, current_work_directory)
+    glob.pf_coord = initial_coord
+    print(robot)
+    motion = Motion(glob, robot, None)
+    motion.sim_Start()
+    motion.direction_To_Attack = -initial_coord[2]
+    motion.activation()
+    local = Local(motion, glob, coord_odometry = initial_coord)
+    motion.local = local
+    local.coordinate_record(odometry = True)
+    motion.falling_Flag = 0
+    player = Player(role, second_pressed_button, glob, motion, local)
+    player.play_game()
 
-print('Player is going to play without Game Controller')
-glob = Glob(SIMULATION, current_work_directory)
-glob.pf_coord = initial_coord
-motion = Motion(glob, None)
-motion.sim_Start()
-motion.direction_To_Attack = -initial_coord[2]
-motion.activation()
-local = Local(motion, glob, coord_odometry = initial_coord)
-motion.local = local
-local.coordinate_record(odometry = True)
-motion.falling_Flag = 0
-player = Player(role, second_pressed_button, glob, motion, local)
-player.play_game()
 
+class RedirectText(object):
+    def __init__(self,aWxTextCtrl):
+        self.out = aWxTextCtrl
+
+    def write(self,string):
+        self.out.WriteText(string)
+
+
+
+
+class Main_Panel(wx.Frame):
+    def __init__(self, *args, **kwargs):
+        super(Main_Panel, self).__init__(*args, **kwargs)
+
+
+        self.InitUI()
+        wx.CallLater(1000, self.main_procedure)
+
+    def main_procedure(self):
+        t1 = threading.Thread( target = main_procedure, args=())
+        t1.setDaemon(True)
+        t1.start()
+
+    def InitUI(self):
+        self.console_Panel = wx.Panel(self)
+        panel = wx.Panel(self.console_Panel)
+        self.log = wx.TextCtrl(self.console_Panel, -1, style=wx.TE_MULTILINE) #|wx.TE_READONLY) #|wx.HSCROLL)
+        log_box = wx.BoxSizer(wx.VERTICAL)
+        log_box.Add(panel,0,wx.TOP)
+        log_box.Add(self.log, proportion = 1, flag=wx.EXPAND|wx.BOTTOM|wx.TOP)
+        self.console_Panel.SetSizer(log_box)
+        redir = RedirectText(self.log)
+        sys.stdout = redir
+
+        hbox = wx.BoxSizer()
+        sizer = wx.GridSizer(1, 2, 2, 2)
+
+        btn1 = wx.Button(panel, label='Exit')
+        btn2 = wx.Button(panel, label='Pause')
+
+        sizer.AddMany([btn1, btn2])
+
+        hbox.Add(sizer, 0, wx.TOP)
+        panel.SetSizer(hbox)
+
+
+        btn1.Bind(wx.EVT_BUTTON, self.ShowMessage1)
+        btn2.Bind(wx.EVT_BUTTON, self.ShowMessage2)
+
+        self.SetSize((300, 200))
+        arguments = sys.argv
+        team = int(arguments[4])
+        player_number = int(arguments[5])
+        title = 'Team ' + str(team) + ' player '+ str(player_number)
+        self.SetTitle(title)
+        self.Centre()
+
+    def ShowMessage1(self, event):
+        print('Exit button pressed')
+        sys.stdout = sys.__stdout__
+        sys.exit(0)
+
+    def ShowMessage2(self, event):
+        print('Pause button pressed')
+
+def main():
+
+    app = wx.App()
+    ex = Main_Panel(None)
+    ex.Show()
+    app.MainLoop()
+
+
+main()
 
 

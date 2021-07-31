@@ -3,7 +3,7 @@
 
 import sys, os
 import math, time, json
-from controller import *
+#from controller import *
 
 current_work_directory = os.getcwd()
 current_work_directory = current_work_directory.replace('\\', '/')
@@ -23,16 +23,16 @@ from class_Motion import *
 from class_Motion_real import Motion_real
 from compute_Alpha_v3 import Alpha
 
-class Transfer_Data():
-    def __init__(self):
-        self.stop_Flag = False
-        self.finish_Flag = False
-        self.pause = False
-        self.stop = 0
-        self.finish = 0
+#class Transfer_Data():
+#    def __init__(self):
+#        self.stop_Flag = False
+#        self.finish_Flag = False
+#        self.pause = False
+#        self.stop = 0
+#        self.finish = 0
 
 class Motion_sim(Motion_real):
-    def __init__(self, glob, gcreceiver):
+    def __init__(self, glob, robot, gcreceiver):
         self.FRAMELENGTH = 0.02
         import random as random
         self.random = random
@@ -59,6 +59,8 @@ class Motion_sim(Motion_real):
         self.VisionHandle = None
         self.Ballposition = []
         self.sim_step_counter = 0
+        self.gcreceiver = gcreceiver
+        self.robot = robot
         super().__init__(glob)
         with open(current_work_directory + "Init_params/Sim_calibr.json", "r") as f:
             data1 = json.loads(f.read())
@@ -67,7 +69,6 @@ class Motion_sim(Motion_real):
         self.head_pitch_with_horizontal_camera = data1['head_pitch_with_horizontal_camera']
         self.neck_tilt = self.neck_calibr
         self.Vision_Sensor_Display_On = self.glob.params['Vision_Sensor_Display_On']
-        self.robot = Supervisor()
         self.timestep = int(self.robot.getBasicTimeStep())
         self.ACTIVEJOINTS = ['Leg_right_10','Leg_right_9','Leg_right_8','Leg_right_7','Leg_right_6','Leg_right_5','hand_right_4',
             'hand_right_3','hand_right_2','hand_right_1','Tors1','Leg_left_10','Leg_left_9','Leg_left_8',
@@ -138,28 +139,33 @@ class Motion_sim(Motion_real):
         self.euler_angle['yaw'] = head_euler[2]
 
     def falling_Test(self):
-        key = 0
-        if self.ms.kbhit():
-            key = self.ms.getch()
-        if key == b'p' :
-            self.lock.acquire()
-            if self.glob.SIMULATION == 3:
-                pass
-            key = 0
-            while (True):
-                if self.ms.kbhit():
-                    key = self.ms.getch()
-                if key == b'p':
-                    self.lock.release()
-                    if self.glob.SIMULATION == 3:
-                        pass
-                    key = 0
-                    break
-        if key == b's' :
-            print('Simulation STOP by keyboard')
-            self.sim_Stop()
-            self.falling_Flag = 3
-            return self.falling_Flag
+        #key = 0
+        #if self.ms.kbhit():
+        #    key = self.ms.getch()
+        #if key == b'p' :
+        #    self.lock.acquire()
+        #    if self.glob.SIMULATION == 3:
+        #        pass
+        #    key = 0
+        #    while (True):
+        #        if self.ms.kbhit():
+        #            key = self.ms.getch()
+        #        if key == b'p':
+        #            self.lock.release()
+        #            if self.glob.SIMULATION == 3:
+        #                pass
+        #            key = 0
+        #            break
+        #if key == b's' :
+        #    print('Simulation STOP by keyboard')
+        #    self.sim_Stop()
+        #    self.falling_Flag = 3
+        #    return self.falling_Flag
+        if self.gcreceiver != None:
+            if self.gcreceiver.team_state != None:
+                if self.gcreceiver.state.game_state != 'STATE_PLAYING' or self.gcreceiver.player_state.penalty != 0:
+                    self.falling_Flag = 3
+                    return self.falling_Flag
         self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.getDevice("imu_body").getRollPitchYaw()
         #print('self.body_euler_angle[pitch] =', self.body_euler_angle['pitch'])
         #print('self.body_euler_angle[roll] =', self.body_euler_angle['roll'])
@@ -250,7 +256,7 @@ class Motion_sim(Motion_real):
 
     def sim_Get_Ball_Position(self):
         #returnCode, Ballposition= self.sim.simxGetObjectPosition(self.clientID, self.BallHandle , -1, self.sim.simx_opmode_buffer)
-        return self.robot.getFromDef("ball").getPosition()
+        return self.robot.getFromDef("BALL").getPosition()
 
     def sim_Get_Robot_Position(self):
         x, y, z  = self.robot.getSelf().getPosition()
