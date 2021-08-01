@@ -119,10 +119,6 @@ def ball_Approach( motion, local , glob, ball_coord):
             if cycle ==1 : stepLength1 = stepLength/2
             motion.walk_Cycle(stepLength1, sideLength,rotation1,cycle,cycleNumber)
         motion.walk_Final_Pose()
-        #if motion.falling_Flag == 0:
-        #    local.coord_odometry[0] += (x2 - x1 )
-        #    local.coord_odometry[1] += (y2 - y1 )
-            #local.coordinate_record(odometry = True)
         motion.turn_To_Course(math.radians(u2))
 
 

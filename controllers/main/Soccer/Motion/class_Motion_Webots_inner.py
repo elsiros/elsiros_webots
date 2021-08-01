@@ -17,19 +17,9 @@ sys.path.append( current_work_directory + 'Soccer/')
 sys.path.append( current_work_directory + 'Soccer/Motion/')
 sys.path.append( current_work_directory + 'Soccer/Localisation/')
 
-
-
 from class_Motion import *
 from class_Motion_real import Motion_real
 from compute_Alpha_v3 import Alpha
-
-#class Transfer_Data():
-#    def __init__(self):
-#        self.stop_Flag = False
-#        self.finish_Flag = False
-#        self.pause = False
-#        self.stop = 0
-#        self.finish = 0
 
 class Motion_sim(Motion_real):
     def __init__(self, glob, robot, gcreceiver):
@@ -113,14 +103,17 @@ class Motion_sim(Motion_real):
     def pause_in_ms(self, time_in_ms):
         self.sim_Progress(time_in_ms/1000)
 
-    #def from_vrep_quat_to_conventional_quat(self, quaternion):
-    #        x,y,z,w = quaternion
-    #        return [w,x,y,z]
+    def sim_Trigger(self):
+        #if self.robot.getSelf().getField('customData').getSFString() == 'penalized':
+        #    self.falling_Flag = 3
+        #    for i in range(len(self.WBservosList)):
+        #        self.robot.getDevice(self.WBservosList[i]).setPosition(0)
+        self.robot.step(20)
 
     def imu_activation(self):
         self.robot.getDevice("imu_head").enable(1)
         self.robot.getDevice("imu_body").enable(1)
-        self.robot.step(20)
+        self.sim_Trigger()
         head_euler = self.robot.getDevice("imu_head").getRollPitchYaw()
         body_euler = self.robot.getDevice("imu_body").getRollPitchYaw()
         self.euler_angle['roll'] = head_euler[0]
@@ -132,39 +125,24 @@ class Motion_sim(Motion_real):
         return self.euler_angle
 
     def read_head_imu_euler_angle(self):
-        self.robot.step(20)
+        self.sim_Trigger()
         head_euler = self.robot.getDevice("imu_head").getRollPitchYaw()
         self.euler_angle['roll'] = head_euler[0]
         self.euler_angle['pitch'] = head_euler[1]
         self.euler_angle['yaw'] = head_euler[2]
 
+    def read_imu_body_yaw(self):
+        self.sim_Trigger()
+        body_euler = self.robot.getDevice("imu_body").getRollPitchYaw()
+        self.body_euler_angle = {'roll': body_euler[0], 'pitch': body_euler[1], 'yaw': body_euler[2]}
+        return body_euler[2]
+
     def falling_Test(self):
-        #key = 0
-        #if self.ms.kbhit():
-        #    key = self.ms.getch()
-        #if key == b'p' :
-        #    self.lock.acquire()
-        #    if self.glob.SIMULATION == 3:
-        #        pass
-        #    key = 0
-        #    while (True):
-        #        if self.ms.kbhit():
-        #            key = self.ms.getch()
-        #        if key == b'p':
-        #            self.lock.release()
-        #            if self.glob.SIMULATION == 3:
-        #                pass
-        #            key = 0
-        #            break
-        #if key == b's' :
-        #    print('Simulation STOP by keyboard')
-        #    self.sim_Stop()
-        #    self.falling_Flag = 3
-        #    return self.falling_Flag
         if self.gcreceiver != None:
             if self.gcreceiver.team_state != None:
                 if self.gcreceiver.state.game_state != 'STATE_PLAYING' or self.gcreceiver.player_state.penalty != 0:
                     self.falling_Flag = 3
+                    self.simulateMotion(name = 'Initial_Pose')
                     return self.falling_Flag
         self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.getDevice("imu_body").getRollPitchYaw()
         #print('self.body_euler_angle[pitch] =', self.body_euler_angle['pitch'])
@@ -187,12 +165,14 @@ class Motion_sim(Motion_real):
     def send_angles_to_servos(self, angles):
         for i in range(len(angles)):
             self.robot.getDevice(self.WBservosList[i]).setPosition(angles[i] * self.FACTOR[i] + self.trims[i])
+        self.sim_Trigger()
         self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.getDevice("imu_body").getRollPitchYaw()
-        self.robot.step(20)
+        
 
     def move_head(self, pan, tilt):
         self.robot.getDevice(self.WBservosList[21]).setPosition(pan * self.TIK2RAD * self.FACTOR[21] + self.trims[21])
         self.robot.getDevice(self.WBservosList[22]).setPosition(tilt * self.TIK2RAD * self.FACTOR[22] + self.trims[22])
+        self.sim_Trigger()
 
     def vision_Sensor_Get_Image(self):
         if self.Vision_Sensor_Display_On:
@@ -241,109 +221,37 @@ class Motion_sim(Motion_real):
                     self.activePose.append(0.017*mot_list[i][j+1]*0.03375)
             pulseNum = int(mot_list[i][0]*self.FRAMELENGTH * 1000 / self.simThreadCycleInMs)
             for k in range (pulseNum):
-                #if self.glob.SIMULATION == 3: self.wait_sim_step()
-                #self.sim.simxPauseCommunication(self.clientID, True)
                 for j in range(len(self.ACTIVEJOINTS) - 2):
                     tempActivePose = activePoseOld[j]+(self.activePose[j]-activePoseOld[j])*k/pulseNum
                     self.robot.getDevice(self.WBservosList[j]).setPosition(tempActivePose * self.FACTOR[j] + self.trims[j])
-                    #returnCode = self.sim.simxSetJointTargetPosition(self.clientID, self.jointHandle[j] ,
-                    #             tempActivePose*self.FACTOR[j] +self.trims[j], self.sim.simx_opmode_streaming)
-                #self.sim.simxPauseCommunication(self.clientID, False)
-                self.robot.step(20)
-                #if self.glob.SIMULATION == 1:
-                #    self.sim_simxSynchronousTrigger(self.clientID)
+                self.sim_Trigger()
         return
 
     def sim_Get_Ball_Position(self):
-        #returnCode, Ballposition= self.sim.simxGetObjectPosition(self.clientID, self.BallHandle , -1, self.sim.simx_opmode_buffer)
         return self.robot.getFromDef("BALL").getPosition()
 
     def sim_Get_Robot_Position(self):
+        self.sim_Trigger()
         x, y, z  = self.robot.getSelf().getPosition()
         self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.getDevice("imu_body").getRollPitchYaw()
+        self.body_euler_angle['yaw'] -= self.direction_To_Attack
         return x, y, self.body_euler_angle['yaw']
-        #returnCode, Dummy_1position= self.sim.simxGetObjectPosition(self.clientID, self.Dummy_1Handle , -1, self.sim.simx_opmode_buffer)
-        #returnCode, Dummy_1quaternion= self.sim.simxGetObjectQuaternion(self.clientID, self.Dummy_1Handle , -1, self.sim.simx_opmode_buffer)
-        #Dummy_1quaternion = self.from_vrep_quat_to_conventional_quat(Dummy_1quaternion)
-        #euler_angles = self.quaternion_to_euler_angle(Dummy_1quaternion)
-        #return Dummy_1position[0], Dummy_1position[1], euler_angles['yaw']
-
 
     def sim_Start(self):
         for i in range(len(self.ACTIVEJOINTS)):
             position = self.robot.getDevice(self.WBservosList[i]).getTargetPosition()
             self.activePose.append(position)
-        pass
-        ##print ('Simulation started')
-        #if self.glob.SIMULATION == 1 or self.glob.SIMULATION  == 0 or self.glob.SIMULATION == 3:
-        #    #self.sim.simxFinish(-1) # just in case, close all opened connections
-        #    #self.clientID=self.sim.simxStart('127.0.0.1',19997,True,True,5000,self.simThreadCycleInMs) # Connect to V-REP
-        #    #if self.clientID!=-1:
-        #    #    print ('Connected to remote API server')
-        #    #else:
-        #    #    print ('Failed connecting to remote API server')
-        #    #    print ('Program ended')
-        #    #    exit(0)
-        #    ## Collect Joint Handles and trims from model
-        #    returnCode, self.Dummy_HHandle = self.sim.simxGetObjectHandle(self.clientID, 'Dummy_H'+ self.robot_Number, self.sim.simx_opmode_blocking)
-        #    returnCode, self.Dummy_1Handle = self.sim.simxGetObjectHandle(self.clientID, 'Dummy1' + self.robot_Number, self.sim.simx_opmode_blocking)
-        #    returnCode, self.BallHandle = self.sim.simxGetObjectHandle(self.clientID, 'Ball', self.sim.simx_opmode_blocking)
-        #    returnCode, self.VisionHandle = self.sim.simxGetObjectHandle(self.clientID, 'Vision_sensor' + self.robot_Number, self.sim.simx_opmode_blocking)
-        #    returnCode, self.Ballposition= self.sim.simxGetObjectPosition(self.clientID, self.BallHandle , -1, self.sim.simx_opmode_streaming)
-        #    returnCode, Dummy_Hposition= self.sim.simxGetObjectPosition(self.clientID, self.Dummy_HHandle , -1, self.sim.simx_opmode_streaming)
-        #    returnCode, Dummy_Hquaternion= self.sim.simxGetObjectQuaternion(self.clientID, self.Dummy_HHandle , -1, self.sim.simx_opmode_streaming)
-        #    returnCode, Dummy_1position= self.sim.simxGetObjectPosition(self.clientID, self.Dummy_1Handle , -1, self.sim.simx_opmode_streaming)
-        #    returnCode, Dummy_1quaternion= self.sim.simxGetObjectQuaternion(self.clientID, self.Dummy_1Handle , -1, self.sim.simx_opmode_streaming)
-        #    if self.Vision_Sensor_Display_On:
-        #        returnCode, resolution, image_Data = self.sim.simxGetVisionSensorImage(self.clientID, self.VisionHandle, 0 ,self.sim.simx_opmode_streaming)
-        #    returnCode, Camera_quaternion= self.sim.simxGetObjectQuaternion(self.clientID, self.VisionHandle , -1, self.sim.simx_opmode_streaming)
-        #    #print(Dummy_Hquaternion)
-        #    for i in range(len(self.ACTIVEJOINTS)):
-        #        returnCode, handle= self.sim.simxGetObjectHandle(self.clientID, self.ACTIVEJOINTS[i] + self.robot_Number, self.sim.simx_opmode_blocking)
-        #        self.jointHandle.append(handle)
-        #        returnCode, position= self.sim.simxGetJointPosition(self.clientID, handle, self.sim.simx_opmode_blocking)
-        #        self.trims.append(position)
-        #        self.activePose.append(position)
-        #    if self.glob.SIMULATION == 1:
-        #        self.sim.simxSynchronous(self.clientID,True)
-        #    if self.glob.SIMULATION == 3:
-        #        self.sim.simxGetIntegerParameter(self.clientID, self.sim.sim_intparam_program_version, self.sim.simx_opmode_streaming)
 
     def sim_Progress(self,simTime):  # simTime in seconds
         for i in range(int(simTime*1000//self.timestep)):
-            self.robot.step(20)
-        #if self.glob.SIMULATION == 1 or self.glob.SIMULATION  == 0 or self.glob.SIMULATION == 3:
-        #    for i in range(int(simTime*1000//self.simThreadCycleInMs)):
-        #        returnCode, Dummy_Hposition= self.sim.simxGetObjectPosition(self.clientID, self.Dummy_HHandle , -1, self.sim.simx_opmode_buffer)
-        #        self.Dummy_HData.append(Dummy_Hposition)
-        #        returnCode, self.Ballposition= self.sim.simxGetObjectPosition(self.clientID, self.BallHandle , -1, self.sim.simx_opmode_buffer)
-        #        self.BallData.append(self.Ballposition)
-        #        returnCode, Dummy_Hquaternion= self.sim.simxGetObjectQuaternion(self.clientID, self.Dummy_HHandle , -1, self.sim.simx_opmode_buffer)
-        #        #print(quaternion_to_euler_angle(Dummy_Hquaternion))
-        #        self.timeElapsed = self.timeElapsed +1
-        #        self.vision_Sensor_Display(self.vision_Sensor_Get_Image())
-        #        if self.glob.SIMULATION == 1 : self.sim_simxSynchronousTrigger(self.clientID)
-        #        if self.glob.SIMULATION == 3 : 
-        #            time.sleep(0.005)
-        #            self.wait_sim_step() 
+            self.sim_Trigger()
 
     def sim_Stop(self):
         pass
-        #if self.glob.SIMULATION == 1 or self.glob.SIMULATION  == 0 or self.glob.SIMULATION == 3:
-        #    self.sim.simxStopSimulation(self.clientID,self.sim.simx_opmode_oneshot)
-        #            # return to initial pose
-        #    for j in range(len(self.ACTIVEJOINTS)):
-        #        if self.glob.SIMULATION == 1 or self.glob.SIMULATION == 3:
-        #           returnCode = self.sim.simxSetJointTargetPosition(self.clientID,
-        #                        self.jointHandle[j] , self.trims[j], self.sim.simx_opmode_oneshot)
-        #        else: returnCode = self.sim.simxSetJointPosition(self.clientID,
-        #                           self.jointHandle[j] , self.trims[j], self.sim.simx_opmode_oneshot)
+
 
     def sim_Disable(self):            # Now close the connection to V-REP:
         pass
-        #time.sleep(0.2)
-        ##self.sim.simxFinish(self.clientID)
-        #self.transfer_Data.finish_Flag = True
 
 
 if __name__=="__main__":

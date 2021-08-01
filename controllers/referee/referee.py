@@ -262,7 +262,7 @@ def spawn_team(team, red_on_right, children):
         string = f'DEF {defname} {model}{{name "{color} player {number}" translation ' + \
             f'{halfTimeStartingTranslation[0]} {halfTimeStartingTranslation[1]} {halfTimeStartingTranslation[2]} rotation ' + \
             f'{halfTimeStartingRotation[0]} {halfTimeStartingRotation[1]} {halfTimeStartingRotation[2]} ' + \
-            f'{halfTimeStartingRotation[3]} controllerArgs [ "0" "0" "0" "{team_id}" "{number}" ] }}'
+            f'{halfTimeStartingRotation[3]} controllerArgs [ "0" "0" "0" "{team_id}" "{number}" ] teamColor "{color}" playerNumber "{number}" }}'
 
         children.importMFNodeFromString(-1, string)
         player['robot'] = supervisor.getFromDef(defname)
@@ -790,11 +790,11 @@ game_controller_send.sent_once = None
 field_size = "kid"
 field = Field(field_size)
 children = supervisor.getRoot().getField('children')
-children.importMFNodeFromString(-1, f'RobocupSoccerField {{ size "{field_size}" }}')
+children.importMFNodeFromString(-1, f'ElsirosField {{ size "{field_size}" }}')
 
 # Spawn ball far away from field
 ball_size = 1 if field_size == 'kid' else 5
-children.importMFNodeFromString(-1, f'DEF BALL RobocupSoccerBall {{ translation 100 100 0.5 size {ball_size} }}')
+children.importMFNodeFromString(-1, f'DEF BALL Ball {{ translation 100 100 0.5 size {ball_size} }}')
 game.ball_translation = supervisor.getFromDef('BALL').getField('translation')
 
 game.side_left = game.blue.id

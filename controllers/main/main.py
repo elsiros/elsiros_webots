@@ -13,56 +13,45 @@ import time
 import wx
 import threading
 
-current_work_directory = os.getcwd()
-current_work_directory = current_work_directory.replace('\\', '/')
-current_work_directory += '/'
+current_work_directory = os.getcwd().replace('\\', '/') + '/'
+
 SIMULATION = 4                       # 0 - Simulation without physics, 
                                      # 1 - Simulation synchronous with physics, 
                                      # 3 - Simulation streaming with physics
                                      # 4 - Simulation in Webots
 
-#sys.path.append( current_work_directory + 'Soccer/')
-#sys.path.append( current_work_directory + 'Soccer/Motion/')
-#sys.path.append( current_work_directory + 'Soccer/Localisation/')
-#sys.path.append( current_work_directory)
-#sys.path.append(os.path.abspath('../Soccer'))
-        
 from Soccer.Localisation.class_Glob import Glob
 from Soccer.Localisation.class_Local import *
 from Soccer.strategy import Player
-from Soccer.Motion.class_Motion_Webots_inner import Motion_sim as Motion
+from Soccer.Motion.class_Motion_Webots_inner import Motion_sim
 from launcher import *
+controller_path = os.environ.get('WEBOTS_HOME').replace('\\', '/') + '/lib/controller/python39'
+sys.path.append(controller_path)
 from controller import *
 
+global robot
 
 class Falling:
     def __init__(self):
         self.Flag = 0
 
 def main_procedure():
+    global robot
     arguments = sys.argv
     second_pressed_button = int(arguments[2])
     team = int(arguments[4])
     player_number = int(arguments[5])
     falling = Falling()
-    #if player_number == 1: is_goalkeeper = True
-    #else: is_goalkeeper = False
-    #receiver = init_gcreceiver(team, player_number, is_goalkeeper)
-    #for i in range(5):
     if second_pressed_button == 0:
-        player_super_cycle(falling, team, player_number, SIMULATION, current_work_directory)
-    #else: 
-    #    #receiver.stop()
-    #    print('Game Controller Receiver returns "None"')
-    #    time.sleep(1)
-    robot = Supervisor()
+        player_super_cycle(falling, team, player_number, SIMULATION, current_work_directory, robot)
+    print('teamColor = ', robot.getSelf().getField('teamColor').getSFString())
     print('Player is going to play without Game Controller')
     role = arguments[1]
     initial_coord = list(eval(arguments[3]))
     glob = Glob(SIMULATION, current_work_directory)
     glob.pf_coord = initial_coord
-    print(robot)
-    motion = Motion(glob, robot, None)
+    #print(robot)
+    motion = Motion_sim(glob, robot, None)
     motion.sim_Start()
     motion.direction_To_Attack = -initial_coord[2]
     motion.activation()
@@ -87,7 +76,6 @@ class RedirectText(object):
 class Main_Panel(wx.Frame):
     def __init__(self, *args, **kwargs):
         super(Main_Panel, self).__init__(*args, **kwargs)
-
 
         self.InitUI()
         wx.CallLater(1000, self.main_procedure)
@@ -129,7 +117,16 @@ class Main_Panel(wx.Frame):
         player_number = int(arguments[5])
         title = 'Team ' + str(team) + ' player '+ str(player_number)
         self.SetTitle(title)
-        self.Centre()
+        width, height = wx.GetDisplaySize().Get()
+        global robot
+        robot = Supervisor()
+        teamColor = robot.getSelf().getField('teamColor').getSFString()
+        if teamColor == 'red':
+            x_position = width - 300 * (5- player_number)
+        else:
+            x_position = width - 300 * (3- player_number)
+        self.SetPosition((x_position, height -225))
+        #self.Centre()
 
     def ShowMessage1(self, event):
         print('Exit button pressed')
