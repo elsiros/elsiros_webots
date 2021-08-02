@@ -787,6 +787,8 @@ def kickoff():
     move_ball_away()
     info(f'Ball not in play, will be kicked by a player from the {game.ball_must_kick_team} team.')
 
+ 
+
 # --------------------------------------------------------------------------------------------------
 
 red_team = read_team(game.red.config)
@@ -1030,6 +1032,8 @@ while supervisor.step(time_step) != -1 and not game.over:
             update_state_display()        
         pass
     elif game.state.game_state == 'STATE_READY':
+        if game.ball_set_kick == False:
+            game.ball_set_kick = True # Allow ball to be placed by referee in SET state
         pass   
     elif game.state.game_state == 'STATE_SET':
         if game.ball_set_kick: 
