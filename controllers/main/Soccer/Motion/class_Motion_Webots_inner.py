@@ -104,10 +104,10 @@ class Motion_sim(Motion_real):
         self.sim_Progress(time_in_ms/1000)
 
     def sim_Trigger(self):
-        #if self.robot.getSelf().getField('customData').getSFString() == 'penalized':
-        #    self.falling_Flag = 3
-        #    for i in range(len(self.WBservosList)):
-        #        self.robot.getDevice(self.WBservosList[i]).setPosition(0)
+        if self.robot.getSelf().getField('customData').getSFString() == 'penalized':
+            self.falling_Flag = 3
+            for i in range(len(self.WBservosList)):
+                self.robot.getDevice(self.WBservosList[i]).setPosition(0)
         self.robot.step(20)
 
     def imu_activation(self):
@@ -122,6 +122,7 @@ class Motion_sim(Motion_real):
         self.body_euler_angle['roll'] = body_euler[0]
         self.body_euler_angle['pitch'] = body_euler[1]
         self.body_euler_angle['yaw'] = body_euler[2]
+        print('head_yaw = ', head_euler[2], 'body_yaw =', body_euler[2])
         return self.euler_angle
 
     def read_head_imu_euler_angle(self):
@@ -172,7 +173,8 @@ class Motion_sim(Motion_real):
     def move_head(self, pan, tilt):
         self.robot.getDevice(self.WBservosList[21]).setPosition(pan * self.TIK2RAD * self.FACTOR[21] + self.trims[21])
         self.robot.getDevice(self.WBservosList[22]).setPosition(tilt * self.TIK2RAD * self.FACTOR[22] + self.trims[22])
-        self.sim_Trigger()
+        for i in range(16):
+            self.sim_Trigger()
 
     def vision_Sensor_Get_Image(self):
         if self.Vision_Sensor_Display_On:

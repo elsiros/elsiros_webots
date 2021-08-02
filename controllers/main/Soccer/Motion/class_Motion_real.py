@@ -133,8 +133,8 @@ class Motion_real(Motion1):
         self.pause_in_ms(100)
         Ballposition = self.sim_Get_Ball_Position()
         x, y, yaw = self.sim_Get_Robot_Position()
-        self.read_head_imu_euler_angle()
-        yaw = self.euler_angle['yaw'] #- self.direction_To_Attack
+        #self.read_head_imu_euler_angle()
+        yaw = self.body_euler_angle['yaw'] + self.direction_To_Attack
         dx = Ballposition[0] - x
         dy = Ballposition[1] - y
         distance = math.sqrt(dx**2 + dy**2)
@@ -160,8 +160,8 @@ class Motion_real(Motion1):
             self.pause_in_ms(100)
             Ballposition = self.sim_Get_Ball_Position()
             x, y, yaw = self.sim_Get_Robot_Position()
-            self.read_head_imu_euler_angle()
-            yaw = self.euler_angle['yaw'] #- self.direction_To_Attack
+            #self.read_head_imu_euler_angle()
+            yaw = self.body_euler_angle['yaw'] + self.direction_To_Attack
             dx = Ballposition[0] - x
             dy = Ballposition[1] - y
             distance = math.sqrt(dx**2 + dy**2)
@@ -186,8 +186,17 @@ class Motion_real(Motion1):
             tangential_speed = ( position[n-1][0] - position[0][0]) * distance/n
             speed = [tangential_speed, front_speed ]
         if n < 1: return False, 0, 0, [0,0]
-        elif n < 2: return False, course, distance, [0,0]
-        else: return True, course, distance, speed
+        
+        elif n < 2: 
+            #self.see_ball_confirmation()
+            return False, course, distance, [0,0]
+        else: 
+            #self.see_ball_confirmation()
+            return True, course, distance, speed
+
+    def see_ball_confirmation(self):
+        self.move_head(self.neck_pan, 0)
+        self.move_head(self.neck_pan, self.neck_tilt)
 
     #def turn_To_Course(self, course, accurate = False):
     #    stepLength = 0
