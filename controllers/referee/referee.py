@@ -523,11 +523,24 @@ def update_team_penalized_from_gamecontroller(team):
                 t[0] = 50
                 t[1] = (10 + int(number)) * (1 if color == 'red' else -1)
                 #reset_player(color, number, 'reentryStartingPose', t)            
-                reset_player(color, number, 'reentryStartingPose')            
-        else:
-            if 'penalized' in player:
-                del player['penalized']
-                info(f'Robot {color} {index+1} is NOT penalized by GC anymore')
+                reset_player(color, number, 'reentryStartingPose') # will set 'penalized' in CustomData and proper 'Secs until unpenalized'
+        #else:
+        #    if 'penalized' in player:
+        #        del player['penalized']
+        #        customData = player['robot'].getField('customData')
+        #        info(f'Enabling actuators of {color} player {number}.')
+        #        customData.setSFString('')                
+        #        info(f'Robot {color} {index+1} is NOT penalized by GC anymore')
+        if 'enable_actuators_at' in player:
+            timing_ok = time_count >= player['enable_actuators_at']
+            penalty_ok = 'penalized' not in player or p.penalty == 0
+            if timing_ok and penalty_ok:
+                customData = player['robot'].getField('customData')
+                info(f'Enabling actuators of {color} player {number}.')
+                customData.setSFString('')
+                del player['enable_actuators_at']
+                if 'penalized' in player:
+                    del player['penalized']        
 
 
 
