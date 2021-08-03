@@ -11,9 +11,9 @@ PROTO Kondo006 [
   field  SFString    controller      "main"      # Is `Robot.controller`.
   field  MFString    controllerArgs  []          # Is `Robot.controllerArgs`.
   field  SFString    customData      ""          # Is `Robot.customData`.
-  field  SFBool      supervisor      FALSE       # Is `Robot.supervisor`.
+  field  SFBool      supervisor      TRUE       # Is `Robot.supervisor`.
   field  SFBool      synchronization TRUE        # Is `Robot.synchronization`.
-  field  SFBool      selfCollision   FALSE       # Is `Robot.selfCollision`.
+  field  SFBool      selfCollision   TRUE       # Is `Robot.selfCollision`.
   field SFString{"", "red", "blue"}      teamColor ""
   field SFString{"", "1", "2", "3", "4", "5"}      playerNumber ""
   field SFColor     RED      1.0 0.0 0.0
