@@ -20,6 +20,8 @@ PROTO Ball [
   Solid {
     translation IS translation
     rotation IS rotation
+    recognitionColors 0 1 0
+    model "ball"
     children [
       DEF BALL_SHAPE Shape {
         appearance PBRAppearance {
@@ -46,6 +48,6 @@ PROTO Ball [
       }
     }
     name IS name
-    model "ball"
+    #model "ball"
   }
 }
