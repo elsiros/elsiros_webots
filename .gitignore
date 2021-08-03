@@ -131,7 +131,6 @@ dmypy.json
 #Mac 
 .DS_Store
 *.sqlite
-*.sqlite
 controllers/main/.vs/slnx.sqlite
-controllers/main/.vs/slnx.sqlite
-*.sqlite
+*.cache
+
