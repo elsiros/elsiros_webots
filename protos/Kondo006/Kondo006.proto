@@ -1235,6 +1235,9 @@ PROTO Kondo006 [
         rotation 0 0 1 -1.5707960173459927
         name "imu_body"
       }
+      GPS {
+        name "gps_body"
+      }
     ]
     name IS name 
     boundingObject Transform {
