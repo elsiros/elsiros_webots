@@ -11,9 +11,9 @@ PROTO Kondo006 [
   field  SFString    controller      "main"      # Is `Robot.controller`.
   field  MFString    controllerArgs  []          # Is `Robot.controllerArgs`.
   field  SFString    customData      ""          # Is `Robot.customData`.
-  field  SFBool      supervisor      FALSE       # Is `Robot.supervisor`.
+  field  SFBool      supervisor      TRUE       # Is `Robot.supervisor`.
   field  SFBool      synchronization TRUE        # Is `Robot.synchronization`.
-  field  SFBool      selfCollision   FALSE       # Is `Robot.selfCollision`.
+  field  SFBool      selfCollision   TRUE       # Is `Robot.selfCollision`.
   field SFString{"", "red", "blue"}      teamColor ""
   field SFString{"", "1", "2", "3", "4", "5"}      playerNumber ""
   field SFColor     RED      1.0 0.0 0.0
@@ -224,43 +224,26 @@ PROTO Kondo006 [
                                                   translation -0.035500 -0.011500 0.000000
                                                   rotation -0.577350 0.577350 -0.577350 2.094395
                                                   children [
-                                                    Kondo006_Foot_RightMesh {
+                                                    Kondo006_Foot_LeftMesh {
                                                     }
                                                     Solid {
-                                                      translation 0.079500 0.000750 -0.025407
-                                                      rotation 0.000000 0.000000 1.000000 3.141593
+                                                      translation 0.079500 0.001250 -0.025407
+                                                      rotation 0.000000 1.000000 0.000000 0.000000
                                                       children [
-                                                        Kondo006_right_footMesh {
+                                                        Kondo006_left_footMesh {
                                                         }
                                                       ]
-                                                      name "right_foot"
-                                                      boundingObject Transform {
-                                                        translation 0.000000 0.000000 0.000000
-                                                        rotation 0.000000 1.000000 0.000000 0.000000
-                                                        children [
-                                                          Box {
-                                                            size 0.000500 0.000500 0.000500
-                                                          }
-                                                        ]
-                                                      }
-                                                      physics Physics {
-                                                        density -1
-                                                        mass 0.000000
-                                                        centerOfMass [ -0.000000 -0.000000 -0.000000 ]
-                                                        inertiaMatrix [
-                                                          5.312500e-15 5.312500e-15 5.312500e-15
-                                                          -4.746839e-32 -8.355089e-32 -2.088772e-32
-                                                        ]
-                                                      }
+                                                      name "left_foot"
+
                                                     }
                                                   ]
-                                                  name "Foot_Right"
+                                                  name "Foot_Left"
                                                   boundingObject Transform {
-                                                    translation -0.025040 -0.001000 -0.008607
+                                                    translation -0.025040 -0.001000 -0.022607
                                                     rotation 0.000000 1.000000 0.000000 0.000000
                                                     children [
                                                       Box {
-                                                        size 0.075580 0.110000 0.033100
+                                                        size 0.075580 0.110000 0.005100
                                                       }
                                                     ]
                                                   }
@@ -273,16 +256,16 @@ PROTO Kondo006 [
                                                       -1.655881e-10 -2.558492e-07 -1.854482e-10
                                                     ]
                                                   }
-                                                }
+                                                }                                                
                                               }
                                             ]
                                             name "Leg_Joint_Left03"
                                             boundingObject Transform {
-                                              translation -0.018057 -0.000250 -0.000700
+                                              translation -0.035057 -0.000250 -0.000700
                                               rotation 0.000000 1.000000 0.000000 0.000000
                                               children [
                                                 Box {
-                                                  size 0.056000 0.043000 0.038100
+                                                  size 0.022000 0.043000 0.034100
                                                 }
                                               ]
                                             }
@@ -300,11 +283,11 @@ PROTO Kondo006 [
                                       ]
                                       name "Shin_Left"
                                       boundingObject Transform {
-                                        translation 0.000000 0.003472 -0.032474
-                                        rotation 0.000000 1.000000 0.000000 0.000000
+                                        translation 0.000000 0.003472 -0.052474
+                                        rotation 1.000000 0.000000 0.000000 -0.265000
                                         children [
                                           Box {
-                                            size 0.043000 0.031268 0.084923
+                                            size 0.033000 0.023268 0.044923
                                           }
                                         ]
                                       }
@@ -326,7 +309,7 @@ PROTO Kondo006 [
                                   rotation 0.000000 1.000000 0.000000 0.000000
                                   children [
                                     Box {
-                                      size 0.038100 0.037776 0.087161
+                                      size 0.030100 0.037776 0.087161
                                     }
                                   ]
                                 }
@@ -348,7 +331,7 @@ PROTO Kondo006 [
                             rotation 0.000000 1.000000 0.000000 0.000000
                             children [
                               Box {
-                                size 0.043000 0.061990 0.043000
+                                size 0.023000 0.005990 0.023000
                               }
                             ]
                           }
@@ -521,43 +504,25 @@ PROTO Kondo006 [
                                                   translation -0.035500 -0.011500 0.000000
                                                   rotation -0.577350 0.577350 -0.577350 2.094395
                                                   children [
-                                                    Kondo006_Foot_LeftMesh {
+                                                    Kondo006_Foot_RightMesh {
                                                     }
                                                     Solid {
-                                                      translation 0.079500 0.001250 -0.025407
-                                                      rotation 0.000000 1.000000 0.000000 0.000000
+                                                      translation 0.079500 0.000750 -0.025407
+                                                      rotation 0.000000 0.000000 1.000000 3.141593
                                                       children [
-                                                        Kondo006_left_footMesh {
+                                                        Kondo006_right_footMesh {
                                                         }
                                                       ]
-                                                      name "left_foot"
-                                                      boundingObject Transform {
-                                                        translation 0.000000 0.000000 0.000000
-                                                        rotation 0.000000 1.000000 0.000000 0.000000
-                                                        children [
-                                                          Box {
-                                                            size 0.000500 0.000500 0.000500
-                                                          }
-                                                        ]
-                                                      }
-                                                      physics Physics {
-                                                        density -1
-                                                        mass 0.000000
-                                                        centerOfMass [ 0.000000 -0.000000 -0.000000 ]
-                                                        inertiaMatrix [
-                                                          5.312500e-15 5.312500e-15 5.312500e-15
-                                                          -4.746839e-32 -8.355089e-32 -2.088772e-32
-                                                        ]
-                                                      }
+                                                      name "right_foot"
                                                     }
                                                   ]
-                                                  name "Foot_Left"
+                                                  name "Foot_Right"
                                                   boundingObject Transform {
-                                                    translation -0.025040 -0.001000 -0.008607
+                                                    translation -0.025040 -0.001000 -0.022607
                                                     rotation 0.000000 1.000000 0.000000 0.000000
                                                     children [
                                                       Box {
-                                                        size 0.075580 0.110000 0.033100
+                                                        size 0.075580 0.110000 0.005100
                                                       }
                                                     ]
                                                   }
@@ -575,11 +540,11 @@ PROTO Kondo006 [
                                             ]
                                             name "Leg_Joint_Right03"
                                             boundingObject Transform {
-                                              translation -0.018058 -0.000250 0.000700
+                                              translation -0.035057 -0.000250 0.000700
                                               rotation 0.000000 1.000000 0.000000 0.000000
                                               children [
                                                 Box {
-                                                  size 0.055998 0.043000 0.038100
+                                                  size 0.022000 0.043000 0.034100
                                                 }
                                               ]
                                             }
@@ -597,11 +562,11 @@ PROTO Kondo006 [
                                       ]
                                       name "Shin_Right"
                                       boundingObject Transform {
-                                        translation 0.000000 -0.003472 -0.032470
-                                        rotation 0.000000 1.000000 0.000000 0.000000
+                                        translation 0.000000 -0.003472 -0.052474
+                                        rotation 1.000000 0.000000 0.000000 0.265000
                                         children [
                                           Box {
-                                            size 0.043000 0.031268 0.084930
+                                            size 0.033000 0.023268 0.044923
                                           }
                                         ]
                                       }
@@ -623,7 +588,7 @@ PROTO Kondo006 [
                                   rotation 0.000000 1.000000 0.000000 0.000000
                                   children [
                                     Box {
-                                      size 0.038100 0.037777 0.087161
+                                      size 0.030100 0.037777 0.087161
                                     }
                                   ]
                                 }
@@ -645,7 +610,7 @@ PROTO Kondo006 [
                             rotation 0.000000 1.000000 0.000000 0.000000
                             children [
                               Box {
-                                size 0.043000 0.061990 0.043000
+                                size 0.023000 0.005990 0.023000
                               }
                             ]
                           }
@@ -685,11 +650,11 @@ PROTO Kondo006 [
               ]
               name "Waist"
               boundingObject Transform {
-                translation 0.000000 0.011700 -0.020250
+                translation 0.000000 0.011700 -0.029250
                 rotation 0.000000 1.000000 0.000000 0.000000
                 children [
                   Box {
-                    size 0.075000 0.050000 0.040500
+                    size 0.075000 0.050000 0.022500
                   }
                 ]
               }
@@ -799,11 +764,11 @@ PROTO Kondo006 [
                                 ]
                                 name "Hand_Right"
                                 boundingObject Transform {
-                                  translation -0.001104 0.045475 0.000200
+                                  translation -0.001104 0.060475 0.000200
                                   rotation 0.000000 1.000000 0.000000 0.000000
                                   children [
                                     Box {
-                                      size 0.035083 0.108950 0.045300
+                                      size 0.025083 0.078950 0.030300
                                     }
                                   ]
                                 }
@@ -847,7 +812,7 @@ PROTO Kondo006 [
                       rotation 0.000000 1.000000 0.000000 0.000000
                       children [
                         Box {
-                          size 0.032000 0.057200 0.083400
+                          size 0.025000 0.047200 0.083400
                         }
                       ]
                     }
@@ -865,11 +830,11 @@ PROTO Kondo006 [
               ]
               name "Forearm_Right"
               boundingObject Transform {
-                translation 0.000000 -0.017000 0.000250
+                translation 0.000000 -0.002000 0.000250
                 rotation 0.000000 1.000000 0.000000 0.000000
                 children [
                   Box {
-                    size 0.032875 0.034000 0.045300
+                    size 0.032875 0.004000 0.045300
                   }
                 ]
               }
@@ -979,11 +944,11 @@ PROTO Kondo006 [
                                 ]
                                 name "Hand_Left"
                                 boundingObject Transform {
-                                  translation 0.001104 -0.045475 -0.000200
+                                  translation 0.001104 -0.060475 -0.000200
                                   rotation 0.000000 1.000000 0.000000 0.000000
                                   children [
                                     Box {
-                                      size 0.035083 0.108950 0.045300
+                                      size 0.025083 0.078950 0.030300
                                     }
                                   ]
                                 }
@@ -1027,7 +992,7 @@ PROTO Kondo006 [
                       rotation 0.000000 1.000000 0.000000 0.000000
                       children [
                         Box {
-                          size 0.032000 0.057200 0.083400
+                          size 0.025000 0.047200 0.083400
                         }
                       ]
                     }
@@ -1045,11 +1010,11 @@ PROTO Kondo006 [
               ]
               name "Forearm_Left"
               boundingObject Transform {
-                translation 0.000000 -0.017000 0.000250
+                translation 0.000000 -0.002000 0.000250
                 rotation 0.000000 1.000000 0.000000 0.000000
                 children [
                   Box {
-                    size 0.032875 0.034000 0.045300
+                    size 0.032875 0.004000 0.045300
                   }
                 ]
               }
@@ -1118,24 +1083,6 @@ PROTO Kondo006 [
                           }
                         ]
                         name "camera"
-                        boundingObject Transform {
-                          translation 0.000000 0.000000 0.000000
-                          rotation 0.000000 1.000000 0.000000 0.000000
-                          children [
-                            Box {
-                              size 0.000500 0.000500 0.000500
-                            }
-                          ]
-                        }
-                        physics Physics {
-                          density -1
-                          mass 0.000000
-                          centerOfMass [ -0.000000 0.000000 0.000000 ]
-                          inertiaMatrix [
-                            5.312500e-15 5.312500e-15 5.312500e-15
-                            -2.383044e-31 1.310193e-31 2.354579e-31
-                          ]
-                        }
                       }
                       InertialUnit {
                         translation 0 -0.025 0
@@ -1145,11 +1092,11 @@ PROTO Kondo006 [
                     ]
                     name "Head"
                     boundingObject Transform {
-                      translation -0.011161 -0.034632 0.000100
+                      translation -0.009 -0.032632 0.000100
                       rotation 0.000000 1.000000 0.000000 0.000000
                       children [
-                        Box {
-                          size 0.076898 0.087483 0.093969
+                        Sphere {
+                          radius 0.048
                         }
                       ]
                     }
@@ -1167,11 +1114,11 @@ PROTO Kondo006 [
               ]
               name "Neck"
               boundingObject Transform {
-                translation 0.000000 0.019094 0.000000
+                translation 0.000000 0.004094 0.000000
                 rotation 0.000000 1.000000 0.000000 0.000000
                 children [
                   Box {
-                    size 0.043000 0.038189 0.020000
+                    size 0.043000 0.004189 0.020000
                   }
                 ]
               }
@@ -1227,24 +1174,6 @@ PROTO Kondo006 [
               }
             ]
             name "trunk"
-            boundingObject Transform {
-              translation 0.000000 0.000250 0.000000
-              rotation 0.000000 1.000000 0.000000 0.000000
-              children [
-                Box {
-                  size 0.000500 0.000500 0.000500
-                }
-              ]
-            }
-            physics Physics {
-              density -1
-              mass 0.000000
-              centerOfMass [ 0.000000 0.000250 0.000000 ]
-              inertiaMatrix [
-                5.312500e-15 5.312500e-15 5.312500e-15
-                -4.746839e-32 8.355089e-32 -2.088772e-32
-              ]
-            }
           }
           Solid {
             translation 0.000000 0.014200 0.065700
@@ -1254,37 +1183,129 @@ PROTO Kondo006 [
               }
             ]
             name "head_base"
-            boundingObject Transform {
-              translation 0.000000 0.000000 0.000000
-              rotation 0.000000 1.000000 0.000000 0.000000
-              children [
-                Box {
-                  size 0.000500 0.000500 0.000500
-                }
-              ]
-            }
-            physics Physics {
-              density -1
-              mass 0.000000
-              centerOfMass [ -0.000000 0.000000 0.000000 ]
-              inertiaMatrix [
-                5.312500e-15 5.312500e-15 5.312500e-15
-                -4.746839e-32 8.355089e-32 -2.088772e-32
-              ]
-            }
           }
           InertialUnit {
             translation 0 0.05 0
             rotation 0 0 1 -1.5707960173459927
             name "imu_body"
           }
+          %{ if number == "1" then }%
+          Solid {
+            translation -0.001141 -0.025000 0.005069
+            rotation 1.000000 0.000000 0.000000 1.570800
+            children [
+              Kondo007_num_01Mesh {
+              }
+            ]
+            name "num_01"
+          }
+          %{ end }%
+          %{ if number == "2" then }%
+          Solid {
+            translation -0.000115 -0.025000 0.005069
+            rotation 1.000000 0.000000 0.000000 1.570800
+            children [
+              Kondo007_num_02Mesh {
+              }
+            ]
+            name "num_02"
+          }
+          %{ end }%
+          %{ if number == "3" then }%          
+          Solid {
+            translation -0.001371 -0.025000 0.005069
+            rotation 1.000000 0.000000 0.000000 1.570796
+            children [
+              Kondo007_num_03Mesh {
+              }
+            ]
+            name "num_03"
+          }
+          %{ end }%
+          %{ if number == "4" then }%          
+          Solid {
+            translation -0.000756 -0.025000 0.005069
+            rotation 1.000000 0.000000 0.000000 1.570800
+            children [
+              Kondo007_num_04Mesh {
+              }
+            ]
+            name "num_04"
+          }
+          %{ end }%
+          %{ if number == "5" then }%          
+          Solid {
+            translation 0.001808 -0.025000 0.005069
+            rotation 1.000000 0.000000 0.000000 1.570796
+            children [
+              Kondo007_num_05Mesh {
+              }
+            ]
+            name "num_05"
+          }
+          %{ end }%
+          %{ if number == "1" then }%             
+          Solid {
+            translation 0.005641 0.094000 0.003817
+            rotation -0.000003 0.707108 0.707105 3.141598
+            children [
+              Kondo007_number_01Mesh {
+              }
+            ]
+            name "number_01"
+          }
+          %{ end }%
+          %{ if number == "2" then }%             
+          Solid {
+            translation 0.004615 0.094000 0.003817
+            rotation 0.000000 -0.707107 -0.707107 3.141593
+            children [
+              Kondo007_number_02Mesh {
+              }
+            ]
+            name "number_02"
+          }
+          %{ end }%
+          %{ if number == "3" then }%             
+          Solid {
+            translation 0.005871 0.094000 0.004562
+            rotation -0.000003 -0.707108 -0.707105 3.141598
+            children [
+              Kondo007_number_03Mesh {
+              }
+            ]
+            name "number_03"
+          }
+          %{ end }%
+          %{ if number == "4" then }%             
+          Solid {
+            translation 0.005256 0.094000 0.003817
+            rotation 0.000000 -0.707107 -0.707107 3.141593
+            children [
+              Kondo007_number_04Mesh {
+              }
+            ]
+            name "number_04"
+          }
+          %{ end }%
+          %{ if number == "5" then }%             
+          Solid {
+            translation 0.004692 0.094000 0.004562
+            rotation -0.000003 -0.707108 -0.707105 3.141598
+            children [
+              Kondo007_number_05Mesh {
+              }
+            ]
+            name "number_05"
+          } 
+          %{ end }%         
         ]
         boundingObject Transform {
-          translation 0.000000 0.013250 0.031625
+          translation 0.000000 0.013250 0.029625
           rotation 0.000000 1.000000 0.000000 0.000000
           children [
             Box {
-              size 0.102000 0.076500 0.066250
+              size 0.090000 0.076500 0.062250
             }
           ]
         }
