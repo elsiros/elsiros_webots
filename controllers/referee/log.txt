@@ -1,0 +1,212 @@
+Info: Minimum real time factor is set to 0.
+Info: Simulation will run as fast as possible, real time waiting times will be minimal.
+Info: Spawned RED_PLAYER_1 Kondo006 on port 10001 at borderStartingPose: translation (0.9 -1.3 0.3), rotation (0 0 1 1.571592653589793).
+Info: Spawned RED_PLAYER_2 Kondo006 on port 10002 at borderStartingPose: translation (0.9 1.3 0.3), rotation (0 0 1 4.711592653589793).
+Info: Spawned BLUE_PLAYER_1 Kondo006 on port 10021 at borderStartingPose: translation (-0.9 -1.3 0.3), rotation (0 0 1 1.57).
+Info: Spawned BLUE_PLAYER_2 Kondo006 on port 10022 at borderStartingPose: translation (-0.9 1.3 0.3), rotation (0 0 1 -1.57).
+Info: Killing all Java instances
+Info: Launching GameController
+Info: Connecting to GameControllerSimulator at localhost:8750.
+Info: Connected to GameControllerSimulator at localhost:8750.
+Info: Game type is NORMAL.
+Info: Red team is "Robokit", playing on right side.
+Info: Blue team is "Rhoban", playing on left side.
+Info: Sending 1:SIDE_LEFT:25 to GameController.
+Info: Waiting for GameController to answer to 1:SIDE_LEFT:25.
+Info: Waiting for GameController to answer to 1:SIDE_LEFT:25.
+Info: New state received from GameController: STATE_INITIAL.
+Info: State has succesfully changed to INITIAL
+Info: New secondary state received from GameController: STATE_NORMAL, phase 0.
+Info: Regular start: Waiting 5 seconds (real-time) before going to READY
+Info: Kick-off is blue.
+Info: Moved ball out of the field temporarily
+Info: Ball not in play, will be kicked by a player from the blue team.
+Info: Sending 4:KICKOFF:25 to GameController.
+Info: Waiting for GameController to answer to 4:KICKOFF:25.
+Info: Waiting for GameController to answer to 4:KICKOFF:25.
+Info: STATUS: Avg speed factor: 0.910 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: New state received from GameController: STATE_READY.
+Info: New state received from GameController: STATE_SET.
+Info: Ball respawned at 0 0 0.07.
+Info: Red player 1 reset to readyStartingPose: translation (1.8 0 0.3), rotation (0 0 1 3.141592653589793).
+Info: Disabling actuators of red player 1.
+Info: red1 needToBePlacedByRefereeInReady=true, doing placement
+Info: Red player 2 reset to readyStartingPose: translation (0.4 0 0.3), rotation (0 0 1 3.141592653589793).
+Info: Disabling actuators of red player 2.
+Info: red2 needToBePlacedByRefereeInReady=true, doing placement
+Info: Blue player 1 reset to readyStartingPose: translation (-1.8 0 0.3), rotation (0 0 1 0).
+Info: Disabling actuators of blue player 1.
+Info: blue1 needToBePlacedByRefereeInReady=true, doing placement
+Info: Blue player 2 reset to readyStartingPose: translation (-0.4 0 0.3), rotation (0 0 1 0).
+Info: Disabling actuators of blue player 2.
+Info: blue2 needToBePlacedByRefereeInReady=true, doing placement
+Info: Enabling actuators of red player 1.
+Info: Enabling actuators of red player 2.
+Info: Enabling actuators of blue player 1.
+Info: Enabling actuators of blue player 2.
+Info: New state received from GameController: STATE_PLAYING.
+Info: STATUS: Avg speed factor: 0.654 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 293
+Info: Ball in play, can be touched by any player (10 seconds elapsed after kickoff).
+Info: STATUS: Avg speed factor: 0.504 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 283
+Info: STATUS: Avg speed factor: 0.461 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 274
+Info: STATUS: Avg speed factor: 0.410 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 266
+Info: STATUS: Avg speed factor: 0.372 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 258
+Info: Robot red 2 penalized by GC
+Info: Red player 2 reset to reentryStartingPose: translation (0.9 1.3 0.3), rotation (0 0 1 4.711592653589793).
+Info: Disabling actuators of red player 2.
+Info: STATUS: Avg speed factor: 0.406 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 250
+Info: STATUS: Avg speed factor: 0.472 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 241
+Info: STATUS: Avg speed factor: 0.449 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 232
+Info: Enabling actuators of red player 2.
+Info: STATUS: Avg speed factor: 0.434 (over last 20.02 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 223
+Info: STATUS: Avg speed factor: 0.380 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 215
+Info: STATUS: Avg speed factor: 0.367 (over last 20.02 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 208
+Info: STATUS: Avg speed factor: 0.362 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 201
+Info: STATUS: Avg speed factor: 0.315 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 194
+Info: STATUS: Avg speed factor: 0.331 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 188
+Info: STATUS: Avg speed factor: 0.326 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 181
+Info: STATUS: Avg speed factor: 0.300 (over last 20.02 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 175
+Info: STATUS: Avg speed factor: 0.296 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 169
+Info: STATUS: Avg speed factor: 0.299 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 163
+Info: Robot red 2 penalized by GC
+Info: Red player 1 reset to reentryStartingPose: translation (0.9 -1.3 0.3), rotation (0 0 1 1.571592653589793).
+Info: Disabling actuators of red player 1.
+Info: STATUS: Avg speed factor: 0.285 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 158
+Info: New state received from GameController: STATE_READY.
+Info: STATUS: Avg speed factor: 0.426 (over last 20.01 seconds)
+Info: STATUS: state: STATE_READY, remaining time: 149
+Info: New state received from GameController: STATE_SET.
+Info: Ball respawned at 0 0 0.07.
+Info: Red player 1 reset to readyStartingPose: translation (1.8 0 0.3), rotation (0 0 1 3.141592653589793).
+Info: Disabling actuators of red player 1.
+Info: red1 needToBePlacedByRefereeInReady=true, doing placement
+Info: Red player 2 reset to readyStartingPose: translation (0.4 0 0.3), rotation (0 0 1 3.141592653589793).
+Info: Disabling actuators of red player 2.
+Info: red2 needToBePlacedByRefereeInReady=true, doing placement
+Info: Blue player 1 reset to readyStartingPose: translation (-1.8 0 0.3), rotation (0 0 1 0).
+Info: Disabling actuators of blue player 1.
+Info: blue1 needToBePlacedByRefereeInReady=true, doing placement
+Info: Blue player 2 reset to readyStartingPose: translation (-0.4 0 0.3), rotation (0 0 1 0).
+Info: Disabling actuators of blue player 2.
+Info: blue2 needToBePlacedByRefereeInReady=true, doing placement
+Info: Enabling actuators of red player 2.
+Info: Enabling actuators of blue player 1.
+Info: Enabling actuators of blue player 2.
+Info: New state received from GameController: STATE_PLAYING.
+Info: STATUS: Avg speed factor: 0.617 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 137
+Info: STATUS: Avg speed factor: 0.340 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 130
+Info: Enabling actuators of red player 1.
+Info: STATUS: Avg speed factor: 0.306 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 124
+Info: STATUS: Avg speed factor: 0.294 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 118
+Info: STATUS: Avg speed factor: 0.312 (over last 20.02 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 112
+Info: STATUS: Avg speed factor: 0.340 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 105
+Info: STATUS: Avg speed factor: 0.337 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 98
+Info: STATUS: Avg speed factor: 0.344 (over last 20.02 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 91
+Info: STATUS: Avg speed factor: 0.349 (over last 20.02 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 84
+Info: STATUS: Avg speed factor: 0.319 (over last 20.02 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 78
+Info: STATUS: Avg speed factor: 0.324 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 71
+Info: STATUS: Avg speed factor: 0.342 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 65
+Info: Robot red 2 penalized by GC
+Info: Red player 1 reset to reentryStartingPose: translation (0.9 -1.3 0.3), rotation (0 0 1 1.571592653589793).
+Info: Disabling actuators of red player 1.
+Info: STATUS: Avg speed factor: 0.318 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 58
+Info: STATUS: Avg speed factor: 0.395 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 50
+Info: STATUS: Avg speed factor: 0.379 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 43
+Info: STATUS: Avg speed factor: 0.387 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 35
+Info: Enabling actuators of red player 1.
+Info: STATUS: Avg speed factor: 0.386 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 27
+Info: STATUS: Avg speed factor: 0.351 (over last 20.02 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 20
+Info: STATUS: Avg speed factor: 0.353 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 13
+Info: STATUS: Avg speed factor: 0.352 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 6
+Info: STATUS: Avg speed factor: 0.341 (over last 20.02 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: -1
+Info: STATUS: Avg speed factor: 0.322 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: -7
+Info: STATUS: Avg speed factor: 0.322 (over last 20.02 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: -14
+Info: STATUS: Avg speed factor: 0.320 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: -20
+Info: STATUS: Avg speed factor: 0.312 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: -26
+Info: STATUS: Avg speed factor: 0.298 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: -32
+Info: STATUS: Avg speed factor: 0.328 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: -39
+Info: STATUS: Avg speed factor: 0.329 (over last 20.01 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: -45
+Info: STATUS: Avg speed factor: 0.351 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: -52
+Info: STATUS: Avg speed factor: 0.355 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: -60
+Info: STATUS: Avg speed factor: 0.315 (over last 20.02 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: -66
+Info: STATUS: Avg speed factor: 0.321 (over last 20.02 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: -72
+Info: New state received from GameController: STATE_INITIAL.
+Info: STATUS: Avg speed factor: 0.368 (over last 20.00 seconds)
+Info: STATUS: state: STATE_INITIAL, remaining time: 300
+Info: New state received from GameController: STATE_READY.
+Info: New state received from GameController: STATE_SET.
+Info: Ball respawned at 0 0 0.07.
+Info: Red player 1 reset to readyStartingPose: translation (1.8 0 0.3), rotation (0 0 1 3.141592653589793).
+Info: Disabling actuators of red player 1.
+Info: red1 needToBePlacedByRefereeInReady=true, doing placement
+Info: Red player 2 reset to readyStartingPose: translation (0.4 0 0.3), rotation (0 0 1 3.141592653589793).
+Info: Disabling actuators of red player 2.
+Info: red2 needToBePlacedByRefereeInReady=true, doing placement
+Info: Blue player 1 reset to readyStartingPose: translation (-1.8 0 0.3), rotation (0 0 1 0).
+Info: Disabling actuators of blue player 1.
+Info: blue1 needToBePlacedByRefereeInReady=true, doing placement
+Info: Blue player 2 reset to readyStartingPose: translation (-0.4 0 0.3), rotation (0 0 1 0).
+Info: Disabling actuators of blue player 2.
+Info: blue2 needToBePlacedByRefereeInReady=true, doing placement
+Info: Enabling actuators of red player 1.
+Info: Enabling actuators of red player 2.
+Info: Enabling actuators of blue player 1.
+Info: Enabling actuators of blue player 2.
+Info: New state received from GameController: STATE_PLAYING.
+Info: STATUS: Avg speed factor: 0.750 (over last 20.02 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 299
+Info: STATUS: Avg speed factor: 0.318 (over last 20.00 seconds)
+Info: STATUS: state: STATE_PLAYING, remaining time: 293
+Info: New state received from GameController: STATE_FINISHED.

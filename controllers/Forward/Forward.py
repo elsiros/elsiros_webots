@@ -23,7 +23,6 @@ try:
     sys.path.append( current_work_directory + 'Soccer/')
     sys.path.append( current_work_directory + 'Soccer/Motion/')
     sys.path.append( current_work_directory + 'Soccer/Localisation/')
-    #sys.path.append( current_work_directory + 'Soccer/Localisation/PF/')
     sys.path.append( current_work_directory)
         
     from class_Glob import Glob
