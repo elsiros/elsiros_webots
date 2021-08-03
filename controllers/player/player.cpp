@@ -64,6 +64,7 @@ void usleep(__int64 usec) {
 #include <webots/PositionSensor.hpp>
 #include <webots/Robot.hpp>
 #include <webots/TouchSensor.hpp>
+#include <webots/GPS.hpp>
 
 #include <algorithm>
 #include <chrono>
@@ -422,6 +423,11 @@ public:
         accelerometer->enable(time_step);
         break;
       }
+      case webots::Node::GPS: {
+        webots::GPS *gps = static_cast<webots::GPS *>(device);
+        gps->enable(time_step);
+        break;
+      }
       case webots::Node::CAMERA: {
         webots::Camera *camera = static_cast<webots::Camera *>(device);
         camera->enable(time_step);
@@ -595,6 +601,25 @@ public:
       sensor_start = sc::now();
       active_sensor = entry.first->getName();
       webots::Device *dev = entry.first;
+
+      // GPS localization 
+      webots::GPS *gps = dynamic_cast<webots::GPS *>(dev);
+      if (gps) {
+        if ((controller_time - start_sensoring_time[dev]) % gps->getSamplingPeriod())
+          continue;
+
+        GPSMeasurement *measurement = sensor_measurements.add_gps();
+        measurement->set_name(gps->getName());
+        const double *values = gps->getValues();
+        Vector3 *vector3 = measurement->mutable_value();
+        vector3->set_x(values[0]);
+        vector3->set_y(values[1]);
+        vector3->set_z(values[2]);
+        std::cout << "Position sensors: " << values[0] << values[1] << values[3] << std::endl;
+        continue;
+      }
+      
+
       webots::Accelerometer *accelerometer = dynamic_cast<webots::Accelerometer *>(dev);
       if (accelerometer) {
         if ((controller_time - start_sensoring_time[dev]) % accelerometer->getSamplingPeriod())

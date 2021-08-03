@@ -11,6 +11,11 @@ message PositionSensorMeasurement {
   double value = 2;
 }
 
+message GPSMeasurement {
+  string name = 1;
+  Vector3 value = 2;  // [m], x-axis, y-axis, z-axis
+}
+
 message AccelerometerMeasurement {
   string name = 1;
   Vector3 value = 2;  // [m/sˆ2], x-axis, y-axis, z-axis
@@ -71,6 +76,7 @@ message SensorMeasurements {
   repeated Force6DMeasurement force6ds = 9;
   repeated GyroMeasurement gyros = 10;
   repeated PositionSensorMeasurement position_sensors = 11;
+  repeated GPSMeasurement gps = 12;
 }
 
 message MotorPosition {
