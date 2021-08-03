@@ -110,8 +110,7 @@ class Motion1:
 
     #-------------------------------------------------------------------------------------------------------------------------------
     def imu_body_yaw(self):
-        yaw = self.neck_pan*self.TIK2RAD + self.euler_angle['yaw']
-        print('self.neck_pan = ', self.neck_pan, 'yaw =', yaw )
+        yaw = self.read_imu_body_yaw() - self.direction_To_Attack
         yaw = self.norm_yaw(yaw)
         return yaw
 
@@ -202,9 +201,8 @@ class Motion1:
 
     def activation(self):
         self.euler_angle = self.imu_activation()
-        self.direction_To_Attack += self.euler_angle['yaw']
+        self.direction_To_Attack += self.body_euler_angle['yaw']
         self.direction_To_Attack = self.norm_yaw(self.direction_To_Attack)
-        self.glob.imu_drift_last_correction_time = self.utime.time()
 
     def walk_Initial_Pose(self):
         self.robot_In_0_Pose = False
@@ -470,10 +468,9 @@ class Motion1:
         self.first_Leg_Is_Right_Leg = tmp1
 
     def refresh_Orientation(self):
-        self.read_head_imu_euler_angle()
-        self.euler_angle['yaw'] -= self.direction_To_Attack
-        self.euler_angle['yaw'] += self.imu_drift_speed * (self.utime.time() - self.start_point_for_imu_drift)
-        self.euler_angle['yaw'] += self.glob.imu_drift_correction
+        self.read_imu_body_yaw()
+        self.body_euler_angle['yaw'] -= self.direction_To_Attack
+
 
 if __name__=="__main__":
     print('This is not main module!')

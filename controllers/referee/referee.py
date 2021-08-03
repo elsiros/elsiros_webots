@@ -42,25 +42,29 @@ time_count = 0
 log_file = open('log.txt', 'w')
 
 def log(message, msg_type, force_flush=True):
-    if type(message) is list:
-        for m in message:
-            log(m, msg_type, False)
-        if log_file and force_flush:
-            log_file.flush()
-        return
-    if msg_type == 'Warning':
-        console_message = f'{AnsiCodes.YELLOW_FOREGROUND}{AnsiCodes.BOLD}{message}{AnsiCodes.RESET}'
-    elif msg_type == 'Error':
-        console_message = f'{AnsiCodes.RED_FOREGROUND}{AnsiCodes.BOLD}{message}{AnsiCodes.RESET}'
-    else:
-        console_message = message
-    print(console_message, file=sys.stderr if msg_type == 'Error' else sys.stdout, flush=True)
-    if log_file:
-        #real_time = int(1000 * (time.time() - log.real_time)) / 1000
-        #log_file.write(f'[{real_time:08.3f}|{time_count / 1000:08.3f}] {msg_type}: {message}\n')  # log real and virtual times
-        log_file.write(f'{msg_type}: {message}\n')  # log real and virtual times
-        if force_flush:
-            log_file.flush()    
+    try:
+        if type(message) is list:
+            for m in message:
+                log(m, msg_type, False)
+            if log_file and force_flush:
+                log_file.flush()
+            return
+        if msg_type == 'Warning':
+            console_message = f'{AnsiCodes.YELLOW_FOREGROUND}{AnsiCodes.BOLD}{message}{AnsiCodes.RESET}'
+        elif msg_type == 'Error':
+            console_message = f'{AnsiCodes.RED_FOREGROUND}{AnsiCodes.BOLD}{message}{AnsiCodes.RESET}'
+        else:
+            console_message = message
+        print(console_message, file=sys.stderr if msg_type == 'Error' else sys.stdout, flush=True)
+        if log_file:
+            #real_time = int(1000 * (time.time() - log.real_time)) / 1000
+            #log_file.write(f'[{real_time:08.3f}|{time_count / 1000:08.3f}] {msg_type}: {message}\n')  # log real and virtual times
+            log_file.write(f'{msg_type}: {message}\n')  # log real and virtual times
+            if force_flush:
+                log_file.flush()    
+    except Exception:
+        pass
+    
 
 def info(message):
     log(message, 'Info')
@@ -233,6 +237,7 @@ def init_team(team):
 def spawn_team(team, red_on_right, children):
     color = team['color']
     nb_players = len(team['players'])
+    team_id = game.red.id if color == 'red' else game.blue.id
     for number in team['players']:
         player = team['players'][number]
         model = player['proto']
@@ -243,6 +248,7 @@ def spawn_team(team, red_on_right, children):
         defname = color.upper() + '_PLAYER_' + number
         halfTimeStartingTranslation = player['borderStartingPose']['translation']
         halfTimeStartingRotation = player['borderStartingPose']['rotation']
+        '''
         string = f'DEF {defname} {model}{{name "{color} player {number}" translation ' + \
             f'{halfTimeStartingTranslation[0]} {halfTimeStartingTranslation[1]} {halfTimeStartingTranslation[2]} rotation ' + \
             f'{halfTimeStartingRotation[0]} {halfTimeStartingRotation[1]} {halfTimeStartingRotation[2]} ' + \
@@ -251,6 +257,13 @@ def spawn_team(team, red_on_right, children):
         for h in hosts:
             string += f', "{h}"'
         string += '] }}'
+        '''
+        # Controller args by referee: 0 0 0 team_id robot_number
+        string = f'DEF {defname} {model}{{name "{color} player {number}" translation ' + \
+            f'{halfTimeStartingTranslation[0]} {halfTimeStartingTranslation[1]} {halfTimeStartingTranslation[2]} rotation ' + \
+            f'{halfTimeStartingRotation[0]} {halfTimeStartingRotation[1]} {halfTimeStartingRotation[2]} ' + \
+            f'{halfTimeStartingRotation[3]} controllerArgs [ "0" "0" "0" "{team_id}" "{number}" ] teamColor "{color}" playerNumber "{number}" }}'
+
         children.importMFNodeFromString(-1, string)
         player['robot'] = supervisor.getFromDef(defname)
         #player['position'] = player['robot'].getCenterOfMass()
@@ -510,11 +523,24 @@ def update_team_penalized_from_gamecontroller(team):
                 t[0] = 50
                 t[1] = (10 + int(number)) * (1 if color == 'red' else -1)
                 #reset_player(color, number, 'reentryStartingPose', t)            
-                reset_player(color, number, 'reentryStartingPose')            
-        else:
-            if 'penalized' in player:
-                del player['penalized']
-                info(f'Robot {color} {index+1} is NOT penalized by GC anymore')
+                reset_player(color, number, 'reentryStartingPose') # will set 'penalized' in CustomData and proper 'Secs until unpenalized'
+        #else:
+        #    if 'penalized' in player:
+        #        del player['penalized']
+        #        customData = player['robot'].getField('customData')
+        #        info(f'Enabling actuators of {color} player {number}.')
+        #        customData.setSFString('')                
+        #        info(f'Robot {color} {index+1} is NOT penalized by GC anymore')
+        if 'enable_actuators_at' in player:
+            timing_ok = time_count >= player['enable_actuators_at']
+            penalty_ok = 'penalized' not in player or p.penalty == 0
+            if timing_ok and penalty_ok:
+                customData = player['robot'].getField('customData')
+                info(f'Enabling actuators of {color} player {number}.')
+                customData.setSFString('')
+                del player['enable_actuators_at']
+                if 'penalized' in player:
+                    del player['penalized']        
 
 
 
@@ -761,6 +787,8 @@ def kickoff():
     move_ball_away()
     info(f'Ball not in play, will be kicked by a player from the {game.ball_must_kick_team} team.')
 
+ 
+
 # --------------------------------------------------------------------------------------------------
 
 red_team = read_team(game.red.config)
@@ -777,11 +805,11 @@ game_controller_send.sent_once = None
 field_size = "kid"
 field = Field(field_size)
 children = supervisor.getRoot().getField('children')
-children.importMFNodeFromString(-1, f'RobocupSoccerField {{ size "{field_size}" }}')
+children.importMFNodeFromString(-1, f'ElsirosField {{ size "{field_size}" }}')
 
 # Spawn ball far away from field
 ball_size = 1 if field_size == 'kid' else 5
-children.importMFNodeFromString(-1, f'DEF BALL RobocupSoccerBall {{ translation 100 100 0.5 size {ball_size} }}')
+children.importMFNodeFromString(-1, f'DEF BALL Ball {{ translation 100 100 0.5 size {ball_size} }}')
 game.ball_translation = supervisor.getFromDef('BALL').getField('translation')
 
 game.side_left = game.blue.id
@@ -1004,6 +1032,8 @@ while supervisor.step(time_step) != -1 and not game.over:
             update_state_display()        
         pass
     elif game.state.game_state == 'STATE_READY':
+        if game.ball_set_kick == False:
+            game.ball_set_kick = True # Allow ball to be placed by referee in SET state
         pass   
     elif game.state.game_state == 'STATE_SET':
         if game.ball_set_kick: 

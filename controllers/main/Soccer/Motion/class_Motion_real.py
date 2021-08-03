@@ -133,6 +133,8 @@ class Motion_real(Motion1):
         self.pause_in_ms(100)
         Ballposition = self.sim_Get_Ball_Position()
         x, y, yaw = self.sim_Get_Robot_Position()
+        #self.read_head_imu_euler_angle()
+        yaw = self.body_euler_angle['yaw'] + self.direction_To_Attack
         dx = Ballposition[0] - x
         dy = Ballposition[1] - y
         distance = math.sqrt(dx**2 + dy**2)
@@ -158,6 +160,8 @@ class Motion_real(Motion1):
             self.pause_in_ms(100)
             Ballposition = self.sim_Get_Ball_Position()
             x, y, yaw = self.sim_Get_Robot_Position()
+            #self.read_head_imu_euler_angle()
+            yaw = self.body_euler_angle['yaw'] + self.direction_To_Attack
             dx = Ballposition[0] - x
             dy = Ballposition[1] - y
             distance = math.sqrt(dx**2 + dy**2)
@@ -182,8 +186,47 @@ class Motion_real(Motion1):
             tangential_speed = ( position[n-1][0] - position[0][0]) * distance/n
             speed = [tangential_speed, front_speed ]
         if n < 1: return False, 0, 0, [0,0]
-        elif n < 2: return False, course, distance, [0,0]
-        else: return True, course, distance, speed
+        
+        elif n < 2: 
+            #self.see_ball_confirmation()
+            return False, course, distance, [0,0]
+        else: 
+            #self.see_ball_confirmation()
+            return True, course, distance, speed
+
+    def see_ball_confirmation(self):
+        self.move_head(self.neck_pan, 0)
+        self.move_head(self.neck_pan, self.neck_tilt)
+
+    #def turn_To_Course(self, course, accurate = False):
+    #    stepLength = 0
+    #    sideLength = 0
+    #    rotation = 0
+    #    cycleNumber = 1
+    #    cycle = 0
+    #    target = course # + self.direction_To_Attack
+    #    old_neck_pan, old_neck_tilt = self.head_Up()
+    #    self.refresh_Orientation()
+    #    rotation1 = target - self.euler_angle['yaw']
+    #    if rotation1 > math.pi : rotation1 -= (2 * math.pi)
+    #    if rotation1 < -math.pi : rotation1 += (2 * math.pi)
+    #    if abs(rotation1)> 0.035 or accurate:
+    #        cycleNumber = int(math.floor(abs(rotation1)/self.params['ROTATION_YIELD']))+1       # rotation yield 0.23 with rotation order 0.21
+    #        self.walk_Initial_Pose()
+    #        for cycle in range (cycleNumber):
+    #            self.refresh_Orientation()
+    #            rotation1 = target - self.euler_angle['yaw']
+    #            if rotation1 > math.pi : rotation1 -= (2 * math.pi)
+    #            if rotation1 < -math.pi : rotation1 += (2 * math.pi)
+    #            if abs(rotation1)< 0.035 and not accurate: break
+    #            if abs(rotation1)< 0.01: break
+    #            rotation = rotation1/(cycleNumber - cycle)
+    #            self.walk_Cycle(stepLength, sideLength,rotation,cycle,cycleNumber)
+    #        self.walk_Final_Pose()
+    #    self.refresh_Orientation()
+    #    self.local.coord_shift = [0,0,0]
+    #    self.local.coordinate_record(odometry = True, shift = True)
+    #    self.head_Return(old_neck_pan, old_neck_tilt)
 
     def turn_To_Course(self, course, accurate = False):
         stepLength = 0
@@ -191,28 +234,22 @@ class Motion_real(Motion1):
         rotation = 0
         cycleNumber = 1
         cycle = 0
-        target = course # + self.direction_To_Attack
         old_neck_pan, old_neck_tilt = self.head_Up()
         self.refresh_Orientation()
-        rotation1 = target - self.euler_angle['yaw']
-        if rotation1 > math.pi : rotation1 -= (2 * math.pi)
-        if rotation1 < -math.pi : rotation1 += (2 * math.pi)
+        rotation1 = course - self.imu_body_yaw()
+        rotation1 = self.norm_yaw(rotation1)
         if abs(rotation1)> 0.035 or accurate:
             cycleNumber = int(math.floor(abs(rotation1)/self.params['ROTATION_YIELD']))+1       # rotation yield 0.23 with rotation order 0.21
             self.walk_Initial_Pose()
             for cycle in range (cycleNumber):
-                self.refresh_Orientation()
-                rotation1 = target - self.euler_angle['yaw']
-                if rotation1 > math.pi : rotation1 -= (2 * math.pi)
-                if rotation1 < -math.pi : rotation1 += (2 * math.pi)
+                rotation1 = course - self.imu_body_yaw()
+                rotation1 = self.norm_yaw(rotation1)
                 if abs(rotation1)< 0.035 and not accurate: break
                 if abs(rotation1)< 0.01: break
                 rotation = rotation1/(cycleNumber - cycle)
-                #print('self.euler_angle[0]=', self.euler_angle[0],'rotation =', rotation )
                 self.walk_Cycle(stepLength, sideLength,rotation,cycle,cycleNumber)
             self.walk_Final_Pose()
         self.refresh_Orientation()
-        #self.local.coord_odometry[2] = self.euler_angle['yaw']
         self.local.coord_shift = [0,0,0]
         self.local.coordinate_record(odometry = True, shift = True)
         self.head_Return(old_neck_pan, old_neck_tilt)
@@ -312,9 +349,6 @@ class Motion_real(Motion1):
             self.walk_Cycle(stepLength1, sideLength, invert*rotation,cycle,number_Of_Cycles)
         self.walk_Final_Pose()
         self.first_Leg_Is_Right_Leg = True
-        #self.local.coord_odometry[0] += dist * math.cos(napravl)
-        #self.local.coord_odometry[1] += dist * math.sin(napravl)
-        #self.local.coordinate_record(odometry = True)
         self.head_Return(old_neck_pan, old_neck_tilt)
 
     def near_distance_ball_approach_and_kick(self, kick_direction, strong_kick = False, small_kick = False ):

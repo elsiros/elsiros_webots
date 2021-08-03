@@ -35,11 +35,14 @@ class Local():
 
     def correct_yaw_in_pf(self):
         x,y,yaw = self.motion.sim_Get_Robot_Position()
-        self.glob.pf_coord[2] = yaw + math.pi * (1 - self.side_factor)/2
+        #self.glob.pf_coord[2] = yaw + math.pi * (1 - self.side_factor)/2
+        self.glob.pf_coord[2] = self.normalize_yaw(self.glob.pf_coord[2])
 
     def coordinate_record(self, odometry = False, shift = False):
         x,y,yaw = self.motion.sim_Get_Robot_Position()
-        self.glob.pf_coord = [x * self.side_factor, y * self.side_factor, yaw + math.pi * (1 - self.side_factor)/2]
+        self.glob.pf_coord = [x * self.side_factor, y * self.side_factor, yaw]
+        #self.glob.pf_coord = [x * self.side_factor, y * self.side_factor, yaw + math.pi * (1 - self.side_factor)/2]
+        self.glob.pf_coord[2] = self.normalize_yaw(self.glob.pf_coord[2])
         #self.glob.pf_coord = self.call_Par_Filter.return_coord()
         if odometry:
             if shift:
@@ -48,7 +51,9 @@ class Local():
                 self.glob.pf_coord[2] += self.coord_shift[2]
         else:
             x,y,yaw = self.motion.sim_Get_Robot_Position()
-            self.glob.pf_coord = [x * self.side_factor, y * self.side_factor, yaw + math.pi * (1 - self.side_factor)/2]
+            self.glob.pf_coord = [x * self.side_factor, y * self.side_factor, yaw]
+            #self.glob.pf_coord = [x * self.side_factor, y * self.side_factor, yaw + math.pi * (1 - self.side_factor)/2]
+            self.glob.pf_coord[2] = self.normalize_yaw(self.glob.pf_coord[2])
         if self.glob.wifi_params['WIFI_IS_ON']: self.report_to_WIFI()
         if (self.glob.SIMULATION == 1 or self.glob.SIMULATION == 0 or self.glob.SIMULATION == 3):
             timer1 = time.perf_counter() - self.timer0
@@ -94,7 +99,9 @@ class Local():
 
     def localisation_Complete(self):
         x,y,yaw = self.motion.sim_Get_Robot_Position()
-        self.glob.pf_coord = [x * self.side_factor, y * self.side_factor, yaw + math.pi * (1 - self.side_factor)/2]
+        self.glob.pf_coord = [x * self.side_factor, y * self.side_factor, yaw]
+        #self.glob.pf_coord = [x * self.side_factor, y * self.side_factor, yaw + math.pi * (1 - self.side_factor)/2]
+        self.glob.pf_coord[2] = self.normalize_yaw(self.glob.pf_coord[2])
         if self.glob.obstacleAvoidanceIsOn: self.group_obstacles()
         self.coordinate_record()
         return True

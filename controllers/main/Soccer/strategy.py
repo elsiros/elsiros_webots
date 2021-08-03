@@ -3,7 +3,7 @@ import os
 import math
 import json
 import time
-import utility
+from . import utility
 
 
 
@@ -197,8 +197,10 @@ class Player():
 
     def play_game(self):
         if self.role == 'goalkeeper': self.goalkeeper_main_cycle()
+        if self.role == 'goalkeeper_old_style': self.goalkeeper_old_style_main_cycle()
         if self.role == 'penalty_Goalkeeper': self.penalty_Goalkeeper_main_cycle()
         if self.role == 'forward': self.forward_main_cycle(self.second_pressed_button)
+        if self.role == 'forward_old_style': self.forward_old_style_main_cycle(self.second_pressed_button)
         if self.role == 'penalty_Shooter': self.penalty_Shooter_main_cycle()
         if self.role == 'run_test': self.run_test_main_cycle(self.second_pressed_button)
         if self.role == 'spot_walk': self.spot_walk_main_cycle(self.second_pressed_button)
@@ -290,14 +292,6 @@ class Player():
         second_player_timer = self.motion.utime.time()
         self.f = Forward_Vector_Matrix(self.motion, self.local, self.glob)
         while (True):
-        #    if (self.motion.utime.time() - self.motion.start_point_for_imu_drift) > 360:
-        #        self.motion.turn_To_Course(0)
-        #        self.motion.turn_To_Course(0, accurate = True)
-        #        if self.glob.SIMULATION == 2:
-        #            for i in range(5):
-        #                self.motion.kondo.motionPlay(25)
-        #                self.motion.pause_in_ms(400)
-        #        break
             if self.motion.falling_Flag != 0:
                 if self.motion.falling_Flag == 3: break
                 self.motion.falling_Flag = 0
@@ -325,6 +319,68 @@ class Player():
             small_kick = False
             if self.f.kick_Power > 1: small_kick = True
             success_Code = self.motion.near_distance_ball_approach_and_kick(self.f.direction_To_Guest, strong_kick = False, small_kick = small_kick)
+        self.motion.play_Soft_Motion_Slot(name = 'Initial_Pose')
+
+    def forward_old_style_main_cycle(self, pressed_button):
+        second_player_timer = self.motion.utime.time()
+        self.g = GoalKeeper(self.motion, self.local, self.glob) 
+        first_shoot = False
+        while (True):
+            if self.motion.falling_Flag != 0:
+                if self.motion.falling_Flag == 3: break
+                self.motion.falling_Flag = 0
+                self.local.coordinate_fall_reset()
+            if self.glob.ball_coord[1] > 0: factor = 0.71
+            elif self.glob.ball_coord[1] < 0: factor = 1.4
+            else: factor = 1
+            dribble_direction = round(utility.random()* factor) * 2 - 1
+            kick_direction = self.g.direction_To_Guest
+            self.motion.turn_To_Course(kick_direction)
+            a, napravl, dist, speed = self.motion.seek_Ball_In_Pose(fast_Reaction_On = True)
+            if pressed_button == 4 and (self.motion.utime.time() - second_player_timer) < 10 : continue
+            old_neck_pan, old_neck_tilt = self.motion.head_Up()
+            dist_mm = dist *1000
+            if dist > 0.5:
+                self.motion.far_distance_ball_approach(self.glob.ball_coord)
+            if abs(napravl) > 1 :
+                direction = math.copysign(2.55, napravl)
+                self.motion.near_distance_omni_motion( 180 , direction)
+            else:
+                n = int(math.floor((dist_mm*math.cos(napravl)-self.glob.params['KICK_ADJUSTMENT_DISTANCE']- 30
+                                    -self.motion.first_step_yield)/self.motion.cycle_step_yield)+1)+1         #calculating the number of potential full steps forward
+                if dribble_direction > 0:
+                    displacement = dist_mm*math.sin(napravl) - 60
+                elif dribble_direction < 0:
+                    displacement = dist_mm*math.sin(napravl) + 60
+                else: displacement = dist_mm*math.sin(napravl)
+                m = int(math.ceil(abs(displacement)/self.motion.side_step_right_yield))
+                if n < m : n = m
+                stepLength = (dist_mm*math.cos(napravl)-
+                                self.glob.params['KICK_ADJUSTMENT_DISTANCE'] - 30)/(self.motion.first_step_yield*1.25
+                                + self.motion.cycle_step_yield*(n-1)+ self.motion.cycle_step_yield*0.75)*64
+                number_Of_Cycles = n + 2
+                sideLength = -displacement/number_Of_Cycles*20/self.motion.side_step_right_yield
+                print('sideLength = ', sideLength)
+                self.motion.local.correct_yaw_in_pf()
+                self.motion.walk_Initial_Pose()
+                for cycle in range(number_Of_Cycles):
+                    rotation = kick_direction - self.motion.imu_body_yaw() * 1
+                    rotation = self.motion.normalize_rotation(rotation)
+                    stepLength1 = stepLength
+                    if cycle == 0: stepLength1 = stepLength/4
+                    if cycle == 1: stepLength1 = stepLength/2
+                    self.motion.walk_Cycle(stepLength1, sideLength,rotation,cycle,number_Of_Cycles)
+                self.motion.walk_Final_Pose()
+                self.motion.walk_Initial_Pose()
+                stepLength = 15
+                sideLength = 0
+                rotation = dribble_direction * 0.13
+                number_Of_Cycles = 6
+                for cycle in range(number_Of_Cycles):
+                    self.motion.walk_Cycle(stepLength, sideLength, rotation, cycle, number_Of_Cycles)
+                self.motion.walk_Final_Pose()
+                self.motion.near_distance_omni_motion(400,0)
+            self.motion.head_Return(old_neck_pan, old_neck_tilt)
 
     def goalkeeper_main_cycle(self):
         def ball_position_is_dangerous(row, col):
@@ -408,7 +464,54 @@ class Player():
                     self.motion.turn_To_Course(0)
                 else:
                     self.motion.far_distance_plan_approach([duty_x_position + 0.25, duty_y_position], 0, stop_Over = False)
+        self.motion.play_Soft_Motion_Slot(name = 'Initial_Pose')
 
+    def goalkeeper_old_style_main_cycle(self):
+        self.motion.near_distance_omni_motion(200, 0)                    # get out from goal
+        self.g = GoalKeeper(self.motion, self.local, self.glob)
+        while (True):
+            dist = -1.0
+            if self.motion.falling_Flag != 0:
+                if self.motion.falling_Flag == 3: break
+                self.motion.falling_Flag = 0
+                self.local.coordinate_fall_reset()
+                self.g.turn_Face_To_Guest()
+                #goto_Center()
+            while(dist < 0):
+                a, dist,napravl, speed = self.g.find_Ball()
+                #uprint('speed = ', speed, 'dist  =', dist , 'napravl =', napravl)
+                if abs(speed[0]) > 0.02 and dist < 1 :                         # if dangerous tangential speed
+                    if speed[0] > 0:
+                        if self.glob.pf_coord[1] < 0.35:
+                            self.motion.play_Soft_Motion_Slot(name ='PenaltyDefenceL')
+                    else:
+                        if self.glob.pf_coord[1] > -0.35:
+                            self.motion.play_Soft_Motion_Slot(name ='PenaltyDefenceR')
+                    if self.glob.SIMULATION == 2: pyb.delay(3000)
+                    else: self.motion.sim_Progress(3)
+                    continue
+                if speed[1] < - 0.01 and dist < 1.5 :                          # if dangerous front speed
+                    self.motion.play_Soft_Motion_Slot(name = 'PanaltyDefenceReady_Fast')
+                    self.motion.play_Soft_Motion_Slot(name = 'PenaltyDefenceF')
+                    if self.glob.SIMULATION == 2: pyb.delay(8000)
+                    else: self.motion.sim_Progress(3)
+                    self.motion.play_Soft_Motion_Slot(name = 'Get_Up_From_Defence')
+
+                if (dist == 0 and napravl == 0) or dist > 2.5:
+                    position_limit_x1 = -self.glob.landmarks['FIELD_LENGTH']/2 - 0.05
+                    position_limit_x2 = position_limit_x1 + 0.25
+                    if position_limit_x1 < self.glob.pf_coord[0] < position_limit_x2 and -0.05 < self.glob.pf_coord[1] < 0.05: break
+                    self.g.goto_Center()
+                    break
+                old_neck_pan, old_neck_tilt = self.motion.head_Up()
+                if (dist <= 0.7         and 0 <= napravl <= math.pi/4):         self.g.scenario_A1( dist, napravl)
+                if (dist <= 0.7         and math.pi/4 < napravl <= math.pi/2):  self.g.scenario_A2( dist, napravl)
+                if (dist <= 0.7         and 0 >= napravl >= -math.pi/4):        self.g.scenario_A3( dist, napravl)
+                if (dist <= 0.7         and -math.pi/4 > napravl >= -math.pi/2): self.g.scenario_A4( dist, napravl)
+                if ((0.7 < dist < self.glob.landmarks['FIELD_LENGTH']/2) and (math.pi/18 <= napravl <= math.pi/4)): self.g.scenario_B1()
+                if ((0.7 < dist < self.glob.landmarks['FIELD_LENGTH']/2) and (math.pi/4 < napravl <= math.pi/2)): self.g.scenario_B2()
+                if ((0.7 < dist < self.glob.landmarks['FIELD_LENGTH']/2) and (-math.pi/18 >= napravl >= -math.pi/4)): self.g.scenario_B3()
+                if ((0.7 < dist < self.glob.landmarks['FIELD_LENGTH']/2) and (-math.pi/4 > napravl >= -math.pi/2)): self.g.scenario_B4()
 
     def penalty_Shooter_main_cycle(self):
         self.f = Forward(self.motion, self.local, self.glob)
