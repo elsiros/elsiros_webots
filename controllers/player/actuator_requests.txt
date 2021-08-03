@@ -17,5 +17,5 @@ sensor_time_steps {
 
 sensor_time_steps {
   name: "gps_body"
-  timeStep: 16
+  timeStep: 5
 }
