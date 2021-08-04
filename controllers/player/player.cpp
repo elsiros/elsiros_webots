@@ -431,6 +431,7 @@ public:
       case webots::Node::CAMERA: {
         webots::Camera *camera = static_cast<webots::Camera *>(device);
         camera->enable(time_step);
+        camera->recognitionEnable(time_step);
         break;
       }
       case webots::Node::GYRO: {
@@ -615,7 +616,7 @@ public:
         vector3->set_x(values[0]);
         vector3->set_y(values[1]);
         vector3->set_z(values[2]);
-        std::cout << "Position sensors: " << values[0] << values[1] << values[3] << std::endl;
+        // std::cout << "Position sensors: " << values[0] << values[1] << values[3] << std::endl;
         continue;
       }
       
@@ -637,23 +638,47 @@ public:
       if (camera) {
         if ((controller_time - start_sensoring_time[dev]) % camera->getSamplingPeriod())
           continue;
-        CameraMeasurement *measurement = sensor_measurements.add_cameras();
-        const int width = camera->getWidth();
-        const int height = camera->getHeight();
-        measurement->set_name(camera->getName());
-        measurement->set_width(width);
-        measurement->set_height(height);
-        measurement->set_quality(-1);  // raw image (JPEG compression not yet supported)
-        const unsigned char *rgba_image = camera->getImage();
-        const int rgb_image_size = width * height * 3;
-        unsigned char *rgb_image = new unsigned char[rgb_image_size];
-        for (int i = 0; i < width * height; i++) {
-          rgb_image[3 * i] = rgba_image[4 * i];
-          rgb_image[3 * i + 1] = rgba_image[4 * i + 1];
-          rgb_image[3 * i + 2] = rgba_image[4 * i + 2];
+        // CameraMeasurement *measurement = sensor_measurements.add_cameras();
+        // const int width = camera->getWidth();
+        // const int height = camera->getHeight();
+        // measurement->set_name(camera->getName());
+        // measurement->set_width(width);
+        // measurement->set_height(height);
+        // measurement->set_quality(-1);  // raw image (JPEG compression not yet supported)
+        // const unsigned char *rgba_image = camera->getImage();
+        // const int rgb_image_size = width * height * 3;
+        // unsigned char *rgb_image = new unsigned char[rgb_image_size];
+        // for (int i = 0; i < width * height; i++) {
+        //   rgb_image[3 * i] = rgba_image[4 * i];
+        //   rgb_image[3 * i + 1] = rgba_image[4 * i + 1];
+        //   rgb_image[3 * i + 2] = rgba_image[4 * i + 2];
+        // }
+        // measurement->set_image(rgb_image, rgb_image_size);
+        // delete[] rgb_image;
+
+        const webots::CameraRecognitionObject *recognition_objects = camera->getRecognitionObjects();
+        for (int i = 0; i < camera->getRecognitionNumberOfObjects(); ++i)
+        {
+          webots::CameraRecognitionObject recognition_object = recognition_objects[i];
+          DetectionMeasurement *measurement = sensor_measurements.add_objects();
+          measurement->set_name(recognition_object.model);
+          const int *position_on_image = recognition_objects[i].position_on_image;
+          const int *size_on_image = recognition_objects[i].size_on_image;
+          Vector2Int *position_on_image_proto = measurement->mutable_position_on_image();
+          Vector2Int *size_on_image_proto = measurement->mutable_size_on_image();
+          position_on_image_proto->set_x(position_on_image[0]);
+          position_on_image_proto->set_y(position_on_image[1]);
+
+          size_on_image_proto->set_x(size_on_image[0]);
+          size_on_image_proto->set_y(size_on_image[1]);
+
+          // std::cout << "Position of the ball" << std::endl;
+          // std::cout << recognition_objects[i].position[0] << std::endl;
+          // std::cout << recognition_objects[i].position[1] << std::endl;
+          // std::cout << recognition_objects[i].position[2] << std::endl;
         }
-        measurement->set_image(rgb_image, rgb_image_size);
-        delete[] rgb_image;
+
+        
 
 #ifdef JPEG_COMPRESSION
         // testing JPEG compression (impacts the performance)

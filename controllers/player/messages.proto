@@ -6,6 +6,12 @@ message Vector3 {
   double Z = 3;
 }
 
+message Vector2Int {
+  int32 X = 1;
+  int32 Y = 2;
+}
+
+
 message PositionSensorMeasurement {
   string name = 1;
   double value = 2;
@@ -15,6 +21,13 @@ message GPSMeasurement {
   string name = 1;
   Vector3 value = 2;  // [m], x-axis, y-axis, z-axis
 }
+
+message DetectionMeasurement {
+  string name = 1;
+  Vector2Int position_on_image = 2;
+  Vector2Int size_on_image = 3;
+}
+
 
 message AccelerometerMeasurement {
   string name = 1;
@@ -77,6 +90,7 @@ message SensorMeasurements {
   repeated GyroMeasurement gyros = 10;
   repeated PositionSensorMeasurement position_sensors = 11;
   repeated GPSMeasurement gps = 12;
+  repeated DetectionMeasurement objects = 13;
 }
 
 message MotorPosition {
