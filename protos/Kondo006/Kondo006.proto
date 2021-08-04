@@ -50,6 +50,8 @@ PROTO Kondo006 [
     supervisor IS supervisor
     synchronization IS synchronization
     selfCollision IS selfCollision
+    
+
     name IS name  
     model "Kondo"
     children [
@@ -1099,13 +1101,13 @@ PROTO Kondo006 [
                                                             maxRange       100     # [0, inf)
                                                             maxObjects     -1      # {-1, [0, inf)}
                                                             occlusion      TRUE    # {TRUE, FALSE}
-                                                            frameColor     1 0 0   # any color
+                                                            frameColor     0 1 0   # any color
                                                             frameThickness 1       # [0, inf)
                                                             segmentation   TRUE   # {TRUE, FALSE}
                                                           }    # {Recognition, PROTO}
                         lensFlare              NULL    # {LensFlare, PROTO}
                         #translation 0.036 -0.070257 0.031000
-                        translation 0.011643 -0.043608 0.000100
+                        translation 0.121643 -0.043608 0.000100
                         #rotation 0.999964 -0.005962 -0.005962 1.570832
                         rotation               0.707 0.0 -0.707 3.14
                         name                   "camera"
