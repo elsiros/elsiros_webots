@@ -304,12 +304,25 @@ PROTO Kondo006 [
                                   }
                                 ]
                                 name "Hip_Left"
-                                boundingObject Transform {
-                                  translation 0.000450 0.005688 -0.034522
-                                  rotation 0.000000 1.000000 0.000000 0.000000
+                                boundingObject Group {
                                   children [
-                                    Box {
-                                      size 0.030100 0.037776 0.087161
+                                    Transform {
+                                      translation 0.0 0.0 -0.013
+                                      rotation 0.000000 1.000000 0.000000 0.000000
+                                      children [
+                                        Box {
+                                          size 0.033000 0.023268 0.044923
+                                        }
+                                      ]
+                                    }
+                                    Transform {
+                                      translation 0.000450 0.005688 -0.055
+                                      rotation 1.000000 0.000000 0.000000 -0.5
+                                      children [
+                                        Box {
+                                          size 0.033000 0.023268 0.044923
+                                        }
+                                      ]
                                     }
                                   ]
                                 }
@@ -583,12 +596,25 @@ PROTO Kondo006 [
                                   }
                                 ]
                                 name "Hip_Right"
-                                boundingObject Transform {
-                                  translation 0.000450 -0.005688 -0.034522
-                                  rotation 0.000000 1.000000 0.000000 0.000000
+                                boundingObject Group {
                                   children [
-                                    Box {
-                                      size 0.030100 0.037777 0.087161
+                                    Transform {
+                                      translation 0.0 0.0 -0.013
+                                      rotation 0.000000 1.000000 0.000000 0.000000
+                                      children [
+                                        Box {
+                                          size 0.033000 0.023268 0.044923
+                                        }
+                                      ]
+                                    }
+                                    Transform {
+                                      translation 0.000450 -0.005688 -0.055
+                                      rotation 1.000000 0.000000 0.000000 0.5
+                                      children [
+                                        Box {
+                                          size 0.033000 0.023268 0.044923
+                                        }
+                                      ]
                                     }
                                   ]
                                 }
