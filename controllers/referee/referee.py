@@ -852,7 +852,7 @@ else:
                 command_line = [os.path.join(JAVA_HOME, 'bin', 'java'), '-jar', 'GameControllerSimulator.jar']
                 if game.minimum_real_time_factor < 1:
                     command_line.append('--fast')
-                command_line.append('--minimized')
+                #command_line.append('--minimized')
                 command_line.append('--config')
                 command_line.append(game_config_file)
                 if hasattr(game, 'game_controller_extra_args'):
@@ -1018,19 +1018,23 @@ except Exception:
 
 game.over = False
 game.human_referee_disconnected = False
-last_time_send = 0
+last_game_controller_send_time = 0
+last_game_controller_send_period_ms = 100
 
 while supervisor.step(time_step) != -1 and not game.over:    
     perform_status_update()
+    #if time_count - last_game_controller_send_time >= last_game_controller_send_period_ms:
     game_controller_send(f'CLOCK:{time_count}')
+    #    last_game_controller_send_time = time_count        
     game_controller_receive()    
 
     # In KidSize league, this controller is autoreferee and acts as "Game state master". It  will advance through game states and send corresponding game state changes to GC
     # In Junior League, this controller is "Game state slave", The GC will switch game states according to it's rules, possibly with human interruption if needed. 
     if game.state.game_state == 'STATE_PLAYING': # and not is_early_game_interruption():
         if previous_seconds_remaining != game.state.seconds_remaining:
-            update_state_display()        
-        pass
+            update_state_display()  
+            previous_seconds_remaining = game.state.seconds_remaining      
+
     elif game.state.game_state == 'STATE_READY':
         if game.ball_set_kick == False:
             game.ball_set_kick = True # Allow ball to be placed by referee in SET state
