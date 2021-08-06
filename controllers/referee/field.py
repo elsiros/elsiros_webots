@@ -16,9 +16,9 @@
 class Field:
     def __init__(self, size):
         self.size = size
-        self.size_y = 3 if size == 'kid' else 4.5
-        self.size_x = 4.5 if size == 'kid' else 7
-        self.penalty_mark_x = 3 if size == 'kid' else 4.9
+        self.size_y = 2.6
+        self.size_x = 3.6
+        self.penalty_mark_x = 0.9
         self.goal_area_length = 1
         self.goal_area_width = 3 if size == 'kid' else 4
         self.goal_height = 1.2 if size == 'kid' else 1.8
