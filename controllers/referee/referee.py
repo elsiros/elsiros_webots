@@ -179,6 +179,13 @@ def flip_poses(player):
     flip_pose(player['shootoutStartingPose'])
     flip_pose(player['goalKeeperStartingPose'])    
 
+def flip_sides():  # flip sides (no need to notify GameController, it does it automatically)
+    game.side_left = game.red.id if game.side_left == game.blue.id else game.blue.id
+    for team in [red_team, blue_team]:
+        for number in team['players']:
+            flip_poses(team['players'][number])
+    update_team_display()
+
 def get_penalty_shootout_msg():
     trial = game.penalty_shootout_count + 1
     name = "penalty shoot-out"
@@ -787,6 +794,100 @@ def kickoff():
     move_ball_away()
     info(f'Ball not in play, will be kicked by a player from the {game.ball_must_kick_team} team.')
 
+def is_penalty_kicker(team, id):
+    for number in team['players']:
+        if player_has_red_card(team['players'][number]):
+            continue
+        return id == number
+
+def set_penalty_positions():
+    info(f"Setting positions for {get_penalty_shootout_msg()}")
+    default = game.penalty_shootout_count % 2 == 0
+    attacking_color = 'red' if (game.kickoff == game.blue.id) ^ default else 'blue'
+    if attacking_color == 'red':
+        defending_color = 'blue'
+        attacking_team = red_team
+        defending_team = blue_team
+    else:
+        defending_color = 'red'
+        attacking_team = blue_team
+        defending_team = red_team
+    for number in attacking_team['players']:
+        if player_has_red_card(attacking_team['players'][number]):
+            continue
+        if is_penalty_kicker(attacking_team, number):
+            reset_player(attacking_color, number, 'shootoutStartingPose')
+        else:
+            reset_player(attacking_color, number, 'borderStartingPose')
+    for number in defending_team['players']:
+        if player_has_red_card(defending_team['players'][number]):
+            continue
+        if is_goalkeeper(defending_team, number) and game.penalty_shootout_count < 10:
+            reset_player(defending_color, number, 'goalKeeperStartingPose')
+            defending_team['players'][number]['invalidGoalkeeperStart'] = None
+        else:
+            reset_player(defending_color, number, 'borderStartingPose')
+    x = -game.field.penalty_mark_x if (game.side_left == game.kickoff) ^ default else game.field.penalty_mark_x
+    game.ball.resetPhysics()
+    reset_ball_touched()
+    game.in_play = None
+    game.can_score = True
+    game.can_score_own = False
+    game.ball_set_kick = True
+    game.ball_left_circle = True
+    game.ball_must_kick_team = attacking_team['color']
+    game.kicking_player_number = None
+    game.ball_kick_translation[0] = x
+    game.ball_kick_translation[1] = 0
+    game.ball_translation.setSFVec3f(game.ball_kick_translation)
+
+def stop_penalty_shootout():
+    info(f"End of {get_penalty_shootout_msg()}")
+    if game.penalty_shootout_count == 20:  # end of extended penalty shootout
+        return True
+    diff = abs(game.state.teams[0].score - game.state.teams[1].score)
+    if game.penalty_shootout_count == 10 and diff > 0:
+        return True
+    kickoff_team = game.state.teams[0] if game.kickoff == game.state.teams[0].team_number else game.state.teams[1]
+    kickoff_team_leads = kickoff_team.score >= game.state.teams[0].score and kickoff_team.score >= game.state.teams[1].score
+    penalty_shootout_count = game.penalty_shootout_count % 10  # supports both regular and extended shootout kicks
+    if (penalty_shootout_count == 6 and diff == 3) or (penalty_shootout_count == 8 and diff == 2):
+        return True  # no need to go further, score is like 3-0 after 6 shootouts or 4-2 after 8 shootouts
+    if penalty_shootout_count == 7:
+        if diff == 3:  # score is like 4-1
+            return True
+        if diff == 2 and not kickoff_team_leads:  # score is like 1-3
+            return True
+    elif penalty_shootout_count == 9:
+        if diff == 2:  # score is like 5-3
+            return True
+        if diff == 1 and not kickoff_team_leads:  # score is like 3-4
+            return True
+    return False
+        
+def next_penalty_shootout():
+    game.penalty_shootout_count += 1
+    if not game.penalty_shootout_goal and game.state.game_state[:8] != "FINISHED":
+        info("Sending state finish to end current_penalty_shootout")
+        game_controller_send('STATE:FINISH')
+    game.penalty_shootout_goal = False
+    if stop_penalty_shootout():
+        game.over = True
+        return
+    if game.penalty_shootout_count == 10:
+        info('Starting extended penalty shootout without a goalkeeper and goal area entrance allowed.')
+    # Only prepare next penalty if team has a kicker available
+    flip_sides()
+    info(f'fliped sides: game.side_left = {game.side_left}')
+    if penalty_kicker_player():
+        game_controller_send('STATE:SET')
+        set_penalty_positions()
+    else:
+        info("Skipping penalty trial because team has no kicker available")
+        game_controller_send('STATE:SET')
+        next_penalty_shootout()
+    return    
+
  
 
 # --------------------------------------------------------------------------------------------------
@@ -802,14 +903,15 @@ game_controller_send.sent_once = None
 
 
 # Spawn field
-field_size = "kid"
+field_size = "junior"
 field = Field(field_size)
 children = supervisor.getRoot().getField('children')
 children.importMFNodeFromString(-1, f'ElsirosField {{ size "{field_size}" }}')
 
 # Spawn ball far away from field
-ball_size = 1 if field_size == 'kid' else 5
-children.importMFNodeFromString(-1, f'DEF BALL Ball {{ translation 100 100 0.5 size {ball_size} }}')
+#ball_size = 1 if field_size == 'kid' else 5
+#children.importMFNodeFromString(-1, f'DEF BALL RobocupSoccerBall {{ translation 100 100 0.5 size {ball_size} }}')
+children.importMFNodeFromString(-1, f'DEF BALL Ball {{ translation 100 100 0.5 }}')
 game.ball_translation = supervisor.getFromDef('BALL').getField('translation')
 
 game.side_left = game.blue.id
@@ -943,6 +1045,7 @@ game.wait_for_sec_state = None
 game.wait_for_sec_phase = None
 game.font_size = 0.096
 game.font = 'Lucida Console'
+game.need_to_place_players_in_set = True # [Sol] For very first READY->SET transition
 
 setup_display()
 
@@ -1033,21 +1136,27 @@ while supervisor.step(time_step) != -1 and not game.over:
     if game.state.game_state == 'STATE_PLAYING': # and not is_early_game_interruption():
         if previous_seconds_remaining != game.state.seconds_remaining:
             update_state_display()  
-            previous_seconds_remaining = game.state.seconds_remaining      
-
+            previous_seconds_remaining = game.state.seconds_remaining   
+            # Check for PLAYING game state time left and send FINISHED to GC if needed to swith to second half etc 
+            if game.state.game_state != "STATE_FINISHED" and game.state.seconds_remaining <= 0 and not game.state.secondary_state == "PENALTYKICK":
+                info(f"Sending FINISH because seconds remaining = {game.state.seconds_remaining}")
+                game_controller_send('STATE:FINISH')
+                
     elif game.state.game_state == 'STATE_READY':
         if game.ball_set_kick == False:
             game.ball_set_kick = True # Allow ball to be placed by referee in SET state
+        if game.need_to_place_players_in_set == False: 
+            game.need_to_place_players_in_set = True # Allow players to be placed by referee in SET state            
         pass   
-    elif game.state.game_state == 'STATE_SET':
+
+    elif game.state.game_state == 'STATE_SET': 
+        # Transition from READY to SET is done automatically by GC after proper time elapsed or manually triggered, not by referee.py
+
         if game.ball_set_kick: 
             # place ball at the center of the field if needed
-            game_interruption_place_ball(game.ball_kick_translation, enforce_distance=False)
-
-            #TODO: hardcode for demo only
-            #reset_player('red', '1', 'shootoutStartingPose')
-            #reset_player('blue', '1', 'goalKeeperStartingPose')
-            #          
+            game_interruption_place_ball(game.ball_kick_translation, enforce_distance=False) # Will also set game.ball_set_kick to False
+        if game.need_to_place_players_in_set: 
+            game.need_to_place_players_in_set = False       
             for number in red_team['players']:
                 if red_team['players'][str(number)]['needToBePlacedByRefereeInReady']:
                     reset_player('red', str(number), 'readyStartingPose')
@@ -1062,11 +1171,10 @@ while supervisor.step(time_step) != -1 and not game.over:
                     info(f'blue{number} needToBePlacedByRefereeInReady=false')                    
             
     elif game.state.game_state == 'STATE_FINISHED':
-        #if game.penalty_shootout:
-        #    if game.state.seconds_remaining <= 0:
-        #        next_penalty_shootout()
-        #elif game.state.first_half:
-        if game.state.first_half:
+        if game.penalty_shootout:
+            if game.state.seconds_remaining <= 0:
+                next_penalty_shootout()
+        elif game.state.first_half:
             info("Received state FINISHED: end of first half")
             game.ready_real_time = None
         elif game.type == 'KNOCKOUT':
@@ -1080,7 +1188,7 @@ while supervisor.step(time_step) != -1 and not game.over:
                     game.penalty_shootout = True
                     info(f'Going to SET in {HALF_TIME_BREAK_REAL_TIME_DURATION} seconds (real-time)')
                     game.set_real_time = time.time() + HALF_TIME_BREAK_REAL_TIME_DURATION
-                elif game.overtime:
+                elif game.overtime:                    
                     info('Beginning of the knockout first half.')
                     game_controller_send('STATE:OVERTIME-FIRST-HALF')
                     info(f'Going to READY in {HALF_TIME_BREAK_REAL_TIME_DURATION} seconds (real-time)')
@@ -1088,8 +1196,63 @@ while supervisor.step(time_step) != -1 and not game.over:
         else:
             game.over = True
             break
-    elif game.state.game_state == 'STATE_INITIAL':        
-        pass
+
+        if game.penalty_shootout:  # penalty timeout was reached
+            next_penalty_shootout()
+            if game.over:
+                break
+        elif game.state.first_half:
+            game_type = 'knockout ' if game.type == 'KNOCKOUT' and game.overtime else ''
+            info(f'End of {game_type} first half.')
+            info('Flipping sides')
+            flip_sides()
+            reset_teams('borderStartingPose') # [Sol] now players positioning is done when receiving SET from GC by need_to_place_players_in_set
+            game.need_to_place_players_in_set = True
+            game.kickoff = game.blue.id if game.kickoff == game.red.id else game.red.id
+        elif game.type == 'NORMAL':
+            info('End of second half.')
+        elif game.type == 'KNOCKOUT':
+            if not game.overtime:
+                info('End of second half.')
+                flip_sides()
+                reset_teams('borderStartingPose') # [Sol] now players positioning is done when receiving SET from GC by need_to_place_players_in_set
+                game.need_to_place_players_in_set = True
+                game.kickoff = game.blue.id if game.kickoff == game.red.id else game.red.id
+                game.overtime = True
+            #else:
+            elif game.finished_overtime == False:
+                info('End of knockout second half.')
+                game.finished_overtime = True
+        else:
+            error(f'Unsupported game type: {game.type}.', fatal=True)
+                
+    elif game.state.game_state == 'STATE_INITIAL':   
+        game.need_to_place_players_in_set = True #[Sol]
+        if game.penalty_shootout:
+            if game.set_real_time <= time.time():
+                info("Starting first penalty")
+                set_penalty_positions()
+                game_controller_send('STATE:SET')
+        elif game.ready_real_time is not None:
+            if game.ready_real_time <= time.time():  # initial kick-off (1st, 2nd half, extended periods, penalty shootouts)
+                info('Real-time to wait elasped, moving to READY')
+                game.ready_real_time = None
+                #check_start_position()
+                game_controller_send('STATE:READY')
+        elif game.ready_countdown > 0:
+            game.ready_countdown -= 1
+            if game.ready_countdown == 0:  # kick-off after goal or dropped ball
+                #check_start_position()
+                game_controller_send('STATE:READY')
+        elif not game.state.first_half:
+            game_type = ''
+            if game.overtime:
+                game_type = 'overtime '
+            info(f'Beginning of {game_type}second half.')
+            kickoff()
+            info(f'Going to READY in {HALF_TIME_BREAK_REAL_TIME_DURATION} seconds (real-time)')
+            game.ready_real_time = time.time() + HALF_TIME_BREAK_REAL_TIME_DURATION
+
 
     #pass
     '''
