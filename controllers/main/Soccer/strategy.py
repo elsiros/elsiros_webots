@@ -289,7 +289,7 @@ class Player():
         return yaw
 
     def forward_main_cycle(self, pressed_button):
-        second_player_timer = self.motion.utime.time()
+        second_player_timer = self.motion.game_time()
         self.f = Forward_Vector_Matrix(self.motion, self.local, self.glob)
         while (True):
             if self.motion.falling_Flag != 0:
@@ -298,7 +298,7 @@ class Player():
                 self.local.coordinate_fall_reset()
             success_Code, napravl, dist, speed = self.motion.seek_Ball_In_Pose(fast_Reaction_On = True)
             if self.glob.SIMULATION == 2 and self.glob.wifi_params['WIFI_IS_ON']: self.local.report_to_WIFI()
-            if pressed_button == 4 and (self.motion.utime.time() - second_player_timer) < 10 : continue
+            if pressed_button == 4 and (self.motion.game_time() - second_player_timer) < 10 : continue
             self.f.dir_To_Guest()
             print('direction_To_Guest = ', math.degrees(self.f.direction_To_Guest), 'degrees')
             print('coord =', self.glob.pf_coord, 'ball =', self.glob.ball_coord)
@@ -322,7 +322,7 @@ class Player():
         self.motion.play_Soft_Motion_Slot(name = 'Initial_Pose')
 
     def forward_old_style_main_cycle(self, pressed_button):
-        second_player_timer = self.motion.utime.time()
+        second_player_timer = self.motion.game_time()
         self.g = GoalKeeper(self.motion, self.local, self.glob) 
         first_shoot = False
         while (True):
@@ -337,7 +337,7 @@ class Player():
             kick_direction = self.g.direction_To_Guest
             self.motion.turn_To_Course(kick_direction)
             a, napravl, dist, speed = self.motion.seek_Ball_In_Pose(fast_Reaction_On = True)
-            if pressed_button == 4 and (self.motion.utime.time() - second_player_timer) < 10 : continue
+            if pressed_button == 4 and (self.motion.game_time() - second_player_timer) < 10 : continue
             old_neck_pan, old_neck_tilt = self.motion.head_Up()
             dist_mm = dist *1000
             if dist > 0.5:
@@ -389,7 +389,7 @@ class Player():
             if ((row <= (round(self.glob.ROWS / 3) - 1) or row >= round(self.glob.ROWS * 2 / 3)) and col == 0) or (col == 1 and (row == 0 or row == (self.glob.ROWS -1))):
                danger = False
             return danger
-        second_player_timer = self.motion.utime.time()
+        second_player_timer = self.motion.game_time()
         self.f = Forward_Vector_Matrix(self.motion, self.local, self.glob)
         #self.motion.near_distance_omni_motion(400, 0)                    # get out from goal
         fast_Reaction_On = True
@@ -419,7 +419,7 @@ class Player():
                 self.motion.pause_in_ms(3000)
                 self.motion.play_Soft_Motion_Slot(name = 'Get_Up_From_Defence')
                 continue
-            if (self.motion.utime.time() - second_player_timer) < 10 : continue
+            if (self.motion.game_time() - second_player_timer) < 10 : continue
             row, col = self.f.dir_To_Guest()
             #print('direction_To_Guest = ', math.degrees(self.f.direction_To_Guest), 'degrees')
             #print('goalkeeper coord =', self.glob.pf_coord, 'ball =', self.glob.ball_coord, 'row =', row, 'col =', col, 'ball_position_is_dangerous =', ball_position_is_dangerous(row,col))

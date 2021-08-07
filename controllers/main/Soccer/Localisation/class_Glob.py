@@ -27,8 +27,8 @@ class Glob:
         self.landmarks = landmarks
         self.import_strategy_data(current_work_directory)
         self.obstacleAvoidanceIsOn = False
-        self.imu_drift_correction = 0
-        self.imu_drift_last_correction_time = 0
+        #self.imu_drift_correction = 0
+        #self.imu_drift_last_correction_time = 0
 
     def import_strategy_data(self, current_work_directory):
         with open(current_work_directory + "Init_params/strategy_data.json", "r") as f:

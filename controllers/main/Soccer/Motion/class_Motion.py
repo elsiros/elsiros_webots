@@ -106,7 +106,7 @@ class Motion1:
         self.ACTIVEJOINTS = ['Leg_right_10','Leg_right_9','Leg_right_8','Leg_right_7','Leg_right_6','Leg_right_5','hand_right_4',
             'hand_right_3','hand_right_2','hand_right_1','Tors1','Leg_left_10','Leg_left_9','Leg_left_8',
             'Leg_left_7','Leg_left_6','Leg_left_5','hand_left_4','hand_left_3','hand_left_2','hand_left_1','head0','head12']
-        self.start_point_for_imu_drift = self.utime.time()
+        #self.start_point_for_imu_drift = self.game_time()
 
     #-------------------------------------------------------------------------------------------------------------------------------
     def imu_body_yaw(self):

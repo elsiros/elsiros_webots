@@ -100,6 +100,9 @@ class Motion_sim(Motion_real):
                     (12,2): "head_pitch"
                   }
 
+    def game_time(self):
+        return self.robot.getTime()
+
     def pause_in_ms(self, time_in_ms):
         self.sim_Progress(time_in_ms/1000)
 

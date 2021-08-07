@@ -249,7 +249,7 @@ PROTO Kondo006 [
                                                   }
                                                   physics Physics {
                                                     density -1
-                                                    mass 0.039874
+                                                    mass 0.06
                                                     centerOfMass [ -0.021140 -0.000636 -0.020359 ]
                                                     inertiaMatrix [
                                                       2.898973e-05 1.505792e-05 4.316037e-05
@@ -541,7 +541,7 @@ PROTO Kondo006 [
                                                   }
                                                   physics Physics {
                                                     density -1
-                                                    mass 0.039874
+                                                    mass 0.06
                                                     centerOfMass [ -0.021140 -0.000636 -0.020359 ]
                                                     inertiaMatrix [
                                                       2.898973e-05 1.505792e-05 4.316037e-05
