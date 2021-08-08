@@ -1,6 +1,7 @@
 import queue
 from robot_client import RobotClient
 import time
+from threading import Thread
 
 class CommunicationManager():
     def __init__(self, maxsize=5):
@@ -57,9 +58,18 @@ class CommunicationManager():
             self.client.send_request()
             message = self.client.receive()
             self.update_history(message)
-            print(self.get_position())
+            #print(self.get_position())
 
+    def test_run(self):
+        while(True):
+            print(self.get_position())
 
 if __name__ == '__main__':
     manager = CommunicationManager()
-    manager.run()
+    th1 = Thread(target=manager.run)
+    th2 = Thread(target=manager.test_run)
+    #manager.run()
+    th1.start()
+    th2.start()
+    th1.join()
+    th2.join()
