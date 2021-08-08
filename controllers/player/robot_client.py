@@ -2,13 +2,7 @@ import socket
 import sys
 import time
 
-from google.protobuf.internal.decoder import _DecodeVarint32
-from google.protobuf.message import DecodeError
-from google.protobuf import text_format
-import messages_pb2
-
-max_attempts = 20
-wait_time_sec = 1
+from message_manager import MessageManager
 
 
 def usage(error_msg=""):
@@ -18,10 +12,13 @@ def usage(error_msg=""):
 
 
 class RobotClient():
-    def __init__(self, host='',  port=-1, verbosity=3):
+    def __init__(self, host='',  port=-1, verbosity=3, max_attempts=20, wait_time_sec=1):
         self.host = host
         self.port = port
         self.verbosity = verbosity
+        self.max_attempts = max_attempts
+        self.wait_time_sec = wait_time_sec
+        self.message_manager = MessageManager()
 
     def connect_client(self):
         try:
@@ -32,15 +29,15 @@ class RobotClient():
                 return False
         attempt = 1
         connected = False
-        for attempt in range(max_attempts):
+        for attempt in range(self.max_attempts):
             try:
                 self.socket.connect((self.host, self.port))
                 connected = True
                 break
             except:
                 print("Failed to connect to ", self.host, " : ",
-                      self.port, " attempt ",  attempt, " of ", max_attempts)
-                time.sleep(wait_time_sec)
+                      self.port, " attempt ",  attempt, " of ", self.max_attempts)
+                time.sleep(self.wait_time_sec)
 
         if not connected:
             if (self.verbosity > 0):
@@ -73,72 +70,20 @@ class RobotClient():
     def disconnect_client(self):
         self.socket.close()
 
-    def send_request(self, actuator_request):
+    def send_request(self, message_type="default", positions = {}):
+        if message_type == "default":
+            message = self.message_manager.message_from_file("actuator_requests.txt")   
+        elif message_type == "positions" :
+            message = self.message_manager.build_request_positions(positions)
         #try:
-        self.socket.send(actuator_request.SerializeToString())
-        print("send servos")
-        #except:
+        self.socket.send(message)
+       #except:
         #    print("Can't send request")
+                   
 
-    def build_request_message(self, path):
-        request = messages_pb2.ActuatorRequests()
-        with open(path) as actuator_requests:
-            text_format.Parse(actuator_requests.read(), request)
-        return request
+    def receive(self, with_parse=True):
+        content_size = self.socket.recv(self.message_manager.get_size())
+        buffer_size = self.message_manager.get_answer_size(content_size)
+        data = self.socket.recv(buffer_size)
 
-    def receive(self):
-        sensors_measurements = messages_pb2.SensorMeasurements()
-        
-        data = self.socket.recv(1024)
-        #print(data)
-
-        data = self.socket.recv(1024)# read file as string
-        decoder = _DecodeVarint32          # get a varint32 decoder
-                                         # others are available in varint.py
-
-        next_pos, pos = 0, 0
-        while pos < len(data):
-            sensors_measurements = messages_pb2.SensorMeasurements()                    # your message type
-            next_pos, pos = decoder(data, pos)
-            sensors_measurements.ParseFromString(data[pos:pos + next_pos])
-            #print(sensors_measurements.objects)
-            pos += next_pos     
-    # use parsed message
-
-    
-        #data = ''.join(self.socket.recv_multipart())
-        #time.sleep(0.1)
-        #sensors_measurements.ParseFromString(data)
-        
-        #print(sensors_measurements.gps)
-
-
-def run():
-    port = -1
-    arg_idx = 1
-    verbosity = 3
-    host = ""
-    while (arg_idx < len(sys.argv)):
-        current_arg = sys.argv[arg_idx]
-        if (current_arg[0] == '-'):
-            if (current_arg == "-v"):
-                if (arg_idx + 1 >= len(sys.argv)):
-                    usage("Missing value for verbosity")
-                verbosity = int(sys.argv[arg_idx + 1])
-                arg_idx += 1
-            else:
-                usage()
-        elif (len(host) == 0):
-            host = current_arg
-        elif (port == -1):
-            port = int(current_arg)
-            if (port < 0):
-                usage("Unexpected negative value for port: " + current_arg)
-            else:
-                usage("Unexpected additional argument: " + current_arg)
-        arg_idx += 1
-
-    if (port == -1):
-        usage("Missing arguments")
-
-    
+        return self.message_manager.parse_answer_message(data)

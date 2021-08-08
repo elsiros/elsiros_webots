@@ -38,14 +38,23 @@ defaut: release
 
 release debug profile: clients
 
-clients: build/$(GOAL)/messages.pb.o messages.pb.h build/$(GOAL)/robot_client.o
+clients: build/$(GOAL)/messages.pb.o messages.pb.h messages_pb2 build/$(GOAL)/robot_client.o
 	$(MAKE) -f Makefile.client $(MAKECMDGOALS)
 	$(MAKE) -f Makefile.test_client $(MAKECMDGOALS)
+
+messages_pb2: messages.proto
+	@echo "#" compiling $<
+	@protoc $< --python_out=.
+
+	
 
 messages.pb.cpp message.pb.h:	messages.proto
 	@echo "#" compiling $<
 	@protoc $< --cpp_out=.
+
 	@mv messages.pb.cc messages.pb.cpp
+
+
 
 ### Do not modify: this includes Webots global Makefile.include
 include $(WEBOTS_HOME_PATH)/resources/Makefile.include

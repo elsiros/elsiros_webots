@@ -1,9 +1,21 @@
+motor_positions {
+  name: "Neck"
+  position: 1.6
+}
+motor_positions {
+  name: "Head"
+  position: 1.6
+}
 sensor_time_steps {
-  name: "gps_body"
-  timeStep: 5
+  name: "NeckS"
+  timeStep: 8
+}
+sensor_time_steps {
+  name: "camera"
+  timeStep: 16
 }
 
 sensor_time_steps {
-  name: "camera"
-  timeStep: 20
+  name: "gps_body"
+  timeStep: 5
 }
