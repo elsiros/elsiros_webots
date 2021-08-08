@@ -323,64 +323,29 @@ class Player():
 
     def forward_old_style_main_cycle(self, pressed_button):
         second_player_timer = self.motion.game_time()
-        self.g = GoalKeeper(self.motion, self.local, self.glob) 
+        self.f = Forward(self.motion, self.local, self.glob)
         first_shoot = False
         while (True):
             if self.motion.falling_Flag != 0:
                 if self.motion.falling_Flag == 3: break
                 self.motion.falling_Flag = 0
                 self.local.coordinate_fall_reset()
-            if self.glob.ball_coord[1] > 0: factor = 0.71
-            elif self.glob.ball_coord[1] < 0: factor = 1.4
-            else: factor = 1
-            dribble_direction = round(utility.random()* factor) * 2 - 1
-            kick_direction = self.g.direction_To_Guest
-            self.motion.turn_To_Course(kick_direction)
-            a, napravl, dist, speed = self.motion.seek_Ball_In_Pose(fast_Reaction_On = True)
+            success_Code, napravl, dist, speed = self.motion.seek_Ball_In_Pose(fast_Reaction_On = True)
             if pressed_button == 4 and (self.motion.game_time() - second_player_timer) < 10 : continue
-            old_neck_pan, old_neck_tilt = self.motion.head_Up()
-            dist_mm = dist *1000
-            if dist > 0.5:
+            if dist == 0 and success_Code == False:
+                self.motion.turn_To_Course(self.glob.pf_coord[2]+ 2 * math.pi / 3)
+                continue
+            if dist > 0.5  or self.glob.pf_coord[0] > self.glob.ball_coord[0] :
                 self.motion.far_distance_ball_approach(self.glob.ball_coord)
-            if abs(napravl) > 1 :
-                direction = math.copysign(2.55, napravl)
-                self.motion.near_distance_omni_motion( 180 , direction)
+                self.f.turn_Face_To_Guest()
+                continue
+            if first_shoot == False:
+                success_Code = self.motion.near_distance_ball_approach_and_kick(self.f.direction_To_Guest, strong_kick = False)
+                #motion.near_distance_omni_motion(500, 0)
+                first_shoot = True
+                if self.motion.falling_Flag != 0: continue
             else:
-                n = int(math.floor((dist_mm*math.cos(napravl)-self.glob.params['KICK_ADJUSTMENT_DISTANCE']- 30
-                                    -self.motion.first_step_yield)/self.motion.cycle_step_yield)+1)+1         #calculating the number of potential full steps forward
-                if dribble_direction > 0:
-                    displacement = dist_mm*math.sin(napravl) - 60
-                elif dribble_direction < 0:
-                    displacement = dist_mm*math.sin(napravl) + 60
-                else: displacement = dist_mm*math.sin(napravl)
-                m = int(math.ceil(abs(displacement)/self.motion.side_step_right_yield))
-                if n < m : n = m
-                stepLength = (dist_mm*math.cos(napravl)-
-                                self.glob.params['KICK_ADJUSTMENT_DISTANCE'] - 30)/(self.motion.first_step_yield*1.25
-                                + self.motion.cycle_step_yield*(n-1)+ self.motion.cycle_step_yield*0.75)*64
-                number_Of_Cycles = n + 2
-                sideLength = -displacement/number_Of_Cycles*20/self.motion.side_step_right_yield
-                print('sideLength = ', sideLength)
-                self.motion.local.correct_yaw_in_pf()
-                self.motion.walk_Initial_Pose()
-                for cycle in range(number_Of_Cycles):
-                    rotation = kick_direction - self.motion.imu_body_yaw() * 1
-                    rotation = self.motion.normalize_rotation(rotation)
-                    stepLength1 = stepLength
-                    if cycle == 0: stepLength1 = stepLength/4
-                    if cycle == 1: stepLength1 = stepLength/2
-                    self.motion.walk_Cycle(stepLength1, sideLength,rotation,cycle,number_Of_Cycles)
-                self.motion.walk_Final_Pose()
-                self.motion.walk_Initial_Pose()
-                stepLength = 15
-                sideLength = 0
-                rotation = dribble_direction * 0.13
-                number_Of_Cycles = 6
-                for cycle in range(number_Of_Cycles):
-                    self.motion.walk_Cycle(stepLength, sideLength, rotation, cycle, number_Of_Cycles)
-                self.motion.walk_Final_Pose()
-                self.motion.near_distance_omni_motion(400,0)
-            self.motion.head_Return(old_neck_pan, old_neck_tilt)
+                success_Code = self.motion.near_distance_ball_approach_and_kick(self.f.direction_To_Guest, strong_kick = False)
 
     def goalkeeper_main_cycle(self):
         def ball_position_is_dangerous(row, col):

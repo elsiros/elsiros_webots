@@ -103,7 +103,13 @@ def player_super_cycle(falling, team, player_number, SIMULATION, current_work_di
                         playing_allowed = True
                         print('playing allowed')
                 if former_player_penalty !=0:
-                    initial_coord = [-0.9, 1.3, math.pi/2]
+                    statement1 = 2* (player_number == 1) - 1
+                    statement2 = 2* (receiver.state.first_half) - 1
+                    statement3 = 2* (receiver.team_state.team_color == 'RED') -1
+                    if statement1 * statement2 * statement3 == 1:
+                        initial_coord = [-0.9, 1.3, -math.pi/2]
+                    else:
+                        initial_coord = [-0.9, -1.3, math.pi/2]
                     playing_allowed = True
                     second_pressed_button = 1
                     print('playing allowed')

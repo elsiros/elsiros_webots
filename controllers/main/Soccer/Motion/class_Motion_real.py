@@ -474,8 +474,12 @@ class Motion_real(Motion1):
         delta_yaw = self.p.delta_yaw(start_yaw, dest_yaw, CW)
         #print('delta_yaw:', delta_yaw, 'CW:', CW)
         number_Of_Cycles = math.ceil(abs(delta_yaw / 0.2))
-        delta_yaw_step = delta_yaw / number_Of_Cycles
-        stepLength = R * abs(delta_yaw_step) * 1000 * 64 / self.cycle_step_yield * 1.1
+        while True:
+            delta_yaw_step = delta_yaw / number_Of_Cycles
+            #print('R =', R, 'delta_yaw_step =', delta_yaw_step )
+            stepLength = R * abs(delta_yaw_step) * 1000 * 64 / self.cycle_step_yield * 1.1
+            if stepLength <= 64: break
+            else: number_Of_Cycles += 1
         if stepLength - stepLength_old > 22 :
             acceleration = True
             number_Of_Cycles += 1
@@ -488,6 +492,7 @@ class Motion_real(Motion1):
             rotation = start_yaw + delta_yaw_step * (cycle + 1) - self.imu_body_yaw()
             rotation = self.normalize_rotation(rotation)
             self.walk_Cycle(stepLength1, sideLength, rotation, cycle, number_Of_Cycles+1)
+            #print('stepLength1 =', stepLength1, 'rotation =', rotation, 'cycle =', cycle, 'number_Of_Cycles =', number_Of_Cycles)
         stepLength_old = stepLength
         acceleration = False
 # 1-st straight segment 
@@ -507,6 +512,7 @@ class Motion_real(Motion1):
                 rotation = dest_yaw - self.imu_body_yaw()
                 rotation = self.normalize_rotation(rotation)
                 self.walk_Cycle(stepLength1, sideLength, rotation, cycle + 1, number_Of_Cycles+2)
+                #print('stepLength1 =', stepLength1, 'rotation =', rotation, 'cycle =', cycle, 'number_Of_Cycles =', number_Of_Cycles)
             stepLength_old = stepLength
             acceleration = False
             for i in range(len(centers)-2):
@@ -516,8 +522,12 @@ class Motion_real(Motion1):
                 delta_yaw = self.p.delta_yaw(start_yaw, dest_yaw, CW)
                 #print('delta_yaw:', delta_yaw, 'CW:', CW)
                 number_Of_Cycles = math.ceil(abs(delta_yaw / 0.2))
-                delta_yaw_step = delta_yaw / number_Of_Cycles
-                stepLength = R * abs(delta_yaw_step) * 1000 * 64 / self.cycle_step_yield * 1.1
+                while True:
+                    delta_yaw_step = delta_yaw / number_Of_Cycles
+                    #print('R =', R, 'delta_yaw_step =', delta_yaw_step )
+                    stepLength = R * abs(delta_yaw_step) * 1000 * 64 / self.cycle_step_yield * 1.1
+                    if stepLength <= 64: break
+                    else: number_Of_Cycles += 1
                 if stepLength - stepLength_old > 22 :
                     acceleration = True
                     number_Of_Cycles += 1
@@ -531,8 +541,10 @@ class Motion_real(Motion1):
                     rotation = self.normalize_rotation(rotation)
                     if price < 100:
                         self.walk_Cycle(stepLength1, sideLength, rotation, cycle+1, number_Of_Cycles+2)
+                        #print('stepLength1 =', stepLength1, 'rotation =', rotation, 'cycle =', cycle, 'number_Of_Cycles =', number_Of_Cycles)
                     else:
                         self.walk_Cycle(stepLength1, sideLength, rotation, cycle+1, number_Of_Cycles+1)
+                        #print('stepLength1 =', stepLength1, 'rotation =', rotation, 'cycle =', cycle, 'number_Of_Cycles =', number_Of_Cycles)
                 stepLength_old = stepLength
                 acceleration = False
                 if price >= 100: break
@@ -560,8 +572,12 @@ class Motion_real(Motion1):
                 delta_yaw = self.p.delta_yaw(start_yaw, dest_yaw, CW)
                 #print('delta_yaw:', delta_yaw, 'CW:', CW)
                 number_Of_Cycles = math.ceil(abs(delta_yaw / 0.2))
-                delta_yaw_step = delta_yaw / number_Of_Cycles
-                stepLength = R * abs(delta_yaw_step) * 1000 * 64 / self.cycle_step_yield * 1.1
+                while True:
+                    delta_yaw_step = delta_yaw / number_Of_Cycles
+                    #print('R =', R, 'delta_yaw_step =', delta_yaw_step )
+                    stepLength = R * abs(delta_yaw_step) * 1000 * 64 / self.cycle_step_yield * 1.1
+                    if stepLength <= 64: break
+                    else: number_Of_Cycles += 1
                 if stepLength - stepLength_old > 22 :
                     acceleration = True
                     number_Of_Cycles += 1

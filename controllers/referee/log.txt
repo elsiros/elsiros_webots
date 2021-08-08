@@ -14,13 +14,22 @@ Info: Blue team is "Blue Team", playing on left side.
 Info: Sending 1:SIDE_LEFT:25 to GameController.
 Info: Waiting for GameController to answer to 1:SIDE_LEFT:25.
 Info: Waiting for GameController to answer to 1:SIDE_LEFT:25.
+Info: Waiting for GameController to answer to 1:SIDE_LEFT:25.
+Info: Waiting for GameController to answer to 1:SIDE_LEFT:25.
+Info: Waiting for GameController to answer to 1:SIDE_LEFT:25.
+Info: Waiting for GameController to answer to 1:SIDE_LEFT:25.
+Info: Waiting for GameController to answer to 1:SIDE_LEFT:25.
+Info: Waiting for GameController to answer to 1:SIDE_LEFT:25.
+Info: Waiting for GameController to answer to 1:SIDE_LEFT:25.
+Info: Waiting for GameController to answer to 1:SIDE_LEFT:25.
+Info: Waiting for GameController to answer to 1:SIDE_LEFT:25.
 Info: New state received from GameController: STATE_INITIAL.
 Info: State has succesfully changed to INITIAL
 Info: New secondary state received from GameController: STATE_NORMAL, phase 0.
 Info: Regular start: Waiting 5 seconds (real-time) before going to READY
-Info: Sending 4:KICKOFF:8 to GameController.
-Info: Waiting for GameController to answer to 4:KICKOFF:8.
-Info: Waiting for GameController to answer to 4:KICKOFF:8.
+Info: Sending 13:KICKOFF:8 to GameController.
+Info: Waiting for GameController to answer to 13:KICKOFF:8.
+Info: Waiting for GameController to answer to 13:KICKOFF:8.
 Info: Entering INITIAL, first_half = True, sec_state = STATE_NORMAL, sec_phase = 0
 Info: Red player 1 reset to borderStartingPose: translation (0.9 -1.3 0.3), rotation (0 0 1 1.571592653589793).
 Info: Disabling actuators of red player 1.
@@ -52,6 +61,10 @@ Info: Enabling actuators of red player 2.
 Info: Enabling actuators of blue player 1.
 Info: Enabling actuators of blue player 2.
 Info: New state received from GameController: STATE_PLAYING.
+Info: Sending automated PLAYING -> FINISH because seconds remaining = 0
+Info: Sending 61577:STATE:FINISH to GameController.
+Info: Waiting for GameController to answer to 61577:STATE:FINISH.
+Info: Waiting for GameController to answer to 61577:STATE:FINISH.
 Info: New state received from GameController: STATE_INITIAL.
 Info: Entering INITIAL, first_half = False, sec_state = STATE_NORMAL, sec_phase = 0
 Info: Red player 1 reset to borderStartingPose: translation (-0.9 -1.3 0.3), rotation (0 0 1 1.57).
@@ -84,51 +97,21 @@ Info: Enabling actuators of red player 2.
 Info: Enabling actuators of blue player 1.
 Info: Enabling actuators of blue player 2.
 Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_FINISHED.
-Info: New state received from GameController: STATE_INITIAL.
-Info: New secondary state received from GameController: STATE_PENALTYSHOOT, phase 0.
-Info: Entering INITIAL, first_half = False, sec_state = STATE_PENALTYSHOOT, sec_phase = 0
-Info: Red player 1 reset to borderStartingPose: translation (-0.9 -1.3 0.3), rotation (0 0 1 1.57).
-Info: Disabling actuators of red player 1.
-Info: Red player 2 reset to borderStartingPose: translation (-0.9 1.3 0.3), rotation (0 0 1 -1.5700000000000003).
-Info: Disabling actuators of red player 2.
-Info: Blue player 1 reset to borderStartingPose: translation (0.9 -1.3 0.3), rotation (0 0 1 1.571592653589793).
-Info: Disabling actuators of blue player 1.
-Info: Blue player 2 reset to borderStartingPose: translation (0.9 1.3 0.3), rotation (0 0 1 4.711592653589793).
-Info: Disabling actuators of blue player 2.
-Info: Moved ball out of the field temporarily
+Info: New state received from GameController: STATE_READY.
 Info: New state received from GameController: STATE_SET.
-Info: Entering SET, first_half = False, sec_state = STATE_PENALTYSHOOT, sec_phase = 0
-Info: Setting positions for penalty shoot-out 1/10
-Info: Red player 1 reset to borderStartingPose: translation (-0.9 -1.3 0.3), rotation (0 0 1 1.57).
+Info: Entering SET, first_half = False, sec_state = STATE_NORMAL, sec_phase = 0
+Info: Red player 1 reset to readyStartingPose: translation (-1.68 0 0.3), rotation (0 0 1 0.0).
 Info: Disabling actuators of red player 1.
-Info: Red player 2 reset to shootoutStartingPose: translation (0.2 0 0.3), rotation (0 0 1 0.0).
+Info: Red player 2 reset to readyStartingPose: translation (-0.4 0 0.3), rotation (0 0 1 0.0).
 Info: Disabling actuators of red player 2.
-Info: Blue player 1 reset to goalKeeperStartingPose: translation (1.68 0 0.3), rotation (0 0 1 3.141592653589793).
+Info: Blue player 1 reset to readyStartingPose: translation (1.68 0 0.3), rotation (0 0 1 3.141592653589793).
 Info: Disabling actuators of blue player 1.
-Info: Blue player 2 reset to borderStartingPose: translation (0.9 1.3 0.3), rotation (0 0 1 4.711592653589793).
+Info: Blue player 2 reset to readyStartingPose: translation (0.4 0 0.3), rotation (0 0 1 3.141592653589793).
 Info: Disabling actuators of blue player 2.
-Info: Ball respawned at 0.9 0 0.1125.
+Info: Ball respawned at 0 0 0.1125.
+Info: New state received from GameController: STATE_PLAYING.
+Info: Enabling actuators of red player 1.
 Info: Enabling actuators of red player 2.
 Info: Enabling actuators of blue player 1.
-Info: New state received from GameController: STATE_PLAYING.
-Info: New state received from GameController: STATE_FINISHED.
-Info: Sending 10043:STATE:SET to GameController.
-Info: Waiting for GameController to answer to 10043:STATE:SET.
-Info: Waiting for GameController to answer to 10043:STATE:SET.
-Info: New state received from GameController: STATE_SET.
-Info: State has succesfully changed to SET
-Info: Entering SET, first_half = False, sec_state = STATE_PENALTYSHOOT, sec_phase = 0
-Info: Setting positions for penalty shoot-out 1/10
-Info: Blue player 1 reset to borderStartingPose: translation (0.9 -1.3 0.3), rotation (0 0 1 1.571592653589793).
-Info: Disabling actuators of blue player 1.
-Info: Blue player 2 reset to shootoutStartingPose: translation (-0.2 0 0.3), rotation (0 0 1 3.141592653589793).
-Info: Disabling actuators of blue player 2.
-Info: Red player 1 reset to goalKeeperStartingPose: translation (-1.68 0 0.3), rotation (0 0 1 0.0).
-Info: Disabling actuators of red player 1.
-Info: Red player 2 reset to borderStartingPose: translation (-0.9 1.3 0.3), rotation (0 0 1 -1.5700000000000003).
-Info: Disabling actuators of red player 2.
-Info: Ball respawned at -0.9 0 0.1125.
-Info: Enabling actuators of red player 1.
 Info: Enabling actuators of blue player 2.
 Info: New state received from GameController: STATE_FINISHED.
