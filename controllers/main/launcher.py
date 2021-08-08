@@ -77,8 +77,9 @@ def player_super_cycle(falling, team, player_number, SIMULATION, current_work_di
             robot.step(200)
         if receiver.team_state != None:
             current_game_state = receiver.state.game_state
+            current_secondary_state = receiver.state.secondary_state
             current_player_penalty = receiver.player_state.penalty
-            if current_game_state == 'STATE_PLAYING' and  current_player_penalty== 0:
+            if current_game_state == 'STATE_PLAYING' and current_secondary_state != 'STATE_PENALTYSHOOT' and current_player_penalty== 0:
                 second_pressed_button = 1
                 print('start playing')
                 if former_game_state == 'STATE_SET':
@@ -86,7 +87,7 @@ def player_super_cycle(falling, team, player_number, SIMULATION, current_work_di
                         second_pressed_button = 4
                     print('former_game_state == "STATE_SET"')
                     if player_number == 1:
-                        initial_coord = [-1.8, 0, 0]
+                        initial_coord = [-1.68, 0, 0]
                         if receiver.team_state.team_color == 'BLUE':
                             role = 'goalkeeper_old_style'
                         else:
@@ -106,6 +107,27 @@ def player_super_cycle(falling, team, player_number, SIMULATION, current_work_di
                     playing_allowed = True
                     second_pressed_button = 1
                     print('playing allowed')
+            elif current_game_state == 'STATE_PLAYING' and current_secondary_state == 'STATE_PENALTYSHOOT' and current_player_penalty== 0:
+                second_pressed_button = 1
+                #print('start playing')
+                if former_game_state == 'STATE_SET':
+                    print('former_game_state == "STATE_SET"')
+                    if player_number == 1:
+                        initial_coord = [-1.68, 0, 0]
+                        #if receiver.team_state.team_color == 'BLUE':
+                        #    role = 'goalkeeper_old_style'
+                        #else:
+                        role = 'penalty_Goalkeeper'
+                        playing_allowed = True
+                        print('playing allowed')
+                    else: 
+                        initial_coord = [0.2, 0, 0]
+                        #if receiver.team_state.team_color == 'BLUE':
+                        #    role = 'forward_old_style'
+                        #else:
+                        role = 'penalty_Shooter'
+                        playing_allowed = True
+                        print('playing allowed')
             if playing_allowed:
                 print ('current_game_state =', current_game_state, 'current_player_penalty =', current_player_penalty)
                 print ('former_game_state =', former_game_state, 'former_player_penalty =', former_player_penalty)

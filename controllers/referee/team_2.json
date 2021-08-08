@@ -9,7 +9,7 @@
         "rotation": [ 0, 0, 1, 1.57 ]
       },
       "readyStartingPose": {
-        "translation": [ -1.8, 0, 0.30 ],
+        "translation": [ -1.68, 0, 0.30 ],
         "rotation": [ 0, 0, 1, 0 ]
       },
       "reentryStartingPose": {
@@ -21,7 +21,7 @@
         "rotation": [ 0, 0, 1, 0 ]
       },
       "goalKeeperStartingPose": {
-        "translation": [ -1.8, 0, 0.30 ],
+        "translation": [ -1.68, 0, 0.30 ],
         "rotation": [ 0, 0, 1, 0 ]
       }
     },
@@ -45,7 +45,7 @@
         "rotation": [ 0, 0, 1, 0 ]
       },
       "goalKeeperStartingPose": {
-        "translation": [ -1.8, 0, 0.30 ],
+        "translation": [ -1.68, 0, 0.30 ],
         "rotation": [ 0, 0, 1, 0 ]
       }
     }
