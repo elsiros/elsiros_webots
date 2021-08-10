@@ -10,59 +10,73 @@ class CommunicationManager():
         verbosity = 4
         self.client = RobotClient(host, port, verbosity)
         self.client.connect_client()
+        self.maxsize = maxsize
         self.messages = queue.Queue(maxsize)
         self.actual = {}
+        self.sensors = {}
+
+    def enable_sensors(self, sensors):
+        for sensor in sensors:
+            self.client.add_initial_sensor(sensor, sensors[sensor])
+            self.sensors.update({str(sensor): queue.Queue(self.maxsize)})
+        self.client.send_request("init")  
+
 
     def get_imu(self):
         pass
 
     def get_position(self):
-        if len(self.actual) > 0 and self.actual['gps']:
+        if len(self.actual) > 0 and self.actual['gps']: 
             return [self.actual['gps'][0].value.X, self.actual['gps'][0].value.Y]
         else:
             return 0
 
-    def get_image(self):
-        return
+    def get_sensor(self, name):
+        if not name in self.sensors:
+            return "sensor is not enable"
+        if self.sensors[name].empty():
+            return False
+        else:
+            return self.sensors[name].get()
 
-    def get_ball(self):
-        pass
-
-    def get_servo(self):
-        pass
-
-    def set_servo(self):
-        pass
-
-    def set_servos(self, positions):
-        pass
-
-    def parse_message(self):
-        pass
-
-    def update_history(self, message):
+    def add_to_queue(self, message):
         if self.messages.full():
             self.messages.get()
             self.messages.put(message)
         else:
             self.messages.put(message)
-        self.actual = message
 
-    def update_queue(self):
-        pass
+    def send_message(self):
+        while(not self.messages.empty()):
+            self.client.send_request("positions", self.messages.get())
 
+    def update_history(self, message):
+        for sensor in message:
+            if self.sensors[sensor].full():
+                self.sensors[sensor].get()
+                self.sensors[sensor].put(message[sensor])
+            else:
+                self.sensors[sensor].put(message[sensor])
+        
     def run(self):
-        self.client.send_request("positions", {"Head":-1.5, "Neck":-1.6})
+        #инициализация сенсоров 
+        sensors = {"gps_body":5, "camera":5, "NeckS":5}
+        self.enable_sensors(sensors)
         
         while(True):
-            self.client.send_request()
+            self.send_message()
             message = self.client.receive()
             self.update_history(message)
-            #print(self.get_position())
 
     def test_run(self):
+        #пример отправки данных серв
+        data =  {"Head":-1.5, "Neck":-1.6}
+        self.add_to_queue(data)
         while(True):
-            print(self.get_position())
+           
+            time.sleep(1)
+            #пример получения данных из включенного и существующего сенсора
+            print(self.get_sensor("NeckS"))
 
 if __name__ == '__main__':
     manager = CommunicationManager()
@@ -71,5 +85,5 @@ if __name__ == '__main__':
     #manager.run()
     th1.start()
     th2.start()
-    th1.join()
-    th2.join()
+    th1.join
+    th2.join

@@ -75,11 +75,15 @@ class RobotClient():
             message = self.message_manager.message_from_file("actuator_requests.txt")   
         elif message_type == "positions" :
             message = self.message_manager.build_request_positions(positions)
+        elif message_type == "init": 
+            message = self.message_manager.build_initial_request()
         #try:
         self.socket.send(message)
        #except:
         #    print("Can't send request")
                    
+    def add_initial_sensor(self, sensor_name, sensor_time):
+        self.message_manager.add_initial_request(sensor_name, sensor_time)
 
     def receive(self, with_parse=True):
         content_size = self.socket.recv(self.message_manager.get_size())
