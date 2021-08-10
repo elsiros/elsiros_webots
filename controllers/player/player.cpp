@@ -65,6 +65,8 @@ void usleep(__int64 usec) {
 #include <webots/Robot.hpp>
 #include <webots/TouchSensor.hpp>
 #include <webots/GPS.hpp>
+#include <webots/InertialUnit.hpp>
+
 
 #include <algorithm>
 #include <chrono>
@@ -428,6 +430,11 @@ public:
         gps->enable(time_step);
         break;
       }
+      case webots::Node::INERTIAL_UNIT: {
+        webots::InertialUnit *imu = static_cast<webots::InertialUnit *>(device);
+        imu->enable(time_step);
+        break;
+      }
       case webots::Node::CAMERA: {
         webots::Camera *camera = static_cast<webots::Camera *>(device);
         camera->enable(time_step);
@@ -672,6 +679,10 @@ public:
           size_on_image_proto->set_x(size_on_image[0]);
           size_on_image_proto->set_y(size_on_image[1]);
 
+          // measurement->set_x();
+          // measurement->set_y();
+          
+
           // std::cout << "Position of the ball" << std::endl;
           // std::cout << recognition_objects[i].position[0] << std::endl;
           // std::cout << recognition_objects[i].position[1] << std::endl;
@@ -702,6 +713,21 @@ public:
         vector3->set_x(values[0]);
         vector3->set_y(values[1]);
         vector3->set_z(values[2]);
+        continue;
+      }
+
+      webots::InertialUnit *imu = dynamic_cast<webots::InertialUnit *>(dev);
+      if (imu) {
+        if ((controller_time - start_sensoring_time[dev]) % imu->getSamplingPeriod())
+          continue;
+        // TODO: 
+        IMUSensorMeasurement *measurement = sensor_measurements.add_imu();
+        measurement->set_name(imu->getName());
+        const double *values = imu->getRollPitchYaw();
+        IMUVector *vector3 = measurement->mutable_angles();
+        vector3->set_pitch(values[1]);
+        vector3->set_roll(values[0]);
+        vector3->set_yaw(values[2]);
         continue;
       }
       webots::PositionSensor *position_sensor = dynamic_cast<webots::PositionSensor *>(dev);
