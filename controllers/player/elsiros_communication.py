@@ -5,9 +5,7 @@ from threading import Thread
 
 
 class CommunicationManager():
-    def __init__(self, maxsize=5):
-        host = '127.0.0.1'
-        port = 10001
+    def __init__(self, host='127.0.0.1', port=10001, maxsize=5):
         verbosity = 4
         self.client = RobotClient(host, port, verbosity)
         self.client.connect_client()
@@ -69,6 +67,10 @@ class CommunicationManager():
             # пример получения данных из включенного и существующего сенсора
             print(self.get_sensor("NeckS"))
 
+    def execute(self):
+        thread = Thread(target=self.run)
+        thread.start()
+        thread.join()
 
 if __name__ == '__main__':
     manager = CommunicationManager()
