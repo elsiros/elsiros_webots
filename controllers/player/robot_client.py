@@ -70,18 +70,19 @@ class RobotClient():
     def disconnect_client(self):
         self.socket.close()
 
-    def send_request(self, message_type="default", positions = {}):
+    def send_request(self, message_type="default", positions={}):
         if message_type == "default":
-            message = self.message_manager.message_from_file("actuator_requests.txt")   
-        elif message_type == "positions" :
+            message = self.message_manager.message_from_file(
+                "actuator_requests.txt")
+        elif message_type == "positions":
             message = self.message_manager.build_request_positions(positions)
-        elif message_type == "init": 
+        elif message_type == "init":
             message = self.message_manager.build_initial_request()
-        #try:
+        # try:
         self.socket.send(message)
-       #except:
+       # except:
         #    print("Can't send request")
-                   
+
     def add_initial_sensor(self, sensor_name, sensor_time):
         self.message_manager.add_initial_request(sensor_name, sensor_time)
 

@@ -3,6 +3,7 @@ from robot_client import RobotClient
 import time
 from threading import Thread
 
+
 class CommunicationManager():
     def __init__(self, maxsize=5):
         host = '127.0.0.1'
@@ -19,17 +20,7 @@ class CommunicationManager():
         for sensor in sensors:
             self.client.add_initial_sensor(sensor, sensors[sensor])
             self.sensors.update({str(sensor): queue.Queue(self.maxsize)})
-        self.client.send_request("init")  
-
-
-    def get_imu(self):
-        pass
-
-    def get_position(self):
-        if len(self.actual) > 0 and self.actual['gps']: 
-            return [self.actual['gps'][0].value.X, self.actual['gps'][0].value.Y]
-        else:
-            return 0
+        self.client.send_request("init")
 
     def get_sensor(self, name):
         if not name in self.sensors:
@@ -57,32 +48,33 @@ class CommunicationManager():
                 self.sensors[sensor].put(message[sensor])
             else:
                 self.sensors[sensor].put(message[sensor])
-        
+
     def run(self):
-        #инициализация сенсоров 
-        sensors = {"gps_body":5, "camera":5, "NeckS":5}
+        # инициализация сенсоров
+        sensors = {"gps_body": 5, "camera": 5, "NeckS": 5}
         self.enable_sensors(sensors)
-        
+
         while(True):
             self.send_message()
             message = self.client.receive()
             self.update_history(message)
 
     def test_run(self):
-        #пример отправки данных серв
-        data =  {"Head":-1.5, "Neck":-1.6}
+        # пример отправки данных серв
+        data = {"Head": -1.5, "Neck": -1.6}
         self.add_to_queue(data)
         while(True):
-           
+
             time.sleep(1)
-            #пример получения данных из включенного и существующего сенсора
+            # пример получения данных из включенного и существующего сенсора
             print(self.get_sensor("NeckS"))
+
 
 if __name__ == '__main__':
     manager = CommunicationManager()
     th1 = Thread(target=manager.run)
     th2 = Thread(target=manager.test_run)
-    #manager.run()
+    # manager.run()
     th1.start()
     th2.start()
     th1.join
