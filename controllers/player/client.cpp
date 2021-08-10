@@ -71,6 +71,7 @@ int main(int argc, char *argv[]) {
       SensorMeasurements sensors = client.receive();
       std::string printout;
       google::protobuf::TextFormat::PrintToString(sensors, &printout);
+      std::cout << printout << std::endl;
     } catch (const std::runtime_error &exc) {
       std::cerr << "Runtime error: " << exc.what() << std::endl;
     }

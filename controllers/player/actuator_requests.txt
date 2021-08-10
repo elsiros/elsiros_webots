@@ -1,18 +1,6 @@
-motor_positions {
-  name: "Neck"
-  position: 1.6
-}
-motor_positions {
-  name: "Head"
-  position: 1.6
-}
-sensor_time_steps {
-  name: "NeckS"
-  timeStep: 8
-}
 sensor_time_steps {
   name: "camera"
-  timeStep: 16
+  timeStep: 20
 }
 
 sensor_time_steps {

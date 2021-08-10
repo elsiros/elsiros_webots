@@ -67,6 +67,8 @@ void usleep(__int64 usec) {
 #include <webots/GPS.hpp>
 #include <webots/InertialUnit.hpp>
 
+#include <webots/Supervisor.hpp>
+
 
 #include <algorithm>
 #include <chrono>
@@ -235,7 +237,7 @@ public:
 
 class PlayerServer {
 public:
-  PlayerServer(const std::vector<std::string> &allowed_hosts, int port, int player_id, int team, webots::Robot *robot) :
+  PlayerServer(const std::vector<std::string> &allowed_hosts, int port, int player_id, int team, webots::Supervisor *robot) :
     allowed_hosts(allowed_hosts),
     port(port),
     player_id(player_id),
@@ -678,9 +680,13 @@ public:
 
           size_on_image_proto->set_x(size_on_image[0]);
           size_on_image_proto->set_y(size_on_image[1]);
+          // webots::Supervisor *supervisor = new webots::Supervisor();
+          // getFromId()
+          const double *values  = robot->getFromId(recognition_object.id)->getPosition();
 
-          // measurement->set_x();
-          // measurement->set_y();
+          // std::cout << "Position " << values[0] << "," << values[1] << std::endl;
+          measurement->set_x(values[0]);
+          measurement->set_y(values[1]);
           
 
           // std::cout << "Position of the ball" << std::endl;
@@ -864,7 +870,7 @@ private:
   int recv_size;
   int content_size;
 
-  webots::Robot *robot;
+  webots::Supervisor *robot;
   int basic_time_step;
   SensorMeasurements sensor_measurements;
 
@@ -912,7 +918,7 @@ int main(int argc, char *argv[]) {
   for (int i = 0; i < n_allowed_hosts; i++)
     allowed_hosts.push_back(argv[i + 3]);
 
-  webots::Robot *robot = new webots::Robot();
+  webots::Supervisor *robot = new webots::Supervisor();
   const int basic_time_step = robot->getBasicTimeStep();
   const std::string name = robot->getName();
   const int player_id = std::stoi(name.substr(name.find_last_of(' ') + 1));
