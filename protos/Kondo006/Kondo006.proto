@@ -50,10 +50,11 @@ PROTO Kondo006 [
     supervisor IS supervisor
     synchronization IS synchronization
     selfCollision IS selfCollision
+    recognitionColors 1 0 0
     
 
     name IS name  
-    model "Kondo"
+    model "robot"
     children [
       Solid {
         translation 0 0 0

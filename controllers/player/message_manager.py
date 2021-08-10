@@ -58,24 +58,6 @@ class MessageManager():
         message.ParseFromString(data)
         return self.parse_message(message)
 
-    def parse_to_dict(self, message):
-        parse_message = {}
-        # time stamp at which the measurements were performed expressed in [ms]
-        parse_message.update({"time": message.time})
-        # // real unix time stamp at which the measurements were performed in [ms]
-        parse_message.update({"real_time": message.real_time})
-        parse_message.update({"messages": message.messages})
-        parse_message.update({"accelerometers": message.accelerometers})
-        parse_message.update({"bumpers": message.bumpers})
-        parse_message.update({"cameras": message.cameras})
-        parse_message.update({"forces": message.forces})
-        parse_message.update({"force3ds": message.force3ds})
-        parse_message.update({"force6ds": message.force6ds})
-        parse_message.update({"gyros": message.gyros})
-        parse_message.update({"position_sensors": message.position_sensors})
-        parse_message.update({"gps": message.gps})
-        return parse_message
-
     def parse_message(self, message):
         parse_message = {}
         #parse_message.update({"real_time": message.real_time})
@@ -96,4 +78,14 @@ class MessageManager():
         for sensor in message.gps:
             parse_message.update(
                 {sensor.name: {"position": [sensor.value.X, sensor.value.Y], "time": message.time}})
+        for sensor in message.objects:
+            if sensor.name == "ball":
+                parse_message.update(
+                    {sensor.name: {"position": [sensor.X, sensor.Y], "time": message.time}})
+            elif sensor.name == "robot":
+                parse_message.update(
+                    {sensor.name: {"position": [sensor.X, sensor.Y], "time": message.time}})
+        for sensor in message.imu:
+            parse_message.update(
+                {sensor.name: {"position": [sensor.angles.pitch, sensor.angles.roll, sensor.angles.yaw], "time": message.time}})
         return parse_message
