@@ -133,4 +133,5 @@ dmypy.json
 *.sqlite
 controllers/main/.vs/slnx.sqlite
 *.cache
+controllers/referee/log.txt
 
