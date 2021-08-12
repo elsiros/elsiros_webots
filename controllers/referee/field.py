@@ -16,8 +16,8 @@
 class Field:
     def __init__(self, size):
         self.size = size
-        self.size_y = 2.6
-        self.size_x = 3.6
+        self.size_y = 1.3
+        self.size_x = 1.8
         self.penalty_mark_x = 0.9
         self.goal_area_length = 1
         self.goal_area_width = 3 if size == 'kid' else 4
@@ -29,7 +29,7 @@ class Field:
         self.opponent_distance_to_ball = 0.75 if size == 'kid' else 1.5
         self.ball_vincity = 0.75 if size == 'kid' else 1.5
         self.robot_radius = 0.3 if size == 'kid' else 0.5
-        self.place_ball_safety_dist = 0.5 if size == 'kid' else 1.0
+        self.place_ball_safety_dist = 0.25
         self.turf_depth = 0.01
         self.border_strip_width = 1
         self.line_width = 0.05
