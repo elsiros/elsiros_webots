@@ -874,21 +874,19 @@ def is_robot_near(position, min_dist):
                 return True
     return False             
 
-def throw_in(middle_line, left_side):
+def throw_in(middle_line, negative_x, negative_y):
     possible_restart_points = []
+    x_sign = -1 if negative_x == True else 1
+    y_sign = -1 if negative_y == True else 1
     if middle_line == True:
-        possible_restart_points.append( [0,  0,                    0] )
-        possible_restart_points.append( [0, -RESTART_MARKER_WIDTH, 0] )
-        possible_restart_points.append( [0,  RESTART_MARKER_WIDTH, 0] )
+        possible_restart_points.append( [0,  y_sign *  RESTART_MARKER_WIDTH, 0] )
+        possible_restart_points.append( [0,  0,                              0] )
+        possible_restart_points.append( [0, -y_sign *  RESTART_MARKER_WIDTH, 0] )
+
     else:
-        if left_side == True:
-            possible_restart_points.append( [-game.field.penalty_mark_x,  0,                    0] )
-            possible_restart_points.append( [-game.field.penalty_mark_x, -RESTART_MARKER_WIDTH, 0] )
-            possible_restart_points.append( [-game.field.penalty_mark_x,  RESTART_MARKER_WIDTH, 0] )    
-        else:       
-            possible_restart_points.append( [ game.field.penalty_mark_x,  0,                    0] )
-            possible_restart_points.append( [ game.field.penalty_mark_x, -RESTART_MARKER_WIDTH, 0] )
-            possible_restart_points.append( [ game.field.penalty_mark_x,  RESTART_MARKER_WIDTH, 0] )                
+        possible_restart_points.append( [x_sign * game.field.penalty_mark_x,  y_sign * RESTART_MARKER_WIDTH, 0] )
+        possible_restart_points.append( [x_sign * game.field.penalty_mark_x,  0,                             0] )
+        possible_restart_points.append( [x_sign * game.field.penalty_mark_x, -y_sign * RESTART_MARKER_WIDTH, 0] )    
 
     for point in possible_restart_points:
         if not is_robot_near(point, game.field.place_ball_safety_dist):
@@ -1144,7 +1142,10 @@ while supervisor.step(time_step) != -1 and not game.over:
             scoring_team = None
             right_way = None   
             
-            ball_went_out_from_left_side_of_the_field = True if game.ball_exit_translation[0] < 0 else False
+            negative_x = True if game.ball_exit_translation[0] < 0 else False
+            negative_y = True if game.ball_exit_translation[1] < 0 else False
+
+            ball_went_out_from_left_side_of_the_field = negative_x
             defender_touched_last = False
             # Check if ball touches defender last before it left the field
             if game.side_left == game.blue.id:
@@ -1197,10 +1198,8 @@ while supervisor.step(time_step) != -1 and not game.over:
 
             else:
                 # It's not a goal, let's do a throw-in according to the rules
-                if defender_touched_last:
-                    throw_in(middle_line=False, left_side=ball_went_out_from_left_side_of_the_field)
-                else:
-                    throw_in(middle_line=True, left_side=None)
+                middle_line = False if defender_touched_last else True
+                throw_in(middle_line, negative_x, negative_y)
                 
     elif game.state.game_state == 'STATE_READY':
         # Transition from READY to SET is done automatically by GC after proper time elapsed or manually triggered, so no need to do it here
