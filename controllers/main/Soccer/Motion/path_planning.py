@@ -1,18 +1,19 @@
-
+"""
+The module is designed by team Robokit of Phystech Lyceum and team Starkit
+of MIPT under mentorship of A. Babaev.
+module can be used for optimized path planing of Robokit-1 robot. 
+usage: create class PathPlan type object instance and call method path_calc_optimum.
+Optionally module can be launched stand alone for purpose of tuning and observing result of 
+path planing. Being launched stand alone module draws soccer field with player (white circle),
+ball (orange circle), obstacles (black circles). Circles are movable by mouse dragging.
+After each stop of mouse new path is drawing.  
+"""
 import sys
 import os
 import math
 import array
 import json
-
-
-if sys.version == '3.4.0':
-    # will be running on openMV
-    pass
-else:
-    # will be running on desktop computer
-    #import wx
-    import random
+import random
 
 
 
@@ -20,84 +21,6 @@ goalPostRadius = 0.15       # Radius to walk around a goal post (in m).
 ballRadius = 0.1           # Radius to walk around the ball (in m).
 uprightRobotRadius = 0.2  # Radius to walk around an upright robot (in m).
 roundAboutRadiusIncrement = 0.15
-
-
-#class Glob:
-#    def __init__(self):
-#        self.COLUMNS = 18
-#        self.ROWS = 13
-#        self.pf_coord =   [0.276, 0.749, 2]  #[-0.4, 0.0 , 0] # [0.5, 0.5 , -math.pi * 3/4]
-#        self.ball_coord = [-0.132, 0.957]        #[0, 0]
-#        self.obstacles = [[0.4, 0.025, 0.2], [0.725, -0.475, 0.2]]  #[[0, 0, 0.15], [0.4, 0.025, 0.2], [0.725, -0.475, 0.2]]
-#        #self.ball_coord = [2, 0]
-#        #self.obstacles = [[0.4, 0.025, 0.2], [0.725, -0.475, 0.2], [0.8, 0.55, 0.2], [1.175, 0, 0.2], [1.625, -0.4, 0.2], [1.7, 0.425, 0.2]]
-#        self.landmarks = {"post1": [[ 1.8, -0.6 ]], "post2": [[ 1.8, 0.6 ]], "post3": [[ -1.8, 0.6 ]], "post4": [[ -1.8, -0.6 ]],
-#                          "unsorted_posts": [[ 1.8, 0.6 ],[ 1.8, -0.6 ],[ -1.8, 0.6 ],[ -1.8, -0.6 ]],
-#                          "FIELD_WIDTH": 2.6, "FIELD_LENGTH": 3.6 }
-#        self.params = {'CYCLE_STEP_YIELD': 103.5}
-#        self.cycle_step_yield = 103.5
-#        current_work_directory = os.getcwd()
-#        current_work_directory = current_work_directory.replace('\\', '/')
-#        current_work_directory += '/'
-#        self.strategy_data = array.array('b',(0 for i in range(self.COLUMNS * self.ROWS * 2)))
-#        self.import_strategy_data(current_work_directory)
-
-#    def import_strategy_data(self, current_work_directory):
-#        with open(current_work_directory + "Init_params/strategy_data.json", "r") as f:
-#            loaded_Dict = json.loads(f.read())
-#        if loaded_Dict.get('strategy_data') != None:
-#            strategy_data = loaded_Dict['strategy_data']
-#        for column in range(self.COLUMNS):
-#            for row in range(self.ROWS):
-#                index1 = column * self.ROWS + row
-#                power = strategy_data[index1][2]
-#                yaw = int(strategy_data[index1][3] * 40)  # yaw in radians multiplied by 40
-#                self.strategy_data[index1*2] = power
-#                self.strategy_data[index1*2+1] = yaw
-
-#class Forward:
-#    def __init__(self, glob):
-#        self.glob = glob
-
-#    def direction_To_Guest(self):
-#        if self.glob.ball_coord[0] < 0: 
-#            return 0
-#        elif self.glob.ball_coord[0] > 0.8 and abs(self.glob.ball_coord[1]) > 0.6:
-#            return math.atan(-self.glob.ball_coord[1]/(1.8-self.glob.ball_coord[0]))
-#        elif self.glob.ball_coord[0] < 1.5 and abs(self.glob.ball_coord[1]) < 0.25:
-#            if (1.8-self.glob.ball_coord[0]) == 0: return 0
-#            else: 
-#                if abs(self.glob.ball_coord[1]) < 0.2:
-#                    return math.atan((math.copysign(0.5, self.glob.ball_coord[1])-
-#                                                       self.glob.ball_coord[1])/(1.8-self.glob.ball_coord[0]))
-#                else: 
-#                    return math.atan((0.5* (round(random.random(),0)*2 - 1)-
-#                                                       self.glob.ball_coord[1])/(1.8-self.glob.ball_coord[0]))
-#        else:
-#            return math.atan(-self.glob.pf_coord[1]/(2.4-self.glob.pf_coord[0]))
-
-#class Forward_Vector_Matrix:
-#    def __init__(self, glob):
-#        self.glob = glob
-#        #self.direction_To_Guest = 0
-#        self.kick_Power = 1
-        
-
-#    def direction_To_Guest(self):
-#        if abs(self.glob.ball_coord[0])  >  self.glob.landmarks["FIELD_LENGTH"] / 2:
-#            ball_x = math.copysign(self.glob.landmarks["FIELD_LENGTH"] / 2, self.glob.ball_coord[0])
-#        else: ball_x = self.glob.ball_coord[0]
-#        if abs(self.glob.ball_coord[1])  >  self.glob.landmarks["FIELD_WIDTH"] / 2:
-#            ball_y = math.copysign(self.glob.landmarks["FIELD_WIDTH"] / 2, self.glob.ball_coord[1])
-#        else: ball_y = self.glob.ball_coord[1]
-#        col = math.floor((ball_x + self.glob.landmarks["FIELD_LENGTH"] / 2) / (self.glob.landmarks["FIELD_LENGTH"] / self.glob.COLUMNS))
-#        row = math.floor((- ball_y + self.glob.landmarks["FIELD_WIDTH"] / 2) / (self.glob.landmarks["FIELD_WIDTH"] / self.glob.ROWS))
-#        if col >= self.glob.COLUMNS : col = self.glob.COLUMNS - 1
-#        if row >= self.glob.ROWS : row = self.glob.ROWS -1
-#        direction_To_Guest = self.glob.strategy_data[(col * self.glob.ROWS + row) * 2 + 1] / 40
-#        self.kick_Power = self.glob.strategy_data[(col * self.glob.ROWS + row) * 2]
-#        print('direction_To_Guest = ', math.degrees(direction_To_Guest))
-#        return direction_To_Guest
 
 
 class PathPlan:
@@ -113,6 +36,7 @@ class PathPlan:
     obstacle in near distance.
     During Path heuristic various radiuses of arcs are considered. Arc with zero radius means
     turning without changing coordinate.
+
     """
     def __init__(self, glob):
         self.glob = glob
@@ -283,6 +207,19 @@ class PathPlan:
         return delta_yaw
 
     def path_calc_optimum(self, start_coord, target_coord):
+        """
+        Returns optimized humanoid robot path. 
+        usage:
+            list:             dest, list: centers, int: number_Of_Cycles = self.path_calc_optimum(list: start_coord, list: target_coord)
+            dest:             list of destination point coordinates. Each coordinate is list or tuple of floats [x,y]. 
+                              Each coordinate is starting or end point of path segment. Path comprises of following segments: 
+                              circle segment, line segment, n*(circle segment, line segment), circle segment. Where n - iterable. 
+            centers:          list of coordinates of circle centers of circle segments of path. Each coordinate is list or tuple of floats [x,y].
+            number_Of_Cycles: integer which represents price of path. In case if value is >100 then collision with second obstacle on path
+                              is not verified. 
+            start_coord:      list or tuple of floats [x, y, yaw]
+            target_coord:     list or tuple of floats [x, y, yaw]
+        """
         dest, centers, number_Of_Cycles = self.path_calc(start_coord, target_coord)
         if len(centers) > 0:
             x1, y1, x2, y2, cx, cy, R, CW = centers[0]
@@ -649,166 +586,243 @@ class PathPlan:
 
 
 if __name__ == '__main__':
-    pass
-    #class Example(wx.Frame):
+    import wx
+    class Glob:
+        def __init__(self):
+            self.COLUMNS = 18
+            self.ROWS = 13
+            self.pf_coord =   [0.276, 0.749, 2]  #[-0.4, 0.0 , 0] # [0.5, 0.5 , -math.pi * 3/4]
+            self.ball_coord = [-0.132, 0.957]        #[0, 0]
+            self.obstacles = [[0.4, 0.025, 0.2], [0.725, -0.475, 0.2]]  #[[0, 0, 0.15], [0.4, 0.025, 0.2], [0.725, -0.475, 0.2]]
+            #self.ball_coord = [2, 0]
+            #self.obstacles = [[0.4, 0.025, 0.2], [0.725, -0.475, 0.2], [0.8, 0.55, 0.2], [1.175, 0, 0.2], [1.625, -0.4, 0.2], [1.7, 0.425, 0.2]]
+            self.landmarks = {"post1": [[ 1.8, -0.6 ]], "post2": [[ 1.8, 0.6 ]], "post3": [[ -1.8, 0.6 ]], "post4": [[ -1.8, -0.6 ]],
+                              "unsorted_posts": [[ 1.8, 0.6 ],[ 1.8, -0.6 ],[ -1.8, 0.6 ],[ -1.8, -0.6 ]],
+                              "FIELD_WIDTH": 2.6, "FIELD_LENGTH": 3.6 }
+            self.params = {'CYCLE_STEP_YIELD': 103.5}
+            self.cycle_step_yield = 103.5
+            current_work_directory = os.getcwd()
+            current_work_directory = current_work_directory.replace('\\', '/')
+            current_work_directory += '/'
+            self.strategy_data = array.array('b',(0 for i in range(self.COLUMNS * self.ROWS * 2)))
+            self.import_strategy_data(current_work_directory)
 
-    #    def __init__(self, *args, **kw):
-    #        #super().__init__(*args, **kw)
-    #        super(Example, self).__init__(*args, **kw)
-    #        self.glob = Glob()
-    #        self.p = PathPlan(self.glob)
-    #        self.f = Forward_Vector_Matrix(self.glob)
-    #        self.isLeftDown = False
-    #        self.InitUI()
+        def import_strategy_data(self, current_work_directory):
+            with open(current_work_directory + "Init_params/strategy_data.json", "r") as f:
+                loaded_Dict = json.loads(f.read())
+            if loaded_Dict.get('strategy_data') != None:
+                strategy_data = loaded_Dict['strategy_data']
+            for column in range(self.COLUMNS):
+                for row in range(self.ROWS):
+                    index1 = column * self.ROWS + row
+                    power = strategy_data[index1][2]
+                    yaw = int(strategy_data[index1][3] * 40)  # yaw in radians multiplied by 40
+                    self.strategy_data[index1*2] = power
+                    self.strategy_data[index1*2+1] = yaw
 
-    #    def InitUI(self):
+    class Forward:
+        def __init__(self, glob):
+            self.glob = glob
 
-    #        self.Bind(wx.EVT_PAINT, self.OnPaint)
-    #        self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
-    #        self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
-    #        self.Bind(wx.EVT_MOTION, self.OnMove)
+        def direction_To_Guest(self):
+            if self.glob.ball_coord[0] < 0: 
+                return 0
+            elif self.glob.ball_coord[0] > 0.8 and abs(self.glob.ball_coord[1]) > 0.6:
+                return math.atan(-self.glob.ball_coord[1]/(1.8-self.glob.ball_coord[0]))
+            elif self.glob.ball_coord[0] < 1.5 and abs(self.glob.ball_coord[1]) < 0.25:
+                if (1.8-self.glob.ball_coord[0]) == 0: return 0
+                else: 
+                    if abs(self.glob.ball_coord[1]) < 0.2:
+                        return math.atan((math.copysign(0.5, self.glob.ball_coord[1])-
+                                                           self.glob.ball_coord[1])/(1.8-self.glob.ball_coord[0]))
+                    else: 
+                        return math.atan((0.5* (round(random.random(),0)*2 - 1)-
+                                                           self.glob.ball_coord[1])/(1.8-self.glob.ball_coord[0]))
+            else:
+                return math.atan(-self.glob.pf_coord[1]/(2.4-self.glob.pf_coord[0]))
 
-    #        self.SetTitle('Lines')
-    #        self.Centre()
-
-    #    def OnPaint(self, e):
-    #        self.dc = wx.PaintDC(self)
-    #        #dc.SetBackground(wx.Brush('#1ac500'))
-    #        #dc.SetPen(wx.Pen('#d4d4d4'))
-    #        self.SetClientSize(800, 600)
-    #        self.dc.SetBrush(wx.Brush('#1ac500'))
-    #        self.dc.DrawRectangle(0, 0, 800, 600)
-    #        pen = wx.Pen('#ffffff', 10, wx.SOLID)
-    #        pen.SetJoin(wx.JOIN_MITER)
-    #        self.dc.SetPen(pen)
-    #        self.dc.DrawRectangle(40, 40, 720, 520)
-    #        self.dc.DrawRectangle(0, 200, 40, 200)
-    #        self.dc.DrawRectangle(760, 200, 40, 200)
-    #        self.dc.DrawRectangle(40, 160, 40, 280)
-    #        self.dc.DrawRectangle(720, 160, 40, 280)
-    #        self.dc.DrawCircle(400,300,60)
-    #        self.dc.DrawLine(400,45,400,555)
-    #        self.dc.DrawLine(390,300,410,300)
-    #        self.dc.DrawLine(210,300,230,300)
-    #        self.dc.DrawLine(220,290,220,310)
-    #        self.dc.DrawLine(570,300,590,300)
-    #        self.dc.DrawLine(580,290,580,310)
+    class Forward_Vector_Matrix:
+        def __init__(self, glob):
+            self.glob = glob
+            #self.direction_To_Guest = 0
+            self.kick_Power = 1
         
-    #        self.dc.SetAxisOrientation(True, True)
-    #        self.dc.SetDeviceOrigin(400, 300)
 
-    #        pen1 = wx.Pen('#000000', 1, wx.SOLID)
-    #        self.dc.SetPen(pen1)
-    #        self.dc.SetBrush(wx.Brush('#ffffff'))
-    #        self.dc.DrawCircle(self.glob.pf_coord[0] *200, self.glob.pf_coord[1] *200 , 0.1 *200)  #robot
-    #        self.dc.SetBrush(wx.Brush('#000000'))
-    #        for obstacle in self.glob.obstacles:
-    #            self.dc.DrawCircle(obstacle[0] *200, obstacle[1] *200, obstacle[2] *100)      # obstacle
-    #        self.dc.SetBrush(wx.Brush('#ff0000'))
-    #        self.dc.DrawCircle(self.glob.ball_coord[0] *200, self.glob.ball_coord[1] *200, 0.04 *200)   # ball
-    #        target_yaw = self.f.direction_To_Guest()
-    #        dest = []
-    #        centers = []
-    #        number_Of_Cycles = 1000
-    #        #for i in range(4):
-    #        #    target_x = self.glob.ball_coord[0] - (0.11 + i * 0.05) * math.cos(target_yaw)
-    #        #    target_y = self.glob.ball_coord[1] - (0.11 + i * 0.05) * math.sin(target_yaw)
-    #        #    target_coord = [target_x, target_y, target_yaw]
-    #        #    dest1, centers1, number_Of_Cycles1 = self.p.path_calc_optimum(self.glob.pf_coord, target_coord)
-    #        #    if number_Of_Cycles1 <= number_Of_Cycles:
-    #        #        dest = dest1
-    #        #        centers = centers1
-    #        #        number_Of_Cycles = number_Of_Cycles1
-    #        for i in range(5):
-    #            for j in range(2):
-    #                target_x = self.glob.ball_coord[0] - (0.21 + j * 0.05) * math.cos(target_yaw - 0.8 + i * 0.4)
-    #                target_y = self.glob.ball_coord[1] - (0.21 + j * 0.05) * math.sin(target_yaw - 0.8 + i * 0.4)
-    #                target_coord = [target_x, target_y, target_yaw]
-    #                dest1, centers1, number_Of_Cycles1 = self.p.path_calc_optimum(self.glob.pf_coord, target_coord)
-    #                if i != 2: number_Of_Cycles1 += 50
-    #                if number_Of_Cycles1 <= number_Of_Cycles:
-    #                    dest = dest1
-    #                    centers = centers1
-    #                    number_Of_Cycles = number_Of_Cycles1
-    #        print('number_Of_Cycles= ', number_Of_Cycles)
-    #        #print('centers =', centers)
-    #        if len(dest)==0: 
-    #            print('Impossible')
-    #            return
-    #        #print(d)
-    #        for i in range(0,len(dest),2):
-    #            self.dc.DrawLine((dest[i][0] *200, dest[i][1] *200), (dest[i+1][0] *200, dest[i+1][1] *200))
-    #        if self.p.intersection_line_segment_and_circle(dest[0][0], dest[0][1], dest[1][0], dest[1][1], self.glob.obstacles[0][0], self.glob.obstacles[0][1], uprightRobotRadius):
-    #           print('intersection with line')
-    #        for i in range(len(centers)):
-    #            x1, y1, x2, y2, cx, cy, R, CW = centers[i]
-    #            self.draw_arc(x1*200, y1*200, x2*200, y2*200, cx*200, cy*200, CW)
-    #        if len(dest) == 2:
-    #            if self.p.intersection_circle_segment_and_circle(dest[1][0], dest[1][1], target_x, target_y,
-    #                                                          centers[1][0], centers[1][1], CW, self.glob.obstacles[0][0], self.glob.obstacles[0][1], uprightRobotRadius):
-    #                print('intersection with circle')
-    #        if len(dest) == 4:
-    #            if self.p.intersection_circle_segment_and_circle(dest[3][0], dest[3][1], target_x, target_y,
-    #                                                          centers[1][0], centers[1][1], CW, self.glob.obstacles[0][0], self.glob.obstacles[0][1], uprightRobotRadius):
-    #                print('intersection with circle')
-    #        if self.p.intersection_circle_segment_and_circle(self.glob.pf_coord[0], self.glob.pf_coord[1], dest[0][0],
-    #                                                      dest[0][1], centers[0][0], centers[0][1], CW,
-    #                                                      self.glob.obstacles[0][0], self.glob.obstacles[0][1], uprightRobotRadius):
-    #            print('intersection with circle')
+        def direction_To_Guest(self):
+            if abs(self.glob.ball_coord[0])  >  self.glob.landmarks["FIELD_LENGTH"] / 2:
+                ball_x = math.copysign(self.glob.landmarks["FIELD_LENGTH"] / 2, self.glob.ball_coord[0])
+            else: ball_x = self.glob.ball_coord[0]
+            if abs(self.glob.ball_coord[1])  >  self.glob.landmarks["FIELD_WIDTH"] / 2:
+                ball_y = math.copysign(self.glob.landmarks["FIELD_WIDTH"] / 2, self.glob.ball_coord[1])
+            else: ball_y = self.glob.ball_coord[1]
+            col = math.floor((ball_x + self.glob.landmarks["FIELD_LENGTH"] / 2) / (self.glob.landmarks["FIELD_LENGTH"] / self.glob.COLUMNS))
+            row = math.floor((- ball_y + self.glob.landmarks["FIELD_WIDTH"] / 2) / (self.glob.landmarks["FIELD_WIDTH"] / self.glob.ROWS))
+            if col >= self.glob.COLUMNS : col = self.glob.COLUMNS - 1
+            if row >= self.glob.ROWS : row = self.glob.ROWS -1
+            direction_To_Guest = self.glob.strategy_data[(col * self.glob.ROWS + row) * 2 + 1] / 40
+            self.kick_Power = self.glob.strategy_data[(col * self.glob.ROWS + row) * 2]
+            print('direction_To_Guest = ', math.degrees(direction_To_Guest))
+            return direction_To_Guest
 
-    #        #dc.Bind()
+    class Example(wx.Frame):
 
-    #    def draw_arc(self, x1, y1, x2, y2, cx, cy, CW):
-    #        self.dc.SetBrush(wx.Brush('#ff0000', wx.BRUSHSTYLE_TRANSPARENT))
-    #        if CW: self.dc.DrawArc(x2, y2, x1, y1, cx, cy)
-    #        else: self.dc.DrawArc(x1, y1, x2, y2, cx, cy)
+        def __init__(self, *args, **kw):
+            #super().__init__(*args, **kw)
+            super(Example, self).__init__(*args, **kw)
+            self.glob = Glob()
+            self.p = PathPlan(self.glob)
+            self.f = Forward_Vector_Matrix(self.glob)
+            self.isLeftDown = False
+            self.InitUI()
 
-    #    def OnLeftDown(self, event):
-    #        #dc = wx.ClientDC(self.staticBMP)
-    #        pos = event.GetLogicalPosition(self.dc)
-    #        self.isLeftDown = True
-    #        if math.sqrt((pos[0]-self.glob.pf_coord[0]*200)**2 + (pos[1]-self.glob.pf_coord[1]*200)**2) <= 20: 
-    #            self.moving_object = -1       #'robot'
-    #            self.dx = self.glob.pf_coord[0]*200 - pos[0]
-    #            self.dy = self.glob.pf_coord[1]*200 - pos[1]
-    #        elif math.sqrt((pos[0]-self.glob.ball_coord[0]*200)**2 + (pos[1]-self.glob.ball_coord[1]*200)**2) <= 8: 
-    #            self.moving_object = -2    #'ball'
-    #            self.dx = self.glob.ball_coord[0]*200 - pos[0]
-    #            self.dy = self.glob.ball_coord[1]*200 - pos[1]
-    #        else: self.isLeftDown = False
-    #        if not self.isLeftDown:
-    #            for obstacle in self.glob.obstacles:
-    #                if math.sqrt((pos[0]-obstacle[0]*200)**2 + (pos[1]-obstacle[1]*200)**2) <= 20:
-    #                    self.isLeftDown = True
-    #                    self.moving_object = self.glob.obstacles.index(obstacle)      #'obstacle'
-    #                    self.dx = obstacle[0]*200 - pos[0]
-    #                    self.dy = obstacle[1]*200 - pos[1]
-    #                    break
-    #        #dc.DrawCircle(pos[0], pos[1], 5)
-    #        a = 1
+        def InitUI(self):
+
+            self.Bind(wx.EVT_PAINT, self.OnPaint)
+            self.Bind(wx.EVT_LEFT_DOWN, self.OnLeftDown)
+            self.Bind(wx.EVT_LEFT_UP, self.OnLeftUp)
+            self.Bind(wx.EVT_MOTION, self.OnMove)
+
+            self.SetTitle('Lines')
+            self.Centre()
+
+        def OnPaint(self, e):
+            self.dc = wx.PaintDC(self)
+            #dc.SetBackground(wx.Brush('#1ac500'))
+            #dc.SetPen(wx.Pen('#d4d4d4'))
+            self.SetClientSize(800, 600)
+            self.dc.SetBrush(wx.Brush('#1ac500'))
+            self.dc.DrawRectangle(0, 0, 800, 600)
+            pen = wx.Pen('#ffffff', 10, wx.SOLID)
+            pen.SetJoin(wx.JOIN_MITER)
+            self.dc.SetPen(pen)
+            self.dc.DrawRectangle(40, 40, 720, 520)
+            self.dc.DrawRectangle(0, 200, 40, 200)
+            self.dc.DrawRectangle(760, 200, 40, 200)
+            self.dc.DrawRectangle(40, 160, 40, 280)
+            self.dc.DrawRectangle(720, 160, 40, 280)
+            self.dc.DrawCircle(400,300,60)
+            self.dc.DrawLine(400,45,400,555)
+            self.dc.DrawLine(390,300,410,300)
+            self.dc.DrawLine(210,300,230,300)
+            self.dc.DrawLine(220,290,220,310)
+            self.dc.DrawLine(570,300,590,300)
+            self.dc.DrawLine(580,290,580,310)
         
-    #    def OnLeftUp(self, event):
-    #        self.isLeftDown = False
+            self.dc.SetAxisOrientation(True, True)
+            self.dc.SetDeviceOrigin(400, 300)
 
-    #    def OnMove(self, event):
-    #        if self.isLeftDown:
-    #            pos = event.GetLogicalPosition(self.dc)
-    #            if self.moving_object == -1:                         #'robot'
-    #                self.glob.pf_coord = [(pos[0] + self.dx)/200, (pos[1] + self.dy)/200, self.glob.pf_coord[2]]
-    #                self.Refresh()
-    #            if self.moving_object == -2:                          # 'ball'
-    #                self.glob.ball_coord = [(pos[0] + self.dx)/200, (pos[1] + self.dy)/200]
-    #                #self.glob.obstacles[0] = [self.glob.ball_coord[0], self.glob.ball_coord[1], 0.15]
-    #                self.Refresh()
-    #            if self.moving_object >= 0:                             # 'obstacle'
-    #                self.glob.obstacles[self.moving_object] = [(pos[0] + self.dx)/200, (pos[1] + self.dy)/200, self.glob.obstacles[self.moving_object][2]]
-    #                self.Refresh()
+            pen1 = wx.Pen('#000000', 1, wx.SOLID)
+            self.dc.SetPen(pen1)
+            self.dc.SetBrush(wx.Brush('#ffffff'))
+            self.dc.DrawCircle(int(self.glob.pf_coord[0] *200), int(self.glob.pf_coord[1] *200) , 20)  #robot
+            self.dc.SetBrush(wx.Brush('#000000'))
+            for obstacle in self.glob.obstacles:
+                self.dc.DrawCircle(int(obstacle[0] *200), int(obstacle[1] *200), int(obstacle[2] *100))      # obstacle
+            self.dc.SetBrush(wx.Brush('#ff0000'))
+            self.dc.DrawCircle(int(self.glob.ball_coord[0] *200), int(self.glob.ball_coord[1] *200), 8)   # ball
+            target_yaw = self.f.direction_To_Guest()
+            dest = []
+            centers = []
+            number_Of_Cycles = 1000
+            #for i in range(4):
+            #    target_x = self.glob.ball_coord[0] - (0.11 + i * 0.05) * math.cos(target_yaw)
+            #    target_y = self.glob.ball_coord[1] - (0.11 + i * 0.05) * math.sin(target_yaw)
+            #    target_coord = [target_x, target_y, target_yaw]
+            #    dest1, centers1, number_Of_Cycles1 = self.p.path_calc_optimum(self.glob.pf_coord, target_coord)
+            #    if number_Of_Cycles1 <= number_Of_Cycles:
+            #        dest = dest1
+            #        centers = centers1
+            #        number_Of_Cycles = number_Of_Cycles1
+            for i in range(5):
+                for j in range(2):
+                    target_x = self.glob.ball_coord[0] - (0.21 + j * 0.05) * math.cos(target_yaw - 0.8 + i * 0.4)
+                    target_y = self.glob.ball_coord[1] - (0.21 + j * 0.05) * math.sin(target_yaw - 0.8 + i * 0.4)
+                    target_coord = [target_x, target_y, target_yaw]
+                    dest1, centers1, number_Of_Cycles1 = self.p.path_calc_optimum(self.glob.pf_coord, target_coord)
+                    if i != 2: number_Of_Cycles1 += 50
+                    if number_Of_Cycles1 <= number_Of_Cycles:
+                        dest = dest1
+                        centers = centers1
+                        number_Of_Cycles = number_Of_Cycles1
+            print('number_Of_Cycles= ', number_Of_Cycles)
+            #print('centers =', centers)
+            if len(dest)==0: 
+                print('Impossible')
+                return
+            #print(d)
+            for i in range(0,len(dest),2):
+                self.dc.DrawLine((int(dest[i][0] *200), int(dest[i][1] *200)), (int(dest[i+1][0] *200), int(dest[i+1][1] *200)))
+            if self.p.intersection_line_segment_and_circle(dest[0][0], dest[0][1], dest[1][0], dest[1][1], self.glob.obstacles[0][0], self.glob.obstacles[0][1], uprightRobotRadius):
+               print('intersection with line')
+            for i in range(len(centers)):
+                x1, y1, x2, y2, cx, cy, R, CW = centers[i]
+                self.draw_arc(x1*200, y1*200, x2*200, y2*200, cx*200, cy*200, CW)
+            if len(dest) == 2:
+                if self.p.intersection_circle_segment_and_circle(dest[1][0], dest[1][1], target_x, target_y,
+                                                              centers[1][0], centers[1][1], CW, self.glob.obstacles[0][0], self.glob.obstacles[0][1], uprightRobotRadius):
+                    print('intersection with circle')
+            if len(dest) == 4:
+                if self.p.intersection_circle_segment_and_circle(dest[3][0], dest[3][1], target_x, target_y,
+                                                              centers[1][0], centers[1][1], CW, self.glob.obstacles[0][0], self.glob.obstacles[0][1], uprightRobotRadius):
+                    print('intersection with circle')
+            if self.p.intersection_circle_segment_and_circle(self.glob.pf_coord[0], self.glob.pf_coord[1], dest[0][0],
+                                                          dest[0][1], centers[0][0], centers[0][1], CW,
+                                                          self.glob.obstacles[0][0], self.glob.obstacles[0][1], uprightRobotRadius):
+                print('intersection with circle')
 
-    #def main():
+            #dc.Bind()
 
-    #    app = wx.App()
-    #    ex = Example(None)
-    #    ex.Show()
-    #    app.MainLoop()
+        def draw_arc(self, x1, y1, x2, y2, cx, cy, CW):
+            self.dc.SetBrush(wx.Brush('#ff0000', wx.BRUSHSTYLE_TRANSPARENT))
+            if CW: self.dc.DrawArc(int(x2), int(y2), int(x1), int(y1), int(cx), int(cy))
+            else: self.dc.DrawArc(int(x1), int(y1), int(x2), int(y2), int(cx), int(cy))
 
-    #main()
+        def OnLeftDown(self, event):
+            #dc = wx.ClientDC(self.staticBMP)
+            pos = event.GetLogicalPosition(self.dc)
+            self.isLeftDown = True
+            if math.sqrt((pos[0]-self.glob.pf_coord[0]*200)**2 + (pos[1]-self.glob.pf_coord[1]*200)**2) <= 20: 
+                self.moving_object = -1       #'robot'
+                self.dx = self.glob.pf_coord[0]*200 - pos[0]
+                self.dy = self.glob.pf_coord[1]*200 - pos[1]
+            elif math.sqrt((pos[0]-self.glob.ball_coord[0]*200)**2 + (pos[1]-self.glob.ball_coord[1]*200)**2) <= 8: 
+                self.moving_object = -2    #'ball'
+                self.dx = self.glob.ball_coord[0]*200 - pos[0]
+                self.dy = self.glob.ball_coord[1]*200 - pos[1]
+            else: self.isLeftDown = False
+            if not self.isLeftDown:
+                for obstacle in self.glob.obstacles:
+                    if math.sqrt((pos[0]-obstacle[0]*200)**2 + (pos[1]-obstacle[1]*200)**2) <= 20:
+                        self.isLeftDown = True
+                        self.moving_object = self.glob.obstacles.index(obstacle)      #'obstacle'
+                        self.dx = obstacle[0]*200 - pos[0]
+                        self.dy = obstacle[1]*200 - pos[1]
+                        break
+            #dc.DrawCircle(pos[0], pos[1], 5)
+            a = 1
+        
+        def OnLeftUp(self, event):
+            self.isLeftDown = False
+
+        def OnMove(self, event):
+            if self.isLeftDown:
+                pos = event.GetLogicalPosition(self.dc)
+                if self.moving_object == -1:                         #'robot'
+                    self.glob.pf_coord = [(pos[0] + self.dx)/200, (pos[1] + self.dy)/200, self.glob.pf_coord[2]]
+                    self.Refresh()
+                if self.moving_object == -2:                          # 'ball'
+                    self.glob.ball_coord = [(pos[0] + self.dx)/200, (pos[1] + self.dy)/200]
+                    #self.glob.obstacles[0] = [self.glob.ball_coord[0], self.glob.ball_coord[1], 0.15]
+                    self.Refresh()
+                if self.moving_object >= 0:                             # 'obstacle'
+                    self.glob.obstacles[self.moving_object] = [(pos[0] + self.dx)/200, (pos[1] + self.dy)/200, self.glob.obstacles[self.moving_object][2]]
+                    self.Refresh()
+
+    def main():
+
+        app = wx.App()
+        ex = Example(None)
+        ex.Show()
+        app.MainLoop()
+
+    main()

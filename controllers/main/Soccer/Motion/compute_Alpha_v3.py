@@ -1,9 +1,52 @@
+"""
+The module is designed by team Robokit of Phystech Lyceum and team Starkit
+of MIPT under mentorship of Azer Babaev.
+Module can be used for Inverted Kinematics for legs of Robokit-1 robot.
+Advantage of module against other IK implementations is fast and repeatable 
+calculation benchmark.
+Result is achieved due to mixed analytic/numerical calculation method.
+Module is designed for 6 DOF robot leg. From 6 angles one angle is calculated 
+using numerical iterations, other 5 angles are obtained through polynom
+roots formula calculation. This way prowides fast benchmark and repeatability.
+Algorithm being implemented in C language with integration into firnware of 
+OpenMV is capable to calculated angles for robot legs within time less than 1ms.
+Multiple IK solutions are filtered through applying of angle limits within calculation.
+This yields less time for calculation.
+usage: create class Alpha instance and call method compute_Alpha_v3 with arguments.
+Returns list of 0, 1 or 2 lists of servo angles. List of 0 elements means that
+IK was not solved. List of 1 list means 1 possible solition is detected.
+List of 2 lists means that plurality of solutions was not filtered by provided arguments.
+
+
+"""
 import math, time
 
 #@micropython.native
 class Alpha():
 
     def compute_Alpha_v3(self, xt,yt,zt,x,y,z,w, sizes, limAlpha):
+        """
+        usage: list: angles = self.compute_Alpha_v3(float: xt, float: yt, float: zt,
+                              float: x, float: y, float: z, float: w,
+                              list: sizes, list: limAlpha)
+        angles: list of floats angles in radians of servos which provide target positioning and
+                orientation of robots' foot
+        xt:     target x coordinate of foots' center point
+        yt:     target y coordinate of foots' center point
+        zt:     target z coordinate of foots' center point
+        x:      x coordinate of vector of orientation of foot
+        y:      y coordinate of vector of orientation of foot
+        z:      z coordinate of vector of orientation of foot
+        w:      rotation in radians of foot around vector of orientation
+        sizes:  list of sizes defining distances between servo axles in biped implementation
+        limAlpha: list of limits [minimum, maximum] of servomotors measured in number of encoder ticks
+                  of Kondo series 2500 servomotors.
+        Target coordinates are measured in local robot coordinate system XYZ with ENU orientation. 
+        [0,0,0] point of coordinate system is linked to pelvis of robot.
+        Foot orientation vector has length 1. Base of vector is at bottom of foot and tip of vector
+        is directed down when foot is on floor.   
+
+        """
         from math import sqrt,cos,sin,asin,fabs,tan,atan
         #t1_start =time.perf_counter_ns()
         a5, b5, c5, a6, a7, a8, a9, a10, b10, c10 = sizes
