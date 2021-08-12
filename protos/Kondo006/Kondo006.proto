@@ -54,7 +54,7 @@ PROTO Kondo006 [
     
 
     name IS name  
-    model "robot"
+    model IS name
     children [
       Solid {
         translation 0 0 0
