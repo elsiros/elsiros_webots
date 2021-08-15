@@ -102,7 +102,7 @@ class Local():
         self.glob.pf_coord = [x * self.side_factor, y * self.side_factor, yaw]
         #self.glob.pf_coord = [x * self.side_factor, y * self.side_factor, yaw + math.pi * (1 - self.side_factor)/2]
         self.glob.pf_coord[2] = self.normalize_yaw(self.glob.pf_coord[2])
-        if self.glob.obstacleAvoidanceIsOn: self.group_obstacles()
+        #if self.glob.obstacleAvoidanceIsOn: self.group_obstacles()
         self.coordinate_record()
         return True
 

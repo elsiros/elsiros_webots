@@ -220,6 +220,7 @@ class PathPlan:
             start_coord:      list or tuple of floats [x, y, yaw]
             target_coord:     list or tuple of floats [x, y, yaw]
         """
+        print('obstacles:', self.glob.obstacles)
         dest, centers, number_Of_Cycles = self.path_calc(start_coord, target_coord)
         if len(centers) > 0:
             x1, y1, x2, y2, cx, cy, R, CW = centers[0]
@@ -408,6 +409,11 @@ class PathPlan:
         x1, y1, x2, y2, cx, cy, R, CW = centers[0]
         prop_yaw_local1 = self.delta_yaw(yaw1, prop_yaw_glob1, CW)
         number_Of_Cycles = math.ceil(abs(prop_yaw_local1 / 0.2))
+        while True:
+            delta_yaw_step = prop_yaw_local1 / number_Of_Cycles
+            stepLength = R * abs(delta_yaw_step) * 1000 * 64 / self.glob.cycle_step_yield * 1.1
+            if stepLength <= 64: break
+            else: number_Of_Cycles += 1
         for i in range(0,len(dest),2):
             distance = math.sqrt((dest[i+1][0] - dest[i][0])**2 + (dest[i+1][1] - dest[i][1])**2)
             number_Of_Cycles += math.ceil(abs(distance / (self.glob.cycle_step_yield/1000)))
@@ -418,7 +424,13 @@ class PathPlan:
                 prop_yaw_glob2 = self.coord2yaw(dest[i+3][0] - dest[i+2][0], dest[i+3][1] - dest[i+2][1])
                 prop_yaw_local2 = self.delta_yaw(prop_yaw_glob1, prop_yaw_glob2, CW)
                 prop_yaw_glob1 = prop_yaw_glob2
-            number_Of_Cycles += math.ceil(abs(prop_yaw_local2 / 0.2))
+            number_Of_Cycles2 = math.ceil(abs(prop_yaw_local2 / 0.2))
+            while True:
+                delta_yaw_step = prop_yaw_local2 / number_Of_Cycles2
+                stepLength = R * abs(delta_yaw_step) * 1000 * 64 / self.glob.cycle_step_yield * 1.1
+                if stepLength <= 64: break
+                else: number_Of_Cycles2 += 1
+            number_Of_Cycles += number_Of_Cycles2
         return number_Of_Cycles
 
 
@@ -591,11 +603,11 @@ if __name__ == '__main__':
         def __init__(self):
             self.COLUMNS = 18
             self.ROWS = 13
-            self.pf_coord =   [0.276, 0.749, 2]  #[-0.4, 0.0 , 0] # [0.5, 0.5 , -math.pi * 3/4]
-            self.ball_coord = [-0.132, 0.957]        #[0, 0]
-            self.obstacles = [[0.4, 0.025, 0.2], [0.725, -0.475, 0.2]]  #[[0, 0, 0.15], [0.4, 0.025, 0.2], [0.725, -0.475, 0.2]]
-            #self.ball_coord = [2, 0]
-            #self.obstacles = [[0.4, 0.025, 0.2], [0.725, -0.475, 0.2], [0.8, 0.55, 0.2], [1.175, 0, 0.2], [1.625, -0.4, 0.2], [1.7, 0.425, 0.2]]
+            self.pf_coord =    [0.288127801937314, -0.1567013686848328, 0.23820464086940252]  #[-0.4, 0.0 , 0] # [0.5, 0.5 , -math.pi * 3/4]
+            #self.ball_coord = [-0.132, 0.957]        #[0, 0]
+            #self.obstacles = [[0.4, 0.025, 0.2], [0.725, -0.475, 0.2]]  #[[0, 0, 0.15], [0.4, 0.025, 0.2], [0.725, -0.475, 0.2]]
+            self.ball_coord = [0.9000400221229459, -0.64993850847569]
+            self.obstacles = [[-1.40272770229783, 0.00015398849619637726, 0.2], [1.4679380912231852, -0.31451040267467, 0.2], [0.35446599449729804, -0.1052386048459205, 0.2]]
             self.landmarks = {"post1": [[ 1.8, -0.6 ]], "post2": [[ 1.8, 0.6 ]], "post3": [[ -1.8, 0.6 ]], "post4": [[ -1.8, -0.6 ]],
                               "unsorted_posts": [[ 1.8, 0.6 ],[ 1.8, -0.6 ],[ -1.8, 0.6 ],[ -1.8, -0.6 ]],
                               "FIELD_WIDTH": 2.6, "FIELD_LENGTH": 3.6 }

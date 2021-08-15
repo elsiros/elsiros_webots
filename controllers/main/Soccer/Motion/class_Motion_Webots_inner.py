@@ -235,6 +235,22 @@ class Motion_sim(Motion_real):
     def sim_Get_Ball_Position(self):
         return self.robot.getFromDef("BALL").getPosition()
 
+    def sim_Get_Obstacles(self):
+        robot_names = ['RED_PLAYER_1', 'RED_PLAYER_2', 'BLUE_PLAYER_1', 'BLUE_PLAYER_2']
+        my_name = self.robot.getSelf().getDef()
+        robot_names.pop(robot_names.index(my_name))
+        #print('my_name:', my_name)
+        factor = self.local.side_factor
+        new_obstacles = []
+        ball_position = self.robot.getFromDef("BALL").getPosition()
+        new_obstacles.append([factor*ball_position[0], factor*ball_position[1], 0.15] )
+        for name in robot_names:
+            obstacle = self.robot.getFromDef(name).getPosition()
+            new_obstacles.append([factor*obstacle[0], factor*obstacle[1], 0.20])
+        self.glob.obstacles = new_obstacles
+        print ('new_obstacles:', new_obstacles)
+        return
+
     def sim_Get_Robot_Position(self):
         self.sim_Trigger()
         x, y, z  = self.robot.getSelf().getPosition()

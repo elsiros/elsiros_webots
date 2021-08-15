@@ -73,6 +73,7 @@ class Motion_real(Motion1):
                                          dist*math.sin(course_global_rad)+ self.glob.pf_coord[1]]
                 #if len(self.glob.obstacles) == 0: self.glob.obstacles = [[0,0,0]]
                 #self.glob.obstacles[0] = [self.glob.ball_coord[0], self.glob.ball_coord[1], 0.15]
+                self.sim_Get_Obstacles()
                 return(a, course, dist, speed)
             else:
                 if distance1 !=0:
@@ -119,6 +120,7 @@ class Motion_real(Motion1):
                                         dist*math.sin(course_global_rad)+ self.glob.pf_coord[1]]
             if len(self.glob.obstacles) == 0: self.glob.obstacles = [[0,0,0]]
             self.glob.obstacles[0] = [self.glob.ball_coord[0], self.glob.ball_coord[1], 0.15]
+            self.sim_Get_Obstacles()
             distance = dist *1000
             self.neck_pan =int( - course/ self.TIK2RAD)
             D = self.params['HEIGHT_OF_CAMERA'] - self.params['HEIGHT_OF_NECK']- self.params['DIAMETER_OF_BALL']/2
