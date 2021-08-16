@@ -851,28 +851,34 @@ def update_team_contacts(team):
 
 def update_ball_contacts():
     game.ball.contact_points = []
-    for i in range(game.ball.getNumberOfContactPoints()):
+    contact_points = game.ball.getContactPoints()
+    n = game.ball.getNumberOfContactPoints()
+    for i in range(n):
         point = game.ball.getContactPoint(i)
         if point[2] <= game.field.turf_depth:  # contact with the ground
             continue
         game.ball.contact_points.append(point)
         break
+    return len(game.ball.contact_points)
 
 red_team = read_team(game.red.config)
 blue_team = read_team(game.blue.config)            
-
-def update_contacts():
-    """Only updates the contact of objects which are not asleep"""
-    update_ball_contacts()
-    update_team_contacts(red_team)
-    update_team_contacts(blue_team)                   
 
 def is_robot_near(position, min_dist):
     for team in [red_team, blue_team]:
         for number in team['players']:
             if distance2(position, team['players'][number]['position']) < min_dist:
                 return True
-    return False             
+    return False    
+
+def update_contacts():
+    valid_ball_contacts_number = update_ball_contacts()
+    # Check robot contacts only if ball contacts numbers shows that there is some other contact than with ground exist
+    if valid_ball_contacts_number > 0:
+        update_team_contacts(red_team)
+        update_team_contacts(blue_team)                   
+
+         
 
 def throw_in(middle_line, negative_x, negative_y):
     possible_restart_points = []
@@ -1103,8 +1109,10 @@ game.initial_state_processed = False
 game.set_state_processed = False 
 game.finished_state_processed = False   
 
+game.ball.enableContactPointsTracking(time_step)
+
 while supervisor.step(time_step) != -1 and not game.over:    
-    #perform_status_update() # To show realtime simulation factor if needed
+    perform_status_update() # To show realtime simulation factor if needed
     #if time_count - last_game_controller_send_time >= last_game_controller_send_period_ms:
     game_controller_send(f'CLOCK:{time_count}')
     #    last_game_controller_send_time = time_count        
