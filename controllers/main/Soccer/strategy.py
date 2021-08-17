@@ -1,3 +1,8 @@
+"""
+The module is designed by team Robokit of Phystech Lyceum and team Starkit
+of MIPT under mentorship of Azer Babaev.
+The module is designed for strategy of soccer game by forward and goalkeeper.
+"""
 import sys
 import os
 import math
@@ -8,6 +13,19 @@ from . import utility
 
 
 class GoalKeeper:
+    """
+    class GoalKeeper is designed to define goalkeeper's play according to style developed by 
+    Matvei Ivaschenko - a student of Phystech Lyceum in 2020.
+    Idea of style was in dividing of home half of shoccer field to 8 sectors according to distance 
+    from home goals. When ball is in 4 sectors closest to goals A1, A2, A3, A4 goalkeeper attacks ball with 
+    purpose transfer it to side of opponent. When ball is in 4 sectors B1, B2, B3, B4 which are in longer
+    distance from goals goalkeeper just slide to better position from current without attempt 
+    to attack ball.
+    In case if ball didn't go longer than 1m after kick of goalkeeper, he will undertake another attempt
+    up to 10 times in total.
+    In case if ball goes to distance longer than 1m or ball can't be seen by goalkeeper then goalkeeper
+    returns to center of goals. 
+    """
     def __init__(self, motion, local, glob):
         self.motion = motion
         self.local = local
@@ -15,6 +33,19 @@ class GoalKeeper:
         self.direction_To_Guest = 0
 
     def turn_Face_To_Guest(self):
+        """
+        The method is designed to define kick direction and load it into self.direction_To_Guest
+        direction is measured in radians of yaw. 
+        After definition of kick direction robot turns to this direction.
+        In case if robots' own coordinate self.glob.pf_coord shows lication on own half of field
+        i.e. self.glob.pf_coord[0] < 0 then direction of shooting is 0
+        if robots' x coordinate > 0.8 and abs(y coordinate) > 0.6 then direction of kick is to center
+        of opponents' goals.
+        if robots' x < 1.5 and abs(y) < 0.25 kick direction will be to corner of opponents' goals, 
+        with left or right corner is defined randomly.
+        in all other positions of robot kick direction is defined as ditection to target point with
+        coordinates x = 0, y = 2.8
+        """
         if self.glob.pf_coord[0] < 0:
             self.motion.turn_To_Course(0)
             self.direction_To_Guest = 0
@@ -33,6 +64,15 @@ class GoalKeeper:
             self.motion.turn_To_Course(self.direction_To_Guest)
 
     def goto_Center(self):                      #Function for reterning to center position
+        """
+        Goalkeeper returns to duty position 0.4m in front of own goals.
+        before returning robot checks trustability of localization. If localization is poor then robot undertake 
+        special motions by head and by turning to goals with purpose to improve localization.
+        In case if distance to duty position is more than 0.5m then far_distance_plan_approach will be used,
+        else near_distance_omni_motion will be used.
+        after returning to duty position robot turns to kick direction, for which yaw=0 in front of own goals.
+
+        """
         print('Function for reterning to center position')
         if self.local.coordinate_trust_estimation() < 0.5: self.motion.localisation_Motion()
         player_X_m = self.glob.pf_coord[0]
@@ -56,6 +96,15 @@ class GoalKeeper:
         self.turn_Face_To_Guest()
 
     def find_Ball(self):
+        """
+        Before using motion method seek_Ball_In_Pose goalkeeper define usage of method in quick mode or in accurate mode.
+        In case if localization is trustable quick mode is used means fast_Reaction_On=True. 
+        seek_Ball_In_Pose method moves head of robot to 15 positions covering all visible areas in front and in sides of robot.
+        this way seeking of ball is not single task. Robot improves localization through observing localization markers on 
+        obtained pictures. 
+        In case if fast_Reaction_On=True then observation of surroundings will be interrupted as soon as ball appear in visible 
+        sector. Speed of ball is also detected. 
+        """
         fast_Reaction_On=True
         if self.local.coordinate_trust_estimation() < 0.5: fast_Reaction_On = False
         if self.glob.ball_coord[0] <= 0: fast_Reaction_On=True
@@ -63,13 +112,18 @@ class GoalKeeper:
         #print ( 'dist = ', dist, 'napravl =', napravl)
         return success_Code, dist, napravl, speed
 
-    def ball_Speed_Dangerous(self):
-        pass
-    def fall_to_Defence(self):
-        print('fall to defence')
-    def get_Up_from_defence(self):
-        print('up from defence')
     def scenario_A1(self, dist, napravl):#The robot knock out the ball to the side of the opponent
+        """
+        This method is activated if goalkeeper finds ball at distance less than 0.7m and relative direction
+        from 0 to math.pi/4. Supposed that goalkeeper stands on duty position faced to opponents' goals before seeking ball.
+        usage: 
+            None: self.scenario_A1(float:dist, float: napravl)
+                dist -      distance to ball from goalkeeper in meters
+                napravl -   relative direction to ball from goalkeeper in radians 
+
+        method undertake 10 attempts to kick off ball to opponents side. In case of successful attempt - ball goes 1m away from 
+        goalkeeper - goalkeeper returns to duty position in front of own goals. Otherwise attempts are continued up to 10 times.
+        """
         print('The robot knock out the ball to the side of the opponent')
         for i in range(10):
             if dist > 0.5 :
@@ -87,18 +141,59 @@ class GoalKeeper:
         self.goto_Center()
 
     def scenario_A2(self, dist, napravl):#The robot knock out the ball to the side of the opponent
+        """
+        This method is activated if goalkeeper finds ball at distance less than 0.7m and relative direction
+        from math.pi/4 to math.pi/2. Supposed that goalkeeper stands on duty position faced to opponents' goals before seeking ball.
+        usage: 
+            None: self.scenario_A1(float:dist, float: napravl)
+                dist -      distance to ball from goalkeeper in meters
+                napravl -   relative direction to ball from goalkeeper in radians 
+
+        method undertake 10 attempts to kick off ball to opponents side. In case of successful attempt - ball goes 1m away from 
+        goalkeeper - goalkeeper returns to duty position in front of own goals. Otherwise attempts are continued up to 10 times.
+        """
         print('The robot knock out the ball to the side of the opponent')
         self.scenario_A1( dist, napravl)
 
     def scenario_A3(self, dist, napravl):#The robot knock out the ball to the side of the opponent
+        """
+        This method is activated if goalkeeper finds ball at distance less than 0.7m and relative direction
+        from 0 to -math.pi/4. Supposed that goalkeeper stands on duty position faced to opponents' goals before seeking ball.
+        usage: 
+            None: self.scenario_A1(float:dist, float: napravl)
+                dist -      distance to ball from goalkeeper in meters
+                napravl -   relative direction to ball from goalkeeper in radians 
+
+        method undertake 10 attempts to kick off ball to opponents side. In case of successful attempt - ball goes 1m away from 
+        goalkeeper - goalkeeper returns to duty position in front of own goals. Otherwise attempts are continued up to 10 times.
+        """
         print('The robot knock out the ball to the side of the opponent')
         self.scenario_A1( dist, napravl)
 
     def scenario_A4(self, dist, napravl):#The robot knock out the ball to the side of the opponent
+        """
+        This method is activated if goalkeeper finds ball at distance less than 0.7m and relative direction
+        from -math.pi/4 to -math.pi/2. Supposed that goalkeeper stands on duty position faced to opponents' goals before seeking ball.
+        usage: 
+            None: self.scenario_A1(float:dist, float: napravl)
+                dist -      distance to ball from goalkeeper in meters
+                napravl -   relative direction to ball from goalkeeper in radians 
+
+        method undertake 10 attempts to kick off ball to opponents side. In case of successful attempt - ball goes 1m away from 
+        goalkeeper - goalkeeper returns to duty position in front of own goals. Otherwise attempts are continued up to 10 times.
+        """
         print('The robot knock out the ball to the side of the opponent')
         self.scenario_A1( dist, napravl)
 
     def scenario_B1(self):#the robot moves to the left and stands on the same axis as the ball and the opponents' goal
+        """
+        This method is activated if goalkeeper finds ball at distance more than 0.7m and less than half of length of field
+        and relative direction from 0 to math.pi/4. 
+        Supposed that goalkeeper stands on duty position faced to opponents' goals before seeking ball.
+        method undertake to slide robot sideways to same Y coordinate as balls' Y coordinate. In case if balls' Y coordinate
+        abs value is more than 0.4m robots maximum Y coordinate abs value will be 0.4m
+        After sliding sideways robot undertake turning to 0 direction
+        """
         print('the robot moves to the left 4 steps')
         if self.glob.ball_coord[1] > self.glob.pf_coord[1]:
             if self.glob.ball_coord[1] > 0.4: 
@@ -109,10 +204,26 @@ class GoalKeeper:
         self.turn_Face_To_Guest()
 
     def scenario_B2(self):#the robot moves to the left and stands on the same axis as the ball and the opponents' goal
+        """
+        This method is activated if goalkeeper finds ball at distance more than 0.7m and less than half of length of field
+        and relative direction from 0 to math.pi/4. 
+        Supposed that goalkeeper stands on duty position faced to opponents' goals before seeking ball.
+        method undertake to slide robot sideways to same Y coordinate as balls' Y coordinate. In case if balls' Y coordinate
+        abs value is more than 0.4m robots maximum Y coordinate abs value will be 0.4m
+        After sliding sideways robot undertake turning to 0 direction
+        """
         print('the robot moves to the left 4 steps')
         self.scenario_B1()
 
     def scenario_B3(self):#the robot moves to the right and stands on the same axis as the ball and the opponents' goal
+        """
+        This method is activated if goalkeeper finds ball at distance more than 0.7m and less than half of length of field
+        and relative direction from 0 to math.pi/4. 
+        Supposed that goalkeeper stands on duty position faced to opponents' goals before seeking ball.
+        method undertake to slide robot sideways to same Y coordinate as balls' Y coordinate. In case if balls' Y coordinate
+        abs value is more than 0.4m robots maximum Y coordinate abs value will be 0.4m
+        After sliding sideways robot undertake turning to 0 direction
+        """
         print('the robot moves to the right 4 steps')
         #self.motion.first_Leg_Is_Right_Leg = True
         #self.motion.near_distance_omni_motion( 110, -math.pi/2)
@@ -125,10 +236,24 @@ class GoalKeeper:
         self.turn_Face_To_Guest()
 
     def scenario_B4(self):#the robot moves to the right and stands on the same axis as the ball and the opponents' goal
+        """
+        This method is activated if goalkeeper finds ball at distance more than 0.7m and less than half of length of field
+        and relative direction from 0 to math.pi/4. 
+        Supposed that goalkeeper stands on duty position faced to opponents' goals before seeking ball.
+        method undertake to slide robot sideways to same Y coordinate as balls' Y coordinate. In case if balls' Y coordinate
+        abs value is more than 0.4m robots maximum Y coordinate abs value will be 0.4m
+        After sliding sideways robot undertake turning to 0 direction
+        """
         print('the robot moves to the right 4 steps')
         self.scenario_B3()
 
 class Forward:
+    """
+    The class Forward is designed for definition of strategy of play for 'forward' role of player 
+    in year 2020.
+    usage:
+        Forward(object: motion, object: lical, object: glob)
+    """
     def __init__(self, motion, local, glob):
         self.motion = motion
         self.local = local
@@ -136,6 +261,19 @@ class Forward:
         self.direction_To_Guest = 0
 
     def dir_To_Guest(self):
+        """
+        The method is designed to define kick direction and load it into self.direction_To_Guest,
+        direction is measured in radians of yaw. 
+        In case if robots' own coordinate self.glob.pf_coord shows lication on own half of field
+        i.e. self.glob.pf_coord[0] < 0 then direction of shooting is 0
+        if robots' x coordinate > 0.8 and abs(y coordinate) > 0.6 then direction of kick is to center
+        of opponents' goals.
+        if robots' x < 1.5 and abs(y) < 0.25 kick direction will be to corner of opponents' goals, 
+        with left or right corner is defined randomly.
+        in all other positions of robot kick direction is defined as ditection to target point with
+        coordinates x = 0, y = 2.8
+        returns float: self.direction_To_Guest
+        """
         if self.glob.ball_coord[0] < 0:
             self.direction_To_Guest = 0
         elif self.glob.ball_coord[0] > 0.8 and abs(self.glob.ball_coord[1]) > 0.6:
