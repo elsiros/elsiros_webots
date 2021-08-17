@@ -296,6 +296,22 @@ class Forward:
         self.motion.turn_To_Course(self.direction_To_Guest)
 
 class Forward_Vector_Matrix:
+    """
+    The class Forward_Vector_Matrix is designed for definition of strategy of play for 'forward' role of player 
+    in year 2021.
+    Matrix is coded in file strategy_data.json  This file is readable and editable as well as
+    normal text file. There is a dictionary with one key “strategy_data”. Value of key
+    “strategy_data” is a list with default number of elements 234. Each element of list represents
+    rectangular sector of soccer field with size 20cmX20cm. For each sector there assigned a vector
+    representing yaw direction of shooting when ball is positioned in this sector. Power of shot is
+    coded by attenuation value: 1 – standard power, 2 – power reduced 2 times, 3- power reduced 3 times.
+    Each element of list is coded as follows: [column, row, power, yaw]. Soccer field is split to
+    sectors in 13 rows and 18 columns.  Column 0 is near own goals, column 17 is near opposed goals.
+    Row 0 is in positive Y coordinate, row 12 is in negative Y coordinate.
+    Strategy data is imported from strategy_data.json file into self.glob.strategy_data list.
+    usage:  
+        Forward_Vector_Matrix(object: motion, object: local, object: glob)
+    """
     def __init__(self, motion, local, glob):
         self.motion = motion
         self.local = local
@@ -304,6 +320,14 @@ class Forward_Vector_Matrix:
         self.kick_Power = 1
 
     def dir_To_Guest(self):
+        """
+        The method is designed to define kick direction and load it into self.direction_To_Guest.
+        Direction is measured in radians of yaw.
+        usage:
+            int: row, int: col = self.dir_To_Guest()
+            row, col  -  row and column of matrix attributing rectangular sector of field where
+            ball coorinate  self.glob.ball_coord fits.
+        """
         if abs(self.glob.ball_coord[0])  >  self.glob.landmarks["FIELD_LENGTH"] / 2:
             ball_x = math.copysign(self.glob.landmarks["FIELD_LENGTH"] / 2, self.glob.ball_coord[0])
         else: ball_x = self.glob.ball_coord[0]
@@ -324,6 +348,28 @@ class Forward_Vector_Matrix:
         self.motion.turn_To_Course(self.direction_To_Guest)
 
 class Player():
+    """
+    class Player is designed for implementation of main cycle of player.
+    Real robot have 3 programmable buttons. Combination of button pressing can transmit to programm pressed button
+    code from 1 to 9. At initial button pressing role of player is selected. With second pressed button optional
+    playing mode is selected depending on role. 
+    For 'forward' and 'forward_old_style' role  second_pressed_button can take value 1 or value 4. With value 1
+    player starts game as kick-off player,
+    with value 4 player stars as non-kick-off player, which means player starts moving 10 seconds later.
+    For 'run_test' role second_pressed_button can take values from 1 or value 9 with following optional modes:
+    1 - 10 cycle steps walk forward
+    2 - 20 cycle side step walk to right
+    3 - 20 cycle side step walk to left
+    4 - 20 cycle steps walk forward
+    5 - 20 cycle steps with rotation to right side
+    6 - 20 cycle steps with rotation to left side
+    9 - 20 cycle steps of spot walk 
+    All modes of run test are used with purpose to calibrate walking. After calibration is completed results of
+    calibration must be input to file  Sim_params.json. Motion module is used calibration data for planning
+    motions and odometry correction into localization.
+    usage:
+        Player(str: role, int: second_pressed_button, object: glob, object: motion, object: local)
+    """
     def __init__(self, role, second_pressed_button, glob, motion, local):
         self.role = role   #'goalkeeper', 'penalty_Goalkeeper', 'forward', 'penalty_Shooter'
         self.second_pressed_button = second_pressed_button
@@ -341,7 +387,6 @@ class Player():
         if self.role == 'forward_old_style': self.forward_old_style_main_cycle(self.second_pressed_button)
         if self.role == 'penalty_Shooter': self.penalty_Shooter_main_cycle()
         if self.role == 'run_test': self.run_test_main_cycle(self.second_pressed_button)
-        if self.role == 'spot_walk': self.spot_walk_main_cycle(self.second_pressed_button)
         if self.role == 'rotation_test': self.rotation_test_main_cycle()
         if self.role == 'sidestep_test': self.sidestep_test_main_cycle()
         if self.role == 'dance': self.dance_main_cycle()
@@ -365,20 +410,29 @@ class Player():
         self.motion.refresh_Orientation()
         print('self.motion.imu_body_yaw() =', self.motion.imu_body_yaw())
 
-    def spot_walk_main_cycle(self, pressed_button):
-        if pressed_button == 2 or pressed_button ==3 :
-            self.rotation_test_main_cycle(pressed_button)
-            return
-        self.run_test_main_cycle(1, stepLength = 0)
-
-    def run_test_main_cycle(self, pressed_button, stepLength = 64):
+    def run_test_main_cycle(self, pressed_button):
+        """
+        For 'run_test' role second_pressed_button can take values from 1 or value 9 with following optional modes:
+        1 - 10 cycle steps walk forward
+        2 - 20 cycle side step walk to right
+        3 - 20 cycle side step walk to left
+        4 - 20 cycle steps walk forward
+        5 - 20 cycle steps with rotation to right side
+        6 - 20 cycle steps with rotation to left side
+        9 - 20 cycle steps of spot walk 
+        All modes of run test are used with purpose to calibrate walking. After calibration is completed results of
+        calibration must be input to file  Sim_params.json. Motion module is used calibration data for planning
+        motions and odometry correction into localization.
+        usage:
+            self.run_test_main_cycle(int: pressed_button)
+        """
         if pressed_button == 2 or pressed_button ==3 :
             self.sidestep_test_main_cycle(pressed_button)
             return
         if pressed_button == 5 or pressed_button ==6 :
             self.rotation_test_main_cycle(pressed_button)
             return
-        #stepLength = 64
+        stepLength = 64
         if pressed_button == 9: stepLength = 0
         number_Of_Cycles = 20
         if pressed_button == 1: number_Of_Cycles = 10
@@ -402,7 +456,7 @@ class Player():
 
     def sidestep_test_main_cycle(self, pressed_button):
         number_Of_Cycles = 20
-        stepLength = 0 #64
+        stepLength = 0
         sideLength = 20
         if pressed_button == 3:
             self.motion.first_Leg_Is_Right_Leg = False
@@ -421,6 +475,13 @@ class Player():
         self.motion.walk_Final_Pose()
 
     def norm_yaw(self, yaw):
+        """
+        This module normalizes yaw according to internal rule: -pi <= yaw <= pi
+        usage:
+            float: yaw = self.norm_yaw(float: yaw)
+            yaw - orientation on horizontal surface in radians, 
+                  zero value orientation is directed along X axis
+        """
         yaw %= 2 * math.pi
         if yaw > math.pi:  yaw -= 2* math.pi
         if yaw < -math.pi: yaw += 2* math.pi
@@ -698,11 +759,6 @@ class Player():
                     self.motion.play_Soft_Motion_Slot(name = 'Get_Up_From_Defence')
 
                 if (dist == 0 and napravl == 0) or dist > 2.5:
-                    #position_limit_x1 = -self.glob.landmarks['FIELD_LENGTH']/2 - 0.05
-                    #position_limit_x2 = position_limit_x1 + 0.25
-                    #if position_limit_x1 < self.glob.pf_coord[0] < position_limit_x2 and -0.05 < self.glob.pf_coord[1] < 0.05: break
-                    #self.g.goto_Center()
-                    #break
                     continue
                 old_neck_pan, old_neck_tilt = self.motion.head_Up()
                 if (dist <= 0.7         and 0 <= napravl <= math.pi/4):         self.g.scenario_A1( dist, napravl)
