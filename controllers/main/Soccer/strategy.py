@@ -488,23 +488,41 @@ class Player():
         return yaw
 
     def forward_main_cycle(self, pressed_button):
-        second_player_timer = self.motion.game_time()
+        """
+        Main cycle method for 'forward' role of player.
+        usage:
+            self.forward_main_cycle(int: pressed_button)
+        """
+        second_player_timer = self.motion.game_time()                       # ignition of timer for non-kick-off forward player
         self.f = Forward_Vector_Matrix(self.motion, self.local, self.glob)
         while (True):
-            if self.motion.falling_Flag != 0:
-                if self.motion.falling_Flag == 3: break
+            if self.motion.falling_Flag != 0:                               # falling_Flag variable is used to with purpose to deliver
+                                                                            # to strategy falling event or request to stop cycle. 
+                                                                            # falling_Flag = 0 if nothing happened, = 1 if there was falling to stomach
+                                                                            # =-1 if there was falling to back, = 2 if there was falling to left, 
+                                                                            # = -2 if there was falling to right, = 3 if there was request to stop cycle.  
+                if self.motion.falling_Flag == 3:
+                    self.motion.play_Soft_Motion_Slot(name = 'Initial_Pose')
+                    break
                 self.motion.falling_Flag = 0
-                self.local.coordinate_fall_reset()
+                self.local.coordinate_fall_reset()                          # after falling localization must be blurered
             success_Code, napravl, dist, speed = self.motion.seek_Ball_In_Pose(fast_Reaction_On = True)
-            if self.glob.SIMULATION == 2 and self.glob.wifi_params['WIFI_IS_ON']: self.local.report_to_WIFI()
-            if pressed_button == 4 and (self.motion.game_time() - second_player_timer) < 10 : continue
-            self.f.dir_To_Guest()
+            if self.glob.SIMULATION == 2 and self.glob.wifi_params['WIFI_IS_ON']: self.local.report_to_WIFI()  # telemetry for real robot 
+            if pressed_button == 4 and (self.motion.game_time() - second_player_timer) < 10 : 
+                continue                                                    # motion is ignored diring 10 seconds for non-kick-off player 
+            self.f.dir_To_Guest()                                           # loading kick direction from strategy_data.json into self.f.direction_To_Guest
             print('direction_To_Guest = ', math.degrees(self.f.direction_To_Guest), 'degrees')
             print('coord =', self.glob.pf_coord, 'ball =', self.glob.ball_coord)
-            if dist == 0 and success_Code == False:
-                self.motion.turn_To_Course(self.glob.pf_coord[2]+ 2 * math.pi / 3)
+            if dist == 0 and success_Code == False:                         # condition when robot doesn't find ball 
+                self.motion.turn_To_Course(self.glob.pf_coord[2]+ 2 * math.pi / 3)  # robot turns to 1/3 of round from current orientation
                 continue
-            player_from_ball_yaw = self.motion.p.coord2yaw(self.glob.pf_coord[0] - self.glob.ball_coord[0], self.glob.pf_coord[1] - self.glob.ball_coord[1]) - self.f.direction_To_Guest
+            # following 4 operators detect is the player in fast kick position or is the player in front of ball
+            # if player is in fast kick position then it proceed to near_distance_ball_approach_and_kick mandatory.
+            # if player is in front of ball then it proceed to far_distance_plan_approach mandatory
+            # if player isn't in fast kick position or isn't in front of ball then selection between near_distance_ball_approach_and_kick
+            # or far_distance_plan_approach depends on distance to ball
+            player_from_ball_yaw = self.motion.p.coord2yaw(self.glob.pf_coord[0] - self.glob.ball_coord[0],
+                                                          self.glob.pf_coord[1] - self.glob.ball_coord[1]) - self.f.direction_To_Guest
             player_from_ball_yaw = self.norm_yaw(player_from_ball_yaw)
             player_in_front_of_ball = -math.pi/2 < player_from_ball_yaw < math.pi/2
             player_in_fast_kick_position = (player_from_ball_yaw > 2 or player_from_ball_yaw < -2) and dist < 0.6 
@@ -512,42 +530,60 @@ class Player():
                 if dist > 1: stop_Over = True
                 else: stop_Over = False
                 self.motion.far_distance_plan_approach(self.glob.ball_coord, self.f.direction_To_Guest, stop_Over = stop_Over)
-                #self.f.turn_Face_To_Guest()
                 continue
             self.motion.turn_To_Course(self.f.direction_To_Guest)
             small_kick = False
             if self.f.kick_Power > 1: small_kick = True
             success_Code = self.motion.near_distance_ball_approach_and_kick(self.f.direction_To_Guest, strong_kick = False, small_kick = small_kick)
-        self.motion.play_Soft_Motion_Slot(name = 'Initial_Pose')
+        
 
     def forward_old_style_main_cycle(self, pressed_button):
-        second_player_timer = self.motion.game_time()
+        """
+        Main cycle method for 'forward_old_style' role of player.
+        usage:
+            self.forward_main_cycle(int: pressed_button)
+        """
+        second_player_timer = self.motion.game_time()                       # ignition of timer for non-kick-off forward player
         self.f = Forward(self.motion, self.local, self.glob)
-        first_shoot = False
         while (True):
-            if self.motion.falling_Flag != 0:
+            if self.motion.falling_Flag != 0:                               # falling_Flag variable is used to with purpose to deliver
+                                                                            # to strategy falling event or request to stop cycle. 
+                                                                            # falling_Flag = 0 if nothing happened, = 1 if there was falling to stomach
+                                                                            # =-1 if there was falling to back, = 2 if there was falling to left, 
+                                                                            # = -2 if there was falling to right, = 3 if there was request to stop cycle.
                 if self.motion.falling_Flag == 3: break
                 self.motion.falling_Flag = 0
-                self.local.coordinate_fall_reset()
+                self.local.coordinate_fall_reset()                          # after falling localization must be blurered
             success_Code, napravl, dist, speed = self.motion.seek_Ball_In_Pose(fast_Reaction_On = True)
-            if pressed_button == 4 and (self.motion.game_time() - second_player_timer) < 10 : continue
-            if dist == 0 and success_Code == False:
-                self.motion.turn_To_Course(self.glob.pf_coord[2]+ 2 * math.pi / 3)
+            if pressed_button == 4 and (self.motion.game_time() - second_player_timer) < 10 : 
+                continue                                                    # motion is ignored diring 10 seconds for non-kick-off player
+            if dist == 0 and success_Code == False:                         # condition when robot doesn't find ball
+                self.motion.turn_To_Course(self.glob.pf_coord[2]+ 2 * math.pi / 3)  # robot turns to 1/3 of round from current orientation
                 continue
             if dist > 0.5  or self.glob.pf_coord[0] > self.glob.ball_coord[0] :
                 self.motion.far_distance_ball_approach(self.glob.ball_coord)
                 self.f.turn_Face_To_Guest()
                 continue
-            if first_shoot == False:
-                success_Code = self.motion.near_distance_ball_approach_and_kick(self.f.direction_To_Guest, strong_kick = False)
-                #motion.near_distance_omni_motion(500, 0)
-                first_shoot = True
-                if self.motion.falling_Flag != 0: continue
-            else:
-                success_Code = self.motion.near_distance_ball_approach_and_kick(self.f.direction_To_Guest, strong_kick = False)
+            success_Code = self.motion.near_distance_ball_approach_and_kick(self.f.direction_To_Guest, strong_kick = False)
+
 
     def goalkeeper_main_cycle(self):
+        """
+        goalkeeper main cycle method is based on vector matrix strategy. Goalkeeper doesn't leave goals too far. 
+        Supposed that goalkeeper starts game at point on middle of goal line.
+        After 10 seconds from game start goalkeeper moves to duty position which depends on detected ball position.
+        In case if ball appears in dangetous position goalkeeper attcks ball. 
+        """
         def ball_position_is_dangerous(row, col):
+            """
+            Method detects if position of ball is risky.
+            Risky position is qualified if ball is in nearest third of field to own goals according to X coordinate.
+            From risky positions of ball positions in corners are excluded 
+            usage: 
+                bool: danger = ball_position_is_dangerous(int: row, int: col)
+                row - row of field sector according to matrix
+                col - column of field sector according to matrix
+            """
             danger = False
             danger = (col <= (round(self.glob.COLUMNS / 3) - 1))
             if ((row <= (round(self.glob.ROWS / 3) - 1) or row >= round(self.glob.ROWS * 2 / 3)) and col == 0) or (col == 1 and (row == 0 or row == (self.glob.ROWS -1))):
@@ -558,40 +594,43 @@ class Player():
         #self.motion.near_distance_omni_motion(400, 0)                    # get out from goal
         fast_Reaction_On = True
         while (True):
-            if self.motion.falling_Flag != 0:
+            if self.motion.falling_Flag != 0:                               # falling_Flag variable is used to with purpose to deliver
+                                                                            # to strategy falling event or request to stop cycle. 
+                                                                            # falling_Flag = 0 if nothing happened, = 1 if there was falling to stomach
+                                                                            # =-1 if there was falling to back, = 2 if there was falling to left, 
+                                                                            # = -2 if there was falling to right, = 3 if there was request to stop cycle.
                 if self.motion.falling_Flag == 3: break
                 self.motion.falling_Flag = 0
                 self.local.coordinate_fall_reset()
             if self.glob.ball_coord[0] <= 0.15:
-                success_Code, napravl, dist, speed =  self.motion.watch_Ball_In_Pose()
+                success_Code, napravl, dist, speed =  self.motion.watch_Ball_In_Pose()                  # looks with increased attention
             else: 
                 success_Code, napravl, dist, speed = self.motion.seek_Ball_In_Pose(fast_Reaction_On = fast_Reaction_On)
             if abs(speed[0]) > 0.02 and dist < 1 :                         # if dangerous tangential speed
                 fast_Reaction_On = True
                 if speed[0] > 0:
                     if self.glob.pf_coord[1] < 0.35:
-                        self.motion.play_Soft_Motion_Slot(name ='PenaltyDefenceL')
+                        self.motion.play_Soft_Motion_Slot(name ='PenaltyDefenceL')      # falling to left side
                 else:
                     if self.glob.pf_coord[1] > -0.35:
-                        self.motion.play_Soft_Motion_Slot(name ='PenaltyDefenceR')
+                        self.motion.play_Soft_Motion_Slot(name ='PenaltyDefenceR')      # falling to right side
                 self.motion.pause_in_ms(3000)
                 continue
             if speed[1] < - 0.01 and dist < 1.5 :                          # if dangerous front speed
                 fast_Reaction_On = True
-                self.motion.play_Soft_Motion_Slot(name = 'PanaltyDefenceReady_Fast')
-                self.motion.play_Soft_Motion_Slot(name = 'PenaltyDefenceF')
+                self.motion.play_Soft_Motion_Slot(name = 'PanaltyDefenceReady_Fast')    # preparing for splits
+                self.motion.play_Soft_Motion_Slot(name = 'PenaltyDefenceF')             # sit to splits
                 self.motion.pause_in_ms(3000)
                 self.motion.play_Soft_Motion_Slot(name = 'Get_Up_From_Defence')
                 continue
             if (self.motion.game_time() - second_player_timer) < 10 : continue
             row, col = self.f.dir_To_Guest()
-            #print('direction_To_Guest = ', math.degrees(self.f.direction_To_Guest), 'degrees')
-            #print('goalkeeper coord =', self.glob.pf_coord, 'ball =', self.glob.ball_coord, 'row =', row, 'col =', col, 'ball_position_is_dangerous =', ball_position_is_dangerous(row,col))
-            if dist == 0 and success_Code == False:
+            if dist == 0 and success_Code == False:                             # if ball was not detected at in viewable sectors
                 print('goalkeeper turn_To_Course(pi*2/3)')
                 self.motion.turn_To_Course(self.glob.pf_coord[2]+ 2 * math.pi / 3)
                 continue
             if ball_position_is_dangerous(row, col):
+                # attacking of ball
                 fast_Reaction_On = True
                 player_from_ball_yaw = self.motion.p.coord2yaw(self.glob.pf_coord[0] - self.glob.ball_coord[0], self.glob.pf_coord[1] - self.glob.ball_coord[1]) - self.f.direction_To_Guest
                 player_from_ball_yaw = self.norm_yaw(player_from_ball_yaw)
@@ -612,6 +651,7 @@ class Player():
                 success_Code = self.motion.near_distance_ball_approach_and_kick(self.f.direction_To_Guest, strong_kick = False, small_kick = small_kick)
 
             else:
+                # returning to duty position
                 fast_Reaction_On = False
                 duty_x_position =  min((-self.glob.landmarks['FIELD_LENGTH']/2 + 0.4),(self.glob.ball_coord[0]-self.glob.landmarks['FIELD_LENGTH']/2)/2)
                 duty_y_position = self.glob.ball_coord[1] * (duty_x_position + self.glob.landmarks['FIELD_LENGTH']/2) / (self.glob.ball_coord[0] + self.glob.landmarks['FIELD_LENGTH']/2) 
@@ -631,16 +671,22 @@ class Player():
         self.motion.play_Soft_Motion_Slot(name = 'Initial_Pose')
 
     def goalkeeper_old_style_main_cycle(self):
-        self.motion.near_distance_omni_motion(200, 0)                    # get out from goal
+        """
+        main cycle for old style goalkeeper strategy
+        """
+        self.motion.near_distance_omni_motion(200, 0)                    # get out from goal line
         self.g = GoalKeeper(self.motion, self.local, self.glob)
         while (True):
             dist = -1.0
-            if self.motion.falling_Flag != 0:
+            if self.motion.falling_Flag != 0:                               # falling_Flag variable is used to with purpose to deliver
+                                                                            # to strategy falling event or request to stop cycle. 
+                                                                            # falling_Flag = 0 if nothing happened, = 1 if there was falling to stomach
+                                                                            # =-1 if there was falling to back, = 2 if there was falling to left, 
+                                                                            # = -2 if there was falling to right, = 3 if there was request to stop cycle.
                 if self.motion.falling_Flag == 3: break
                 self.motion.falling_Flag = 0
                 self.local.coordinate_fall_reset()
                 self.g.turn_Face_To_Guest()
-                #goto_Center()
             while(dist < 0):
                 a, dist,napravl, speed = self.g.find_Ball()
                 #uprint('speed = ', speed, 'dist  =', dist , 'napravl =', napravl)
@@ -678,8 +724,10 @@ class Player():
                 if ((0.7 < dist < self.glob.landmarks['FIELD_LENGTH']/2) and (-math.pi/4 > napravl >= -math.pi/2)): self.g.scenario_B4()
 
     def penalty_Shooter_main_cycle(self):
+        """
+        main cycle for penalty striker 
+        """
         self.f = Forward(self.motion, self.local, self.glob)
-        first_shoot = True
         while (True):
             if self.motion.falling_Flag != 0:
                 if self.motion.falling_Flag == 3: break
@@ -698,36 +746,7 @@ class Player():
                 self.motion.far_distance_plan_approach(self.glob.ball_coord, self.f.direction_To_Guest, stop_Over = stop_Over)
             kick_direction = self.f.direction_To_Guest
             self.motion.turn_To_Course(kick_direction)
-            #if first_shoot:
-            if self.motion.params['DRIBBLING'] == 1:
-                success_Code, napravl, dist, speed = self.motion.seek_Ball_In_Pose(fast_Reaction_On = True)
-                if napravl > 0.2 : 
-                    self.motion.near_distance_omni_motion(dist* math.cos(napravl)*1000/2, math.pi/2)
-                if napravl < -0.2 : 
-                    self.motion.near_distance_omni_motion(dist* math.cos(napravl)*1000, -math.pi/2)
-                number_Of_Cycles = 15
-                stepLength = 20
-                sideLength = 0
-                old_neck_pan, old_neck_tilt = self.motion.head_Up()
-                self.motion.walk_Initial_Pose()
-                for cycle in range(number_Of_Cycles):
-                    stepLength1 = stepLength
-                    #if cycle ==0 : stepLength1 = stepLength/4
-                    #if cycle ==1 : stepLength1 = stepLength/2
-                    self.motion.refresh_Orientation()
-                    rotation = self.f.direction_To_Guest - self.motion.imu_body_yaw()
-                    rotation = self.motion.normalize_rotation(rotation)
-                    self.motion.walk_Cycle(stepLength1,sideLength, rotation,cycle, number_Of_Cycles)
-                self.motion.walk_Final_Pose()
-                self.motion.head_Return(old_neck_pan, old_neck_tilt)
-            else:
-                success_Code = self.motion.near_distance_ball_approach_and_kick(self.f.direction_To_Guest, strong_kick = False)
-            #self.motion.near_distance_omni_motion(700, 0)
-            first_shoot = False
-            #return
-            if self.motion.falling_Flag != 0: continue
-            #else:
-            #    success_Code = self.motion.near_distance_ball_approach_and_kick(self.f.direction_To_Guest, strong_kick = False)
+            success_Code = self.motion.near_distance_ball_approach_and_kick(self.f.direction_To_Guest, strong_kick = False)
 
     def penalty_Goalkeeper_main_cycle(self):
         self.g = GoalKeeper(self.motion, self.local, self.glob)

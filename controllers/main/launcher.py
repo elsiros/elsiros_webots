@@ -1,10 +1,15 @@
+"""
+The module is designed by team Robokit of Phystech Lyceum and team Starkit
+of MIPT under mentorship of Azer Babaev.
+The module is designed for strategy of soccer game by forward and goalkeeper.
+"""
+
 import time
 from gcreceiver import ThreadedGameStateReceiver
 from Soccer.Localisation.class_Glob import Glob
 from Soccer.Localisation.class_Local import *
 from Soccer.strategy import Player
 from Soccer.Motion.class_Motion_Webots_inner import Motion_sim
-#from controller import *
 
 
 def init_gcreceiver(team, player, is_goalkeeper):
@@ -12,7 +17,7 @@ def init_gcreceiver(team, player, is_goalkeeper):
     receiver.start() # Strat receiving and answering
     return receiver
 
-def player_super_cycle(falling, team, player_number, SIMULATION, current_work_directory, robot):
+def player_super_cycle(falling, team, player_number, SIMULATION, current_work_directory, robot, pause):
     if player_number == 1: is_goalkeeper = True
     else: is_goalkeeper = False
     receiver = init_gcreceiver(team, player_number, is_goalkeeper)
@@ -139,7 +144,7 @@ def player_super_cycle(falling, team, player_number, SIMULATION, current_work_di
                 print ('former_game_state =', former_game_state, 'former_player_penalty =', former_player_penalty)
                 glob = Glob(SIMULATION, current_work_directory)
                 glob.pf_coord = initial_coord
-                motion = Motion_sim(glob, robot, receiver)
+                motion = Motion_sim(glob, robot, receiver, pause)
                 motion.sim_Start()
                 motion.direction_To_Attack = -initial_coord[2]
                 motion.activation()

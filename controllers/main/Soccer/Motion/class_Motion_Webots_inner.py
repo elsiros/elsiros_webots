@@ -22,7 +22,8 @@ from class_Motion_real import Motion_real
 from compute_Alpha_v3 import Alpha
 
 class Motion_sim(Motion_real):
-    def __init__(self, glob, robot, gcreceiver):
+    def __init__(self, glob, robot, gcreceiver, pause):
+        self.pause = pause
         self.FRAMELENGTH = 0.02
         import random as random
         self.random = random
@@ -107,11 +108,12 @@ class Motion_sim(Motion_real):
         self.sim_Progress(time_in_ms/1000)
 
     def sim_Trigger(self):
-        if self.robot.getSelf().getField('customData').getSFString() == 'penalized':
-            self.falling_Flag = 3
-            for i in range(len(self.WBservosList)):
-                self.robot.getDevice(self.WBservosList[i]).setPosition(0)
-        self.robot.step(20)
+        if not self.pause.Flag:
+            if self.robot.getSelf().getField('customData').getSFString() == 'penalized':
+                self.falling_Flag = 3
+                for i in range(len(self.WBservosList)):
+                    self.robot.getDevice(self.WBservosList[i]).setPosition(0)
+            self.robot.step(20)
 
     def imu_activation(self):
         self.robot.getDevice("imu_head").enable(1)
