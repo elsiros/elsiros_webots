@@ -25,6 +25,7 @@ BLACK_COLOR = 0x000000                    # black color used for the display
 GOAL_WIDTH = 1.0   
 GOAL_HALF_WIDTH = GOAL_WIDTH / 2
 RESTART_MARKER_WIDTH = 0.65
+REAL_TIME_SET_TO_PLAYING = 5
 
 # game interruptions requiring a free kick procedure
 GAME_INTERRUPTIONS = {
@@ -80,6 +81,11 @@ def warning(message):
 
 def error(message, fatal=False):
     log(message, 'Error')
+    if fatal:
+        exit()
+        # Note: If supervisor.step is not called before the 'simulationQuit', information is not shown
+        #supervisor.step(time_step)
+        #supervisor.simulationQuit(0)
 
 
 def read_team(json_path):
@@ -125,7 +131,7 @@ if not isinstance(game.blue.id, int):
 if not hasattr(game, 'minimum_real_time_factor'):
     game.minimum_real_time_factor = 3  # we garantee that each time step lasts at least 3x simulated time
 if game.minimum_real_time_factor == 0:  # speed up non-real time tests
-    REAL_TIME_BEFORE_FIRST_READY_STATE = 5
+    REAL_TIME_BEFORE_FIRST_READY_STATE = 10
     HALF_TIME_BREAK_REAL_TIME_DURATION = 2
 if not hasattr(game, 'press_a_key_to_terminate'):
     game.press_a_key_to_terminate = False
@@ -898,6 +904,44 @@ def throw_in(middle_line, negative_x, negative_y):
         if not is_robot_near(point, game.field.place_ball_safety_dist):
             place_ball(point)
             break    
+
+def need_to_stop_penalty_shootout():
+    info(f"End of {get_penalty_shootout_msg()}")
+    if game.penalty_shootout_count == 20:  # end of extended penalty shootout
+        return True
+    diff = abs(game.state.teams[0].score - game.state.teams[1].score)
+    if game.penalty_shootout_count == 10 and diff > 0:
+        return True
+    kickoff_team = game.state.teams[0] if game.kickoff == game.state.teams[0].team_number else game.state.teams[1]
+    kickoff_team_leads = kickoff_team.score >= game.state.teams[0].score and kickoff_team.score >= game.state.teams[1].score
+    penalty_shootout_count = game.penalty_shootout_count % 10  # supports both regular and extended shootout kicks
+    if (penalty_shootout_count == 6 and diff == 3) or (penalty_shootout_count == 8 and diff == 2):
+        return True  # no need to go further, score is like 3-0 after 6 shootouts or 4-2 after 8 shootouts
+    if penalty_shootout_count == 7:
+        if diff == 3:  # score is like 4-1
+            return True
+        if diff == 2 and not kickoff_team_leads:  # score is like 1-3
+            return True
+    elif penalty_shootout_count == 9:
+        if diff == 2:  # score is like 5-3
+            return True
+        if diff == 1 and not kickoff_team_leads:  # score is like 3-4
+            return True
+    return False     
+
+def clean_exit():
+    """Save logs and clean all subprocesses"""
+    #announce_final_score()
+    if hasattr(game, "controller") and game.controller:
+        info("Closing 'controller' socket")
+        game.controller.close()
+    if hasattr(game, "controller_process") and game.controller_process:
+        info("Terminating 'game_controller' process")
+        game.controller_process.terminate()
+    if hasattr(game, "udp_bouncer_process") and udp_bouncer_process:
+        info("Terminating 'udp_bouncer' process")
+        udp_bouncer_process.terminate()  
+    exit()         
    
 # --------------------------------------------------------------------------------------------------
 
@@ -1087,13 +1131,13 @@ try:
     if game.penalty_shootout:
         info(f'{"Red" if game.kickoff == game.red.id else "Blue"} team will start the penalty shoot-out.')
         game.phase = 'PENALTY-SHOOTOUT'
-        game.ready_real_time = None
+        #game.exit_from_initial_real_time = None
         info(f'Penalty start: Waiting {REAL_TIME_BEFORE_FIRST_READY_STATE} seconds (real-time) before going to SET')
-        game.set_real_time = time.time() + REAL_TIME_BEFORE_FIRST_READY_STATE  # real time for set state (penalty-shootout)
+        #game.set_real_time = time.time() + REAL_TIME_BEFORE_FIRST_READY_STATE  # real time for set state (penalty-shootout)
         game_controller_send(f'KICKOFF:{game.kickoff}')
     else:
         info(f'Regular start: Waiting {REAL_TIME_BEFORE_FIRST_READY_STATE} seconds (real-time) before going to READY')
-        game.ready_real_time = time.time() + REAL_TIME_BEFORE_FIRST_READY_STATE  # real time for ready state (initial kick-off)
+        #game.exit_from_initial_real_time = time.time() + REAL_TIME_BEFORE_FIRST_READY_STATE  # real time for ready state (initial kick-off)
         #kickoff() #TODO
         game_controller_send(f'KICKOFF:{game.kickoff}')
 except Exception:
@@ -1108,6 +1152,7 @@ last_game_controller_send_period_ms = 100
 game.initial_state_processed = False
 game.set_state_processed = False 
 game.finished_state_processed = False   
+finish_just_sended = False
 
 game.ball.enableContactPointsTracking(time_step)
 
@@ -1121,6 +1166,10 @@ while supervisor.step(time_step) != -1 and not game.over:
     sec_state = game.state.secondary_state
     sec_phase = game.state.secondary_state_info[1]
     first_half = game.state.first_half 
+    red_index = 0 if game.state.teams[0].team_color == 'RED' else 1
+    blue_index = 1 if red_index == 0 else 0    
+    red_score = game.state.teams[red_index].score
+    blue_score = game.state.teams[blue_index].score  
     game.kickoff = game.state.kickoff_team # [Sol] GC is a master for kickoff decision in Junior league
     game.ball_position = game.ball_translation.getSFVec3f()
 
@@ -1128,9 +1177,10 @@ while supervisor.step(time_step) != -1 and not game.over:
     # In Junior League, this controller is "Game state slave", The GC will switch game states according to it's rules, possibly with human interruption if needed. 
     if game.state.game_state == 'STATE_PLAYING':
         # Check for PLAYING game state time left and send FINISHED to GC if needed to swith to second half etc 
-        if game.state.seconds_remaining <= 0 :
+        if game.state.seconds_remaining <= 0 and not finish_just_sended:
             info(f"Sending automated PLAYING -> FINISH because seconds remaining = {game.state.seconds_remaining}")
             game_controller_send('STATE:FINISH')
+            finish_just_sended = True
 
         update_contacts()
 
@@ -1205,9 +1255,16 @@ while supervisor.step(time_step) != -1 and not game.over:
                 move_ball_away()
 
             else:
-                # It's not a goal, let's do a throw-in according to the rules
-                middle_line = False if defender_touched_last else True
-                throw_in(middle_line, negative_x, negative_y)
+                # It's not a goal
+                if sec_state == 'STATE_PENALTYSHOOT':
+                    # Ball left the field during penalty, let's finish this penalty attempt
+                    if not finish_just_sended:
+                        game_controller_send('STATE:FINISH')
+                        finish_just_sended = True
+                else:    
+                    # Ball left the field during normal/extra time, let's do a throw-in according to the rules
+                    middle_line = False if defender_touched_last else True
+                    throw_in(middle_line, negative_x, negative_y)
                 
     elif game.state.game_state == 'STATE_READY':
         # Transition from READY to SET is done automatically by GC after proper time elapsed or manually triggered, so no need to do it here
@@ -1218,9 +1275,9 @@ while supervisor.step(time_step) != -1 and not game.over:
 
     elif game.state.game_state == 'STATE_SET': 
         if game.set_state_processed == False:
+            # below will be checked only once on entering this new game_state            
             game.set_state_processed = True
             info(f'Entering SET, first_half = {first_half}, sec_state = {sec_state}, sec_phase = {sec_phase}')
-
             if sec_state == 'STATE_NORMAL' or sec_state == 'STATE_OVERTIME':
                 for number in red_team['players']:
                     if red_team['players'][str(number)]['needToBePlacedByRefereeInReady']:
@@ -1232,33 +1289,92 @@ while supervisor.step(time_step) != -1 and not game.over:
                 place_ball(game.ball_kick_translation)                        
             if sec_state == 'STATE_PENALTYSHOOT':
                 set_penalty_positions()
-                place_ball(game.ball_kick_translation)               
+                place_ball(game.ball_kick_translation)    
+            game.playing_real_time = time.time() + REAL_TIME_SET_TO_PLAYING           
+            finish_just_sended = False
+        # below will be checked each sim cycle in this game_state
+        if game.playing_real_time is not None:
+            if game.playing_real_time <= time.time():
+                info('Real-time to wait elasped, moving to PLAYING')
+                game.playing_real_time = None
+                game_controller_send('STATE:PLAY')
+
             
     elif game.state.game_state == 'STATE_FINISHED':
         if game.finished_state_processed == False:
-            game.finished_state_processed = True        
-            if sec_state == 'STATE_PENALTYSHOOT':
-                game_controller_send('STATE:SET') # Set SET state on GC after penalty results in a goal not to show some stupidly freesed robots
+            # below will be checked only once on entering this new game_state            
+            game.finished_state_processed = True   
+            if sec_state == 'STATE_NORMAL':
+                if first_half: 
+                    info(f'End of NORMAL time FIRST half, red_score={red_score} , blue_score={blue_score}')
+                    # Nothing to send to GC here, GC will switch to INITIAL right after FINISHED in the end of normal first half
+                    # We only need to set the time to move from this initial to ready
+                else:
+                    info(f'End of NORMAL time SECOND half, red_score={red_score} , blue_score={blue_score}')
+                    if red_score == blue_score:
+                        # Equal score at the end of normal time second half. Let's start overtime
+                        game_controller_send('STATE:OVERTIME-FIRST-HALF')
+                    else:
+                        info(f'End of the game: not equal score after normal time second half, red_score={red_score} , blue_score={blue_score}')
+                        clean_exit()
+            elif sec_state == 'STATE_OVERTIME':  
+                if first_half: 
+                    info(f'End of EXTRA time FIRST half, red_score={red_score} , blue_score={blue_score}')
+                    # Nothing to send to GC here, GC will switch to INITIAL right after FINISHED in the end of normal first half
+                    # We only need to set the time to move from this initial to ready
+                else:
+                    info(f'End of NORMAL time SECOND half, red_score={red_score} , blue_score={blue_score}')
+                    if red_score == blue_score:
+                        # Equal score at the end of normal time second half. Let's start penalty shootout
+                        game_controller_send('STATE:PENALTY-SHOOTOUT')
+                    else:
+                        info(f'End of the game: not equal score after extra time second half, red_score={red_score} , blue_score={blue_score}')
+                        clean_exit()
+            elif sec_state == 'STATE_PENALTYSHOOT':
+                game.penalty_shootout_count += 1
+
+                if need_to_stop_penalty_shootout():
+                    info(f'End of the game due to advance in penalty series, red_score={red_score} , blue_score={blue_score}')
+                    clean_exit()
+                else:                   
+                    # Lets proceed th the next penalty attempt
+                    game_controller_send('STATE:SET') # Set SET state on GC after penalty results in a goal not to show some stupidly freesed robots
+
                 
     elif game.state.game_state == 'STATE_INITIAL':   
         if game.initial_state_processed == False: #process transition to INITIAL only once
+            # below will be checked only once on entering this new game_state
             game.initial_state_processed = True
             info(f'Entering INITIAL, first_half = {first_half}, sec_state = {sec_state}, sec_phase = {sec_phase}')
-
             if sec_state == 'STATE_NORMAL' and first_half == False:
                 flip_sides() # Flip sides at the beggining of main second half
             if sec_state == 'STATE_OVERTIME':
                 flip_sides() # Flip sides at the beggining of each extra time
-
             # Place players at the border in INITIAL
             for number in red_team['players']:
                 reset_player('red', str(number), 'borderStartingPose')
             for number in blue_team['players']:
                 reset_player('blue', str(number), 'borderStartingPose')     
-
             move_ball_away()
-
-
+            finish_just_sended = False
+            game.exit_from_initial_real_time = time.time() + REAL_TIME_BEFORE_FIRST_READY_STATE  # real time for ready state (initial kick-off)
+    
+        # below will be checked each sim cycle in this game_state
+        if sec_state == 'STATE_PENALTYSHOOT':
+            # In penalty there is no READY state, we can only do INITIAL->SET
+            # And we can do it only once, all other penalty attempts except the first one will oscillate in SET->PLAYING->FINISHED->SET->PLAYING->FINISHED->...
+            if game.exit_from_initial_real_time is not None: 
+                if game.exit_from_initial_real_time <= time.time():
+                    info('Real-time to wait in initial elasped in penalty, moving to SET')
+                    game.exit_from_initial_real_time = None
+                    game_controller_send('STATE:SET')
+        else:
+            # In normal/extra is READY state, and we should do INITIAL->READY
+            if game.exit_from_initial_real_time is not None: 
+                if game.exit_from_initial_real_time <= time.time():
+                    info('Real-time to wait in initial elasped in normal/extra, moving to READY')
+                    game.exit_from_initial_real_time = None
+                    game_controller_send('STATE:READY')
 
     if game.state.game_state != 'STATE_INITIAL':   
         game.initial_state_processed = False
