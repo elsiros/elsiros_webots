@@ -1188,8 +1188,6 @@ while supervisor.step(time_step) != -1 and not game.over:
             update_state_display()   
             previous_seconds_remaining = game.state.seconds_remaining 
             
-        #if (game.interruption_countdown == 0 and game.ready_countdown == 0 and
-        #    game.ready_real_time is None and not game.throw_in and
         if  (game.ball_position[1] - game.ball_radius >= game.field.size_y or
                 game.ball_position[1] + game.ball_radius <= -game.field.size_y or
                 game.ball_position[0] - game.ball_radius >= game.field.size_x or
@@ -1267,11 +1265,17 @@ while supervisor.step(time_step) != -1 and not game.over:
                     throw_in(middle_line, negative_x, negative_y)
                 
     elif game.state.game_state == 'STATE_READY':
-        # Transition from READY to SET is done automatically by GC after proper time elapsed or manually triggered, so no need to do it here
-        pass
-        #if game.state.seconds_remaining <= 0:
-        #    info(f"Sending automated READY -> SET because seconds remaining = {game.state.seconds_remaining}")        
-        #    game_controller_send('STATE:SET')    
+        # Transition from READY to SET is done automatically by GC after 45 sec in Junior league, but let's speedup it and switch at 5sec necause for now no teams able to do placing in ready
+        if game.ready_state_processed == False:
+            # below will be checked only once on entering this new game_state            
+            game.ready_state_processed = True  
+            game.exit_from_ready_real_time = time.time() + 5         
+        # below will be checked each sim cycle in this game_state          
+        if game.exit_from_ready_real_time is not None: 
+            if game.exit_from_ready_real_time <= time.time():
+                info('Real-time to wait in ready elasped, moving to SET')
+                game.exit_from_ready_real_time = None
+                game_controller_send('STATE:SET')
 
     elif game.state.game_state == 'STATE_SET': 
         if game.set_state_processed == False:
@@ -1378,6 +1382,8 @@ while supervisor.step(time_step) != -1 and not game.over:
 
     if game.state.game_state != 'STATE_INITIAL':   
         game.initial_state_processed = False
+    if game.state.game_state != 'STATE_READY':   
+        game.ready_state_processed = False        
     if game.state.game_state != 'STATE_SET':   
         game.set_state_processed = False      
     if game.state.game_state != 'STATE_FINISHED':   
