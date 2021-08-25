@@ -1,4 +1,5 @@
 {
+  "_comment": "in ELSIROS(Junior) league game type below can be KNOCKOUT or PENALTY in only penalties is needed",
   "type": "KNOCKOUT",
   "kickoff": "red",
   "class": "JUNIOR",
