@@ -25,7 +25,12 @@ def player_super_cycle(falling, team, player_number, SIMULATION, current_work_di
     former_player_penalty = 0
     print('waiting for game controller launch')
     playing_allowed = False
+    current_secondary_state = None
     while True:
+        if receiver.team_state == None:
+            if current_secondary_state == 'STATE_PENALTYSHOOT':
+                print('simulator reset')
+                robot.simulationReset()
         seconds = 0
         while True:
             if receiver.team_state == None:
@@ -82,6 +87,8 @@ def player_super_cycle(falling, team, player_number, SIMULATION, current_work_di
             robot.step(200)
         if receiver.team_state != None:
             current_game_state = receiver.state.game_state
+            #if current_game_state == 'STATE_FINISHED':
+            #    robot.simulationReset()
             current_secondary_state = receiver.state.secondary_state
             current_player_penalty = receiver.player_state.penalty
             if current_game_state == 'STATE_PLAYING' and current_secondary_state != 'STATE_PENALTYSHOOT' and current_player_penalty== 0:
@@ -158,7 +165,11 @@ def player_super_cycle(falling, team, player_number, SIMULATION, current_work_di
             former_game_state = receiver.state.game_state
             former_player_penalty = receiver.player_state.penalty
             robot.step(20)
-        
+        #else: 
+        #    #if current_game_state == 'STATE_FINISHED':
+        #    if current_secondary_state == 'STATE_PENALTYSHOOT':
+        #        print('simulator reset')
+        #        robot.simulationReset()
 
 
 
