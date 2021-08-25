@@ -730,7 +730,7 @@ def kickoff():
     game.ball_first_touch_time = 0
     game.in_play = None
     game.ball_must_kick_team = color
-    #reset_ball_touched()
+    reset_ball_touched()
     game.ball_left_circle = None  # one can score only after ball went out of the circle
     game.can_score = False        # or was touched by another player
     game.can_score_own = False
@@ -1041,7 +1041,7 @@ game.ball_radius = 0.04 # For junior league
 game.ball_kick_translation = [0, 0, game.ball_radius + game.field.turf_depth]  # initial position of ball before kick
 game.ball_translation = supervisor.getFromDef('BALL').getField('translation')
 game.ball_exit_translation = None
-#reset_ball_touched()
+reset_ball_touched()
 game.ball_last_touch_time = 0
 game.ball_first_touch_time = 0
 game.ball_last_touch_time_for_display = 0
@@ -1182,6 +1182,7 @@ while supervisor.step(time_step) != -1 and not game.over:
             game_controller_send('STATE:FINISH')
             finish_just_sended = True
 
+        ball_last_touch_team_old = game.ball_last_touch_team
         update_contacts()
 
         if previous_seconds_remaining != game.state.seconds_remaining:
@@ -1257,13 +1258,25 @@ while supervisor.step(time_step) != -1 and not game.over:
                 if sec_state == 'STATE_PENALTYSHOOT':
                     # Ball left the field during penalty, let's finish this penalty attempt
                     if not finish_just_sended:
+                        info(f'Ball left the field in penalty, finishing this penalty attempt')
                         game_controller_send('STATE:FINISH')
                         finish_just_sended = True
                 else:    
                     # Ball left the field during normal/extra time, let's do a throw-in according to the rules
                     middle_line = False if defender_touched_last else True
                     throw_in(middle_line, negative_x, negative_y)
+
+        # Checking for condition: in penalties attacker is not allowed to touch the ball after goalkeeper
+        if sec_state == 'STATE_PENALTYSHOOT':   
+            attacking_color = 'red' if game.kickoff == game.red.id else 'blue'      
+            defending_color = 'blue' if attacking_color == 'red' else 'blue'            
+            if ball_last_touch_team_old == defending_color and game.ball_last_touch_team == attacking_color:
+                if not finish_just_sended:
+                    info(f'Ball touched by attacker after being touched by defender in penalty, finishing this penalty attempt') 
+                    game_controller_send('STATE:FINISH')
+                    finish_just_sended = True   
                 
+    
     elif game.state.game_state == 'STATE_READY':
         # Transition from READY to SET is done automatically by GC after 45 sec in Junior league, but let's speedup it and switch at 5sec necause for now no teams able to do placing in ready
         if game.ready_state_processed == False:
