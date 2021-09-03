@@ -12,7 +12,9 @@ def usage(error_msg=""):
 
 
 class RobotClient():
-    def __init__(self, host='',  port=-1, verbosity=3, max_attempts=20, wait_time_sec=1):
+    """[summary]
+    """
+    def __init__(self, host='', port=-1, verbosity=3, max_attempts=20, wait_time_sec=1):
         self.host = host
         self.port = port
         self.verbosity = verbosity
@@ -21,6 +23,11 @@ class RobotClient():
         self.message_manager = MessageManager()
 
     def connect_client(self):
+        """[summary]
+
+        Returns:
+            [type]: [description]
+        """
         try:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         except:
@@ -65,6 +72,8 @@ class RobotClient():
         return True
 
     def printMessages():
+        """[summary]
+        """
         pass
 
     def disconnect_client(self):

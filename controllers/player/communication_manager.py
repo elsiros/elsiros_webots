@@ -1,10 +1,18 @@
+"""[summary]
+Returns:
+[type]: [description]
+"""
 import queue
-from robot_client import RobotClient
 import time
+import logging
 from threading import Thread
+
+from robot_client import RobotClient
 
 
 class CommunicationManager():
+    """[summary]
+    """
     def __init__(self, maxsize=5, host='127.0.0.1', port=10001):
         verbosity = 4
         self.client = RobotClient(host, port, verbosity)
@@ -13,7 +21,7 @@ class CommunicationManager():
         self.messages = queue.Queue(maxsize)
         self.sensors = {}
 
-    def enable_sensors(self, sensors):
+    def enable_sensors(self, sensors) -> None:
         for sensor in sensors:
             self.client.add_initial_sensor(sensor, sensors[sensor])
             if sensor == "camera":
@@ -22,13 +30,26 @@ class CommunicationManager():
             self.sensors.update({str(sensor): queue.Queue(self.maxsize)})
         self.client.send_request("init")
 
-    def get_sensor(self, name):
+    def get_sensor(self, name) -> dict:
+        """[summary]
+
+        Args:
+            name ([type]): [description]
+
+        Returns:
+            dict: [description]
+        """
+        value_dict = {}
         if not name in self.sensors:
-            return "sensor is not enable"
-        if self.sensors[name].empty():
-            return False
-        else:
-            return self.sensors[name].get()
+            logging.error("sensor is not enable")
+            #return "sensor is not enable"
+        elif not self.sensors[name].empty():
+            value_dict = self.sensors[name].get()
+            #logging.warn("nothing in queue")
+            #return False
+        #else:
+            #return self.sensors[name].get()
+        return value_dict
 
     def add_to_queue(self, message):
         if self.messages.full():
