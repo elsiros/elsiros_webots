@@ -116,15 +116,18 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(WEBOTS_HOME)/include/controller/c;$(WEBOTS_HOME)/include/controller/cpp;C:\Users\Egor\Documents\elsiros_webots_copy2\controllers\player\protobuf\include;C:\Users\Egor\Documents\elsiros_webots_copy2\controllers\player\messages</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(WEBOTS_HOME)/include/controller/c;$(WEBOTS_HOME)/include/controller/cpp;protobuf\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\Users\Egor\Documents\elsiros_webots_copy2\controllers\player\protobuf\lib;$(WEBOTS_HOME)/lib/controller</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>protobuf\lib;$(WEBOTS_HOME)/lib/controller</AdditionalLibraryDirectories>
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;controller.lib;libprotobuf.lib;Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>compile_proto.bat</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Accelerometer.cpp" />
@@ -160,7 +163,7 @@
     <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Speaker.cpp" />
     <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\Supervisor.cpp" />
     <ClCompile Include="$(WEBOTS_HOME)\src\controller\cpp\TouchSensor.cpp" />
-    <ClCompile Include="messages\messages.pb.cc" />
+    <ClCompile Include="messages.pb.cc" />
     <ClCompile Include="player.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

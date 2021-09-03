@@ -21,7 +21,7 @@ null :=
 space := $(null) $(null)
 WEBOTS_HOME_PATH=$(subst $(space),\ ,$(strip $(subst \,/,$(WEBOTS_HOME))))
 LIBRARIES = -lprotobuf -ljpeg
-CXX_SOURCES = player.cpp messages/messages.pb.cpp
+CXX_SOURCES = player.cpp messages.pb.cpp
 CFLAGS = -Wno-array-bounds
 FILES_TO_REMOVE = messages.pb.* client.exe client test_client.exe test_client
 ifeq ($(OS),Windows_NT)
@@ -38,7 +38,7 @@ defaut: release
 
 release debug profile: clients
 
-clients: build/$(GOAL)/messages.pb.o messages/messages.pb.h messages_pb2 build/$(GOAL)/robot_client.o
+clients: build/$(GOAL)/messages.pb.o messages.pb.h messages_pb2 build/$(GOAL)/robot_client.o
 	$(MAKE) -f Makefile.client $(MAKECMDGOALS)
 	$(MAKE) -f Makefile.test_client $(MAKECMDGOALS)
 
