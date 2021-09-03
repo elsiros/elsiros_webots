@@ -78,13 +78,15 @@ class MessageManager():
         for sensor in message.gps:
             parse_message.update(
                 {sensor.name: {"position": [sensor.value.X, sensor.value.Y], "time": message.time}})
-        for sensor in message.objects:
-            if sensor.name == "ball":
-                parse_message.update(
+        if hasattr(message, "objects"):
+            for sensor in message.objects:
+                if sensor.name == "ball":
+                    parse_message.update(
+                        {sensor.name: {"position": [sensor.X, sensor.Y], "time": message.time}})
+                elif sensor.name == "robot":
+                    parse_message.update(
                     {sensor.name: {"position": [sensor.X, sensor.Y], "time": message.time}})
-            elif sensor.name == "robot":
-                parse_message.update(
-                    {sensor.name: {"position": [sensor.X, sensor.Y], "time": message.time}})
+        
         for sensor in message.imu:
             parse_message.update(
                 {sensor.name: {"position": [sensor.angles.pitch, sensor.angles.roll, sensor.angles.yaw], "time": message.time}})
