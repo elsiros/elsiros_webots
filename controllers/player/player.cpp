@@ -353,7 +353,7 @@ public:
       }
         }
         else {
-            fprintf(stdout, "client_fd=%d", client_fd);
+      //fprintf(stdout, "client_fd=%d", client_fd);
       FD_ZERO(&rfds);
       FD_SET(client_fd, &rfds);
             struct timeval tv = { 0, 0 };
@@ -988,7 +988,7 @@ int PlayerServer::camera_min_time_step = 16;
 double PlayerServer::team_rendering_quota = 350.0;
 
 int main(int argc, char* argv[]) {
-    fprintf(stderr, "Hello World from controller\r\n");
+    //fprintf(stderr, "Hello World from controller\r\n");
   if (argc < 3) {
     fprintf(stderr, "Usage: %s <port> <nb_players> <host1> <host2> ...", argv[0]);
     return 1;
@@ -1006,7 +1006,7 @@ int main(int argc, char* argv[]) {
   const int player_team = name[0] == 'r' ? RED : BLUE;
 
   PlayerServer server(allowed_hosts, port, player_id, player_team, robot);
-    fprintf(stderr, "PlayerServer instance created OK\r\n");
+    //fprintf(stderr, "PlayerServer instance created OK\r\n");
 
   while (robot->step(basic_time_step) != -1)
     server.step();
