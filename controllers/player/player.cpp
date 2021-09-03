@@ -15,10 +15,13 @@
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>
-//#include <sys/time.h>
+#ifndef _WIN32
+    #include <sys/time.h>
+#endif
 #include <time.h>
 #include <windows.h> 
 
+#ifdef _WIN32
 const __int64 DELTA_EPOCH_IN_MICROSECS = 11644473600000000;
 
 /* IN UNIX the use of the timezone struct is obsolete;
@@ -68,6 +71,7 @@ int gettimeofday(struct timeval2* tv/*in*/, struct timezone2* tz/*in*/)
 
     return 0;
 }
+#endif
 
 #ifdef _WIN32
 #include <winsock.h>
@@ -663,11 +667,16 @@ public:
 
   void prepareSensorMessage() {
     sensor_measurements.set_time(controller_time);
-        struct timeval2 tp;
-        struct timezone2 tz;
-        ZeroMemory(&tp, sizeof(tp));
-        ZeroMemory(&tz, sizeof(tz));
-        gettimeofday(&tp, &tz);
+#ifdef _WIN32
+    struct timeval2 tp;
+    struct timezone2 tz;
+    ZeroMemory(&tp, sizeof(tp));
+    ZeroMemory(&tz, sizeof(tz));
+    gettimeofday(&tp, &tz);
+#else
+    struct timeval tp;
+    gettimeofday(&tp, NULL);
+#endif
     uint64_t real_time = tp.tv_sec * 1000 + tp.tv_usec / 1000;
     sensor_measurements.set_real_time(real_time);
     if (!devices_enabled)  // if devices are disabled (because robot got a red card), no sensor data is sent to the controller
