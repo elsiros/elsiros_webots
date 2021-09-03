@@ -1,0 +1,1 @@
+protobuf\lib\protoc.exe --cpp_out=messages messages.proto
