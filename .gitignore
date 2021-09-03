@@ -1,7 +1,16 @@
+#webots 
+*.cache
+*.wbproj
+log.txt
+
+#VS
+.vs/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
 
 # C extensions
 *.so

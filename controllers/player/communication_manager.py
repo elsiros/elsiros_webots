@@ -50,7 +50,7 @@ class CommunicationManager():
                 self.sensors[sensor].put(message[sensor])
 
     def run(self):
-        data = {"head_pitch": -1.5}#, "Neck": -1.6}
+        data = {"head_pitch": -1.5}
         self.add_to_queue(data)
         while(True):
             self.send_message()
@@ -59,24 +59,23 @@ class CommunicationManager():
 
     def test_run(self):
         # пример отправки данных серв
-        data = {"head_pitch": -1.5}#, "Neck": -1.6}
-        self.add_to_queue(data)
+        
         while(True):
             time.sleep(1)
             # пример получения данных из включенного и существующего сенсора
-            #print(self.get_sensor("ball"))
+            print(self.get_sensor("ball"))
 
 
 if __name__ == '__main__':
     manager = CommunicationManager(5, '127.0.0.1', 10001)
     # инициализация сенсоров
-    sensors = {"head_pitch_sensor": 5, "imu_head": 5}#{"gps_body": 5, "camera": 20,
+    sensors = {"gps_body": 5, "camera": 20,"head_pitch_sensor": 5, "imu_head": 5}#
     manager.enable_sensors(sensors)
 
-    #th1 = Thread(target=manager.run)
-    #th2 = Thread(target=manager.test_run)
-    manager.run()
-    #th1.start()
-    #th2.start()
-    #th1.join
-    #th2.join
+    th1 = Thread(target=manager.run)
+    th2 = Thread(target=manager.test_run)
+    #manager.run()
+    th1.start()
+    th2.start()
+    th1.join
+    th2.join
