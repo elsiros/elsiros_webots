@@ -50,7 +50,7 @@ class MessageManager():
             [type]: [description]
         """
         request = messages_pb2.ActuatorRequests()
-        with open(path) as actuator_requests:
+        with open(path, 'r') as actuator_requests:
             text_format.Parse(actuator_requests.read(), request)
         return request
 
@@ -120,17 +120,16 @@ class MessageManager():
         return self.parse_message(message)
 
     @staticmethod
-    def parse_message(message):
+    def parse_message(message) -> dict:
         """[summary]
 
         Args:
             message ([type]): [description]
 
         Returns:
-            [type]: [description]
+            dict: dict with keys of names sensors
         """
         parse_message = {}
-        #parse_message.update({"real_time": message.real_time})
         parse_message.update({"time": {"unix time": message.real_time, "sim time": message.time}})
         for sensor in message.accelerometers:
             parse_message.update({sensor.name: {"position": [
@@ -156,8 +155,8 @@ class MessageManager():
                 elif sensor.name == "robot":
                     parse_message.update(
                     {sensor.name: {"position": [sensor.X, sensor.Y], "time": message.time}})
-        
         for sensor in message.imu:
             parse_message.update(
-                {sensor.name: {"position": [sensor.angles.pitch, sensor.angles.roll, sensor.angles.yaw], "time": message.time}})
+                {sensor.name: {"position": [sensor.angles.roll, sensor.angles.pitch,
+                sensor.angles.yaw], "time": message.time}})
         return parse_message
