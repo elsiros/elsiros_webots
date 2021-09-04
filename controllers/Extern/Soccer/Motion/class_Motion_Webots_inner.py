@@ -52,7 +52,7 @@ class Motion_sim(Motion_real):
         self.sim_step_counter = 0
         self.gcreceiver = gcreceiver
         self.robot = robot
-        self.synchronization = True #self.robot.getSelf().getField('synchronization').getSFBool()
+        self.synchronization = False #self.robot.getSelf().getField('synchronization').getSFBool()
         self.former_step_time = 0
         super().__init__(glob)
         with open(current_work_directory + "Init_params/Sim_calibr.json", "r") as f:
@@ -111,20 +111,15 @@ class Motion_sim(Motion_real):
 
     def sim_Trigger(self):
         if not self.pause.Flag:
-            #if self.robot.getSelf().getField('customData').getSFString() == 'penalized':
-            #    self.falling_Flag = 3
-            #    for i in range(len(self.WBservosList)):
-            #        self.robot.getDevice(self.WBservosList[i]).setPosition(0)
-            if self.gcreceiver != None:
-                if self.gcreceiver.team_state != None:
-                    if self.gcreceiver.player_state.penalty != 0:
-                        self.falling_Flag = 3
-                        for i in range(len(self.WBservosList)):
-                            self.robot.getDevice(self.WBservosList[i]).setPosition(0)
+            if self.robot.getSelf().getField('customData').getSFString() == 'penalized':
+                self.falling_Flag = 3
+                for i in range(len(self.WBservosList)):
+                    self.robot.getDevice(self.WBservosList[i]).setPosition(0)
             if self.synchronization:
-                self.robot.step(self.timestep)
+                pass
             else:
                 self.wait_for_step()
+            self.robot.step(self.timestep)
 
     def wait_for_step(self):
         while True:
@@ -284,8 +279,7 @@ class Motion_sim(Motion_real):
 
     def sim_Start(self):
         for i in range(len(self.ACTIVEJOINTS)):
-            #position = self.robot.getDevice(self.WBservosList[i]).getTargetPosition()
-            position = 0
+            position = self.robot.getDevice(self.WBservosList[i]).getTargetPosition()
             self.activePose.append(position)
 
     def sim_Progress(self,simTime):  # simTime in seconds

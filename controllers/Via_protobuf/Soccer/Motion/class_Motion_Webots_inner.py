@@ -52,7 +52,7 @@ class Motion_sim(Motion_real):
         self.sim_step_counter = 0
         self.gcreceiver = gcreceiver
         self.robot = robot
-        self.synchronization = True #self.robot.getSelf().getField('synchronization').getSFBool()
+        self.synchronization = False #self.robot.getSelf().getField('synchronization').getSFBool()
         self.former_step_time = 0
         super().__init__(glob)
         with open(current_work_directory + "Init_params/Sim_calibr.json", "r") as f:
@@ -122,9 +122,10 @@ class Motion_sim(Motion_real):
                         for i in range(len(self.WBservosList)):
                             self.robot.getDevice(self.WBservosList[i]).setPosition(0)
             if self.synchronization:
-                self.robot.step(self.timestep)
+                pass
             else:
                 self.wait_for_step()
+            self.robot.step(self.timestep)
 
     def wait_for_step(self):
         while True:
