@@ -73,7 +73,7 @@ class Motion_real(Motion1):
                                          dist*math.sin(course_global_rad)+ self.glob.pf_coord[1]]
                 #if len(self.glob.obstacles) == 0: self.glob.obstacles = [[0,0,0]]
                 #self.glob.obstacles[0] = [self.glob.ball_coord[0], self.glob.ball_coord[1], 0.15]
-                self.sim_Get_Obstacles()
+                if self.glob.obstacleAvoidanceIsOn: self.sim_Get_Obstacles()
                 return(a, course, dist, speed)
             else:
                 if distance1 !=0:
@@ -120,7 +120,7 @@ class Motion_real(Motion1):
                                         dist*math.sin(course_global_rad)+ self.glob.pf_coord[1]]
             if len(self.glob.obstacles) == 0: self.glob.obstacles = [[0,0,0]]
             self.glob.obstacles[0] = [self.glob.ball_coord[0], self.glob.ball_coord[1], 0.15]
-            self.sim_Get_Obstacles()
+            if self.glob.obstacleAvoidanceIsOn: self.sim_Get_Obstacles()
             distance = dist *1000
             self.neck_pan =int( - course/ self.TIK2RAD)
             D = self.params['HEIGHT_OF_CAMERA'] - self.params['HEIGHT_OF_NECK']- self.params['DIAMETER_OF_BALL']/2
@@ -134,35 +134,8 @@ class Motion_real(Motion1):
     def seek_Ball_In_Frame(self, with_Localization = True):
         self.pause_in_ms(100)
         Ballposition = self.sim_Get_Ball_Position()
-        x, y, yaw = self.sim_Get_Robot_Position()
-        #self.read_head_imu_euler_angle()
-        yaw = self.body_euler_angle['yaw'] + self.direction_To_Attack
-        dx = Ballposition[0] - x
-        dy = Ballposition[1] - y
-        distance = math.sqrt(dx**2 + dy**2)
-        if distance == 0: course = 0
-        else:
-            course = math.atan2(dy, dx)
-            course -= yaw
-            course = self.norm_yaw(course)
-        right_yaw_visible_area = -self.neck_pan * self.TIK2RAD - math.radians(160 * self.params['APERTURE_PER_PIXEL'])
-        left_yaw_visible_area = -self.neck_pan * self.TIK2RAD + math.radians(160 * self.params['APERTURE_PER_PIXEL'])
-        bottom_distance_visible_area = math.tan(math.pi/2 + (self.neck_tilt - self.neck_calibr) * self.TIK2RAD -
-                                        math.radians(120 * self.params['APERTURE_PER_PIXEL_VERTICAL'])) * self.params['HEIGHT_OF_CAMERA'] / 1000
-        top_distance_visible_area = math.tan(math.pi/2 + (self.neck_tilt - self.neck_calibr) * self.TIK2RAD +
-                                        math.radians(120 * self.params['APERTURE_PER_PIXEL_VERTICAL'])) * self.params['HEIGHT_OF_CAMERA'] / 1000
-        if top_distance_visible_area <= 0 : top_distance_visible_area = 10
-        if bottom_distance_visible_area <= distance <= top_distance_visible_area and right_yaw_visible_area <= course <= left_yaw_visible_area:
-            return True, course, distance
-        else: return False, 0, 0
-
-    def detect_Ball_Speed(self):
-        position = []
-        for number in range (2):
-            self.pause_in_ms(100)
-            Ballposition = self.sim_Get_Ball_Position()
+        if Ballposition:
             x, y, yaw = self.sim_Get_Robot_Position()
-            #self.read_head_imu_euler_angle()
             yaw = self.body_euler_angle['yaw'] + self.direction_To_Attack
             dx = Ballposition[0] - x
             dy = Ballposition[1] - y
@@ -172,14 +145,25 @@ class Motion_real(Motion1):
                 course = math.atan2(dy, dx)
                 course -= yaw
                 course = self.norm_yaw(course)
-            right_yaw_visible_area = -self.neck_pan * self.TIK2RAD - math.radians(160 * self.params['APERTURE_PER_PIXEL'])
-            left_yaw_visible_area = -self.neck_pan * self.TIK2RAD + math.radians(160 * self.params['APERTURE_PER_PIXEL'])
-            bottom_distance_visible_area = math.tan(math.pi/2 + (self.neck_tilt - self.neck_calibr) * self.TIK2RAD -
-                                            math.radians(120 * self.params['APERTURE_PER_PIXEL_VERTICAL'])) * self.params['HEIGHT_OF_CAMERA'] / 1000
-            top_distance_visible_area = math.tan(math.pi/2 + (self.neck_tilt - self.neck_calibr) * self.TIK2RAD +
-                                            math.radians(120 * self.params['APERTURE_PER_PIXEL_VERTICAL'])) * self.params['HEIGHT_OF_CAMERA'] / 1000
-            if top_distance_visible_area <= 0 : top_distance_visible_area = 10
-            if bottom_distance_visible_area <= distance <= top_distance_visible_area and right_yaw_visible_area <= course <= left_yaw_visible_area:
+            return True, course, distance
+        else: return False, 0, 0
+
+    def detect_Ball_Speed(self):
+        position = []
+        for number in range (2):
+            self.pause_in_ms(100)
+            Ballposition = self.sim_Get_Ball_Position()
+            if Ballposition:
+                x, y, yaw = self.sim_Get_Robot_Position()
+                yaw = self.body_euler_angle['yaw'] + self.direction_To_Attack
+                dx = Ballposition[0] - x
+                dy = Ballposition[1] - y
+                distance = math.sqrt(dx**2 + dy**2)
+                if distance == 0: course = 0
+                else:
+                    course = math.atan2(dy, dx)
+                    course -= yaw
+                    course = self.norm_yaw(course)
                 position.append([course,distance])
         n = len(position)
         speed = [0,0]

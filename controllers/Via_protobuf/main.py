@@ -30,13 +30,15 @@ EXTERN = True
 from Soccer.Localisation.class_Glob import Glob
 from Soccer.Localisation.class_Local import *
 from Soccer.strategy import Player
-from Soccer.Motion.class_Motion_Webots_inner import Motion_sim
+from Soccer.Motion.class_Motion_Webots_PB import Motion_sim
 from launcher import *
-controller_path = os.environ.get('WEBOTS_HOME').replace('\\', '/') + '/lib/controller/python39'
-sys.path.append(controller_path)
-from controller import *
+#controller_path = os.environ.get('WEBOTS_HOME').replace('\\', '/') + '/lib/controller/python39'
+#sys.path.append(controller_path)
+#from controller import *
 
 global robot
+global robot_color
+global robot_number
 
 class Falling:
     def __init__(self):
@@ -51,7 +53,8 @@ pause = Pause()
 def main_procedure():
     global robot
     global pause
-    if EXTERN: arguments = ['main.py', 'forward', '4', '[-0.7, 0, 0]', '2', '2', '0']
+    global robot_color
+    if EXTERN: arguments = ['main.py', 'forward', '1', '[0.0, 0, 0]', '1', '2', '0']
     else: arguments = sys.argv
     second_pressed_button = int(arguments[2])
     team = int(arguments[4])
@@ -59,7 +62,7 @@ def main_procedure():
     falling = Falling()
     if second_pressed_button == 0:
         player_super_cycle(falling, team, player_number, SIMULATION, current_work_directory, robot, pause)
-    print('teamColor = ', robot.getSelf().getField('teamColor').getSFString())
+    print('teamColor = ', robot_color)
     print('Player is going to play without Game Controller')
     role = arguments[1]
     initial_coord = list(eval(arguments[3]))
@@ -126,16 +129,16 @@ class Main_Panel(wx.Frame):
         btn2.Bind(wx.EVT_BUTTON, self.ShowMessage2)
 
         self.SetSize((300, 200))
-        if EXTERN: arguments = ['main.py', 'forward', 4, [-0.7, 0, 0], 2, 2, 0]
-        else: arguments = sys.argv
-        team = int(arguments[4])
-        player_number = int(arguments[5])
+        #if EXTERN: arguments = ['main.py', 'forward', 4, [-0.7, 0, 0], 2, 2, 0]
+        #else: arguments = sys.argv
+        global robot_color
+        global robot_number
+        team = robot_color
+        player_number = robot_number
         title = 'Team ' + str(team) + ' player '+ str(player_number)
         self.SetTitle(title)
         width, height = wx.GetDisplaySize().Get()
-        global robot
-        robot = Supervisor()
-        teamColor = robot.getSelf().getField('teamColor').getSFString()
+        teamColor = robot_color
         if teamColor == 'red':
             x_position = width - 300 * (5- player_number)
         else:
@@ -157,14 +160,19 @@ class Main_Panel(wx.Frame):
         print('Pause button pressed')
 
 
-def main():
-
+def main(robot1, color, number):
+    global robot
+    global robot_color
+    global robot_number
+    robot = robot1
+    robot_color = color
+    robot_number = number
     app = wx.App()
     ex = Main_Panel(None)
     ex.Show()
     app.MainLoop()
 
 
-main()
+
 
 

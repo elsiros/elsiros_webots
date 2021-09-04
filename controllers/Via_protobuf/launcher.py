@@ -9,7 +9,7 @@ from gcreceiver import ThreadedGameStateReceiver
 from Soccer.Localisation.class_Glob import Glob
 from Soccer.Localisation.class_Local import *
 from Soccer.strategy import Player
-from Soccer.Motion.class_Motion_Webots_inner import Motion_sim
+from Soccer.Motion.class_Motion_Webots_PB import Motion_sim
 
 
 def init_gcreceiver(team, player, is_goalkeeper):

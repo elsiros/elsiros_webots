@@ -104,10 +104,18 @@ class Motion_sim(Motion_real):
                   }
 
     def game_time(self):
-        return self.robot.get_sensor("time")['sim_time']/1000
+        while True:
+            time_s = self.robot.get_sensor("time")
+            if time_s: break
+            time.sleep(0.001)
+        return time_s['sim time']/1000
 
     def game_time_ms(self):
-        return self.robot.get_sensor("time")['sim_time']
+        while True:
+            time_ms = self.robot.get_sensor("time")
+            if time_ms: break
+            time.sleep(0.001)
+        return time_ms['sim time']
 
     def pause_in_ms(self, time_in_ms):
         self.sim_Progress(time_in_ms/1000)
@@ -146,7 +154,7 @@ class Motion_sim(Motion_real):
     def imu_activation(self):
         #self.robot.getDevice("imu_head").enable(1)
         #self.robot.getDevice("imu_body").enable(1)
-        #self.sim_Trigger()
+        self.sim_Trigger()
         head_euler = self.robot.get_sensor("imu_head")['position']
         body_euler = self.robot.get_sensor("imu_body")['position']
         self.euler_angle['roll'] = head_euler[0]
@@ -166,7 +174,7 @@ class Motion_sim(Motion_real):
         self.euler_angle['yaw'] = head_euler[2]
 
     def read_imu_body_yaw(self):
-        #self.sim_Trigger()
+        self.sim_Trigger()
         body_euler = self.robot.get_sensor("imu_body")['position']
         self.body_euler_angle = {'roll': body_euler[0], 'pitch': body_euler[1], 'yaw': body_euler[2]}
         return body_euler[2]
@@ -279,7 +287,9 @@ class Motion_sim(Motion_real):
         return
 
     def sim_Get_Ball_Position(self):
-        return self.robot.get_sensor("ball")['position']
+        ball_pos = self.robot.get_sensor("ball")
+        if ball_pos: return ball_pos['position']
+        else: return False
 
     def sim_Get_Obstacles(self):
         robot_names = ['RED_PLAYER_1', 'RED_PLAYER_2', 'BLUE_PLAYER_1', 'BLUE_PLAYER_2']
@@ -299,7 +309,7 @@ class Motion_sim(Motion_real):
 
     def sim_Get_Robot_Position(self):
         self.sim_Trigger()
-        x, y, z  = self.robot.get_sensor("gps_body")['position']
+        x, y  = self.robot.get_sensor("gps_body")['position']
         self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.get_sensor("imu_body")['position']
         self.body_euler_angle['yaw'] -= self.direction_To_Attack
         return x, y, self.body_euler_angle['yaw']
