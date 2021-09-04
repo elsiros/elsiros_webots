@@ -131,8 +131,7 @@ class MessageManager():
         """
         parse_message = {}
         #parse_message.update({"real_time": message.real_time})
-        #parse_message.update({"messages": message.messages})
-        #parse_message.update({"accelerometers": message.accelerometers})
+        parse_message.update({"time": {"unix time": message.real_time, "sim time": message.time}})
         for sensor in message.accelerometers:
             parse_message.update({sensor.name: {"position": [
                 sensor.value.X, sensor.value.Y, sensor.value.Z], "time": message.time}})

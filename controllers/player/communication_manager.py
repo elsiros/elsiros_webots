@@ -28,6 +28,7 @@ class CommunicationManager():
                 self.sensors.update({"ball": queue.Queue(self.maxsize)})
                 self.sensors.update({"robot": queue.Queue(self.maxsize)})
             self.sensors.update({str(sensor): queue.Queue(self.maxsize)})
+        self.sensors.update({"time": queue.Queue(1)})
         self.client.send_request("init")
 
     def get_sensor(self, name) -> dict:
@@ -84,7 +85,7 @@ class CommunicationManager():
         while(True):
             time.sleep(1)
             # пример получения данных из включенного и существующего сенсора
-            print(self.get_sensor("ball"))
+            print(self.get_sensor("time"))
 
 
 if __name__ == '__main__':
