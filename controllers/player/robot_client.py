@@ -41,13 +41,14 @@ class RobotClient():
                 self.socket.connect((self.host, self.port))
                 connected = True
                 break
-            except:
+            except socket.error as msg:
                 print("Failed to connect to ", self.host, " : ",
                       self.port, " attempt ",  attempt, " of ", self.max_attempts)
+                print("Caught exception socket.error : %s" % msg)
                 time.sleep(self.wait_time_sec)
 
         if not connected:
-            if (self.verbosity > 0):
+            if self.verbosity > 0:
                 print("Failed to connect after ", attempt,
                       "attempts. Giving up on connection")
             self.disconnect_client()
@@ -55,10 +56,10 @@ class RobotClient():
 
         # Receiving the 'welcome message'
         welcome_message = self.socket.recv(8)
-        if (self.verbosity >= 4):
+        if self.verbosity >= 4:
             print("Welcome message:", welcome_message.decode("utf-8"))
         if welcome_message != b'Welcome\x00':
-            if (self.verbosity > 0):
+            if self.verbosity > 0:
                 if welcome_message == b'Refused\x00':
                     print("Connection refused")
                 else:
@@ -67,19 +68,24 @@ class RobotClient():
             self.disconnect_client()
             return False
 
-        if (self.verbosity >= 2):
+        if self.verbosity >= 2:
             print("Connected to ", str(self.host) + " :", self.port)
         return True
 
-    def printMessages():
+    @staticmethod
+    def print_messages(msg):
         """[summary]
         """
-        pass
+        print(msg)
 
-    def disconnect_client(self):
+    def disconnect_client(self)->None:
+        """[summary]
+        """
         self.socket.close()
 
     def send_request(self, message_type="default", positions={}):
+        """[summary]
+        """
         if message_type == "default":
             message = self.message_manager.message_from_file(
                 "actuator_requests.txt")
@@ -92,10 +98,10 @@ class RobotClient():
        # except:
         #    print("Can't send request")
 
-    def add_initial_sensor(self, sensor_name, sensor_time):
+    def initial(self, sensor_name, sensor_time):
         self.message_manager.add_initial_request(sensor_name, sensor_time)
 
-    def receive(self, with_parse=True):
+    def receive(self):
         content_size = self.socket.recv(self.message_manager.get_size())
         buffer_size = self.message_manager.get_answer_size(content_size)
         data = self.socket.recv(buffer_size)

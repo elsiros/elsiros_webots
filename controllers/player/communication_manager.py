@@ -22,8 +22,10 @@ class CommunicationManager():
         self.sensors = {}
 
     def enable_sensors(self, sensors) -> None:
+        """[summary]
+        """
         for sensor in sensors:
-            self.client.add_initial_sensor(sensor, sensors[sensor])
+            self.client.initial(sensor, sensors[sensor])
             if sensor == "camera":
                 self.sensors.update({"ball": queue.Queue(self.maxsize)})
                 self.sensors.update({"robot": queue.Queue(self.maxsize)})
@@ -60,7 +62,7 @@ class CommunicationManager():
             self.messages.put(message)
 
     def send_message(self):
-        while(not self.messages.empty()):
+        while not self.messages.empty():
             self.client.send_request("positions", self.messages.get())
 
     def update_history(self, message):
@@ -74,25 +76,24 @@ class CommunicationManager():
     def run(self):
         data = {"head_pitch": -1.5}
         self.add_to_queue(data)
-        while(True):
+        while True:
             self.send_message()
             message = self.client.receive()
             self.update_history(message)
 
     def test_run(self):
         # пример отправки данных серв
-        
-        while(True):
+        while True:
             time.sleep(1)
             # пример получения данных из включенного и существующего сенсора
-            print(self.get_sensor("time"))
+            print(self.get_sensor("imu_body"))
 
 
 if __name__ == '__main__':
-    manager = CommunicationManager(5, '127.0.0.1', 10001)
+    manager = CommunicationManager(1, '127.0.0.1', 10001)
     # инициализация сенсоров
-    sensors = {"gps_body": 5, "camera": 20,"head_pitch_sensor": 5, "imu_head": 5}#
-    manager.enable_sensors(sensors)
+    ex_sensors = {"gps_body": 5, "camera": 20,"head_pitch_sensor": 5, "imu_head": 5, "imu_body": 5}#
+    manager.enable_sensors(ex_sensors)
 
     th1 = Thread(target=manager.run)
     th2 = Thread(target=manager.test_run)
