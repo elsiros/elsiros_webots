@@ -143,7 +143,7 @@ class Motion_sim(Motion_real):
     def wait_for_step(self):
         while True:
             time1 = self.game_time_ms()
-            print(time1)
+            #print(time1)
             if time1 >= (self.former_step_time + self.timestep):
                 self.former_step_time = time1
                 break

@@ -1,23 +1,18 @@
 import time
 from threading import Thread
 from communication_manager import CommunicationManager
-#import dotenv
-#import os
-import main
+#import main_pb
 
-#print(os.environ.get('Path1'))
-#dotenv.load_dotenv(override=True)
-#print(os.environ.get('Path1').replace(';', '\n'))
-color = 'red'
-number = 2
-robot = CommunicationManager(5, '127.0.0.1', 10002)
-sensors = {"gps_body": 2, "imu_head": 2, "imu_body": 2,  "camera": 20}
-robot.enable_sensors(sensors)
+def process_11():
+    execfile("main_pb_11.py")
 
-th0 = Thread(target=robot.run)
-th0.start()
-th0.join
-th1 = Thread(target=main.main, args=(robot, color, number))
-th1.start()
-th1.join
-#main.main(robot, color, number)
+def process_12():
+    execfile("main_pb_12.py")
+
+t11 = Thread(target = process_11, daemon = True)
+t11.start()
+t11.join()
+
+t12 = Thread(target = process_12, daemon = True)
+t12.start()
+t12.join()

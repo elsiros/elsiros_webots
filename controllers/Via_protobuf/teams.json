@@ -1,0 +1,42 @@
+{
+  "11": {
+    "IP_address": "127.0.0.1",
+    "port": 10011,
+    "robot_color": "red",
+    "robot_number": 1,
+    "team": 8,
+    "second_pressed_button": 1,
+    "initial_coord": [ -1.68, 0, 0 ],
+    "role": "goalkeeper"
+  },
+  "12": {
+    "IP_address": "127.0.0.2",
+    "port": 10012,
+    "robot_color": "red",
+    "robot_number": 2,
+    "team": 8,
+    "second_pressed_button": 1,
+    "initial_coord": [ -0.4, 0, 0 ],
+    "role": "forward"
+  },
+  "21": {
+    "IP_address": "127.0.0.3",
+    "port": 10021,
+    "robot_color": "blue",
+    "robot_number": 1,
+    "team": 25,
+    "second_pressed_button": 1,
+    "initial_coord": [ -1.68, 0, 0 ],
+    "role": "goalkeeper_old_style"
+  },
+  "22": {
+    "IP_address": "127.0.0.4",
+    "port": 10022,
+    "robot_color": "blue",
+    "robot_number": 2,
+    "team": 25,
+    "second_pressed_button": 4,
+    "initial_coord": [ -0.4, 0, 0 ],
+    "role": "forward_old_style"
+  }
+}

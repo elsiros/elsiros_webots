@@ -1104,7 +1104,7 @@ PROTO Kondo006 [
                     children [
                       Kondo006_HeadMesh {
                       }Camera {
-                        fieldOfView            1.8 #2.27  # [0, pi]
+                        fieldOfView            1.05 #2.27  # [0, pi]
                         width                  320    # [0, inf)
                         height                 240     # [0, inf)
                         spherical              FALSE    # {TRUE, FALSE}
