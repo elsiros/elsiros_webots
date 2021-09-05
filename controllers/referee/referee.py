@@ -234,7 +234,9 @@ def spawn_team(team, red_on_right, children):
         defname = color.upper() + '_PLAYER_' + number
         halfTimeStartingTranslation = player['borderStartingPose']['translation']
         halfTimeStartingRotation = player['borderStartingPose']['rotation']
-        '''
+
+        
+        # "player.pp" controller args by referee: port nmber_of_players allowed_hosts 
         string = f'DEF {defname} {model}{{name "{color} player {number}" translation ' + \
             f'{halfTimeStartingTranslation[0]} {halfTimeStartingTranslation[1]} {halfTimeStartingTranslation[2]} rotation ' + \
             f'{halfTimeStartingRotation[0]} {halfTimeStartingRotation[1]} {halfTimeStartingRotation[2]} ' + \
@@ -244,12 +246,12 @@ def spawn_team(team, red_on_right, children):
             string += f', "{h}"'
         string += '] }}'
         '''
-        # Controller args by referee: 0 0 0 team_id robot_number
+        # "main.py" controller args by referee: 0 0 0 team_id robot_number
         string = f'DEF {defname} {model}{{name "{color} player {number}" translation ' + \
             f'{halfTimeStartingTranslation[0]} {halfTimeStartingTranslation[1]} {halfTimeStartingTranslation[2]} rotation ' + \
             f'{halfTimeStartingRotation[0]} {halfTimeStartingRotation[1]} {halfTimeStartingRotation[2]} ' + \
             f'{halfTimeStartingRotation[3]} controllerArgs [ "0" "0" "0" "{team_id}" "{number}" ] teamColor "{color}" playerNumber "{number}" }}'
-
+        '''
         children.importMFNodeFromString(-1, string)
         player['robot'] = supervisor.getFromDef(defname)
         #player['position'] = player['robot'].getCenterOfMass()
