@@ -2,29 +2,12 @@
 # Module is designed by Vladimir Tkach
 
 
-#import sys, os
-
-#current_work_directory = os.getcwd()
-#current_work_directory = current_work_directory.replace('\\', '/')
-#if sys.version != '3.4.0':
-    #current_work_directory += '/'
-
-#sys.path.append( current_work_directory + 'Soccer/')
-#sys.path.append( current_work_directory + 'Soccer/Motion/')
-#sys.path.append( current_work_directory + 'Soccer/Vision/')
-#sys.path.append( current_work_directory + 'Soccer/Localisation/')
-#sys.path.append( current_work_directory + 'Soccer/Localisation/PF/')
-
 
 import math
-#from class_Motion import *
-#from class_Local import *
 from ball_Approach_calc import ball_Approach_Calc
 
 
 def uprint(*text):
-    #with open(current_work_directory + "Soccer/log/output.txt",'a') as f:
-    #    print(*text, file = f)
     print(*text )
 
 def normalize_rotation(yaw):

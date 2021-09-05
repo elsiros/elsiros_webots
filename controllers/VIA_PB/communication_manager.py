@@ -13,7 +13,7 @@ from robot_client import RobotClient
 class CommunicationManager():
     """[summary]
     """
-    def __init__(self, maxsize=5, host='127.0.0.1', port=10001):
+    def __init__(self, maxsize=1, host='127.0.0.1', port=10001):
         verbosity = 4
         self.client = RobotClient(host, port, verbosity)
         self.client.connect_client()
@@ -72,8 +72,8 @@ class CommunicationManager():
                 self.sensors[sensor].put(message[sensor])
 
     def run(self):
-        data = {"head_pitch": -1.5}
-        self.add_to_queue(data)
+        #data = {"head_pitch": -1.5}
+        #self.add_to_queue(data)
         while(True):
             self.send_message()
             message = self.client.receive()

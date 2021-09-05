@@ -27,18 +27,12 @@ class Motion_sim(Motion_real):
         self.FRAMELENGTH = 0.02
         import random as random
         self.random = random
-        #import sim as vr
-        #self.sim = vr
         import numpy as np
         self.np = np
-        import matplotlib.pyplot as plt
-        self.plt = plt
+        #import matplotlib.pyplot as plt
+        #self.plt = plt
         import cv2 as cv2
         self.cv2 = cv2
-        import msvcrt as ms
-        self.ms = ms
-        import time
-        self.utime = time
         self.Dummy_HData =[]
         self.BallData =[]
         self.timeElapsed = 0
@@ -75,33 +69,33 @@ class Motion_sim(Motion_real):
                              "left_ankle_pitch", "left_knee", "left_hip_pitch", "left_hip_roll", "left_hip_yaw",
                              "left_elbow_pitch", "left_shoulder_twirl", "left_shoulder_roll",
                              "left_shoulder_pitch", "head_yaw", "head_pitch"]
-        self.FACTOR =  [ 1,1,1,1, 1, 1, 1,1,1,1, 1, 1,1, 1,1, 1, 1, 1,1,1,1, 1, 1]
+        #self.FACTOR =  [ 1,1,1,1, 1, 1, 1,1,1,1, 1, 1,1, 1,1, 1, 1, 1,1,1,1, 1, 1]
         self.trims = [ 0,0,0,0, 0, 0, 0, 0, -0.12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.12, 0, 0, 0]
-        self.WBservos = {
-                    (10,2) : "right_ankle_roll",
-                    (9,2) : "right_ankle_pitch",
-                    (8,2) : "right_knee",
-                    (7,2) : "right_hip_pitch",
-                    (6,2) : "right_hip_roll",
-                    (5,2) : "right_hip_yaw",
-                    (4, 2) : "right_elbow_pitch",
-                    (3, 2) : "right_shoulder_twirl",
-                    (2, 2) : "right_shoulder_roll",
-                    (1, 2) : "right_shoulder_pitch",
-                    (0, 2) : "pelvis_yaw",
-                    (10,1) : "left_ankle_roll",
-                    (9,1) : "left_ankle_pitch",
-                    (8,1) : "left_knee",
-                    (7,1) : "left_hip_pitch",
-                    (6,1) : "left_hip_roll",
-                    (5,1) : "left_hip_yaw",
-                    (4,1) : "left_elbow_pitch",
-                    (3,1) : "left_shoulder_twirl",
-                    (2,1) : "left_shoulder_roll",
-                    (1,1) : "left_shoulder_pitch",
-                    (0,1) : "head_yaw",
-                    (12,2): "head_pitch"
-                  }
+        #self.WBservos = {
+        #            (10,2) : "right_ankle_roll",
+        #            (9,2) : "right_ankle_pitch",
+        #            (8,2) : "right_knee",
+        #            (7,2) : "right_hip_pitch",
+        #            (6,2) : "right_hip_roll",
+        #            (5,2) : "right_hip_yaw",
+        #            (4, 2) : "right_elbow_pitch",
+        #            (3, 2) : "right_shoulder_twirl",
+        #            (2, 2) : "right_shoulder_roll",
+        #            (1, 2) : "right_shoulder_pitch",
+        #            (0, 2) : "pelvis_yaw",
+        #            (10,1) : "left_ankle_roll",
+        #            (9,1) : "left_ankle_pitch",
+        #            (8,1) : "left_knee",
+        #            (7,1) : "left_hip_pitch",
+        #            (6,1) : "left_hip_roll",
+        #            (5,1) : "left_hip_yaw",
+        #            (4,1) : "left_elbow_pitch",
+        #            (3,1) : "left_shoulder_twirl",
+        #            (2,1) : "left_shoulder_roll",
+        #            (1,1) : "left_shoulder_pitch",
+        #            (0,1) : "head_yaw",
+        #            (12,2): "head_pitch"
+        #          }
 
     def game_time(self):
         while True:
@@ -122,10 +116,6 @@ class Motion_sim(Motion_real):
 
     def sim_Trigger(self):
         if not self.pause.Flag:
-            #if self.robot.getSelf().getField('customData').getSFString() == 'penalized':
-            #    self.falling_Flag = 3
-            #    for i in range(len(self.WBservosList)):
-            #        self.robot.getDevice(self.WBservosList[i]).setPosition(0)
             if self.gcreceiver != None:
                 if self.gcreceiver.team_state != None:
                     if self.gcreceiver.player_state.penalty != 0:
@@ -134,17 +124,13 @@ class Motion_sim(Motion_real):
                         for key in self.WBservosList:
                             servo_data.update({key: 0})
                         self.robot.add_to_queue(servo_data)
-            if self.synchronization:
-                pass
-            else:
-                self.wait_for_step()
-            #self.robot.step(self.timestep)
+            self.wait_for_step(self.timestep)
 
-    def wait_for_step(self):
+    def wait_for_step(self, step):
         while True:
             time1 = self.game_time_ms()
             #print(time1)
-            if time1 >= (self.former_step_time + self.timestep):
+            if time1 >= (self.former_step_time + step):
                 self.former_step_time = time1
                 break
             else:
@@ -152,9 +138,7 @@ class Motion_sim(Motion_real):
 
 
     def imu_activation(self):
-        #self.robot.getDevice("imu_head").enable(1)
-        #self.robot.getDevice("imu_body").enable(1)
-        self.sim_Trigger()
+        self.wait_for_step(5)
         head_euler = self.robot.get_sensor("imu_head")['position']
         body_euler = self.robot.get_sensor("imu_body")['position']
         self.euler_angle['roll'] = head_euler[0]
@@ -167,14 +151,14 @@ class Motion_sim(Motion_real):
         return self.euler_angle
 
     def read_head_imu_euler_angle(self):
-        self.sim_Trigger()
+        self.wait_for_step(5)
         head_euler = self.robot.get_sensor("imu_head")['position']
         self.euler_angle['roll'] = head_euler[0]
         self.euler_angle['pitch'] = head_euler[1]
         self.euler_angle['yaw'] = head_euler[2]
 
     def read_imu_body_yaw(self):
-        self.sim_Trigger()
+        self.wait_for_step(5)
         body_euler = self.robot.get_sensor("imu_body")['position']
         self.body_euler_angle = {'roll': body_euler[0], 'pitch': body_euler[1], 'yaw': body_euler[2]}
         return body_euler[2]
@@ -186,6 +170,7 @@ class Motion_sim(Motion_real):
                     self.falling_Flag = 3
                     self.simulateMotion(name = 'Initial_Pose')
                     return self.falling_Flag
+        self.wait_for_step(5)
         self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.get_sensor("imu_body")['position']
         #print('self.body_euler_angle[pitch] =', self.body_euler_angle['pitch'])
         #print('self.body_euler_angle[roll] =', self.body_euler_angle['roll'])
@@ -208,9 +193,8 @@ class Motion_sim(Motion_real):
         servo_data = {}
         for i in range(len(angles)):
             key = self.WBservosList[i]
-            value = angles[i] * self.FACTOR[i] + self.trims[i]
+            value = angles[i] + self.trims[i]
             servo_data.update({key:value})
-            #self.robot.getDevice(self.WBservosList[i]).setPosition(angles[i] * self.FACTOR[i] + self.trims[i])
         self.robot.add_to_queue(servo_data)
         self.sim_Trigger()
         self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.get_sensor("imu_body")['position']
@@ -219,12 +203,10 @@ class Motion_sim(Motion_real):
     def move_head(self, pan, tilt):
         servo_data = {}
         pan_key = self.WBservosList[21]
-        pan_value = pan * self.TIK2RAD * self.FACTOR[21] + self.trims[21]
+        pan_value = pan * self.TIK2RAD + self.trims[21]
         tilt_key = self.WBservosList[22]
-        tilt_value = tilt * self.TIK2RAD * self.FACTOR[22] + self.trims[22]
+        tilt_value = tilt * self.TIK2RAD + self.trims[22]
         self.robot.add_to_queue({pan_key: pan_value, tilt_key: tilt_value})
-        #self.robot.getDevice(self.WBservosList[21]).setPosition(pan * self.TIK2RAD * self.FACTOR[21] + self.trims[21])
-        #self.robot.getDevice(self.WBservosList[22]).setPosition(tilt * self.TIK2RAD * self.FACTOR[22] + self.trims[22])
         for i in range(16):
             self.sim_Trigger()
 
@@ -279,9 +261,8 @@ class Motion_sim(Motion_real):
                 for j in range(len(self.ACTIVEJOINTS) - 2):
                     tempActivePose = activePoseOld[j]+(self.activePose[j]-activePoseOld[j])*k/pulseNum
                     key = self.WBservosList[j]
-                    value = tempActivePose * self.FACTOR[j] + self.trims[j]
+                    value = tempActivePose + self.trims[j]
                     servo_data.update({key:value})
-                    #self.robot.getDevice(self.WBservosList[j]).setPosition(tempActivePose * self.FACTOR[j] + self.trims[j])
                 self.robot.add_to_queue(servo_data)
                 self.sim_Trigger()
         return
@@ -316,7 +297,6 @@ class Motion_sim(Motion_real):
 
     def sim_Start(self):
         for i in range(len(self.ACTIVEJOINTS)):
-            #position = self.robot.getDevice(self.WBservosList[i]).getTargetPosition()
             position = 0
             self.activePose.append(position)
 

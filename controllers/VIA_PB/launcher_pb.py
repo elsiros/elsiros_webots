@@ -27,10 +27,10 @@ def player_super_cycle(falling, team, player_number, SIMULATION, current_work_di
     playing_allowed = False
     current_secondary_state = None
     while True:
-        if receiver.team_state == None:
-            if current_secondary_state == 'STATE_PENALTYSHOOT':
-                print('simulator reset')
-                robot.simulationReset()
+        #if receiver.team_state == None:
+        #    if current_secondary_state == 'STATE_PENALTYSHOOT':
+        #        print('simulator reset')
+        #        robot.simulationReset()
         seconds = 0
         while True:
             if receiver.team_state == None:
@@ -56,7 +56,8 @@ def player_super_cycle(falling, team, player_number, SIMULATION, current_work_di
                     seconds += 1
                 else:
                     break
-            robot.step(200)
+            #robot.step(200)
+            time.sleep(0.2)
         seconds = 0
         while True:
             if receiver.team_state != None:
@@ -70,7 +71,8 @@ def player_super_cycle(falling, team, player_number, SIMULATION, current_work_di
                     seconds += 1
                 else:
                     break
-            robot.step(200)
+            #robot.step(200)
+            time.sleep(0.2)
         seconds = 0
         while True:
             if receiver.team_state != None:
@@ -84,7 +86,8 @@ def player_super_cycle(falling, team, player_number, SIMULATION, current_work_di
                     seconds += 1
                 else:
                     break
-            robot.step(200)
+            #robot.step(200)
+            time.sleep(0.2)
         if receiver.team_state != None:
             current_game_state = receiver.state.game_state
             #if current_game_state == 'STATE_FINISHED':
@@ -164,7 +167,8 @@ def player_super_cycle(falling, team, player_number, SIMULATION, current_work_di
                 playing_allowed = False
             former_game_state = receiver.state.game_state
             former_player_penalty = receiver.player_state.penalty
-            robot.step(20)
+            #robot.step(20)
+            time.sleep(0.02)
         #else: 
         #    #if current_game_state == 'STATE_FINISHED':
         #    if current_secondary_state == 'STATE_PENALTYSHOOT':

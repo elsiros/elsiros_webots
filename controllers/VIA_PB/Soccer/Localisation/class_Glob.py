@@ -11,11 +11,11 @@ class Glob:
         self.pf_coord = [0.0,0.0,0.0]
         self.obstacles = []
         import socket
-        with open(current_work_directory + "Init_params/Sim_landmarks.json", "r") as f:
+        with open(current_work_directory / "Init_params" / "Sim_landmarks.json", "r") as f:
             landmarks = json.loads(f.read())
-        with open(current_work_directory + "Init_params/Sim_params.json", "r") as f:
+        with open(current_work_directory / "Init_params" / "Sim_params.json", "r") as f:
             self.params = json.loads(f.read())
-        with open(current_work_directory + "Init_params/wifi_params.json", "r") as f:
+        with open(current_work_directory / "Init_params" / "wifi_params.json", "r") as f:
             self.wifi_params = json.loads(f.read())
         if self.wifi_params['WIFI_IS_ON']:
             self.udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -31,7 +31,7 @@ class Glob:
         #self.imu_drift_last_correction_time = 0
 
     def import_strategy_data(self, current_work_directory):
-        with open(current_work_directory + "Init_params/strategy_data.json", "r") as f:
+        with open(current_work_directory / "Init_params" / "strategy_data.json", "r") as f:
             loaded_Dict = json.loads(f.read())
         if loaded_Dict.get('strategy_data') != None:
             strategy_data = loaded_Dict['strategy_data']

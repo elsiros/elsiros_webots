@@ -10,7 +10,7 @@ Possible values of 2-nd argument: 1-8
 Possible values of 3-rd argument: [0.0, 0.0, 0.0]
 """
 
-PlayerID = '22'
+#PlayerID = '11'
 
 import sys
 import os
@@ -19,21 +19,21 @@ import json
 import time
 import wx
 import threading
+from pathlib import Path
 
-current_work_directory = os.getcwd().replace('\\', '/') + '/'
+current_work_directory = Path.cwd()
+#current_work_directory = os.getcwd().replace('\\', '/') + '/'
 
 SIMULATION = 4                       # 0 - Simulation without physics, 
                                      # 1 - Simulation synchronous with physics, 
                                      # 3 - Simulation streaming with physics
                                      # 4 - Simulation in Webots
 
-#EXTERN = True
-
 from Soccer.Localisation.class_Glob import Glob
 from Soccer.Localisation.class_Local import *
 from Soccer.strategy import Player
 from Soccer.Motion.class_Motion_Webots_PB import Motion_sim
-from launcher import *
+from launcher_pb import *
 from communication_manager import CommunicationManager
 #controller_path = os.environ.get('WEBOTS_HOME').replace('\\', '/') + '/lib/controller/python39'
 #sys.path.append(controller_path)
@@ -41,8 +41,19 @@ from communication_manager import CommunicationManager
 
 global player_data
 global robot
-with open(current_work_directory + "teams.json", "r") as f:
+with open(current_work_directory / "teams.json", "r") as f:
     player_data = json.loads(f.read())
+
+with open(current_work_directory.parent/'referee'/'game.json', "r") as f:
+    game_data = json.loads(f.read())
+
+with open(current_work_directory.parent/'referee'/ game_data['red']['config'], "r") as f:
+    team_1_data = json.loads(f.read())
+
+with open(current_work_directory.parent/'referee'/game_data['blue']['config'], "r") as f:
+    team_2_data = json.loads(f.read())
+
+Port = sys.argv[1]
 
 class Falling:
     def __init__(self):
@@ -57,20 +68,20 @@ pause = Pause()
 def main_procedure():
     global player_data
     global pause
-    robot_color = player_data[PlayerID]['robot_color']
-    robot_number = player_data[PlayerID]['robot_number']
-    team = player_data[PlayerID]['team']
-    second_pressed_button = player_data[PlayerID]['second_pressed_button']
-    initial_coord = player_data[PlayerID]['initial_coord']
-    role = player_data[PlayerID]['role']
-    robot = CommunicationManager(5, player_data[PlayerID]['IP_address'], player_data[PlayerID]['port'])
+    robot_color = player_data[Port]['robot_color']
+    robot_number = player_data[Port]['robot_number']
+    team = player_data[Port]['team']
+    second_pressed_button = player_data[Port]['second_pressed_button']
+    initial_coord = player_data[Port]['initial_coord']
+    role = player_data[Port]['role']
+    robot = CommunicationManager(1, player_data[Port]['IP_address'], int(Port))
     sensors = {"gps_body": 5, "imu_head": 5, "imu_body": 5,  "camera": 20}
     robot.enable_sensors(sensors)
     th0 = threading.Thread(target=robot.run)
     th0.start()
     th0.join
     falling = Falling()
-    if second_pressed_button == 0:
+    if player_data['with_GC']:
         player_super_cycle(falling, team, robot_number, SIMULATION, current_work_directory, robot, pause)
     print('teamColor = ', robot_color)
     print('Player is going to play without Game Controller')
@@ -139,8 +150,8 @@ class Main_Panel(wx.Frame):
 
         self.SetSize((300, 200))
         global player_data
-        robot_color = player_data[PlayerID]['robot_color']
-        robot_number = player_data[PlayerID]['robot_number']
+        robot_color = player_data[Port]['robot_color']
+        robot_number = player_data[Port]['robot_number']
         team = robot_color
         #player_number = robot_number
         title = 'Team ' + str(team) + ' player '+ str(robot_number)

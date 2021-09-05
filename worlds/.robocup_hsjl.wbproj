@@ -7,7 +7,3 @@ centralWidgetVisible: 1
 orthographicViewHeight: 1
 textFiles: -1
 consoles: Console:All:All
-renderingDevicePerspectives: blue player 1:camera;1;1;0;0
-renderingDevicePerspectives: blue player 2:camera;1;1;0;0
-renderingDevicePerspectives: red player 1:camera;1;1;0;0
-renderingDevicePerspectives: red player 2:camera;1;1;0;0

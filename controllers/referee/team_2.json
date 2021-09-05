@@ -5,48 +5,48 @@
       "proto": "Kondo006",
       "needToBePlacedByRefereeInReady": true,
       "borderStartingPose": {
-        "translation": [ -0.9, -1.3, 0.30 ],
-        "rotation": [ 0, 0, 1, 1.57 ]
+        "translation": [-0.9, -1.3, 0.30],
+        "rotation": [0, 0, 1, 1.57]
       },
       "readyStartingPose": {
-        "translation": [ -1.68, 0, 0.30 ],
-        "rotation": [ 0, 0, 1, 0 ]
+        "translation": [-1.68, 0, 0.30],
+        "rotation": [0, 0, 1, 0]
       },
       "reentryStartingPose": {
-        "translation": [ -0.9, -1.3, 0.30 ],
-        "rotation": [ 0, 0, 1, 1.57 ]
+        "translation": [-0.9, -1.3, 0.30],
+        "rotation": [0, 0, 1, 1.57]
       },
       "shootoutStartingPose": {
-        "translation": [ 0.2, 0, 0.30 ],
-        "rotation": [ 0, 0, 1, 0 ]
+        "translation": [0.2, 0, 0.30],
+        "rotation": [0, 0, 1, 0]
       },
       "goalKeeperStartingPose": {
-        "translation": [ -1.68, 0, 0.30 ],
-        "rotation": [ 0, 0, 1, 0 ]
+        "translation": [-1.68, 0, 0.30],
+        "rotation": [0, 0, 1, 0]
       }
     },
     "2": {
       "proto": "Kondo006",
       "needToBePlacedByRefereeInReady": true,
       "borderStartingPose": {
-        "translation": [ -0.9, 1.3, 0.30 ],
-        "rotation": [ 0, 0, 1, -1.57 ]
+        "translation": [-0.9, 1.3, 0.30],
+        "rotation": [0, 0, 1, -1.57]
       },
       "readyStartingPose": {
-        "translation": [ -0.4, 0, 0.30 ],
-        "rotation": [ 0, 0, 1, 0 ]
+        "translation": [-0.4, 0, 0.30],
+        "rotation": [0, 0, 1, 0]
       },
       "reentryStartingPose": {
-        "translation": [ -0.9, 1.3, 0.30 ],
-        "rotation": [ 0, 0, 1, -1.57 ]
+        "translation": [-0.9, 1.3, 0.30],
+        "rotation": [0, 0, 1, -1.57]
       },
       "shootoutStartingPose": {
-        "translation": [ 0.2, 0, 0.30 ],
-        "rotation": [ 0, 0, 1, 0 ]
+        "translation": [0.2, 0, 0.30],
+        "rotation": [0, 0, 1, 0]
       },
       "goalKeeperStartingPose": {
-        "translation": [ -1.68, 0, 0.30 ],
-        "rotation": [ 0, 0, 1, 0 ]
+        "translation": [-1.68, 0, 0.30],
+        "rotation": [0, 0, 1, 0]
       }
     }
   }
