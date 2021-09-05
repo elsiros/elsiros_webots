@@ -235,6 +235,34 @@ public:
   double force_or_torque;
 };
 
+
+class Blurrer {
+  public:
+    Blurrer() :
+      object_angle_noize(3), 
+      object_distance_noize(0.1), 
+      position_coords_noize(0.1)
+      {};
+
+    double blur_coord(double coord)
+    {
+      return coord * (1 + (position_coords_noize - (float) std::rand() / RAND_MAX * position_coords_noize * 2));
+    }
+
+    double blur_angle(double angle)
+    {
+      return angle * (1 + (object_angle_noize - (float) std::rand() / RAND_MAX * object_angle_noize * 2));
+    }
+
+    double blur_distance(double distance)
+    {
+      return distance * (1 + (object_angle_noize - (float) std::rand() / RAND_MAX * object_angle_noize * 2));
+    }
+    double object_angle_noize;
+    double object_distance_noize;
+    double position_coords_noize;
+};
+
 class PlayerServer {
 public:
   PlayerServer(const std::vector<std::string> &allowed_hosts, int port, int player_id, int team, webots::Supervisor *robot) :
@@ -688,7 +716,7 @@ public:
           measurement->set_x(values[0]);
           measurement->set_y(values[1]);
           
-
+          
           // std::cout << "Position of the ball" << std::endl;
           // std::cout << recognition_objects[i].position[0] << std::endl;
           // std::cout << recognition_objects[i].position[1] << std::endl;
@@ -899,7 +927,7 @@ public:
   static int nb_robots_in_team;
 };
 
-int PlayerServer::benchmark_level = 0;
+int PlayerServer::benchmark_level = 3;
 double PlayerServer::budget_ms = 1.0;
 double PlayerServer::team_network_quota = 350.0;
 double PlayerServer::window_duration = 1.0;
