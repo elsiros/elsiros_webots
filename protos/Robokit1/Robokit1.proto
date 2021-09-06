@@ -1,13 +1,12 @@
 #VRML_SIM R2021b utf8
 # license: Apache License 2.0
 # license url: http://www.apache.org/licenses/LICENSE-2.0
-# This is a proto file for Webots for the Kondo006
-# Extracted from: Kondo_006/urdf/Kondo_006.urdf
+# This is a proto file for Webots for the Robokit1
 
-PROTO Kondo006 [
+PROTO Robokit1 [
   field  SFVec3f     translation     0 0 0
   field  SFRotation  rotation        0 1 0 0
-  field  SFString    name            "Kondo006"  # Is `Robot.name`.
+  field  SFString    name            "Robokit1"  # Is `Robot.name`.
   field  SFString    controller      "player"      # Is `Robot.controller`.
   field  MFString    controllerArgs  []          # Is `Robot.controllerArgs`.
   field  SFString    customData      ""          # Is `Robot.customData`.
@@ -25,7 +24,7 @@ PROTO Kondo006 [
   %{
     jerseyColor = ""
     number = ""
-    if fields.name.value ~= "Kondo006" then
+    if fields.name.value ~= "Robokit1" then
       -- name is supposed to be something like "red player 2" or "blue player 1"
       local words = {}
       for word in fields.name.value:gmatch("%w+") do 
@@ -60,7 +59,7 @@ PROTO Kondo006 [
         translation 0 0 0
         rotation 0 0 1 1.5708
         children [
-          Kondo006_trunk_1Mesh {
+          Robokit1_trunk_1Mesh {
             %{if jerseyColor == "red" then}%
               color IS RED
             %{end}%
@@ -89,7 +88,7 @@ PROTO Kondo006 [
               translation 0.000000 0.025750 -0.001500
               rotation 0.000000 1.000000 0.000000 0.000000
               children [
-                Kondo006_WaistMesh {
+                Robokit1_WaistMesh {
                 }
                 HingeJoint {
                   jointParameters HingeJointParameters {
@@ -112,7 +111,7 @@ PROTO Kondo006 [
                     translation 0.021500 0.000000 -0.040500
                     rotation 0.000000 0.000000 1.000000 1.570796
                     children [
-                      Kondo006_Leg_Joint_Left01Mesh {
+                      Robokit1_Leg_Joint_Left01Mesh {
                       }
                       HingeJoint {
                         jointParameters HingeJointParameters {
@@ -135,7 +134,7 @@ PROTO Kondo006 [
                           translation 0.000000 -0.018500 -0.014500
                           rotation 0.577350 -0.577350 -0.577350 2.094395
                           children [
-                            Kondo006_Leg_Joint_Left02Mesh {
+                            Robokit1_Leg_Joint_Left02Mesh {
                             }
                             HingeJoint {
                               jointParameters HingeJointParameters {
@@ -158,7 +157,7 @@ PROTO Kondo006 [
                                 translation 0.000000 -0.042000 -0.000250
                                 rotation 0.000000 0.707107 0.707107 3.141593
                                 children [
-                                  Kondo006_Hip_LeftMesh {
+                                  Robokit1_Hip_LeftMesh {
                                   }
                                   HingeJoint {
                                     jointParameters HingeJointParameters {
@@ -181,7 +180,7 @@ PROTO Kondo006 [
                                       translation 0.000000 0.000000 -0.065464
                                       rotation 0.000000 1.000000 0.000000 0.000000
                                       children [
-                                        Kondo006_Shin_LeftMesh {
+                                        Robokit1_Shin_LeftMesh {
                                         }
                                         HingeJoint {
                                           jointParameters HingeJointParameters {
@@ -204,7 +203,7 @@ PROTO Kondo006 [
                                             translation 0.000000 0.000000 -0.063804
                                             rotation 0.577350 -0.577350 0.577350 2.094395
                                             children [
-                                              Kondo006_Leg_Joint_Left03Mesh {
+                                              Robokit1_Leg_Joint_Left03Mesh {
                                               }
                                               HingeJoint {
                                                 jointParameters HingeJointParameters {
@@ -227,13 +226,13 @@ PROTO Kondo006 [
                                                   translation -0.035500 -0.011500 0.000000
                                                   rotation -0.577350 0.577350 -0.577350 2.094395
                                                   children [
-                                                    Kondo006_Foot_LeftMesh {
+                                                    Robokit1_Foot_LeftMesh {
                                                     }
                                                     Solid {
                                                       translation 0.079500 0.001250 -0.025407
                                                       rotation 0.000000 1.000000 0.000000 0.000000
                                                       children [
-                                                        Kondo006_left_footMesh {
+                                                        Robokit1_left_footMesh {
                                                         }
                                                       ]
                                                       name "left_foot"
@@ -405,7 +404,7 @@ PROTO Kondo006 [
                     translation -0.021500 0.000000 -0.040500
                     rotation 0.000000 0.000000 1.000000 1.570796
                     children [
-                      Kondo006_Leg_Joint_Right01Mesh {
+                      Robokit1_Leg_Joint_Right01Mesh {
                       }
                       HingeJoint {
                         jointParameters HingeJointParameters {
@@ -428,7 +427,7 @@ PROTO Kondo006 [
                           translation 0.000000 0.018500 -0.014500
                           rotation 0.577350 0.577350 0.577350 2.094395
                           children [
-                            Kondo006_Leg_Joint_Right02Mesh {
+                            Robokit1_Leg_Joint_Right02Mesh {
                             }
                             HingeJoint {
                               jointParameters HingeJointParameters {
@@ -451,7 +450,7 @@ PROTO Kondo006 [
                                 translation 0.000000 -0.042000 0.000250
                                 rotation 0.000000 0.707107 0.707107 3.141593
                                 children [
-                                  Kondo006_Hip_RightMesh {
+                                  Robokit1_Hip_RightMesh {
                                   }
                                   HingeJoint {
                                     jointParameters HingeJointParameters {
@@ -474,7 +473,7 @@ PROTO Kondo006 [
                                       translation 0.000000 0.000000 -0.065464
                                       rotation 0.000000 1.000000 0.000000 0.000000
                                       children [
-                                        Kondo006_Shin_RightMesh {
+                                        Robokit1_Shin_RightMesh {
                                         }
                                         HingeJoint {
                                           jointParameters HingeJointParameters {
@@ -497,7 +496,7 @@ PROTO Kondo006 [
                                             translation 0.000000 0.000000 -0.063804
                                             rotation 0.577350 -0.577350 0.577350 2.094395
                                             children [
-                                              Kondo006_Leg_Joint_Right03Mesh {
+                                              Robokit1_Leg_Joint_Right03Mesh {
                                               }
                                               HingeJoint {
                                                 jointParameters HingeJointParameters {
@@ -520,13 +519,13 @@ PROTO Kondo006 [
                                                   translation -0.035500 -0.011500 0.000000
                                                   rotation -0.577350 0.577350 -0.577350 2.094395
                                                   children [
-                                                    Kondo006_Foot_RightMesh {
+                                                    Robokit1_Foot_RightMesh {
                                                     }
                                                     Solid {
                                                       translation 0.079500 0.000750 -0.025407
                                                       rotation 0.000000 0.000000 1.000000 3.141593
                                                       children [
-                                                        Kondo006_right_footMesh {
+                                                        Robokit1_right_footMesh {
                                                         }
                                                       ]
                                                       name "right_foot"
@@ -719,7 +718,7 @@ PROTO Kondo006 [
               translation -0.051200 0.014200 0.048750
               rotation 0.577350 0.577350 -0.577350 2.094395
               children [
-                Kondo006_Forearm_RightMesh {
+                Robokit1_Forearm_RightMesh {
                 }
                 HingeJoint {
                   jointParameters HingeJointParameters {
@@ -742,7 +741,7 @@ PROTO Kondo006 [
                     translation 0.000000 -0.025000 0.000000
                     rotation 0.577350 0.577350 0.577350 2.094395
                     children [
-                      Kondo006_Arm_RightMesh {
+                      Robokit1_Arm_RightMesh {
                       }
                       HingeJoint {
                         jointParameters HingeJointParameters {
@@ -765,7 +764,7 @@ PROTO Kondo006 [
                           translation 0.000000 -0.000500 0.074400
                           rotation 0.000000 1.000000 0.000000 1.570796
                           children [
-                            Kondo006_Elbow_RightMesh {
+                            Robokit1_Elbow_RightMesh {
                             }
                             HingeJoint {
                               jointParameters HingeJointParameters {
@@ -788,7 +787,7 @@ PROTO Kondo006 [
                                 translation -0.014500 0.004500 0.000000
                                 rotation 0.707107 -0.707107 -0.000000 3.141593
                                 children [
-                                  Kondo006_Hand_RightMesh {
+                                  Robokit1_Hand_RightMesh {
                                   }
                                 ]
                                 name "Hand_Right"
@@ -899,7 +898,7 @@ PROTO Kondo006 [
               translation 0.051200 0.014200 0.048750
               rotation 0.577350 -0.577350 0.577350 2.094395
               children [
-                Kondo006_Forearm_LeftMesh {
+                Robokit1_Forearm_LeftMesh {
                 }
                 HingeJoint {
                   jointParameters HingeJointParameters {
@@ -922,7 +921,7 @@ PROTO Kondo006 [
                     translation 0.000000 -0.025000 0.000000
                     rotation 0.577350 -0.577350 -0.577350 2.094395
                     children [
-                      Kondo006_Arm_LeftMesh {
+                      Robokit1_Arm_LeftMesh {
                       }
                       HingeJoint {
                         jointParameters HingeJointParameters {
@@ -945,7 +944,7 @@ PROTO Kondo006 [
                           translation 0.000000 -0.000500 0.074400
                           rotation 0.000000 1.000000 0.000000 1.570796
                           children [
-                            Kondo006_Elbow_LeftMesh {
+                            Robokit1_Elbow_LeftMesh {
                             }
                             HingeJoint {
                               jointParameters HingeJointParameters {
@@ -968,7 +967,7 @@ PROTO Kondo006 [
                                 translation -0.014500 0.004500 0.000000
                                 rotation 0.707107 0.707107 0.000000 3.141593
                                 children [
-                                  Kondo006_Hand_LeftMesh {
+                                  Robokit1_Hand_LeftMesh {
                                   }
                                 ]
                                 name "Hand_Left"
@@ -1079,7 +1078,7 @@ PROTO Kondo006 [
               translation 0.000000 0.014200 0.061550
               rotation 0.000000 -0.707107 -0.707107 3.141593
               children [
-                Kondo006_NeckMesh {
+                Robokit1_NeckMesh {
                 }
                 HingeJoint {
                   jointParameters HingeJointParameters {
@@ -1102,7 +1101,7 @@ PROTO Kondo006 [
                     translation 0.000000 0.028200 0.000000
                     rotation 0.707101 -0.004115 -0.707101 3.133363
                     children [
-                      Kondo006_HeadMesh {
+                      Robokit1_HeadMesh {
                       }Camera {
                         fieldOfView            1.05 #2.27  # [0, pi]
                         width                  320    # [0, inf)
@@ -1145,7 +1144,7 @@ PROTO Kondo006 [
                             rotation 0.005819 -0.999966 0.005819 1.570830
                         
                           children [
-                            Kondo006_cameraMesh {
+                            Robokit1_cameraMesh {
                             }
                           ]
                         
@@ -1206,7 +1205,7 @@ PROTO Kondo006 [
             translation -0.000228 0.051500 0.033940
             rotation 1.000000 0.000000 0.000000 1.570796
             children [
-              Kondo006_BackpackMesh {
+              Robokit1_BackpackMesh {
                 %{if jerseyColor == "red" then}%
                   color IS RED
                 %{end}%
@@ -1239,7 +1238,7 @@ PROTO Kondo006 [
             translation -0.000150 0.025657 -0.045060
             rotation 0.000000 1.000000 0.000000 0.000000
             children [
-              Kondo006_trunkMesh {
+              Robokit1_trunkMesh {
               }
             ]
             name "trunk"
@@ -1248,7 +1247,7 @@ PROTO Kondo006 [
             translation 0.000000 0.014200 0.065700
             rotation 0.000000 1.000000 0.000000 0.000000
             children [
-              Kondo006_head_baseMesh {
+              Robokit1_head_baseMesh {
               }
             ]
             name "head_base"
