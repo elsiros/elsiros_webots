@@ -258,7 +258,16 @@ def spawn_team(team, red_on_right, children):
         info(f'Spawned {defname} {model} on port {port} at borderStartingPose: translation (' +
              f'{halfTimeStartingTranslation[0]} {halfTimeStartingTranslation[1]} {halfTimeStartingTranslation[2]}), ' +
              f'rotation ({halfTimeStartingRotation[0]} {halfTimeStartingRotation[1]} {halfTimeStartingRotation[2]} ' +
-             f'{halfTimeStartingRotation[3]}).')     
+             f'{halfTimeStartingRotation[3]}).')   
+
+        try:
+            robotStartCmd = player['robotStartCmd']  
+            print(robotStartCmd)
+            #os.system(robotStartCmd)
+            os.startfile(robotStartCmd)
+        except KeyError:
+            warning(f"No robotStartCmd is given for {color} player {number}")
+
 
 def reset_player(color, number, pose, custom_t=None, custom_r=None):
     team = red_team if color == 'red' else blue_team
