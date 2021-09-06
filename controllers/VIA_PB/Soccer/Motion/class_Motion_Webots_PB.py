@@ -138,9 +138,16 @@ class Motion_sim(Motion_real):
 
 
     def imu_activation(self):
-        self.wait_for_step(20)
-        head_euler = self.robot.get_sensor("imu_head")['position']
-        body_euler = self.robot.get_sensor("imu_body")['position']
+        while True:
+            self.wait_for_step(5)
+            head_euler = self.robot.get_sensor("imu_head")
+            body_euler = self.robot.get_sensor("imu_body")
+            if head_euler and body_euler:
+                head_euler = head_euler['position']
+                body_euler = body_euler['position']
+                break
+            else:
+                print("imu_activation: imu does't answer")
         self.euler_angle['roll'] = head_euler[0]
         self.euler_angle['pitch'] = head_euler[1]
         self.euler_angle['yaw'] = head_euler[2]
@@ -151,15 +158,27 @@ class Motion_sim(Motion_real):
         return self.euler_angle
 
     def read_head_imu_euler_angle(self):
-        self.wait_for_step(5)
-        head_euler = self.robot.get_sensor("imu_head")['position']
+        while True:
+            self.wait_for_step(5)
+            head_euler = self.robot.get_sensor("imu_head")
+            if head_euler:
+                head_euler = head_euler['position']
+                break
+            else:
+                print("read_head_imu_euler_angle: imu does't answer")
         self.euler_angle['roll'] = head_euler[0]
         self.euler_angle['pitch'] = head_euler[1]
         self.euler_angle['yaw'] = head_euler[2]
 
     def read_imu_body_yaw(self):
-        self.wait_for_step(5)
-        body_euler = self.robot.get_sensor("imu_body")['position']
+        while True:
+            self.wait_for_step(5)
+            body_euler = self.robot.get_sensor("imu_body")
+            if body_euler:
+                body_euler = body_euler['position']
+                break
+            else:
+                print("read_imu_body_yaw: imu does't answer")
         self.body_euler_angle = {'roll': body_euler[0], 'pitch': body_euler[1], 'yaw': body_euler[2]}
         return body_euler[2]
 
@@ -170,8 +189,15 @@ class Motion_sim(Motion_real):
                     self.falling_Flag = 3
                     self.simulateMotion(name = 'Initial_Pose')
                     return self.falling_Flag
-        self.wait_for_step(5)
-        self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.get_sensor("imu_body")['position']
+        while True:
+            self.wait_for_step(5)
+            body_euler = self.robot.get_sensor("imu_body")
+            if body_euler:
+                body_euler = body_euler['position']
+                break
+            else:
+                print("falling_Test: imu does't answer")
+        self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = body_euler
         #print('self.body_euler_angle[pitch] =', self.body_euler_angle['pitch'])
         #print('self.body_euler_angle[roll] =', self.body_euler_angle['roll'])
         #print('self.body_euler_angle[yaw] =', self.body_euler_angle['yaw'])
