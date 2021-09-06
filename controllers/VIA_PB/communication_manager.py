@@ -81,17 +81,28 @@ class CommunicationManager():
 
     def test_run(self):
         # пример отправки данных серв
-        
+        self.WBservosList = ["right_ankle_roll", "right_ankle_pitch", "right_knee", "right_hip_pitch",
+                             "right_hip_roll", "right_hip_yaw", "right_elbow_pitch", "right_shoulder_twirl",
+                             "right_shoulder_roll", "right_shoulder_pitch", "pelvis_yaw", "left_ankle_roll",
+                             "left_ankle_pitch", "left_knee", "left_hip_pitch", "left_hip_roll", "left_hip_yaw",
+                             "left_elbow_pitch", "left_shoulder_twirl", "left_shoulder_roll",
+                             "left_shoulder_pitch", "head_yaw", "head_pitch"]
         while(True):
-            time.sleep(1)
+            time.sleep(0.02)
             # пример получения данных из включенного и существующего сенсора
-            print(self.get_sensor("time"))
+            #print(self.get_sensor("time"))
+            #print(self.get_sensor("imu_body"))
+            #print(self.get_sensor("ball"))
+            servo_data = {}
+            for key in self.WBservosList:
+                servo_data.update({key: 0})
+            self.add_to_queue(servo_data)
 
 
 if __name__ == '__main__':
-    manager = CommunicationManager(5, '127.0.0.1', 10001)
+    manager = CommunicationManager(1, '127.0.0.1', 10001)
     # инициализация сенсоров
-    sensors = {"gps_body": 5, "camera": 20,"head_pitch_sensor": 5, "imu_head": 5}#
+    sensors = {"gps_body": 5, "imu_head": 5, "imu_body": 5,  "camera": 20}#
     manager.enable_sensors(sensors)
 
     th1 = Thread(target=manager.run)
