@@ -2,9 +2,8 @@
 # license: Apache License 2.0
 # license url: http://www.apache.org/licenses/LICENSE-2.0
 # tags: hidden
-# Extracted from: Kondo_007/urdf/Kondo_007.urdf
 
-PROTO Kondo007_number_05Mesh [
+PROTO Robokit1_number_05Mesh [
 ]
 {
   Shape {

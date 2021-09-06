@@ -2,9 +2,8 @@
 # license: Apache License 2.0
 # license url: http://www.apache.org/licenses/LICENSE-2.0
 # tags: hidden
-# Extracted from: Kondo_006/urdf/Kondo_006.urdf
 
-PROTO Kondo006_right_footMesh [
+PROTO Robokit1_right_footMesh [
 ]
 {
   Shape {
