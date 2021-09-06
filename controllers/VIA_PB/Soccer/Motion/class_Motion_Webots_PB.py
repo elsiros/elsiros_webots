@@ -118,7 +118,7 @@ class Motion_sim(Motion_real):
         if not self.pause.Flag:
             if self.gcreceiver != None:
                 if self.gcreceiver.team_state != None:
-                    if self.gcreceiver.player_state.penalty != 0:
+                    if self.gcreceiver.player_state.penalty != 0 or self.gcreceiver.state.game_state != 'STATE_PLAYING':
                         self.falling_Flag = 3
                         servo_data = {}
                         for key in self.WBservosList:
@@ -138,7 +138,7 @@ class Motion_sim(Motion_real):
 
 
     def imu_activation(self):
-        self.wait_for_step(5)
+        self.wait_for_step(20)
         head_euler = self.robot.get_sensor("imu_head")['position']
         body_euler = self.robot.get_sensor("imu_body")['position']
         self.euler_angle['roll'] = head_euler[0]

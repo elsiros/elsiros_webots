@@ -1,0 +1,51 @@
+ERROR:root:sensor is not enable
+ERROR:root:sensor is not enable
+ERROR:root:sensor is not enable
+ERROR:root:sensor is not enable
+ERROR:root:sensor is not enable
+ERROR:root:sensor is not enable
+ERROR:root:sensor is not enable
+ERROR:root:sensor is not enable
+ERROR:root:sensor is not enable
+ERROR:root:sensor is not enable
+ERROR:root:sensor is not enable
+Exception in thread Thread-2:
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.2032.0_x64__qbz5n2kfra8p0\lib\threading.py", line 973, in _bootstrap_inner
+    self.run()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.2032.0_x64__qbz5n2kfra8p0\lib\threading.py", line 910, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\communication_manager.py", line 79, in run
+    message = self.client.receive()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\robot_client.py", line 99, in receive
+    content_size = self.socket.recv(self.message_manager.get_size())
+ConnectionResetError: [WinError 10054] Удаленный хост принудительно разорвал существующее подключение
+2021-09-05 21:37:24.867769
+2021-09-05 21:37:44.382537
+2021-09-05 21:38:45.727685
+Traceback (most recent call last):
+  File "main_pb.py", line 36, in <module>
+    from launcher_pb import *
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\launcher_pb.py", line 8, in <module>
+    from gcreceiver import ThreadedGameStateReceiver
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\gcreceiver.py", line 23, in <module>
+    from construct import Container, ConstError
+ModuleNotFoundError: No module named 'construct'
+2021-09-05 22:58:38.860121
+2021-09-05 22:59:02.665041
+2021-09-05 23:01:23.516879
+Exception in thread Thread-2:
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.2032.0_x64__qbz5n2kfra8p0\lib\threading.py", line 973, in _bootstrap_inner
+    self.run()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.2032.0_x64__qbz5n2kfra8p0\lib\threading.py", line 910, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\communication_manager.py", line 79, in run
+    message = self.client.receive()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\robot_client.py", line 99, in receive
+    content_size = self.socket.recv(self.message_manager.get_size())
+ConnectionResetError: [WinError 10054] Удаленный хост принудительно разорвал существующее подключение
+2021-09-06 00:28:00.228185
+2021-09-06 00:29:13.219966
+2021-09-06 00:53:03.666917
+2021-09-06 00:53:27.995254
