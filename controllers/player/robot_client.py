@@ -1,6 +1,10 @@
+"""[summary]
+Returns:
+[type]: [description]
+"""
 import socket
-import sys
 import time
+import logging
 
 from message_manager import MessageManager
 
@@ -21,6 +25,7 @@ class RobotClient():
         self.max_attempts = max_attempts
         self.wait_time_sec = wait_time_sec
         self.message_manager = MessageManager()
+        self.socket = None
 
     def connect_client(self):
         """[summary]
@@ -30,9 +35,9 @@ class RobotClient():
         """
         try:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        except:
-            if (self.verbosity > 0):
-                print("Cannot create socket\n")
+        except socket.error as msg:
+            if self.verbosity > 0:
+                logging.warning("Cannot create socket. Caught exception socket.error %s\n", msg)
                 return False
         attempt = 1
         connected = False
@@ -42,34 +47,33 @@ class RobotClient():
                 connected = True
                 break
             except socket.error as msg:
-                print("Failed to connect to ", self.host, " : ",
-                      self.port, " attempt ",  attempt, " of ", self.max_attempts)
-                print("Caught exception socket.error : %s" % msg)
+                logging.warning("Failed to connect to %s:%s %s attempt  of %s.",
+                                self.host, self.port, attempt, self.max_attempts)
+                logging.warning("Caught exception socket.error : %s", msg)
                 time.sleep(self.wait_time_sec)
 
         if not connected:
             if self.verbosity > 0:
-                print("Failed to connect after ", attempt,
-                      "attempts. Giving up on connection")
+                logging.warning("Failed to connect after %s attempts. Giving up on connection", attempt)
             self.disconnect_client()
             return False
 
         # Receiving the 'welcome message'
         welcome_message = self.socket.recv(8)
         if self.verbosity >= 4:
-            print("Welcome message:", welcome_message.decode("utf-8"))
+            print("Welcome message: ", welcome_message.decode("utf-8"))
         if welcome_message != b'Welcome\x00':
             if self.verbosity > 0:
                 if welcome_message == b'Refused\x00':
-                    print("Connection refused")
+                    logging.warning("Connection refused")
                 else:
-                    print("Received unknown answer from server: ",
+                    logging.warning("Received unknown answer from server: %s",
                           welcome_message.decode("utf-8"))
             self.disconnect_client()
             return False
 
         if self.verbosity >= 2:
-            print("Connected to ", str(self.host) + " :", self.port)
+            print("Connected to ", self.host, self.port)
         return True
 
     @staticmethod

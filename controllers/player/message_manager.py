@@ -159,4 +159,7 @@ class MessageManager():
             parse_message.update(
                 {sensor.name: {"position": [sensor.angles.roll, sensor.angles.pitch,
                 sensor.angles.yaw], "time": message.time}})
+        for sensor in message.messages:
+            parse_message.update(
+                {sensor.name: {"message_type": sensor.message_type, "text": sensor.text, "time": message.time}})
         return parse_message

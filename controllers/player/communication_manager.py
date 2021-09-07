@@ -31,6 +31,7 @@ class CommunicationManager():
                 self.sensors.update({"robot": queue.Queue(self.maxsize)})
             self.sensors.update({str(sensor): queue.Queue(self.maxsize)})
         self.sensors.update({"time": queue.Queue(1)})
+        self.sensors.update({"messages": queue.Queue(10)})
         self.client.send_request("init")
 
     def get_sensor(self, name) -> dict:
@@ -45,13 +46,10 @@ class CommunicationManager():
         value_dict = {}
         if not name in self.sensors:
             logging.error("sensor is not enable")
-            #return "sensor is not enable"
         elif not self.sensors[name].empty():
             value_dict = self.sensors[name].get()
-            #logging.warn("nothing in queue")
-            #return False
-        #else:
-            #return self.sensors[name].get()
+        else:
+            logging.warning("Nothing in queue")
         return value_dict
 
     def add_to_queue(self, message):
@@ -86,7 +84,7 @@ class CommunicationManager():
         while True:
             time.sleep(1)
             # пример получения данных из включенного и существующего сенсора
-            print(self.get_sensor("imu_body"))
+            print(self.get_sensor("messages"))
 
 
 if __name__ == '__main__':
