@@ -951,7 +951,8 @@ def clean_exit():
         game.controller_process.terminate()
     if hasattr(game, "udp_bouncer_process") and udp_bouncer_process:
         info("Terminating 'udp_bouncer' process")
-        udp_bouncer_process.terminate()  
+        udp_bouncer_process.terminate() 
+    game.external_controllers_process.terminate() 
     exit()         
    
 # --------------------------------------------------------------------------------------------------
@@ -1039,6 +1040,9 @@ else:
         GAME_CONTROLLER_HOME = None
         game.controller_process = None
         error('JAVA_HOME environment variable not set, unable to launch GameController.', fatal=True)
+
+#launching teams start script
+game.external_controllers_process = subprocess.Popen(['python', 'start_teams.py'])
 
 game.state = None
 
