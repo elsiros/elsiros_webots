@@ -1,9 +1,13 @@
+# This module has to be launched from referee.py by command:
+#external_controllers = subprocess.Popen(['python', 'start_teams.py'])
+# before termination referee.py has to terminate subprocess:
+#external_controllers.terminate()
+
+
 import datetime
 import os
 import subprocess
 import win32gui, win32con
-import time
-import math
 from pathlib import Path
 
 current_working_directory = Path.cwd()
@@ -15,7 +19,6 @@ os.chdir(current_working_directory.parent/'VIA_PB')
 
 with open('output10001.txt', "a") as f1001:
     print(datetime.datetime.now(), file = f1001)
-    #subprocess.Popen(['../VIA_PB'])
     subprocess.Popen(['python', 'main_pb.py', '10001'], stderr=f1001)
 
 with open('output10002.txt', "a") as f1002:
