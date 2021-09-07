@@ -462,11 +462,12 @@ public:
   void stopMotors() const {
     for (size_t i = 0; i != motor_commands.size(); i++) {
             webots::Motor* motor = motor_commands[i]->motor;
-      motor->setVelocity(0);
-      if (motor->getType() == webots::Motor::ROTATIONAL)
-        motor->setTorque(0);
-      else
-        motor->setForce(0);
+      motor->setPosition(0);
+      //motor->setVelocity(0);
+      //if (motor->getType() == webots::Motor::ROTATIONAL)
+      //  motor->setTorque(0);
+      //else
+      //  motor->setForce(0);
     }
   }
   void resumeMotors() {
