@@ -462,7 +462,11 @@ public:
   void stopMotors() const {
     for (size_t i = 0; i != motor_commands.size(); i++) {
             webots::Motor* motor = motor_commands[i]->motor;
+      //For Elsiros league with position-only controllerd robots, 
+      //don't use torque/velocity zeroing - it will mak robot falling with all joints in freewheel state,
+      //only directly setting zero joints position is enough
       motor->setPosition(0);
+      
       //motor->setVelocity(0);
       //if (motor->getType() == webots::Motor::ROTATIONAL)
       //  motor->setTorque(0);
