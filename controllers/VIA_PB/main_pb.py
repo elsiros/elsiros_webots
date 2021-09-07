@@ -34,23 +34,22 @@ from Soccer.Localisation.class_Local import *
 from Soccer.strategy import Player
 from Soccer.Motion.class_Motion_Webots_PB import Motion_sim
 from launcher_pb import *
+sys.path.append(str(current_work_directory.parent/'player'))
 from communication_manager import CommunicationManager
-#controller_path = os.environ.get('WEBOTS_HOME').replace('\\', '/') + '/lib/controller/python39'
-#sys.path.append(controller_path)
-#from controller import *
+
 
 global player_data
 global robot
-with open(current_work_directory / "teams.json", "r") as f:
+with open("teams.json", "r") as f:
     player_data = json.loads(f.read())
 
-with open(current_work_directory.parent/'referee'/'game.json', "r") as f:
+with open('../referee/game.json', "r") as f:
     game_data = json.loads(f.read())
 
-with open(current_work_directory.parent/'referee'/ game_data['red']['config'], "r") as f:
+with open('../referee/' + game_data['red']['config'], "r") as f:
     team_1_data = json.loads(f.read())
 
-with open(current_work_directory.parent/'referee'/game_data['blue']['config'], "r") as f:
+with open('../referee/' + game_data['blue']['config'], "r") as f:
     team_2_data = json.loads(f.read())
 
 Port = sys.argv[1]

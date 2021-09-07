@@ -4,7 +4,7 @@
 
 
 import math
-from ball_Approach_calc import ball_Approach_Calc
+from .ball_Approach_calc import ball_Approach_Calc
 
 
 def uprint(*text):

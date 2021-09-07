@@ -13,7 +13,7 @@ from robot_client import RobotClient
 class CommunicationManager():
     """[summary]
     """
-    def __init__(self, maxsize=5, host='127.0.0.1', port=10001):
+    def __init__(self, maxsize=1, host='127.0.0.1', port=10001):
         verbosity = 4
         self.client = RobotClient(host, port, verbosity)
         self.client.connect_client()
@@ -22,10 +22,8 @@ class CommunicationManager():
         self.sensors = {}
 
     def enable_sensors(self, sensors) -> None:
-        """[summary]
-        """
         for sensor in sensors:
-            self.client.initial(sensor, sensors[sensor])
+            self.client.add_initial_sensor(sensor, sensors[sensor])
             if sensor == "camera":
                 self.sensors.update({"ball": queue.Queue(self.maxsize)})
                 self.sensors.update({"robot": queue.Queue(self.maxsize)})
@@ -62,7 +60,7 @@ class CommunicationManager():
             self.messages.put(message)
 
     def send_message(self):
-        while not self.messages.empty():
+        while(not self.messages.empty()):
             self.client.send_request("positions", self.messages.get())
 
     def update_history(self, message):
@@ -74,26 +72,38 @@ class CommunicationManager():
                 self.sensors[sensor].put(message[sensor])
 
     def run(self):
-        data = {"head_pitch": -1.5}
-        self.add_to_queue(data)
-        while True:
+        #data = {"head_pitch": -1.5}
+        #self.add_to_queue(data)
+        while(True):
             self.send_message()
             message = self.client.receive()
             self.update_history(message)
 
     def test_run(self):
         # пример отправки данных серв
-        while True:
-            time.sleep(1)
+        self.WBservosList = ["right_ankle_roll", "right_ankle_pitch", "right_knee", "right_hip_pitch",
+                             "right_hip_roll", "right_hip_yaw", "right_elbow_pitch", "right_shoulder_twirl",
+                             "right_shoulder_roll", "right_shoulder_pitch", "pelvis_yaw", "left_ankle_roll",
+                             "left_ankle_pitch", "left_knee", "left_hip_pitch", "left_hip_roll", "left_hip_yaw",
+                             "left_elbow_pitch", "left_shoulder_twirl", "left_shoulder_roll",
+                             "left_shoulder_pitch", "head_yaw", "head_pitch"]
+        while(True):
+            time.sleep(0.02)
             # пример получения данных из включенного и существующего сенсора
-            print(self.get_sensor("imu_body"))
+            #print(self.get_sensor("time"))
+            #print(self.get_sensor("imu_body"))
+            #print(self.get_sensor("ball"))
+            servo_data = {}
+            for key in self.WBservosList:
+                servo_data.update({key: 0})
+            self.add_to_queue(servo_data)
 
 
 if __name__ == '__main__':
     manager = CommunicationManager(1, '127.0.0.1', 10001)
     # инициализация сенсоров
-    ex_sensors = {"gps_body": 5, "camera": 20,"head_pitch_sensor": 5, "imu_head": 5, "imu_body": 5}#
-    manager.enable_sensors(ex_sensors)
+    sensors = {"gps_body": 5, "imu_head": 5, "imu_body": 5,  "camera": 20}#
+    manager.enable_sensors(sensors)
 
     th1 = Thread(target=manager.run)
     th2 = Thread(target=manager.test_run)

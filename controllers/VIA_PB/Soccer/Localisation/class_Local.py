@@ -15,7 +15,7 @@ class Local():
         self.timer0 = time.perf_counter()
         if abs(motion.direction_To_Attack) < 1: self.side_factor = 1
         else: self.side_factor = -1
-        from class_Visualisation import Visualisation
+        from .class_Visualisation import Visualisation
         self.visualisation = Visualisation()
 
     def coordinate_fall_reset(self):

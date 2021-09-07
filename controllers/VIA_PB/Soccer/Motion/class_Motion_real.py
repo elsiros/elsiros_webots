@@ -4,9 +4,9 @@
 #import sys, os
 import math, time, json
 
-from class_Motion import Motion1
-from ball_Approach_Steps_Seq import *
-from path_planning import PathPlan
+from .class_Motion import Motion1
+from .ball_Approach_Steps_Seq import *
+from .path_planning import PathPlan
 
 class Motion_real(Motion1):
 

@@ -5,7 +5,7 @@ import sys, os
 import math, time, json
 
 #from ball_Approach_Steps_Seq import *
-from compute_Alpha_v3 import Alpha
+from .compute_Alpha_v3 import Alpha
 
 class Motion1:
 

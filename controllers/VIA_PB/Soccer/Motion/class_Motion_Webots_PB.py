@@ -5,21 +5,21 @@ import sys, os
 import math, time, json
 #from controller import *
 
-current_work_directory = os.getcwd()
-current_work_directory = current_work_directory.replace('\\', '/')
-if current_work_directory.find('Soccer') >= 0:
-    current_work_directory = current_work_directory[:-14]
+#current_work_directory = os.getcwd()
+#current_work_directory = current_work_directory.replace('\\', '/')
+#if current_work_directory.find('Soccer') >= 0:
+#    current_work_directory = current_work_directory[:-14]
 
-current_work_directory += '/'
+#current_work_directory += '/'
 import random
 
-sys.path.append( current_work_directory + 'Soccer/')
-sys.path.append( current_work_directory + 'Soccer/Motion/')
-sys.path.append( current_work_directory + 'Soccer/Localisation/')
+#sys.path.append( current_work_directory + 'Soccer/')
+#sys.path.append( current_work_directory + 'Soccer/Motion/')
+#sys.path.append( current_work_directory + 'Soccer/Localisation/')
 
-from class_Motion import *
-from class_Motion_real import Motion_real
-from compute_Alpha_v3 import Alpha
+from .class_Motion import *
+from .class_Motion_real import Motion_real
+from .compute_Alpha_v3 import Alpha
 
 class Motion_sim(Motion_real):
     def __init__(self, glob, robot, gcreceiver, pause):
@@ -49,7 +49,7 @@ class Motion_sim(Motion_real):
         self.synchronization = False
         self.former_step_time = 0
         super().__init__(glob)
-        with open(current_work_directory + "Init_params/Sim_calibr.json", "r") as f:
+        with open(self.glob.current_work_directory / "Init_params" / "Sim_calibr.json", "r") as f:
             data1 = json.loads(f.read())
         self.neck_calibr = data1['neck_calibr']
         self.neck_play_pose = data1['neck_play_pose']
@@ -270,7 +270,7 @@ class Motion_sim(Motion_real):
         #   (35,'Get_Up_Right'), (36,'PenaltyDefenceR'), (37,'PenaltyDefenceL')]
         # start the simulation
         if number > 0 and name == '': name = self.MOTION_SLOT_DICT[number]
-        with open(current_work_directory + "Soccer/Motion/motion_slots/" + name + ".json", "r") as f:
+        with open(self.glob.current_work_directory /"Soccer" / "Motion" / "motion_slots" / (name + ".json"), "r") as f:
             slots = json.loads(f.read())
         mot_list = slots[name]
         i=0
