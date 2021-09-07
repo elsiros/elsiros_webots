@@ -260,13 +260,13 @@ def spawn_team(team, red_on_right, children):
              f'rotation ({halfTimeStartingRotation[0]} {halfTimeStartingRotation[1]} {halfTimeStartingRotation[2]} ' +
              f'{halfTimeStartingRotation[3]}).')   
 
-        try:
-            robotStartCmd = player['robotStartCmd']  
-            print(robotStartCmd)
-            #os.system(robotStartCmd)
-            os.startfile(robotStartCmd)
-        except KeyError:
-            warning(f"No robotStartCmd is given for {color} player {number}")
+        #try:
+        #    robotStartCmd = player['robotStartCmd']  
+        #    print(robotStartCmd)
+        #    #os.system(robotStartCmd)
+        #    os.startfile(robotStartCmd)
+        #except KeyError:
+        #    warning(f"No robotStartCmd is given for {color} player {number}")
 
 
 def reset_player(color, number, pose, custom_t=None, custom_r=None):
@@ -952,7 +952,8 @@ def clean_exit():
     if hasattr(game, "udp_bouncer_process") and udp_bouncer_process:
         info("Terminating 'udp_bouncer' process")
         udp_bouncer_process.terminate() 
-    game.external_controllers_process.terminate() 
+    #game.external_controllers_process.terminate()
+    subprocess.Popen("TASKKILL /F /PID {pid} /T".format(pid=game.external_controllers_process.pid))
     exit()         
    
 # --------------------------------------------------------------------------------------------------
