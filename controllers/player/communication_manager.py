@@ -24,7 +24,7 @@ class CommunicationManager():
 
     def get_sensor(self, name):
         if not name in self.sensors:
-            return "sensor is not enable"
+            return f"sensor {name} is not enable"
         if self.sensors[name].empty():
             return False
         else:
@@ -55,6 +55,7 @@ class CommunicationManager():
         while(True):
             self.send_message()
             message = self.client.receive()
+            # print(message)
             self.update_history(message)
 
     def test_run(self):
@@ -63,13 +64,13 @@ class CommunicationManager():
         while(True):
             time.sleep(1)
             # пример получения данных из включенного и существующего сенсора
-            print(self.get_sensor("ball"))
-
+            print("ball: ", self.get_sensor("ball"))
+            print("imu_head: ", self.get_sensor("imu_head"))
 
 if __name__ == '__main__':
     manager = CommunicationManager(5, '127.0.0.1', 10001)
     # инициализация сенсоров
-    sensors = {"gps_body": 5, "camera": 20,"head_pitch_sensor": 5, "imu_head": 5}#
+    sensors = {"gps_body": 5,"head_pitch_sensor": 5, "imu_head": 5}#
     manager.enable_sensors(sensors)
 
     th1 = Thread(target=manager.run)

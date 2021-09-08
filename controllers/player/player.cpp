@@ -265,7 +265,7 @@ class Blurrer {
 
 class PlayerServer {
 public:
-  PlayerServer(const std::vector<std::string> &allowed_hosts, int port, int player_id, int team, webots::Supervisor *robot) :
+  PlayerServer(Blurrer *blurrer_, const std::vector<std::string> &allowed_hosts, int port, int player_id, int team, webots::Supervisor *robot) :
     allowed_hosts(allowed_hosts),
     port(port),
     player_id(player_id),
@@ -275,6 +275,7 @@ public:
     recv_buffer(NULL),
     recv_index(0),
     recv_size(0),
+    blurrer(blurrer_),
     content_size(0),
     robot(robot) {
     actuators_enabled = TRUE;
@@ -924,6 +925,7 @@ private:
   static double team_rendering_quota;
 
 public:
+  Blurrer blurrer;
   static int nb_robots_in_team;
 };
 
@@ -951,8 +953,9 @@ int main(int argc, char *argv[]) {
   const std::string name = robot->getName();
   const int player_id = std::stoi(name.substr(name.find_last_of(' ') + 1));
   const int player_team = name[0] == 'r' ? RED : BLUE;
+  Blurrer *blurrer = new Blurrer;
 
-  PlayerServer server(allowed_hosts, port, player_id, player_team, robot);
+  PlayerServer server(blurrer, allowed_hosts, port, player_id, player_team, robot);
 
   while (robot->step(basic_time_step) != -1)
     server.step();
