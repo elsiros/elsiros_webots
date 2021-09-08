@@ -37,9 +37,9 @@ TexturedBackgroundLight {
 }
 ElsirosField {
 }
-Kondo006 {
+Robokit-1 {
   translation -0.7 0 0.3
-  name "Kondo006(1)"
+  name "Robokit-1(1)"
   controllerArgs [
     "forward"
     "1"
@@ -51,9 +51,9 @@ Kondo006 {
   teamColor "blue"
   playerNumber "2"
 }
-Kondo006 {
+Robokit-1 {
   translation -1.8 0 0.3
-  name "Kondo006(2)"
+  name "Robokit-1(2)"
   controllerArgs [
     "goalkeeper"
     "1"
@@ -65,10 +65,10 @@ Kondo006 {
   teamColor "blue"
   playerNumber "1"
 }
-Kondo006 {
+Robokit-1 {
   translation 1.8 0 0.3
   rotation 0 0 1 3.141592653589793
-  name "Kondo006(3)"
+  name "Robokit-1(3)"
   controllerArgs [
     "goalkeeper"
     "1"
@@ -79,10 +79,10 @@ Kondo006 {
   ]
   teamColor "red"
 }
-Kondo006 {
+Robokit-1 {
   translation 0.4 0 0.3
   rotation 0 0 1 3.141592653589793
-  name "Kondo006(3)"
+  name "Robokit-1(3)"
   controllerArgs [
     "forward"
     "1"
