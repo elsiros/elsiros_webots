@@ -952,9 +952,30 @@ def clean_exit():
     if hasattr(game, "udp_bouncer_process") and udp_bouncer_process:
         info("Terminating 'udp_bouncer' process")
         udp_bouncer_process.terminate() 
+    if hasattr(game, 'record_simulation'):
+        if game.record_simulation.endswith(".html"):
+            info("Stopping animation recording")
+            supervisor.animationStopRecording()
+        elif game.record_simulation.endswith(".mp4"):
+            info("Starting encoding")
+            supervisor.movieStopRecording()
+            while not supervisor.movieIsReady():
+                supervisor.step(time_step)
+            info("Encoding finished")        
     #game.external_controllers_process.terminate()
     subprocess.Popen("TASKKILL /F /PID {pid} /T".format(pid=game.external_controllers_process.pid))
-    exit()         
+    if log_file:
+        log_file.close()    
+
+    close_webots_on_exit = False
+    if hasattr(game, 'close_webots_on_exit'):
+        close_webots_on_exit = game.close_webots_on_exit
+    if close_webots_on_exit:
+        # Note: If supervisor.step is not called before the 'simulationQuit', information is not shown
+        supervisor.step(time_step)
+        supervisor.simulationQuit(0)        
+    else:
+        exit()         
    
 # --------------------------------------------------------------------------------------------------
 
@@ -1159,6 +1180,20 @@ try:
 except Exception:
     error(f"Failed setting initial state: {traceback.format_exc()}", fatal=True)
 
+if hasattr(game, 'record_simulation'):
+    try:
+        if game.record_simulation.endswith(".html"):
+            supervisor.animationStartRecording(game.record_simulation)
+        elif game.record_simulation.endswith(".mp4"):
+            supervisor.movieStartRecording(game.record_simulation, width=1280, height=720, codec=0, quality=100,
+                                           acceleration=1, caption=False)
+            if supervisor.movieFailed():
+                raise RuntimeError("Failed to Open Movie")
+        else:
+            raise RuntimeError(f"Unknown extension for record_simulation: {game.record_simulation}")
+    except Exception:
+        error(f"Failed to start recording with exception: {traceback.format_exc()}", fatal=True)
+
 
 
 game.over = False
@@ -1171,6 +1206,9 @@ game.finished_state_processed = False
 finish_just_sended = False
 
 game.ball.enableContactPointsTracking(time_step)
+
+info(f'simulationGetMode={supervisor.simulationGetMode()}')
+supervisor.simulationSetMode(supervisor.SIMULATION_MODE_FAST)
 
 while supervisor.step(time_step) != -1 and not game.over:    
     perform_status_update() # To show realtime simulation factor if needed
