@@ -1041,6 +1041,7 @@ else:
                 if game.minimum_real_time_factor < 1:
                     command_line.append('--fast')
                 #command_line.append('--minimized')
+                command_line.append('--useloopback') # Use a robokit GC fork with supprot for single PC non-networking mode via --useloopback
                 command_line.append('--config')
                 command_line.append(game_config_file)
                 if hasattr(game, 'game_controller_extra_args'):
