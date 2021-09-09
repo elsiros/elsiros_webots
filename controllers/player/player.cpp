@@ -750,28 +750,31 @@ public:
         // measurement->set_image(rgb_image, rgb_image_size);
         // delete[] rgb_image;
 
-                const webots::CameraRecognitionObject* recognition_objects = camera->getRecognitionObjects();
+        const webots::CameraRecognitionObject* recognition_objects = camera->getRecognitionObjects();
         for (int i = 0; i < camera->getRecognitionNumberOfObjects(); ++i)
         {
           webots::CameraRecognitionObject recognition_object = recognition_objects[i];
-                    DetectionMeasurement* measurement = sensor_measurements.add_objects();
-          measurement->set_name(recognition_object.model);
-                    const int* position_on_image = recognition_objects[i].position_on_image;
-                    const int* size_on_image = recognition_objects[i].size_on_image;
-                    Vector2Int* position_on_image_proto = measurement->mutable_position_on_image();
-                    Vector2Int* size_on_image_proto = measurement->mutable_size_on_image();
-          position_on_image_proto->set_x(position_on_image[0]);
-          position_on_image_proto->set_y(position_on_image[1]);
+          if (recognition_object.id >= 0) {
 
-          size_on_image_proto->set_x(size_on_image[0]);
-          size_on_image_proto->set_y(size_on_image[1]);
-          // webots::Supervisor *supervisor = new webots::Supervisor();
-          // getFromId()
-                    const double* values = robot->getFromId(recognition_object.id)->getPosition();
+              DetectionMeasurement* measurement = sensor_measurements.add_objects();
+              measurement->set_name(recognition_object.model);
+              const int* position_on_image = recognition_objects[i].position_on_image;
+              const int* size_on_image = recognition_objects[i].size_on_image;
+              Vector2Int* position_on_image_proto = measurement->mutable_position_on_image();
+              Vector2Int* size_on_image_proto = measurement->mutable_size_on_image();
+              position_on_image_proto->set_x(position_on_image[0]);
+              position_on_image_proto->set_y(position_on_image[1]);
 
-          // std::cout << "Position " << values[0] << "," << values[1] << std::endl;
-          measurement->set_x(values[0]);
-          measurement->set_y(values[1]);
+              size_on_image_proto->set_x(size_on_image[0]);
+              size_on_image_proto->set_y(size_on_image[1]);
+              // webots::Supervisor *supervisor = new webots::Supervisor();
+              // getFromId()
+              const double* values = robot->getFromId(recognition_object.id)->getPosition();
+
+              // std::cout << "Position " << values[0] << "," << values[1] << std::endl;
+              measurement->set_x(values[0]);
+              measurement->set_y(values[1]);
+          }
           
 
           // std::cout << "Position of the ball" << std::endl;
