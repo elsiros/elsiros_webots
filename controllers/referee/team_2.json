@@ -1,5 +1,6 @@
 {
   "name": "Blue Team",
+  "robotStartCmd": "VIA_PB/main_pb.py",
   "players": {
     "1": {
       "proto": "Robokit1",

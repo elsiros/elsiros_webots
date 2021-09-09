@@ -7,31 +7,50 @@
 import datetime
 import os
 import subprocess
-import win32gui, win32con
 from pathlib import Path
+import json
 
-current_working_directory = Path.cwd()
-
+# following 3 lines provide minimizing of console in Windows
+#import win32gui, win32con
 #t = win32gui.GetForegroundWindow()
 #win32gui.ShowWindow(t, win32con.SW_MINIMIZE)
 
-os.chdir(current_working_directory.parent/'VIA_PB')
+with open('game.json', "r") as f:
+    game_data = json.loads(f.read())
+
+red_team_config_file = game_data['red']['config']
+blue_team_config_file = game_data['blue']['config']
+
+with open(red_team_config_file, "r") as f:
+    red_team_data = json.loads(f.read())
+
+with open(blue_team_config_file, "r") as f:
+    blue_team_data = json.loads(f.read())
+
+current_working_directory = Path.cwd()
+red_team_controller_subdirectory = Path(red_team_data['robotStartCmd']).parents[0]
+red_team_controller_filename = Path(red_team_data['robotStartCmd']).name
+blue_team_controller_subdirectory = Path(blue_team_data['robotStartCmd']).parents[0]
+blue_team_controller_filename = Path(blue_team_data['robotStartCmd']).name
+os.chdir(current_working_directory.parent/red_team_controller_subdirectory)
 
 with open('output10001.txt', "a") as f1001:
     print(datetime.datetime.now(), file = f1001)
-    p10001 = subprocess.Popen(['python', 'main_pb.py', '10001'], stderr=f1001)
+    p10001 = subprocess.Popen(['python', red_team_controller_filename, '10001', str(game_data['red']['id'])], stderr=f1001)
 
 with open('output10002.txt', "a") as f1002:
     print(datetime.datetime.now(), file = f1002)
-    p10002 = subprocess.Popen(['python', 'main_pb.py', '10002'], stderr=f1002)
+    p10002 = subprocess.Popen(['python', red_team_controller_filename, '10002', str(game_data['red']['id'])], stderr=f1002)
+
+os.chdir(current_working_directory.parent/blue_team_controller_subdirectory)
 
 with open('output10021.txt', "a") as f1021:
     print(datetime.datetime.now(), file = f1021)
-    p10021 = subprocess.Popen(['python', 'main_pb.py', '10021'], stderr=f1021)
+    p10021 = subprocess.Popen(['python', blue_team_controller_filename, '10021', str(game_data['blue']['id'])], stderr=f1021)
 
 with open('output10022.txt', "a") as f1022:
     print(datetime.datetime.now(), file = f1022)
-    p10022 = subprocess.Popen(['python', 'main_pb.py', '10022'], stderr=f1022)
+    p10022 = subprocess.Popen(['python', blue_team_controller_filename, '10022', str(game_data['blue']['id'])], stderr=f1022)
 
 p10001.wait()
 p10002.wait()

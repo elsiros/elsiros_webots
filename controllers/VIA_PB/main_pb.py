@@ -74,7 +74,7 @@ def main_procedure():
     initial_coord = player_data[Port]['initial_coord']
     role = player_data[Port]['role']
     robot = CommunicationManager(1, player_data[Port]['IP_address'], int(Port))
-    sensors = {"gps_body": 5, "imu_head": 5, "imu_body": 5,  "camera": 20}
+    sensors = {"gps_body": 5, "imu_body": 5, "camera": 200}
     robot.enable_sensors(sensors)
     th0 = threading.Thread(target=robot.run)
     th0.start()
