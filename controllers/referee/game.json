@@ -1,11 +1,11 @@
 {
   "_comment": "in ELSIROS(Junior) league game type below can be KNOCKOUT or PENALTY if only penalties are needed",
   "type": "KNOCKOUT",
-  "kickoff": "red",
+  "kickoff": 8,
   "class": "JUNIOR",
   "host": "127.0.0.1",
   "minimum_real_time_factor": 0,
-  "side_left": "blue",
+  "side_left": 8,
   "press_a_key_to_terminate": true,
   "use_bouncing_server": false,
   "_comment2": "record_simulation value should be a filename with .mp4 or .html extension, or can be skipped totally",
