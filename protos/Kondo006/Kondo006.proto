@@ -1,4 +1,4 @@
-#VRML_SIM R2021a utf8
+#VRML_SIM R2021b utf8
 # license: Apache License 2.0
 # license url: http://www.apache.org/licenses/LICENSE-2.0
 # This is a proto file for Webots for the Kondo006
@@ -8,14 +8,39 @@ PROTO Kondo006 [
   field  SFVec3f     translation     0 0 0
   field  SFRotation  rotation        0 1 0 0
   field  SFString    name            "Kondo006"  # Is `Robot.name`.
-  field  SFString    controller      "void"      # Is `Robot.controller`.
+  field  SFString    controller      "player"      # Is `Robot.controller`.
   field  MFString    controllerArgs  []          # Is `Robot.controllerArgs`.
   field  SFString    customData      ""          # Is `Robot.customData`.
-  field  SFBool      supervisor      FALSE       # Is `Robot.supervisor`.
-  field  SFBool      synchronization TRUE        # Is `Robot.synchronization`.
-  field  SFBool      selfCollision   FALSE       # Is `Robot.selfCollision`.
+  field  SFBool      supervisor      TRUE       # Is `Robot.supervisor`.
+  field  SFBool      synchronization FALSE        # Is `Robot.synchronization`.
+  field  SFBool      selfCollision   TRUE       # Is `Robot.selfCollision`.
+  field SFString{"", "red", "blue"}      teamColor ""
+  field SFString{"", "1", "2", "3", "4", "5"}      playerNumber ""
+  field SFColor     RED      1.0 0.0 0.0
+  field SFColor     BLUE     0.0 0.0 1.0
+
+
 ]
 {
+  %{
+    jerseyColor = ""
+    number = ""
+    if fields.name.value ~= "Kondo006" then
+      -- name is supposed to be something like "red player 2" or "blue player 1"
+      local words = {}
+      for word in fields.name.value:gmatch("%w+") do 
+        table.insert(words, word) 
+      end
+      jerseyColor = words[1]
+      number = words[3]
+    end
+    if fields.teamColor.value ~= "" then
+      jerseyColor = fields.teamColor.value
+    end
+    if fields.playerNumber.value ~= "" then
+      number = fields.playerNumber.value
+    end
+  }%
   Robot {
     translation IS translation
     rotation IS rotation
@@ -25,1208 +50,1341 @@ PROTO Kondo006 [
     supervisor IS supervisor
     synchronization IS synchronization
     selfCollision IS selfCollision
+    recognitionColors 1 0 0
+    
+
+    name IS name  
+    model IS name
     children [
-      Kondo006_trunk_1Mesh {
-      }
-      HingeJoint {
-        jointParameters HingeJointParameters {
-          axis 0.000000 0.000000 -1.000000
-          anchor 0.000000 0.025750 -0.001500
-          dampingConstant 0.0
-          staticFriction 0.0
-        }
-        device [
-          RotationalMotor {
-            name "pelvis_yaw"
-            maxVelocity 8.0
-            maxTorque 2.5
+      Solid {
+        translation 0 0 0
+        rotation 0 0 1 1.5708
+        children [
+          Kondo006_trunk_1Mesh {
+            %{if jerseyColor == "red" then}%
+              color IS RED
+            %{end}%
+            %{if jerseyColor == "blue" then}%
+              color IS BLUE
+            %{end}%        
           }
-          PositionSensor {
-            name "pelvis_yaw_sensor"
-          }
-        ]
-        endPoint Solid {
-          translation 0.000000 0.025750 -0.001500
-          rotation 0.000000 1.000000 0.000000 0.000000
-          children [
-            Kondo006_WaistMesh {
+          HingeJoint {
+            jointParameters HingeJointParameters {
+              axis 0.000000 0.000000 -1.000000
+              anchor 0.000000 0.025750 -0.001500
+              dampingConstant 0.0
+              staticFriction 0.0
             }
-            HingeJoint {
-              jointParameters HingeJointParameters {
-                axis 0.000000 0.000000 1.000000
-                anchor 0.021500 0.000000 -0.040500
-                dampingConstant 0.0
-                staticFriction 0.0
+            device [
+              RotationalMotor {
+                name "pelvis_yaw"
+                maxVelocity 8.0
+                maxTorque 2.5
               }
-              device [
-                RotationalMotor {
-                  name "left_hip_yaw"
-                  maxVelocity 8.0
-                  maxTorque 2.5
-                }
-                PositionSensor {
-                  name "left_hip_yaw_sensor"
-                }
-              ]
-              endPoint Solid {
-                translation 0.021500 0.000000 -0.040500
-                rotation 0.000000 0.000000 1.000000 1.570796
-                children [
-                  Kondo006_Leg_Joint_Left01Mesh {
-                  }
-                  HingeJoint {
-                    jointParameters HingeJointParameters {
-                      axis -1.000000 0.000000 -0.000000
-                      anchor 0.000000 -0.018500 -0.014500
-                      dampingConstant 0.0
-                      staticFriction 0.0
-                    }
-                    device [
-                      RotationalMotor {
-                        name "left_hip_roll"
-                        maxVelocity 8.0
-                        maxTorque 2.5
-                      }
-                      PositionSensor {
-                        name "left_hip_roll_sensor"
-                      }
-                    ]
-                    endPoint Solid {
-                      translation 0.000000 -0.018500 -0.014500
-                      rotation 0.577350 -0.577350 -0.577350 2.094395
-                      children [
-                        Kondo006_Leg_Joint_Left02Mesh {
-                        }
-                        HingeJoint {
-                          jointParameters HingeJointParameters {
-                            axis -1.000000 -0.000000 0.000000
-                            anchor 0.000000 -0.042000 -0.000250
-                            dampingConstant 0.0
-                            staticFriction 0.0
-                          }
-                          device [
-                            RotationalMotor {
-                              name "left_hip_pitch"
-                              maxVelocity 8.0
-                              maxTorque 2.5
-                            }
-                            PositionSensor {
-                              name "left_hip_pitch_sensor"
-                            }
-                          ]
-                          endPoint Solid {
-                            translation 0.000000 -0.042000 -0.000250
-                            rotation 0.000000 0.707107 0.707107 3.141593
-                            children [
-                              Kondo006_Hip_LeftMesh {
-                              }
-                              HingeJoint {
-                                jointParameters HingeJointParameters {
-                                  axis -1.000000 0.000000 0.000000
-                                  anchor 0.000000 0.000000 -0.065464
-                                  dampingConstant 0.0
-                                  staticFriction 0.0
-                                }
-                                device [
-                                  RotationalMotor {
-                                    name "left_knee"
-                                    maxVelocity 8.0
-                                    maxTorque 2.5
-                                  }
-                                  PositionSensor {
-                                    name "left_knee_sensor"
-                                  }
-                                ]
-                                endPoint Solid {
-                                  translation 0.000000 0.000000 -0.065464
-                                  rotation 0.000000 1.000000 0.000000 0.000000
-                                  children [
-                                    Kondo006_Shin_LeftMesh {
-                                    }
-                                    HingeJoint {
-                                      jointParameters HingeJointParameters {
-                                        axis -1.000000 0.000000 -0.000000
-                                        anchor 0.000000 0.000000 -0.063804
-                                        dampingConstant 0.0
-                                        staticFriction 0.0
-                                      }
-                                      device [
-                                        RotationalMotor {
-                                          name "left_ankle_pitch"
-                                          maxVelocity 8.0
-                                          maxTorque 2.5
-                                        }
-                                        PositionSensor {
-                                          name "left_ankle_pitch_sensor"
-                                        }
-                                      ]
-                                      endPoint Solid {
-                                        translation 0.000000 0.000000 -0.063804
-                                        rotation 0.577350 -0.577350 0.577350 2.094395
-                                        children [
-                                          Kondo006_Leg_Joint_Left03Mesh {
-                                          }
-                                          HingeJoint {
-                                            jointParameters HingeJointParameters {
-                                              axis -0.000000 0.000000 1.000000
-                                              anchor -0.035500 -0.011500 0.000000
-                                              dampingConstant 0.0
-                                              staticFriction 0.0
-                                            }
-                                            device [
-                                              RotationalMotor {
-                                                name "left_ankle_roll"
-                                                maxVelocity 8.0
-                                                maxTorque 2.5
-                                              }
-                                              PositionSensor {
-                                                name "left_ankle_roll_sensor"
-                                              }
-                                            ]
-                                            endPoint Solid {
-                                              translation -0.035500 -0.011500 0.000000
-                                              rotation -0.577350 0.577350 -0.577350 2.094395
-                                              children [
-                                                Kondo006_Foot_RightMesh {
-                                                }
-                                                Solid {
-                                                  translation 0.079500 0.000750 -0.025407
-                                                  rotation 0.000000 0.000000 1.000000 3.141593
-                                                  children [
-                                                    Kondo006_right_footMesh {
-                                                    }
-                                                  ]
-                                                  name "right_foot"
-                                                  boundingObject Transform {
-                                                    translation 0.000000 0.000000 0.000000
-                                                    rotation 0.000000 1.000000 0.000000 0.000000
-                                                    children [
-                                                      Box {
-                                                        size 0.000500 0.000500 0.000500
-                                                      }
-                                                    ]
-                                                  }
-                                                  physics Physics {
-                                                    density -1
-                                                    mass 0.000000
-                                                    centerOfMass [ -0.000000 -0.000000 -0.000000 ]
-                                                    inertiaMatrix [
-                                                      5.312500e-15 5.312500e-15 5.312500e-15
-                                                      -4.746839e-32 -8.355089e-32 -2.088772e-32
-                                                    ]
-                                                  }
-                                                }
-                                              ]
-                                              name "Foot_Right"
-                                              boundingObject Transform {
-                                                translation -0.025040 -0.001000 -0.008607
-                                                rotation 0.000000 1.000000 0.000000 0.000000
-                                                children [
-                                                  Box {
-                                                    size 0.075580 0.110000 0.033100
-                                                  }
-                                                ]
-                                              }
-                                              physics Physics {
-                                                density -1
-                                                mass 0.039874
-                                                centerOfMass [ -0.021140 -0.000636 -0.020359 ]
-                                                inertiaMatrix [
-                                                  2.898973e-05 1.505792e-05 4.316037e-05
-                                                  -1.655881e-10 -2.558492e-07 -1.854482e-10
-                                                ]
-                                              }
-                                            }
-                                          }
-                                        ]
-                                        name "Leg_Joint_Left03"
-                                        boundingObject Transform {
-                                          translation -0.018057 -0.000250 -0.000700
-                                          rotation 0.000000 1.000000 0.000000 0.000000
-                                          children [
-                                            Box {
-                                              size 0.056000 0.043000 0.038100
-                                            }
-                                          ]
-                                        }
-                                        physics Physics {
-                                          density -1
-                                          mass 0.061325
-                                          centerOfMass [ -0.030640 -0.000388 0.000027 ]
-                                          inertiaMatrix [
-                                            1.335440e-05 6.572201e-06 1.085031e-05
-                                            3.365418e-08 5.062426e-11 -1.779849e-08
-                                          ]
-                                        }
-                                      }
-                                    }
-                                  ]
-                                  name "Shin_Left"
-                                  boundingObject Transform {
-                                    translation 0.000000 0.003472 -0.032474
-                                    rotation 0.000000 1.000000 0.000000 0.000000
-                                    children [
-                                      Box {
-                                        size 0.043000 0.031268 0.084923
-                                      }
-                                    ]
-                                  }
-                                  physics Physics {
-                                    density -1
-                                    mass 0.064613
-                                    centerOfMass [ -0.000056 0.003404 -0.044580 ]
-                                    inertiaMatrix [
-                                      1.085045e-05 1.387199e-05 8.267898e-06
-                                      1.691333e-08 -1.278802e-08 -1.423171e-06
-                                    ]
-                                  }
-                                }
-                              }
-                            ]
-                            name "Hip_Left"
-                            boundingObject Transform {
-                              translation 0.000450 0.005688 -0.034522
-                              rotation 0.000000 1.000000 0.000000 0.000000
-                              children [
-                                Box {
-                                  size 0.038100 0.037776 0.087161
-                                }
-                              ]
-                            }
-                            physics Physics {
-                              density -1
-                              mass 0.101150
-                              centerOfMass [ -0.000282 0.002726 -0.033955 ]
-                              inertiaMatrix [
-                                1.888762e-05 2.132382e-05 1.229236e-05
-                                8.906492e-09 -2.362281e-09 -1.631799e-06
-                              ]
-                            }
-                          }
-                        }
-                      ]
-                      name "Leg_Joint_Left02"
-                      boundingObject Transform {
-                        translation 0.000000 -0.021003 -0.000250
-                        rotation 0.000000 1.000000 0.000000 0.000000
-                        children [
-                          Box {
-                            size 0.043000 0.061990 0.043000
-                          }
-                        ]
-                      }
-                      physics Physics {
-                        density -1
-                        mass 0.020081
-                        centerOfMass [ 0.000100 -0.021000 -0.000150 ]
-                        inertiaMatrix [
-                          3.023132e-06 4.483913e-06 3.023132e-06
-                          -3.254885e-08 9.383785e-12 3.254885e-08
-                        ]
-                      }
-                    }
-                  }
-                ]
-                name "Leg_Joint_Left01"
-                boundingObject Transform {
-                  translation 0.000700 -0.007000 -0.012500
-                  rotation 0.000000 1.000000 0.000000 0.000000
-                  children [
-                    Box {
-                      size 0.038100 0.041000 0.025000
-                    }
-                  ]
-                }
-                physics Physics {
-                  density -1
-                  mass 0.051285
-                  centerOfMass [ -0.000032 -0.007204 -0.013414 ]
-                  inertiaMatrix [
-                    8.540072e-06 5.859306e-06 1.111244e-05
-                    1.780317e-08 -6.544920e-11 1.120138e-09
-                  ]
-                }
-              }
-            }
-            HingeJoint {
-              jointParameters HingeJointParameters {
-                axis 0.000000 0.000000 1.000000
-                anchor -0.021500 0.000000 -0.040500
-                dampingConstant 0.0
-                staticFriction 0.0
-              }
-              device [
-                RotationalMotor {
-                  name "right_hip_yaw"
-                  maxVelocity 8.0
-                  maxTorque 2.5
-                }
-                PositionSensor {
-                  name "right_hip_yaw_sensor"
-                }
-              ]
-              endPoint Solid {
-                translation -0.021500 0.000000 -0.040500
-                rotation 0.000000 0.000000 1.000000 1.570796
-                children [
-                  Kondo006_Leg_Joint_Right01Mesh {
-                  }
-                  HingeJoint {
-                    jointParameters HingeJointParameters {
-                      axis -1.000000 0.000000 -0.000000
-                      anchor 0.000000 0.018500 -0.014500
-                      dampingConstant 0.0
-                      staticFriction 0.0
-                    }
-                    device [
-                      RotationalMotor {
-                        name "right_hip_roll"
-                        maxVelocity 8.0
-                        maxTorque 2.5
-                      }
-                      PositionSensor {
-                        name "right_hip_roll_sensor"
-                      }
-                    ]
-                    endPoint Solid {
-                      translation 0.000000 0.018500 -0.014500
-                      rotation 0.577350 0.577350 0.577350 2.094395
-                      children [
-                        Kondo006_Leg_Joint_Right02Mesh {
-                        }
-                        HingeJoint {
-                          jointParameters HingeJointParameters {
-                            axis -1.000000 0.000000 -0.000000
-                            anchor 0.000000 -0.042000 0.000250
-                            dampingConstant 0.0
-                            staticFriction 0.0
-                          }
-                          device [
-                            RotationalMotor {
-                              name "right_hip_pitch"
-                              maxVelocity 8.0
-                              maxTorque 2.5
-                            }
-                            PositionSensor {
-                              name "right_hip_pitch_sensor"
-                            }
-                          ]
-                          endPoint Solid {
-                            translation 0.000000 -0.042000 0.000250
-                            rotation 0.000000 0.707107 0.707107 3.141593
-                            children [
-                              Kondo006_Hip_RightMesh {
-                              }
-                              HingeJoint {
-                                jointParameters HingeJointParameters {
-                                  axis -1.000000 0.000000 0.000000
-                                  anchor 0.000000 0.000000 -0.065464
-                                  dampingConstant 0.0
-                                  staticFriction 0.0
-                                }
-                                device [
-                                  RotationalMotor {
-                                    name "right_knee"
-                                    maxVelocity 8.0
-                                    maxTorque 2.5
-                                  }
-                                  PositionSensor {
-                                    name "right_knee_sensor"
-                                  }
-                                ]
-                                endPoint Solid {
-                                  translation 0.000000 0.000000 -0.065464
-                                  rotation 0.000000 1.000000 0.000000 0.000000
-                                  children [
-                                    Kondo006_Shin_RightMesh {
-                                    }
-                                    HingeJoint {
-                                      jointParameters HingeJointParameters {
-                                        axis -1.000000 -0.000000 -0.000000
-                                        anchor 0.000000 0.000000 -0.063804
-                                        dampingConstant 0.0
-                                        staticFriction 0.0
-                                      }
-                                      device [
-                                        RotationalMotor {
-                                          name "right_ankle_pitch"
-                                          maxVelocity 8.0
-                                          maxTorque 2.5
-                                        }
-                                        PositionSensor {
-                                          name "right_ankle_pitch_sensor"
-                                        }
-                                      ]
-                                      endPoint Solid {
-                                        translation 0.000000 0.000000 -0.063804
-                                        rotation 0.577350 -0.577350 0.577350 2.094395
-                                        children [
-                                          Kondo006_Leg_Joint_Right03Mesh {
-                                          }
-                                          HingeJoint {
-                                            jointParameters HingeJointParameters {
-                                              axis 0.000000 0.000000 -1.000000
-                                              anchor -0.035500 -0.011500 0.000000
-                                              dampingConstant 0.0
-                                              staticFriction 0.0
-                                            }
-                                            device [
-                                              RotationalMotor {
-                                                name "right_ankle_roll"
-                                                maxVelocity 8.0
-                                                maxTorque 2.5
-                                              }
-                                              PositionSensor {
-                                                name "right_ankle_roll_sensor"
-                                              }
-                                            ]
-                                            endPoint Solid {
-                                              translation -0.035500 -0.011500 0.000000
-                                              rotation -0.577350 0.577350 -0.577350 2.094395
-                                              children [
-                                                Kondo006_Foot_LeftMesh {
-                                                }
-                                                Solid {
-                                                  translation 0.079500 0.001250 -0.025407
-                                                  rotation 0.000000 1.000000 0.000000 0.000000
-                                                  children [
-                                                    Kondo006_left_footMesh {
-                                                    }
-                                                  ]
-                                                  name "left_foot"
-                                                  boundingObject Transform {
-                                                    translation 0.000000 0.000000 0.000000
-                                                    rotation 0.000000 1.000000 0.000000 0.000000
-                                                    children [
-                                                      Box {
-                                                        size 0.000500 0.000500 0.000500
-                                                      }
-                                                    ]
-                                                  }
-                                                  physics Physics {
-                                                    density -1
-                                                    mass 0.000000
-                                                    centerOfMass [ 0.000000 -0.000000 -0.000000 ]
-                                                    inertiaMatrix [
-                                                      5.312500e-15 5.312500e-15 5.312500e-15
-                                                      -4.746839e-32 -8.355089e-32 -2.088772e-32
-                                                    ]
-                                                  }
-                                                }
-                                              ]
-                                              name "Foot_Left"
-                                              boundingObject Transform {
-                                                translation -0.025040 -0.001000 -0.008607
-                                                rotation 0.000000 1.000000 0.000000 0.000000
-                                                children [
-                                                  Box {
-                                                    size 0.075580 0.110000 0.033100
-                                                  }
-                                                ]
-                                              }
-                                              physics Physics {
-                                                density -1
-                                                mass 0.039874
-                                                centerOfMass [ -0.021140 -0.000636 -0.020359 ]
-                                                inertiaMatrix [
-                                                  2.898973e-05 1.505792e-05 4.316037e-05
-                                                  -1.655881e-10 -2.558492e-07 -1.854482e-10
-                                                ]
-                                              }
-                                            }
-                                          }
-                                        ]
-                                        name "Leg_Joint_Right03"
-                                        boundingObject Transform {
-                                          translation -0.018058 -0.000250 0.000700
-                                          rotation 0.000000 1.000000 0.000000 0.000000
-                                          children [
-                                            Box {
-                                              size 0.055998 0.043000 0.038100
-                                            }
-                                          ]
-                                        }
-                                        physics Physics {
-                                          density -1
-                                          mass 0.061325
-                                          centerOfMass [ -0.030640 -0.000388 -0.000027 ]
-                                          inertiaMatrix [
-                                            1.335440e-05 6.572201e-06 1.085031e-05
-                                            3.361899e-08 5.061421e-11 1.780315e-08
-                                          ]
-                                        }
-                                      }
-                                    }
-                                  ]
-                                  name "Shin_Right"
-                                  boundingObject Transform {
-                                    translation 0.000000 -0.003472 -0.032470
-                                    rotation 0.000000 1.000000 0.000000 0.000000
-                                    children [
-                                      Box {
-                                        size 0.043000 0.031268 0.084930
-                                      }
-                                    ]
-                                  }
-                                  physics Physics {
-                                    density -1
-                                    mass 0.064613
-                                    centerOfMass [ -0.000056 -0.003404 -0.044580 ]
-                                    inertiaMatrix [
-                                      1.085045e-05 1.387202e-05 8.267856e-06
-                                      -1.677776e-08 -1.276212e-08 1.423161e-06
-                                    ]
-                                  }
-                                }
-                              }
-                            ]
-                            name "Hip_Right"
-                            boundingObject Transform {
-                              translation 0.000450 -0.005688 -0.034522
-                              rotation 0.000000 1.000000 0.000000 0.000000
-                              children [
-                                Box {
-                                  size 0.038100 0.037777 0.087161
-                                }
-                              ]
-                            }
-                            physics Physics {
-                              density -1
-                              mass 0.101150
-                              centerOfMass [ -0.000282 -0.002726 -0.033955 ]
-                              inertiaMatrix [
-                                1.888762e-05 2.132385e-05 1.229233e-05
-                                -8.923633e-09 -2.296743e-09 1.631746e-06
-                              ]
-                            }
-                          }
-                        }
-                      ]
-                      name "Leg_Joint_Right02"
-                      boundingObject Transform {
-                        translation 0.000000 -0.021003 0.000250
-                        rotation 0.000000 1.000000 0.000000 0.000000
-                        children [
-                          Box {
-                            size 0.043000 0.061990 0.043000
-                          }
-                        ]
-                      }
-                      physics Physics {
-                        density -1
-                        mass 0.020081
-                        centerOfMass [ 0.000100 -0.021000 0.000150 ]
-                        inertiaMatrix [
-                          3.023132e-06 4.483913e-06 3.023132e-06
-                          -3.251922e-08 9.383785e-12 -3.251922e-08
-                        ]
-                      }
-                    }
-                  }
-                ]
-                name "Leg_Joint_Right01"
-                boundingObject Transform {
-                  translation 0.000700 0.007000 -0.012500
-                  rotation 0.000000 1.000000 0.000000 0.000000
-                  children [
-                    Box {
-                      size 0.038100 0.041000 0.025000
-                    }
-                  ]
-                }
-                physics Physics {
-                  density -1
-                  mass 0.051285
-                  centerOfMass [ -0.000032 0.007204 -0.013414 ]
-                  inertiaMatrix [
-                    8.540072e-06 5.859306e-06 1.111244e-05
-                    -1.779849e-08 6.544808e-11 -1.084941e-09
-                  ]
-                }
-              }
-            }
-          ]
-          name "Waist"
-          boundingObject Transform {
-            translation 0.000000 0.011700 -0.020250
-            rotation 0.000000 1.000000 0.000000 0.000000
-            children [
-              Box {
-                size 0.075000 0.050000 0.040500
+              PositionSensor {
+                name "pelvis_yaw_sensor"
               }
             ]
-          }
-          physics Physics {
-            density -1
-            mass 0.157403
-            centerOfMass [ -0.000000 0.011230 -0.020842 ]
-            inertiaMatrix [
-              3.339465e-05 1.742112e-05 2.863601e-05
-              1.759818e-11 1.962964e-10 6.755827e-09
-            ]
-          }
-        }
-      }
-      HingeJoint {
-        jointParameters HingeJointParameters {
-          axis 1.000000 -0.000000 -0.000000
-          anchor -0.051200 0.014200 0.048750
-          dampingConstant 0.0
-          staticFriction 0.0
-        }
-        device [
-          RotationalMotor {
-            name "right_shoulder_pitch"
-            maxVelocity 8.0
-            maxTorque 2.5
-          }
-          PositionSensor {
-            name "right_shoulder_pitch_sensor"
-          }
-        ]
-        endPoint Solid {
-          translation -0.051200 0.014200 0.048750
-          rotation 0.577350 0.577350 -0.577350 2.094395
-          children [
-            Kondo006_Forearm_RightMesh {
-            }
-            HingeJoint {
-              jointParameters HingeJointParameters {
-                axis 0.000000 -0.000000 1.000000
-                anchor 0.000000 -0.025000 0.000000
-                dampingConstant 0.0
-                staticFriction 0.0
-              }
-              device [
-                RotationalMotor {
-                  name "right_shoulder_roll"
-                  maxVelocity 8.0
-                  maxTorque 2.5
+            endPoint Solid {
+              translation 0.000000 0.025750 -0.001500
+              rotation 0.000000 1.000000 0.000000 0.000000
+              children [
+                Kondo006_WaistMesh {
                 }
-                PositionSensor {
-                  name "right_shoulder_roll_sensor"
-                }
-              ]
-              endPoint Solid {
-                translation 0.000000 -0.025000 0.000000
-                rotation 0.577350 0.577350 0.577350 2.094395
-                children [
-                  Kondo006_Arm_RightMesh {
+                HingeJoint {
+                  jointParameters HingeJointParameters {
+                    axis 0.000000 0.000000 1.000000
+                    anchor 0.021500 0.000000 -0.040500
+                    dampingConstant 0.0
+                    staticFriction 0.0
                   }
-                  HingeJoint {
-                    jointParameters HingeJointParameters {
-                      axis -0.000000 0.000000 -1.000000
-                      anchor 0.000000 -0.000500 0.074400
-                      dampingConstant 0.0
-                      staticFriction 0.0
+                  device [
+                    RotationalMotor {
+                      name "left_hip_yaw"
+                      maxVelocity 8.0
+                      maxTorque 2.5
                     }
-                    device [
-                      RotationalMotor {
-                        name "right_shoulder_twirl"
-                        maxVelocity 8.0
-                        maxTorque 2.5
-                      }
-                      PositionSensor {
-                        name "right_shoulder_twirl_sensor"
-                      }
-                    ]
-                    endPoint Solid {
-                      translation 0.000000 -0.000500 0.074400
-                      rotation 0.000000 1.000000 0.000000 1.570796
-                      children [
-                        Kondo006_Elbow_RightMesh {
-                        }
-                        HingeJoint {
-                          jointParameters HingeJointParameters {
-                            axis -0.000000 -0.000000 -1.000000
-                            anchor -0.014500 0.004500 0.000000
-                            dampingConstant 0.0
-                            staticFriction 0.0
-                          }
-                          device [
-                            RotationalMotor {
-                              name "right_elbow_pitch"
-                              maxVelocity 8.0
-                              maxTorque 2.5
-                            }
-                            PositionSensor {
-                              name "right_elbow_pitch_sensor"
-                            }
-                          ]
-                          endPoint Solid {
-                            translation -0.014500 0.004500 0.000000
-                            rotation 0.707107 -0.707107 -0.000000 3.141593
-                            children [
-                              Kondo006_Hand_RightMesh {
-                              }
-                            ]
-                            name "Hand_Right"
-                            boundingObject Transform {
-                              translation -0.001104 0.045475 0.000200
-                              rotation 0.000000 1.000000 0.000000 0.000000
-                              children [
-                                Box {
-                                  size 0.035083 0.108950 0.045300
-                                }
-                              ]
-                            }
-                            physics Physics {
-                              density -1
-                              mass 0.024266
-                              centerOfMass [ -0.000298 0.047572 0.001690 ]
-                              inertiaMatrix [
-                                5.837973e-06 4.325859e-06 3.912008e-06
-                                3.322562e-08 -7.557077e-08 5.232673e-08
-                              ]
-                            }
-                          }
-                        }
-                      ]
-                      name "Elbow_Right"
-                      boundingObject Transform {
-                        translation -0.012500 -0.007000 -0.000700
-                        rotation 0.000000 1.000000 0.000000 0.000000
-                        children [
-                          Box {
-                            size 0.025000 0.041000 0.038100
-                          }
-                        ]
-                      }
-                      physics Physics {
-                        density -1
-                        mass 0.051285
-                        centerOfMass [ -0.013414 -0.006839 0.000032 ]
-                        inertiaMatrix [
-                          1.111244e-05 5.859306e-06 8.540072e-06
-                          1.120146e-09 -6.542908e-11 1.779847e-08
-                        ]
-                      }
-                    }
-                  }
-                ]
-                name "Arm_Right"
-                boundingObject Transform {
-                  translation 0.000000 -0.008600 0.032700
-                  rotation 0.000000 1.000000 0.000000 0.000000
-                  children [
-                    Box {
-                      size 0.032000 0.057200 0.083400
+                    PositionSensor {
+                      name "left_hip_yaw_sensor"
                     }
                   ]
-                }
-                physics Physics {
-                  density -1
-                  mass 0.103593
-                  centerOfMass [ -0.000000 -0.006178 0.034838 ]
-                  inertiaMatrix [
-                    2.190232e-05 1.419354e-05 1.598128e-05
-                    -8.302772e-11 -4.782827e-11 1.218575e-07
-                  ]
-                }
-              }
-            }
-          ]
-          name "Forearm_Right"
-          boundingObject Transform {
-            translation 0.000000 -0.017000 0.000250
-            rotation 0.000000 1.000000 0.000000 0.000000
-            children [
-              Box {
-                size 0.032875 0.034000 0.045300
-              }
-            ]
-          }
-          physics Physics {
-            density -1
-            mass 0.008148
-            centerOfMass [ 0.000000 -0.010646 0.000635 ]
-            inertiaMatrix [
-              2.884203e-06 2.453816e-06 1.117817e-06
-              -2.540053e-17 1.051062e-14 4.603662e-08
-            ]
-          }
-        }
-      }
-      HingeJoint {
-        jointParameters HingeJointParameters {
-          axis -1.000000 -0.000000 -0.000000
-          anchor 0.051200 0.014200 0.048750
-          dampingConstant 0.0
-          staticFriction 0.0
-        }
-        device [
-          RotationalMotor {
-            name "left_shoulder_pitch"
-            maxVelocity 8.0
-            maxTorque 2.5
-          }
-          PositionSensor {
-            name "left_shoulder_pitch_sensor"
-          }
-        ]
-        endPoint Solid {
-          translation 0.051200 0.014200 0.048750
-          rotation 0.577350 -0.577350 0.577350 2.094395
-          children [
-            Kondo006_Forearm_LeftMesh {
-            }
-            HingeJoint {
-              jointParameters HingeJointParameters {
-                axis -0.000000 -0.000000 1.000000
-                anchor 0.000000 -0.025000 0.000000
-                dampingConstant 0.0
-                staticFriction 0.0
-              }
-              device [
-                RotationalMotor {
-                  name "left_shoulder_roll"
-                  maxVelocity 8.0
-                  maxTorque 2.5
-                }
-                PositionSensor {
-                  name "left_shoulder_roll_sensor"
-                }
-              ]
-              endPoint Solid {
-                translation 0.000000 -0.025000 0.000000
-                rotation 0.577350 -0.577350 -0.577350 2.094395
-                children [
-                  Kondo006_Arm_LeftMesh {
-                  }
-                  HingeJoint {
-                    jointParameters HingeJointParameters {
-                      axis -0.000000 0.000000 -1.000000
-                      anchor 0.000000 -0.000500 0.074400
-                      dampingConstant 0.0
-                      staticFriction 0.0
-                    }
-                    device [
-                      RotationalMotor {
-                        name "left_shoulder_twirl"
-                        maxVelocity 8.0
-                        maxTorque 2.5
-                      }
-                      PositionSensor {
-                        name "left_shoulder_twirl_sensor"
-                      }
-                    ]
-                    endPoint Solid {
-                      translation 0.000000 -0.000500 0.074400
-                      rotation 0.000000 1.000000 0.000000 1.570796
-                      children [
-                        Kondo006_Elbow_LeftMesh {
-                        }
-                        HingeJoint {
-                          jointParameters HingeJointParameters {
-                            axis 0.000000 -0.000000 1.000000
-                            anchor -0.014500 0.004500 0.000000
-                            dampingConstant 0.0
-                            staticFriction 0.0
-                          }
-                          device [
-                            RotationalMotor {
-                              name "left_elbow_pitch"
-                              maxVelocity 8.0
-                              maxTorque 2.5
-                            }
-                            PositionSensor {
-                              name "left_elbow_pitch_sensor"
-                            }
-                          ]
-                          endPoint Solid {
-                            translation -0.014500 0.004500 0.000000
-                            rotation 0.707107 0.707107 0.000000 3.141593
-                            children [
-                              Kondo006_Hand_LeftMesh {
-                              }
-                            ]
-                            name "Hand_Left"
-                            boundingObject Transform {
-                              translation 0.001104 -0.045475 -0.000200
-                              rotation 0.000000 1.000000 0.000000 0.000000
-                              children [
-                                Box {
-                                  size 0.035083 0.108950 0.045300
-                                }
-                              ]
-                            }
-                            physics Physics {
-                              density -1
-                              mass 0.020704
-                              centerOfMass [ 0.000289 -0.042673 -0.002071 ]
-                              inertiaMatrix [
-                                5.551003e-06 4.086383e-06 3.637705e-06
-                                2.014242e-08 -6.348604e-08 9.112369e-08
-                              ]
-                            }
-                          }
-                        }
-                      ]
-                      name "Elbow_Left"
-                      boundingObject Transform {
-                        translation -0.012500 -0.007000 0.000700
-                        rotation 0.000000 1.000000 0.000000 0.000000
-                        children [
-                          Box {
-                            size 0.025000 0.041000 0.038100
-                          }
-                        ]
-                      }
-                      physics Physics {
-                        density -1
-                        mass 0.051285
-                        centerOfMass [ -0.013414 -0.006839 -0.000032 ]
-                        inertiaMatrix [
-                          1.111244e-05 5.859306e-06 8.540072e-06
-                          1.084953e-09 -6.542680e-11 -1.780319e-08
-                        ]
-                      }
-                    }
-                  }
-                ]
-                name "Arm_Left"
-                boundingObject Transform {
-                  translation 0.000000 -0.008600 0.032700
-                  rotation 0.000000 1.000000 0.000000 0.000000
-                  children [
-                    Box {
-                      size 0.032000 0.057200 0.083400
-                    }
-                  ]
-                }
-                physics Physics {
-                  density -1
-                  mass 0.103593
-                  centerOfMass [ -0.000000 -0.006178 0.034838 ]
-                  inertiaMatrix [
-                    2.190232e-05 1.419354e-05 1.598128e-05
-                    -8.303374e-11 -4.783570e-11 1.218575e-07
-                  ]
-                }
-              }
-            }
-          ]
-          name "Forearm_Left"
-          boundingObject Transform {
-            translation 0.000000 -0.017000 0.000250
-            rotation 0.000000 1.000000 0.000000 0.000000
-            children [
-              Box {
-                size 0.032875 0.034000 0.045300
-              }
-            ]
-          }
-          physics Physics {
-            density -1
-            mass 0.008148
-            centerOfMass [ 0.000000 -0.010646 0.000635 ]
-            inertiaMatrix [
-              2.884203e-06 2.453816e-06 1.117817e-06
-              -2.540085e-17 1.051063e-14 4.603662e-08
-            ]
-          }
-        }
-      }
-      HingeJoint {
-        jointParameters HingeJointParameters {
-          axis 0.000000 -0.000000 1.000000
-          anchor 0.000000 0.014200 0.061550
-          dampingConstant 0.0
-          staticFriction 0.0
-        }
-        device [
-          RotationalMotor {
-            name "head_yaw"
-            maxVelocity 8.0
-            maxTorque 2.5
-          }
-          PositionSensor {
-            name "head_yaw_sensor"
-          }
-        ]
-        endPoint Solid {
-          translation 0.000000 0.014200 0.061550
-          rotation 0.000000 -0.707107 -0.707107 3.141593
-          children [
-            Kondo006_NeckMesh {
-            }
-            HingeJoint {
-              jointParameters HingeJointParameters {
-                axis 1.000000 0.000000 -0.000000
-                anchor 0.000000 0.028200 0.000000
-                dampingConstant 0.0
-                staticFriction 0.0
-              }
-              device [
-                RotationalMotor {
-                  name "head_pitch"
-                  maxVelocity 8.0
-                  maxTorque 2.5
-                }
-                PositionSensor {
-                  name "head_pitch_sensor"
-                }
-              ]
-              endPoint Solid {
-                translation 0.000000 0.028200 0.000000
-                rotation 0.707101 -0.004115 -0.707101 3.133363
-                children [
-                  Kondo006_HeadMesh {
-                  }
-                  Solid {
-                    translation 0.011643 -0.043608 0.000100
-                    rotation 0.005819 -0.999966 0.005819 1.570830
+                  endPoint Solid {
+                    translation 0.021500 0.000000 -0.040500
+                    rotation 0.000000 0.000000 1.000000 1.570796
                     children [
-                      Kondo006_cameraMesh {
+                      Kondo006_Leg_Joint_Left01Mesh {
+                      }
+                      HingeJoint {
+                        jointParameters HingeJointParameters {
+                          axis -1.000000 0.000000 -0.000000
+                          anchor 0.000000 -0.018500 -0.014500
+                          dampingConstant 0.0
+                          staticFriction 0.0
+                        }
+                        device [
+                          RotationalMotor {
+                            name "left_hip_roll"
+                            maxVelocity 8.0
+                            maxTorque 2.5
+                          }
+                          PositionSensor {
+                            name "left_hip_roll_sensor"
+                          }
+                        ]
+                        endPoint Solid {
+                          translation 0.000000 -0.018500 -0.014500
+                          rotation 0.577350 -0.577350 -0.577350 2.094395
+                          children [
+                            Kondo006_Leg_Joint_Left02Mesh {
+                            }
+                            HingeJoint {
+                              jointParameters HingeJointParameters {
+                                axis -1.000000 -0.000000 0.000000
+                                anchor 0.000000 -0.042000 -0.000250
+                                dampingConstant 0.0
+                                staticFriction 0.0
+                              }
+                              device [
+                                RotationalMotor {
+                                  name "left_hip_pitch"
+                                  maxVelocity 8.0
+                                  maxTorque 2.5
+                                }
+                                PositionSensor {
+                                  name "left_hip_pitch_sensor"
+                                }
+                              ]
+                              endPoint Solid {
+                                translation 0.000000 -0.042000 -0.000250
+                                rotation 0.000000 0.707107 0.707107 3.141593
+                                children [
+                                  Kondo006_Hip_LeftMesh {
+                                  }
+                                  HingeJoint {
+                                    jointParameters HingeJointParameters {
+                                      axis -1.000000 0.000000 0.000000
+                                      anchor 0.000000 0.000000 -0.065464
+                                      dampingConstant 0.0
+                                      staticFriction 0.0
+                                    }
+                                    device [
+                                      RotationalMotor {
+                                        name "left_knee"
+                                        maxVelocity 8.0
+                                        maxTorque 2.5
+                                      }
+                                      PositionSensor {
+                                        name "left_knee_sensor"
+                                      }
+                                    ]
+                                    endPoint Solid {
+                                      translation 0.000000 0.000000 -0.065464
+                                      rotation 0.000000 1.000000 0.000000 0.000000
+                                      children [
+                                        Kondo006_Shin_LeftMesh {
+                                        }
+                                        HingeJoint {
+                                          jointParameters HingeJointParameters {
+                                            axis -1.000000 0.000000 -0.000000
+                                            anchor 0.000000 0.000000 -0.063804
+                                            dampingConstant 0.0
+                                            staticFriction 0.0
+                                          }
+                                          device [
+                                            RotationalMotor {
+                                              name "left_ankle_pitch"
+                                              maxVelocity 8.0
+                                              maxTorque 2.5
+                                            }
+                                            PositionSensor {
+                                              name "left_ankle_pitch_sensor"
+                                            }
+                                          ]
+                                          endPoint Solid {
+                                            translation 0.000000 0.000000 -0.063804
+                                            rotation 0.577350 -0.577350 0.577350 2.094395
+                                            children [
+                                              Kondo006_Leg_Joint_Left03Mesh {
+                                              }
+                                              HingeJoint {
+                                                jointParameters HingeJointParameters {
+                                                  axis -0.000000 0.000000 1.000000
+                                                  anchor -0.035500 -0.011500 0.000000
+                                                  dampingConstant 0.0
+                                                  staticFriction 0.0
+                                                }
+                                                device [
+                                                  RotationalMotor {
+                                                    name "left_ankle_roll"
+                                                    maxVelocity 8.0
+                                                    maxTorque 2.5
+                                                  }
+                                                  PositionSensor {
+                                                    name "left_ankle_roll_sensor"
+                                                  }
+                                                ]
+                                                endPoint Solid {
+                                                  translation -0.035500 -0.011500 0.000000
+                                                  rotation -0.577350 0.577350 -0.577350 2.094395
+                                                  children [
+                                                    Kondo006_Foot_LeftMesh {
+                                                    }
+                                                    Solid {
+                                                      translation 0.079500 0.001250 -0.025407
+                                                      rotation 0.000000 1.000000 0.000000 0.000000
+                                                      children [
+                                                        Kondo006_left_footMesh {
+                                                        }
+                                                      ]
+                                                      name "left_foot"
+
+                                                    }
+                                                  ]
+                                                  name "Foot_Left"
+                                                  boundingObject Transform {
+                                                    translation -0.025040 -0.001000 -0.022607
+                                                    rotation 0.000000 1.000000 0.000000 0.000000
+                                                    children [
+                                                      Box {
+                                                        size 0.075580 0.110000 0.005100
+                                                      }
+                                                    ]
+                                                  }
+                                                  physics Physics {
+                                                    density -1
+                                                    mass 0.06
+                                                    centerOfMass [ -0.021140 -0.000636 -0.020359 ]
+                                                    inertiaMatrix [
+                                                      2.898973e-05 1.505792e-05 4.316037e-05
+                                                      -1.655881e-10 -2.558492e-07 -1.854482e-10
+                                                    ]
+                                                  }
+                                                }                                                
+                                              }
+                                            ]
+                                            name "Leg_Joint_Left03"
+                                            boundingObject Transform {
+                                              translation -0.035057 -0.000250 -0.000700
+                                              rotation 0.000000 1.000000 0.000000 0.000000
+                                              children [
+                                                Box {
+                                                  size 0.022000 0.043000 0.034100
+                                                }
+                                              ]
+                                            }
+                                            physics Physics {
+                                              density -1
+                                              mass 0.061325
+                                              centerOfMass [ -0.030640 -0.000388 0.000027 ]
+                                              inertiaMatrix [
+                                                1.335440e-05 6.572201e-06 1.085031e-05
+                                                3.365418e-08 5.062426e-11 -1.779849e-08
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      ]
+                                      name "Shin_Left"
+                                      boundingObject Transform {
+                                        translation 0.000000 0.003472 -0.052474
+                                        rotation 1.000000 0.000000 0.000000 -0.265000
+                                        children [
+                                          Box {
+                                            size 0.033000 0.023268 0.044923
+                                          }
+                                        ]
+                                      }
+                                      physics Physics {
+                                        density -1
+                                        mass 0.064613
+                                        centerOfMass [ -0.000056 0.003404 -0.044580 ]
+                                        inertiaMatrix [
+                                          1.085045e-05 1.387199e-05 8.267898e-06
+                                          1.691333e-08 -1.278802e-08 -1.423171e-06
+                                        ]
+                                      }
+                                    }
+                                  }
+                                ]
+                                name "Hip_Left"
+                                boundingObject Group {
+                                  children [
+                                    Transform {
+                                      translation 0.0 0.0 -0.013
+                                      rotation 0.000000 1.000000 0.000000 0.000000
+                                      children [
+                                        Box {
+                                          size 0.033000 0.023268 0.044923
+                                        }
+                                      ]
+                                    }
+                                    Transform {
+                                      translation 0.000450 0.005688 -0.055
+                                      rotation 1.000000 0.000000 0.000000 -0.5
+                                      children [
+                                        Box {
+                                          size 0.033000 0.023268 0.044923
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                                physics Physics {
+                                  density -1
+                                  mass 0.101150
+                                  centerOfMass [ -0.000282 0.002726 -0.033955 ]
+                                  inertiaMatrix [
+                                    1.888762e-05 2.132382e-05 1.229236e-05
+                                    8.906492e-09 -2.362281e-09 -1.631799e-06
+                                  ]
+                                }
+                              }
+                            }
+                          ]
+                          name "Leg_Joint_Left02"
+                          boundingObject Transform {
+                            translation 0.000000 -0.021003 -0.000250
+                            rotation 0.000000 1.000000 0.000000 0.000000
+                            children [
+                              Box {
+                                size 0.023000 0.005990 0.023000
+                              }
+                            ]
+                          }
+                          physics Physics {
+                            density -1
+                            mass 0.020081
+                            centerOfMass [ 0.000100 -0.021000 -0.000150 ]
+                            inertiaMatrix [
+                              3.023132e-06 4.483913e-06 3.023132e-06
+                              -3.254885e-08 9.383785e-12 3.254885e-08
+                            ]
+                          }
+                        }
                       }
                     ]
-                    name "camera"
+                    name "Leg_Joint_Left01"
                     boundingObject Transform {
-                      translation 0.000000 0.000000 0.000000
+                      translation 0.000700 -0.007000 -0.012500
                       rotation 0.000000 1.000000 0.000000 0.000000
                       children [
                         Box {
-                          size 0.000500 0.000500 0.000500
+                          size 0.038100 0.041000 0.025000
                         }
                       ]
                     }
                     physics Physics {
                       density -1
-                      mass 0.000000
-                      centerOfMass [ -0.000000 0.000000 0.000000 ]
+                      mass 0.051285
+                      centerOfMass [ -0.000032 -0.007204 -0.013414 ]
                       inertiaMatrix [
-                        5.312500e-15 5.312500e-15 5.312500e-15
-                        -2.383044e-31 1.310193e-31 2.354579e-31
+                        8.540072e-06 5.859306e-06 1.111244e-05
+                        1.780317e-08 -6.544920e-11 1.120138e-09
                       ]
                     }
                   }
-                  InertialUnit {
-                    translation 0 -0.025 0
-                    rotation 1 0 0 1.5707963267948966
-                    name "imu_head"
+                }
+                HingeJoint {
+                  jointParameters HingeJointParameters {
+                    axis 0.000000 0.000000 1.000000
+                    anchor -0.021500 0.000000 -0.040500
+                    dampingConstant 0.0
+                    staticFriction 0.0
                   }
-                ]
-                name "Head"
-                boundingObject Transform {
-                  translation -0.011161 -0.034632 0.000100
-                  rotation 0.000000 1.000000 0.000000 0.000000
-                  children [
-                    Box {
-                      size 0.076898 0.087483 0.093969
+                  device [
+                    RotationalMotor {
+                      name "right_hip_yaw"
+                      maxVelocity 8.0
+                      maxTorque 2.5
+                    }
+                    PositionSensor {
+                      name "right_hip_yaw_sensor"
                     }
                   ]
+                  endPoint Solid {
+                    translation -0.021500 0.000000 -0.040500
+                    rotation 0.000000 0.000000 1.000000 1.570796
+                    children [
+                      Kondo006_Leg_Joint_Right01Mesh {
+                      }
+                      HingeJoint {
+                        jointParameters HingeJointParameters {
+                          axis -1.000000 0.000000 -0.000000
+                          anchor 0.000000 0.018500 -0.014500
+                          dampingConstant 0.0
+                          staticFriction 0.0
+                        }
+                        device [
+                          RotationalMotor {
+                            name "right_hip_roll"
+                            maxVelocity 8.0
+                            maxTorque 2.5
+                          }
+                          PositionSensor {
+                            name "right_hip_roll_sensor"
+                          }
+                        ]
+                        endPoint Solid {
+                          translation 0.000000 0.018500 -0.014500
+                          rotation 0.577350 0.577350 0.577350 2.094395
+                          children [
+                            Kondo006_Leg_Joint_Right02Mesh {
+                            }
+                            HingeJoint {
+                              jointParameters HingeJointParameters {
+                                axis -1.000000 0.000000 -0.000000
+                                anchor 0.000000 -0.042000 0.000250
+                                dampingConstant 0.0
+                                staticFriction 0.0
+                              }
+                              device [
+                                RotationalMotor {
+                                  name "right_hip_pitch"
+                                  maxVelocity 8.0
+                                  maxTorque 2.5
+                                }
+                                PositionSensor {
+                                  name "right_hip_pitch_sensor"
+                                }
+                              ]
+                              endPoint Solid {
+                                translation 0.000000 -0.042000 0.000250
+                                rotation 0.000000 0.707107 0.707107 3.141593
+                                children [
+                                  Kondo006_Hip_RightMesh {
+                                  }
+                                  HingeJoint {
+                                    jointParameters HingeJointParameters {
+                                      axis -1.000000 0.000000 0.000000
+                                      anchor 0.000000 0.000000 -0.065464
+                                      dampingConstant 0.0
+                                      staticFriction 0.0
+                                    }
+                                    device [
+                                      RotationalMotor {
+                                        name "right_knee"
+                                        maxVelocity 8.0
+                                        maxTorque 2.5
+                                      }
+                                      PositionSensor {
+                                        name "right_knee_sensor"
+                                      }
+                                    ]
+                                    endPoint Solid {
+                                      translation 0.000000 0.000000 -0.065464
+                                      rotation 0.000000 1.000000 0.000000 0.000000
+                                      children [
+                                        Kondo006_Shin_RightMesh {
+                                        }
+                                        HingeJoint {
+                                          jointParameters HingeJointParameters {
+                                            axis -1.000000 -0.000000 -0.000000
+                                            anchor 0.000000 0.000000 -0.063804
+                                            dampingConstant 0.0
+                                            staticFriction 0.0
+                                          }
+                                          device [
+                                            RotationalMotor {
+                                              name "right_ankle_pitch"
+                                              maxVelocity 8.0
+                                              maxTorque 2.5
+                                            }
+                                            PositionSensor {
+                                              name "right_ankle_pitch_sensor"
+                                            }
+                                          ]
+                                          endPoint Solid {
+                                            translation 0.000000 0.000000 -0.063804
+                                            rotation 0.577350 -0.577350 0.577350 2.094395
+                                            children [
+                                              Kondo006_Leg_Joint_Right03Mesh {
+                                              }
+                                              HingeJoint {
+                                                jointParameters HingeJointParameters {
+                                                  axis 0.000000 0.000000 -1.000000
+                                                  anchor -0.035500 -0.011500 0.000000
+                                                  dampingConstant 0.0
+                                                  staticFriction 0.0
+                                                }
+                                                device [
+                                                  RotationalMotor {
+                                                    name "right_ankle_roll"
+                                                    maxVelocity 8.0
+                                                    maxTorque 2.5
+                                                  }
+                                                  PositionSensor {
+                                                    name "right_ankle_roll_sensor"
+                                                  }
+                                                ]
+                                                endPoint Solid {
+                                                  translation -0.035500 -0.011500 0.000000
+                                                  rotation -0.577350 0.577350 -0.577350 2.094395
+                                                  children [
+                                                    Kondo006_Foot_RightMesh {
+                                                    }
+                                                    Solid {
+                                                      translation 0.079500 0.000750 -0.025407
+                                                      rotation 0.000000 0.000000 1.000000 3.141593
+                                                      children [
+                                                        Kondo006_right_footMesh {
+                                                        }
+                                                      ]
+                                                      name "right_foot"
+                                                    }
+                                                  ]
+                                                  name "Foot_Right"
+                                                  boundingObject Transform {
+                                                    translation -0.025040 -0.001000 -0.022607
+                                                    rotation 0.000000 1.000000 0.000000 0.000000
+                                                    children [
+                                                      Box {
+                                                        size 0.075580 0.110000 0.005100
+                                                      }
+                                                    ]
+                                                  }
+                                                  physics Physics {
+                                                    density -1
+                                                    mass 0.06
+                                                    centerOfMass [ -0.021140 -0.000636 -0.020359 ]
+                                                    inertiaMatrix [
+                                                      2.898973e-05 1.505792e-05 4.316037e-05
+                                                      -1.655881e-10 -2.558492e-07 -1.854482e-10
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                            name "Leg_Joint_Right03"
+                                            boundingObject Transform {
+                                              translation -0.035057 -0.000250 0.000700
+                                              rotation 0.000000 1.000000 0.000000 0.000000
+                                              children [
+                                                Box {
+                                                  size 0.022000 0.043000 0.034100
+                                                }
+                                              ]
+                                            }
+                                            physics Physics {
+                                              density -1
+                                              mass 0.061325
+                                              centerOfMass [ -0.030640 -0.000388 -0.000027 ]
+                                              inertiaMatrix [
+                                                1.335440e-05 6.572201e-06 1.085031e-05
+                                                3.361899e-08 5.061421e-11 1.780315e-08
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      ]
+                                      name "Shin_Right"
+                                      boundingObject Transform {
+                                        translation 0.000000 -0.003472 -0.052474
+                                        rotation 1.000000 0.000000 0.000000 0.265000
+                                        children [
+                                          Box {
+                                            size 0.033000 0.023268 0.044923
+                                          }
+                                        ]
+                                      }
+                                      physics Physics {
+                                        density -1
+                                        mass 0.064613
+                                        centerOfMass [ -0.000056 -0.003404 -0.044580 ]
+                                        inertiaMatrix [
+                                          1.085045e-05 1.387202e-05 8.267856e-06
+                                          -1.677776e-08 -1.276212e-08 1.423161e-06
+                                        ]
+                                      }
+                                    }
+                                  }
+                                ]
+                                name "Hip_Right"
+                                boundingObject Group {
+                                  children [
+                                    Transform {
+                                      translation 0.0 0.0 -0.013
+                                      rotation 0.000000 1.000000 0.000000 0.000000
+                                      children [
+                                        Box {
+                                          size 0.033000 0.023268 0.044923
+                                        }
+                                      ]
+                                    }
+                                    Transform {
+                                      translation 0.000450 -0.005688 -0.055
+                                      rotation 1.000000 0.000000 0.000000 0.5
+                                      children [
+                                        Box {
+                                          size 0.033000 0.023268 0.044923
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                                physics Physics {
+                                  density -1
+                                  mass 0.101150
+                                  centerOfMass [ -0.000282 -0.002726 -0.033955 ]
+                                  inertiaMatrix [
+                                    1.888762e-05 2.132385e-05 1.229233e-05
+                                    -8.923633e-09 -2.296743e-09 1.631746e-06
+                                  ]
+                                }
+                              }
+                            }
+                          ]
+                          name "Leg_Joint_Right02"
+                          boundingObject Transform {
+                            translation 0.000000 -0.021003 0.000250
+                            rotation 0.000000 1.000000 0.000000 0.000000
+                            children [
+                              Box {
+                                size 0.023000 0.005990 0.023000
+                              }
+                            ]
+                          }
+                          physics Physics {
+                            density -1
+                            mass 0.020081
+                            centerOfMass [ 0.000100 -0.021000 0.000150 ]
+                            inertiaMatrix [
+                              3.023132e-06 4.483913e-06 3.023132e-06
+                              -3.251922e-08 9.383785e-12 -3.251922e-08
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                    name "Leg_Joint_Right01"
+                    boundingObject Transform {
+                      translation 0.000700 0.007000 -0.012500
+                      rotation 0.000000 1.000000 0.000000 0.000000
+                      children [
+                        Box {
+                          size 0.038100 0.041000 0.025000
+                        }
+                      ]
+                    }
+                    physics Physics {
+                      density -1
+                      mass 0.051285
+                      centerOfMass [ -0.000032 0.007204 -0.013414 ]
+                      inertiaMatrix [
+                        8.540072e-06 5.859306e-06 1.111244e-05
+                        -1.779849e-08 6.544808e-11 -1.084941e-09
+                      ]
+                    }
+                  }
                 }
-                physics Physics {
-                  density -1
-                  mass 0.266801
-                  centerOfMass [ -0.012220 -0.036201 0.000019 ]
-                  inertiaMatrix [
-                    2.062869e-04 1.554560e-04 9.379114e-05
-                    2.359363e-06 -3.288265e-08 1.497123e-06
-                  ]
-                }
+              ]
+              name "Waist"
+              boundingObject Transform {
+                translation 0.000000 0.011700 -0.029250
+                rotation 0.000000 1.000000 0.000000 0.000000
+                children [
+                  Box {
+                    size 0.075000 0.050000 0.022500
+                  }
+                ]
+              }
+              physics Physics {
+                density -1
+                mass 0.157403
+                centerOfMass [ -0.000000 0.011230 -0.020842 ]
+                inertiaMatrix [
+                  3.339465e-05 1.742112e-05 2.863601e-05
+                  1.759818e-11 1.962964e-10 6.755827e-09
+                ]
               }
             }
-          ]
-          name "Neck"
-          boundingObject Transform {
-            translation 0.000000 0.019094 0.000000
+          }
+          HingeJoint {
+            jointParameters HingeJointParameters {
+              axis 1.000000 -0.000000 -0.000000
+              anchor -0.051200 0.014200 0.048750
+              dampingConstant 0.0
+              staticFriction 0.0
+            }
+            device [
+              RotationalMotor {
+                name "right_shoulder_pitch"
+                maxVelocity 8.0
+                maxTorque 2.5
+              }
+              PositionSensor {
+                name "right_shoulder_pitch_sensor"
+              }
+            ]
+            endPoint Solid {
+              translation -0.051200 0.014200 0.048750
+              rotation 0.577350 0.577350 -0.577350 2.094395
+              children [
+                Kondo006_Forearm_RightMesh {
+                }
+                HingeJoint {
+                  jointParameters HingeJointParameters {
+                    axis 0.000000 -0.000000 1.000000
+                    anchor 0.000000 -0.025000 0.000000
+                    dampingConstant 0.0
+                    staticFriction 0.0
+                  }
+                  device [
+                    RotationalMotor {
+                      name "right_shoulder_roll"
+                      maxVelocity 8.0
+                      maxTorque 2.5
+                    }
+                    PositionSensor {
+                      name "right_shoulder_roll_sensor"
+                    }
+                  ]
+                  endPoint Solid {
+                    translation 0.000000 -0.025000 0.000000
+                    rotation 0.577350 0.577350 0.577350 2.094395
+                    children [
+                      Kondo006_Arm_RightMesh {
+                      }
+                      HingeJoint {
+                        jointParameters HingeJointParameters {
+                          axis -0.000000 0.000000 -1.000000
+                          anchor 0.000000 -0.000500 0.074400
+                          dampingConstant 0.0
+                          staticFriction 0.0
+                        }
+                        device [
+                          RotationalMotor {
+                            name "right_shoulder_twirl"
+                            maxVelocity 8.0
+                            maxTorque 2.5
+                          }
+                          PositionSensor {
+                            name "right_shoulder_twirl_sensor"
+                          }
+                        ]
+                        endPoint Solid {
+                          translation 0.000000 -0.000500 0.074400
+                          rotation 0.000000 1.000000 0.000000 1.570796
+                          children [
+                            Kondo006_Elbow_RightMesh {
+                            }
+                            HingeJoint {
+                              jointParameters HingeJointParameters {
+                                axis -0.000000 -0.000000 -1.000000
+                                anchor -0.014500 0.004500 0.000000
+                                dampingConstant 0.0
+                                staticFriction 0.0
+                              }
+                              device [
+                                RotationalMotor {
+                                  name "right_elbow_pitch"
+                                  maxVelocity 8.0
+                                  maxTorque 2.5
+                                }
+                                PositionSensor {
+                                  name "right_elbow_pitch_sensor"
+                                }
+                              ]
+                              endPoint Solid {
+                                translation -0.014500 0.004500 0.000000
+                                rotation 0.707107 -0.707107 -0.000000 3.141593
+                                children [
+                                  Kondo006_Hand_RightMesh {
+                                  }
+                                ]
+                                name "Hand_Right"
+                                boundingObject Transform {
+                                  translation -0.001104 0.060475 0.000200
+                                  rotation 0.000000 1.000000 0.000000 0.000000
+                                  children [
+                                    Box {
+                                      size 0.025083 0.078950 0.030300
+                                    }
+                                  ]
+                                }
+                                physics Physics {
+                                  density -1
+                                  mass 0.024266
+                                  centerOfMass [ -0.000298 0.047572 0.001690 ]
+                                  inertiaMatrix [
+                                    5.837973e-06 4.325859e-06 3.912008e-06
+                                    3.322562e-08 -7.557077e-08 5.232673e-08
+                                  ]
+                                }
+                              }
+                            }
+                          ]
+                          name "Elbow_Right"
+                          boundingObject Transform {
+                            translation -0.012500 -0.007000 -0.000700
+                            rotation 0.000000 1.000000 0.000000 0.000000
+                            children [
+                              Box {
+                                size 0.025000 0.041000 0.038100
+                              }
+                            ]
+                          }
+                          physics Physics {
+                            density -1
+                            mass 0.051285
+                            centerOfMass [ -0.013414 -0.006839 0.000032 ]
+                            inertiaMatrix [
+                              1.111244e-05 5.859306e-06 8.540072e-06
+                              1.120146e-09 -6.542908e-11 1.779847e-08
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                    name "Arm_Right"
+                    boundingObject Transform {
+                      translation 0.000000 -0.008600 0.032700
+                      rotation 0.000000 1.000000 0.000000 0.000000
+                      children [
+                        Box {
+                          size 0.025000 0.047200 0.083400
+                        }
+                      ]
+                    }
+                    physics Physics {
+                      density -1
+                      mass 0.103593
+                      centerOfMass [ -0.000000 -0.006178 0.034838 ]
+                      inertiaMatrix [
+                        2.190232e-05 1.419354e-05 1.598128e-05
+                        -8.302772e-11 -4.782827e-11 1.218575e-07
+                      ]
+                    }
+                  }
+                }
+              ]
+              name "Forearm_Right"
+              boundingObject Transform {
+                translation 0.000000 -0.002000 0.000250
+                rotation 0.000000 1.000000 0.000000 0.000000
+                children [
+                  Box {
+                    size 0.032875 0.004000 0.045300
+                  }
+                ]
+              }
+              physics Physics {
+                density -1
+                mass 0.008148
+                centerOfMass [ 0.000000 -0.010646 0.000635 ]
+                inertiaMatrix [
+                  2.884203e-06 2.453816e-06 1.117817e-06
+                  -2.540053e-17 1.051062e-14 4.603662e-08
+                ]
+              }
+            }
+          }
+          HingeJoint {
+            jointParameters HingeJointParameters {
+              axis -1.000000 -0.000000 -0.000000
+              anchor 0.051200 0.014200 0.048750
+              dampingConstant 0.0
+              staticFriction 0.0
+            }
+            device [
+              RotationalMotor {
+                name "left_shoulder_pitch"
+                maxVelocity 8.0
+                maxTorque 2.5
+              }
+              PositionSensor {
+                name "left_shoulder_pitch_sensor"
+              }
+            ]
+            endPoint Solid {
+              translation 0.051200 0.014200 0.048750
+              rotation 0.577350 -0.577350 0.577350 2.094395
+              children [
+                Kondo006_Forearm_LeftMesh {
+                }
+                HingeJoint {
+                  jointParameters HingeJointParameters {
+                    axis -0.000000 -0.000000 1.000000
+                    anchor 0.000000 -0.025000 0.000000
+                    dampingConstant 0.0
+                    staticFriction 0.0
+                  }
+                  device [
+                    RotationalMotor {
+                      name "left_shoulder_roll"
+                      maxVelocity 8.0
+                      maxTorque 2.5
+                    }
+                    PositionSensor {
+                      name "left_shoulder_roll_sensor"
+                    }
+                  ]
+                  endPoint Solid {
+                    translation 0.000000 -0.025000 0.000000
+                    rotation 0.577350 -0.577350 -0.577350 2.094395
+                    children [
+                      Kondo006_Arm_LeftMesh {
+                      }
+                      HingeJoint {
+                        jointParameters HingeJointParameters {
+                          axis -0.000000 0.000000 -1.000000
+                          anchor 0.000000 -0.000500 0.074400
+                          dampingConstant 0.0
+                          staticFriction 0.0
+                        }
+                        device [
+                          RotationalMotor {
+                            name "left_shoulder_twirl"
+                            maxVelocity 8.0
+                            maxTorque 2.5
+                          }
+                          PositionSensor {
+                            name "left_shoulder_twirl_sensor"
+                          }
+                        ]
+                        endPoint Solid {
+                          translation 0.000000 -0.000500 0.074400
+                          rotation 0.000000 1.000000 0.000000 1.570796
+                          children [
+                            Kondo006_Elbow_LeftMesh {
+                            }
+                            HingeJoint {
+                              jointParameters HingeJointParameters {
+                                axis 0.000000 -0.000000 1.000000
+                                anchor -0.014500 0.004500 0.000000
+                                dampingConstant 0.0
+                                staticFriction 0.0
+                              }
+                              device [
+                                RotationalMotor {
+                                  name "left_elbow_pitch"
+                                  maxVelocity 8.0
+                                  maxTorque 2.5
+                                }
+                                PositionSensor {
+                                  name "left_elbow_pitch_sensor"
+                                }
+                              ]
+                              endPoint Solid {
+                                translation -0.014500 0.004500 0.000000
+                                rotation 0.707107 0.707107 0.000000 3.141593
+                                children [
+                                  Kondo006_Hand_LeftMesh {
+                                  }
+                                ]
+                                name "Hand_Left"
+                                boundingObject Transform {
+                                  translation 0.001104 -0.060475 -0.000200
+                                  rotation 0.000000 1.000000 0.000000 0.000000
+                                  children [
+                                    Box {
+                                      size 0.025083 0.078950 0.030300
+                                    }
+                                  ]
+                                }
+                                physics Physics {
+                                  density -1
+                                  mass 0.020704
+                                  centerOfMass [ 0.000289 -0.042673 -0.002071 ]
+                                  inertiaMatrix [
+                                    5.551003e-06 4.086383e-06 3.637705e-06
+                                    2.014242e-08 -6.348604e-08 9.112369e-08
+                                  ]
+                                }
+                              }
+                            }
+                          ]
+                          name "Elbow_Left"
+                          boundingObject Transform {
+                            translation -0.012500 -0.007000 0.000700
+                            rotation 0.000000 1.000000 0.000000 0.000000
+                            children [
+                              Box {
+                                size 0.025000 0.041000 0.038100
+                              }
+                            ]
+                          }
+                          physics Physics {
+                            density -1
+                            mass 0.051285
+                            centerOfMass [ -0.013414 -0.006839 -0.000032 ]
+                            inertiaMatrix [
+                              1.111244e-05 5.859306e-06 8.540072e-06
+                              1.084953e-09 -6.542680e-11 -1.780319e-08
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                    name "Arm_Left"
+                    boundingObject Transform {
+                      translation 0.000000 -0.008600 0.032700
+                      rotation 0.000000 1.000000 0.000000 0.000000
+                      children [
+                        Box {
+                          size 0.025000 0.047200 0.083400
+                        }
+                      ]
+                    }
+                    physics Physics {
+                      density -1
+                      mass 0.103593
+                      centerOfMass [ -0.000000 -0.006178 0.034838 ]
+                      inertiaMatrix [
+                        2.190232e-05 1.419354e-05 1.598128e-05
+                        -8.303374e-11 -4.783570e-11 1.218575e-07
+                      ]
+                    }
+                  }
+                }
+              ]
+              name "Forearm_Left"
+              boundingObject Transform {
+                translation 0.000000 -0.002000 0.000250
+                rotation 0.000000 1.000000 0.000000 0.000000
+                children [
+                  Box {
+                    size 0.032875 0.004000 0.045300
+                  }
+                ]
+              }
+              physics Physics {
+                density -1
+                mass 0.008148
+                centerOfMass [ 0.000000 -0.010646 0.000635 ]
+                inertiaMatrix [
+                  2.884203e-06 2.453816e-06 1.117817e-06
+                  -2.540085e-17 1.051063e-14 4.603662e-08
+                ]
+              }
+            }
+          }
+          HingeJoint {
+            jointParameters HingeJointParameters {
+              axis 0.000000 -0.000000 -1.000000
+              anchor 0.000000 0.014200 0.061550
+              dampingConstant 0.0
+              staticFriction 0.0
+            }
+            device [
+              RotationalMotor {
+                name "head_yaw"
+                maxVelocity 8.0
+                maxTorque 2.5
+              }
+              PositionSensor {
+                name "head_yaw_sensor"
+              }
+            ]
+            endPoint Solid {
+              translation 0.000000 0.014200 0.061550
+              rotation 0.000000 -0.707107 -0.707107 3.141593
+              children [
+                Kondo006_NeckMesh {
+                }
+                HingeJoint {
+                  jointParameters HingeJointParameters {
+                    axis 1.000000 0.000000 -0.000000
+                    anchor 0.000000 0.028200 0.000000
+                    dampingConstant 0.0
+                    staticFriction 0.0
+                  }
+                  device [
+                    RotationalMotor {
+                      name "head_pitch"
+                      maxVelocity 8.0
+                      maxTorque 2.5
+                    }
+                    PositionSensor {
+                      name "head_pitch_sensor"
+                    }
+                  ]
+                  endPoint Solid {
+                    translation 0.000000 0.028200 0.000000
+                    rotation 0.707101 -0.004115 -0.707101 3.133363
+                    children [
+                      Kondo006_HeadMesh {
+                      }Camera {
+                        fieldOfView            1.05 #2.27  # [0, pi]
+                        width                  320    # [0, inf)
+                        height                 240     # [0, inf)
+                        spherical              FALSE    # {TRUE, FALSE}
+                        near                   0.01    # [0, inf)
+                        far                    0.0     # [0, inf)
+                        exposure               1.0     # [near, inf)
+                        antiAliasing           FALSE   # {TRUE, FALSE}
+                        ambientOcclusionRadius 0       # [0, inf)
+                        bloomThreshold         -1.0    # [-1, inf)
+                        motionBlur             0.0     # [0, inf)
+                        noise                  0.0     # [0, 1]
+                        noiseMaskUrl           ""      # any string
+                        lens                   Lens {
+                                                      center                 0.5 0.5   # [0, 1] [0, 1]
+                                                      radialCoefficients     0 0       # any vector
+                                                      tangentialCoefficients 0 0       # any vector
+                                                              }
+                        focus                  NULL    # {Focus, PROTO}
+                        zoom                   NULL    # {Zoom, PROTO}
+                        recognition            Recognition {
+                                                            maxRange       100     # [0, inf)
+                                                            maxObjects     -1      # {-1, [0, inf)}
+                                                            occlusion      TRUE    # {TRUE, FALSE}
+                                                            frameColor     0 1 0   # any color
+                                                            frameThickness 1       # [0, inf)
+                                                            segmentation   TRUE   # {TRUE, FALSE}
+                                                          }    # {Recognition, PROTO}
+                        lensFlare              NULL    # {LensFlare, PROTO}
+                        #translation 0.036 -0.070257 0.031000
+                        translation 0.121643 -0.043608 0.000100
+                        #rotation 0.999964 -0.005962 -0.005962 1.570832
+                        rotation               0.707 0.0 -0.707 3.14
+                        name                   "camera"
+
+                        children [
+                          DEF Camera Solid {
+                            translation 0.011643 -0.043608 0.000100
+                            rotation 0.005819 -0.999966 0.005819 1.570830
+                        
+                          children [
+                            Kondo006_cameraMesh {
+                            }
+                          ]
+                        
+                        name "camera"
+                      }
+                        ]
+                      }
+                      InertialUnit {
+                        translation 0 -0.025 0
+                        rotation 1 0 0 1.5707963267948966
+                        name "imu_head"
+                      }
+                    ]
+                    name "Head"
+                    boundingObject Transform {
+                      translation -0.009 -0.032632 0.000100
+                      rotation 0.000000 1.000000 0.000000 0.000000
+                      children [
+                        Sphere {
+                          radius 0.048
+                        }
+                      ]
+                    }
+                    physics Physics {
+                      density -1
+                      mass 0.266801
+                      centerOfMass [ -0.012220 -0.036201 0.000019 ]
+                      inertiaMatrix [
+                        2.062869e-04 1.554560e-04 9.379114e-05
+                        2.359363e-06 -3.288265e-08 1.497123e-06
+                      ]
+                    }
+                  }
+                }
+              ]
+              name "Neck"
+              boundingObject Transform {
+                translation 0.000000 0.004094 0.000000
+                rotation 0.000000 1.000000 0.000000 0.000000
+                children [
+                  Box {
+                    size 0.043000 0.004189 0.020000
+                  }
+                ]
+              }
+              physics Physics {
+                density -1
+                mass 0.012217
+                centerOfMass [ -0.000072 0.013669 -0.000000 ]
+                inertiaMatrix [
+                  9.393293e-07 2.685340e-06 2.914967e-06
+                  -3.696273e-08 -7.705247e-11 7.595038e-11
+                ]
+              }
+            }
+          }
+          Solid {
+            translation -0.000228 0.051500 0.033940
+            rotation 1.000000 0.000000 0.000000 1.570796
+            children [
+              Kondo006_BackpackMesh {
+                %{if jerseyColor == "red" then}%
+                  color IS RED
+                %{end}%
+                %{if jerseyColor == "blue" then}%
+                  color IS BLUE
+                %{end}%            
+              }
+            ]
+            name "Backpack"
+            boundingObject Transform {
+              translation 0.000228 -0.005378 -0.026250
+              rotation 0.000000 1.000000 0.000000 0.000000
+              children [
+                Box {
+                  size 0.105000 0.088000 0.052500
+                }
+              ]
+            }
+            physics Physics {
+              density -1
+              mass 0.043298
+              centerOfMass [ 0.000228 -0.005378 -0.028380 ]
+              inertiaMatrix [
+                4.120514e-05 7.360946e-05 9.465292e-05
+                1.184071e-11 1.759129e-13 -6.647938e-13
+              ]
+            }
+          }
+          Solid {
+            translation -0.000150 0.025657 -0.045060
             rotation 0.000000 1.000000 0.000000 0.000000
             children [
-              Box {
-                size 0.043000 0.038189 0.020000
+              Kondo006_trunkMesh {
               }
             ]
+            name "trunk"
           }
-          physics Physics {
-            density -1
-            mass 0.012217
-            centerOfMass [ -0.000072 0.013669 -0.000000 ]
-            inertiaMatrix [
-              9.393293e-07 2.685340e-06 2.914967e-06
-              -3.696273e-08 -7.705247e-11 7.595038e-11
+          Solid {
+            translation 0.000000 0.014200 0.065700
+            rotation 0.000000 1.000000 0.000000 0.000000
+            children [
+              Kondo006_head_baseMesh {
+              }
             ]
+            name "head_base"
           }
-        }
-      }
-      Solid {
-        translation -0.000228 0.051500 0.033940
-        rotation 1.000000 0.000000 0.000000 1.570796
-        children [
-          Kondo006_BackpackMesh {
+          InertialUnit {
+            translation 0 0.05 0
+            rotation 0 0 1 -1.5707960173459927
+            name "imu_body"
           }
+          %{ if number == "1" then }%
+          Solid {
+            translation -0.001141 -0.025000 0.005069
+            rotation 1.000000 0.000000 0.000000 1.570800
+            children [
+              Kondo007_num_01Mesh {
+              }
+            ]
+            name "num_01"
+          }
+          %{ end }%
+          %{ if number == "2" then }%
+          Solid {
+            translation -0.000115 -0.025000 0.005069
+            rotation 1.000000 0.000000 0.000000 1.570800
+            children [
+              Kondo007_num_02Mesh {
+              }
+            ]
+            name "num_02"
+          }
+          %{ end }%
+          %{ if number == "3" then }%          
+          Solid {
+            translation -0.001371 -0.025000 0.005069
+            rotation 1.000000 0.000000 0.000000 1.570796
+            children [
+              Kondo007_num_03Mesh {
+              }
+            ]
+            name "num_03"
+          }
+          %{ end }%
+          %{ if number == "4" then }%          
+          Solid {
+            translation -0.000756 -0.025000 0.005069
+            rotation 1.000000 0.000000 0.000000 1.570800
+            children [
+              Kondo007_num_04Mesh {
+              }
+            ]
+            name "num_04"
+          }
+          %{ end }%
+          %{ if number == "5" then }%          
+          Solid {
+            translation 0.001808 -0.025000 0.005069
+            rotation 1.000000 0.000000 0.000000 1.570796
+            children [
+              Kondo007_num_05Mesh {
+              }
+            ]
+            name "num_05"
+          }
+          %{ end }%
+          %{ if number == "1" then }%             
+          Solid {
+            translation 0.005641 0.094000 0.003817
+            rotation -0.000003 0.707108 0.707105 3.141598
+            children [
+              Kondo007_number_01Mesh {
+              }
+            ]
+            name "number_01"
+          }
+          %{ end }%
+          %{ if number == "2" then }%             
+          Solid {
+            translation 0.004615 0.094000 0.003817
+            rotation 0.000000 -0.707107 -0.707107 3.141593
+            children [
+              Kondo007_number_02Mesh {
+              }
+            ]
+            name "number_02"
+          }
+          %{ end }%
+          %{ if number == "3" then }%             
+          Solid {
+            translation 0.005871 0.094000 0.004562
+            rotation -0.000003 -0.707108 -0.707105 3.141598
+            children [
+              Kondo007_number_03Mesh {
+              }
+            ]
+            name "number_03"
+          }
+          %{ end }%
+          %{ if number == "4" then }%             
+          Solid {
+            translation 0.005256 0.094000 0.003817
+            rotation 0.000000 -0.707107 -0.707107 3.141593
+            children [
+              Kondo007_number_04Mesh {
+              }
+            ]
+            name "number_04"
+          }
+          %{ end }%
+          %{ if number == "5" then }%             
+          Solid {
+            translation 0.004692 0.094000 0.004562
+            rotation -0.000003 -0.707108 -0.707105 3.141598
+            children [
+              Kondo007_number_05Mesh {
+              }
+            ]
+            name "number_05"
+          } 
+          %{ end }%         
         ]
-        name "Backpack"
         boundingObject Transform {
-          translation 0.000228 -0.005378 -0.026250
+          translation 0.000000 0.013250 0.029625
           rotation 0.000000 1.000000 0.000000 0.000000
           children [
             Box {
-              size 0.105000 0.088000 0.052500
+              size 0.090000 0.076500 0.062250
             }
           ]
         }
         physics Physics {
           density -1
-          mass 0.043298
-          centerOfMass [ 0.000228 -0.005378 -0.028380 ]
+          mass 0.216706
+          centerOfMass [ -0.000001 0.023335 0.041154 ]
           inertiaMatrix [
-            4.120514e-05 7.360946e-05 9.465292e-05
-            1.184071e-11 1.759129e-13 -6.647938e-13
-          ]
-        }
-      }
-      Solid {
-        translation -0.000150 0.025657 -0.045060
-        rotation 0.000000 1.000000 0.000000 0.000000
-        children [
-          Kondo006_trunkMesh {
-          }
-        ]
-        name "trunk"
-        boundingObject Transform {
-          translation 0.000000 0.000250 0.000000
-          rotation 0.000000 1.000000 0.000000 0.000000
-          children [
-            Box {
-              size 0.000500 0.000500 0.000500
-            }
-          ]
-        }
-        physics Physics {
-          density -1
-          mass 0.000000
-          centerOfMass [ 0.000000 0.000250 0.000000 ]
-          inertiaMatrix [
-            5.312500e-15 5.312500e-15 5.312500e-15
-            -4.746839e-32 8.355089e-32 -2.088772e-32
-          ]
-        }
-      }
-      Solid {
-        translation 0.000000 0.014200 0.065700
-        rotation 0.000000 1.000000 0.000000 0.000000
-        children [
-          Kondo006_head_baseMesh {
-          }
-        ]
-        name "head_base"
-        boundingObject Transform {
-          translation 0.000000 0.000000 0.000000
-          rotation 0.000000 1.000000 0.000000 0.000000
-          children [
-            Box {
-              size 0.000500 0.000500 0.000500
-            }
-          ]
-        }
-        physics Physics {
-          density -1
-          mass 0.000000
-          centerOfMass [ -0.000000 0.000000 0.000000 ]
-          inertiaMatrix [
-            5.312500e-15 5.312500e-15 5.312500e-15
-            -4.746839e-32 8.355089e-32 -2.088772e-32
+            5.866355e-05 7.528201e-05 8.855698e-05
+            1.623458e-11 5.511840e-10 2.132701e-06
           ]
         }
       }
@@ -1235,25 +1393,22 @@ PROTO Kondo006 [
         rotation 0 0 1 -1.5707960173459927
         name "imu_body"
       }
+      GPS {
+        name "gps_body"
+      }
     ]
-    name IS name 
     boundingObject Transform {
-      translation 0.000000 0.013250 0.031625
+      translation 0.0 0.0 0.0
       rotation 0.000000 1.000000 0.000000 0.000000
       children [
         Box {
-          size 0.102000 0.076500 0.066250
+          size 0.001 0.001 0.001
         }
       ]
     }
     physics Physics {
-      density -1
-      mass 0.216706
-      centerOfMass [ -0.000001 0.023335 0.041154 ]
-      inertiaMatrix [
-        5.866355e-05 7.528201e-05 8.855698e-05
-        1.623458e-11 5.511840e-10 2.132701e-06
-      ]
-    }
+        density -1
+        mass 0.001
+    }        
   }
 }
