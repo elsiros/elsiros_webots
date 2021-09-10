@@ -91,4 +91,4 @@ html_static_path = ['_static']
 
 # Document Python Code
 autoapi_type = 'python'
-autoapi_dir = '../controllers'
+autoapi_dirs = '../../controllers'
