@@ -8,11 +8,11 @@ PROTO Kondo006 [
   field  SFVec3f     translation     0 0 0
   field  SFRotation  rotation        0 1 0 0
   field  SFString    name            "Kondo006"  # Is `Robot.name`.
-  field  SFString    controller      "main"      # Is `Robot.controller`.
+  field  SFString    controller      "player"      # Is `Robot.controller`.
   field  MFString    controllerArgs  []          # Is `Robot.controllerArgs`.
   field  SFString    customData      ""          # Is `Robot.customData`.
   field  SFBool      supervisor      TRUE       # Is `Robot.supervisor`.
-  field  SFBool      synchronization TRUE        # Is `Robot.synchronization`.
+  field  SFBool      synchronization FALSE        # Is `Robot.synchronization`.
   field  SFBool      selfCollision   TRUE       # Is `Robot.selfCollision`.
   field SFString{"", "red", "blue"}      teamColor ""
   field SFString{"", "1", "2", "3", "4", "5"}      playerNumber ""
@@ -50,8 +50,11 @@ PROTO Kondo006 [
     supervisor IS supervisor
     synchronization IS synchronization
     selfCollision IS selfCollision
+    recognitionColors 1 0 0
+    
+
     name IS name  
-    model "Kondo"
+    model IS name
     children [
       Solid {
         translation 0 0 0
@@ -1100,15 +1103,55 @@ PROTO Kondo006 [
                     rotation 0.707101 -0.004115 -0.707101 3.133363
                     children [
                       Kondo006_HeadMesh {
-                      }
-                      Solid {
-                        translation 0.011643 -0.043608 0.000100
-                        rotation 0.005819 -0.999966 0.005819 1.570830
+                      }Camera {
+                        fieldOfView            1.05 #2.27  # [0, pi]
+                        width                  320    # [0, inf)
+                        height                 240     # [0, inf)
+                        spherical              FALSE    # {TRUE, FALSE}
+                        near                   0.01    # [0, inf)
+                        far                    0.0     # [0, inf)
+                        exposure               1.0     # [near, inf)
+                        antiAliasing           FALSE   # {TRUE, FALSE}
+                        ambientOcclusionRadius 0       # [0, inf)
+                        bloomThreshold         -1.0    # [-1, inf)
+                        motionBlur             0.0     # [0, inf)
+                        noise                  0.0     # [0, 1]
+                        noiseMaskUrl           ""      # any string
+                        lens                   Lens {
+                                                      center                 0.5 0.5   # [0, 1] [0, 1]
+                                                      radialCoefficients     0 0       # any vector
+                                                      tangentialCoefficients 0 0       # any vector
+                                                              }
+                        focus                  NULL    # {Focus, PROTO}
+                        zoom                   NULL    # {Zoom, PROTO}
+                        recognition            Recognition {
+                                                            maxRange       100     # [0, inf)
+                                                            maxObjects     -1      # {-1, [0, inf)}
+                                                            occlusion      TRUE    # {TRUE, FALSE}
+                                                            frameColor     0 1 0   # any color
+                                                            frameThickness 1       # [0, inf)
+                                                            segmentation   TRUE   # {TRUE, FALSE}
+                                                          }    # {Recognition, PROTO}
+                        lensFlare              NULL    # {LensFlare, PROTO}
+                        #translation 0.036 -0.070257 0.031000
+                        translation 0.121643 -0.043608 0.000100
+                        #rotation 0.999964 -0.005962 -0.005962 1.570832
+                        rotation               0.707 0.0 -0.707 3.14
+                        name                   "camera"
+
                         children [
-                          Kondo006_cameraMesh {
-                          }
-                        ]
+                          DEF Camera Solid {
+                            translation 0.011643 -0.043608 0.000100
+                            rotation 0.005819 -0.999966 0.005819 1.570830
+                        
+                          children [
+                            Kondo006_cameraMesh {
+                            }
+                          ]
+                        
                         name "camera"
+                      }
+                        ]
                       }
                       InertialUnit {
                         translation 0 -0.025 0
@@ -1344,6 +1387,14 @@ PROTO Kondo006 [
             1.623458e-11 5.511840e-10 2.132701e-06
           ]
         }
+      }
+      InertialUnit {
+        translation 0 0.05 0
+        rotation 0 0 1 -1.5707960173459927
+        name "imu_body"
+      }
+      GPS {
+        name "gps_body"
       }
     ]
     boundingObject Transform {

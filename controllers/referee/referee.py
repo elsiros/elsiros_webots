@@ -234,7 +234,9 @@ def spawn_team(team, red_on_right, children):
         defname = color.upper() + '_PLAYER_' + number
         halfTimeStartingTranslation = player['borderStartingPose']['translation']
         halfTimeStartingRotation = player['borderStartingPose']['rotation']
-        '''
+
+        
+        # "player.pp" controller args by referee: port nmber_of_players allowed_hosts 
         string = f'DEF {defname} {model}{{name "{color} player {number}" translation ' + \
             f'{halfTimeStartingTranslation[0]} {halfTimeStartingTranslation[1]} {halfTimeStartingTranslation[2]} rotation ' + \
             f'{halfTimeStartingRotation[0]} {halfTimeStartingRotation[1]} {halfTimeStartingRotation[2]} ' + \
@@ -244,19 +246,28 @@ def spawn_team(team, red_on_right, children):
             string += f', "{h}"'
         string += '] }}'
         '''
-        # Controller args by referee: 0 0 0 team_id robot_number
+        # "main.py" controller args by referee: 0 0 0 team_id robot_number
         string = f'DEF {defname} {model}{{name "{color} player {number}" translation ' + \
             f'{halfTimeStartingTranslation[0]} {halfTimeStartingTranslation[1]} {halfTimeStartingTranslation[2]} rotation ' + \
             f'{halfTimeStartingRotation[0]} {halfTimeStartingRotation[1]} {halfTimeStartingRotation[2]} ' + \
             f'{halfTimeStartingRotation[3]} controllerArgs [ "0" "0" "0" "{team_id}" "{number}" ] teamColor "{color}" playerNumber "{number}" }}'
-
+        '''
         children.importMFNodeFromString(-1, string)
         player['robot'] = supervisor.getFromDef(defname)
         #player['position'] = player['robot'].getCenterOfMass()
         info(f'Spawned {defname} {model} on port {port} at borderStartingPose: translation (' +
              f'{halfTimeStartingTranslation[0]} {halfTimeStartingTranslation[1]} {halfTimeStartingTranslation[2]}), ' +
              f'rotation ({halfTimeStartingRotation[0]} {halfTimeStartingRotation[1]} {halfTimeStartingRotation[2]} ' +
-             f'{halfTimeStartingRotation[3]}).')     
+             f'{halfTimeStartingRotation[3]}).')   
+
+        #try:
+        #    robotStartCmd = player['robotStartCmd']  
+        #    print(robotStartCmd)
+        #    #os.system(robotStartCmd)
+        #    os.startfile(robotStartCmd)
+        #except KeyError:
+        #    warning(f"No robotStartCmd is given for {color} player {number}")
+
 
 def reset_player(color, number, pose, custom_t=None, custom_r=None):
     team = red_team if color == 'red' else blue_team
@@ -940,8 +951,31 @@ def clean_exit():
         game.controller_process.terminate()
     if hasattr(game, "udp_bouncer_process") and udp_bouncer_process:
         info("Terminating 'udp_bouncer' process")
-        udp_bouncer_process.terminate()  
-    exit()         
+        udp_bouncer_process.terminate() 
+    if hasattr(game, 'record_simulation'):
+        if game.record_simulation.endswith(".html"):
+            info("Stopping animation recording")
+            supervisor.animationStopRecording()
+        elif game.record_simulation.endswith(".mp4"):
+            info("Starting encoding")
+            supervisor.movieStopRecording()
+            while not supervisor.movieIsReady():
+                supervisor.step(time_step)
+            info("Encoding finished")        
+    #game.external_controllers_process.terminate()
+    subprocess.Popen("TASKKILL /F /PID {pid} /T".format(pid=game.external_controllers_process.pid))
+    if log_file:
+        log_file.close()    
+
+    close_webots_on_exit = False
+    if hasattr(game, 'close_webots_on_exit'):
+        close_webots_on_exit = game.close_webots_on_exit
+    if close_webots_on_exit:
+        # Note: If supervisor.step is not called before the 'simulationQuit', information is not shown
+        supervisor.step(time_step)
+        supervisor.simulationQuit(0)        
+    else:
+        exit()         
    
 # --------------------------------------------------------------------------------------------------
 
@@ -965,8 +999,6 @@ children.importMFNodeFromString(-1, f'ElsirosField {{ size "{field_size}" }}')
 #children.importMFNodeFromString(-1, f'DEF BALL RobocupSoccerBall {{ translation 100 100 0.5 size {ball_size} }}')
 children.importMFNodeFromString(-1, f'DEF BALL Ball {{ translation 100 100 0.5 }}')
 game.ball_translation = supervisor.getFromDef('BALL').getField('translation')
-
-game.side_left = game.blue.id
 
 red_team['color'] = 'red'
 blue_team['color'] = 'blue'
@@ -1007,6 +1039,7 @@ else:
                 if game.minimum_real_time_factor < 1:
                     command_line.append('--fast')
                 #command_line.append('--minimized')
+                command_line.append('--useloopback') # Use a robokit GC fork with supprot for single PC non-networking mode via --useloopback
                 command_line.append('--config')
                 command_line.append(game_config_file)
                 if hasattr(game, 'game_controller_extra_args'):
@@ -1028,6 +1061,9 @@ else:
         GAME_CONTROLLER_HOME = None
         game.controller_process = None
         error('JAVA_HOME environment variable not set, unable to launch GameController.', fatal=True)
+
+#launching teams start script
+game.external_controllers_process = subprocess.Popen(['python', 'start_teams.py'])
 
 game.state = None
 
@@ -1069,8 +1105,14 @@ game.wait_for_sec_phase = None
 game.font_size = 0.096
 game.font = 'Lucida Console'
 game.need_to_place_players_in_set = True # [Sol] For very first READY->SET transition
-game_kickoff_from_json = game.kickoff
-game.kickoff = game.red.id if game_kickoff_from_json == "red" else game.blue.id
+if game.side_left == "red" or game.side_left == "blue":
+    error('Team number for side_left value required in game.json, not team color', fatal=True)
+if game.kickoff == "red" or game.side_left == "blue":
+    error('Team number for kickoff value required in game.json, not team color', fatal=True)    
+#game_kickoff_from_json = game.kickoff
+#game.kickoff = game.red.id if game_kickoff_from_json == "red" else game.blue.id
+#game_side_left_from_json = game.side_left
+#game.side_left = game.red.id if game_side_left_from_json == "red" else game.blue.id
 
 setup_display()
 
@@ -1143,6 +1185,20 @@ try:
 except Exception:
     error(f"Failed setting initial state: {traceback.format_exc()}", fatal=True)
 
+if hasattr(game, 'record_simulation'):
+    try:
+        if game.record_simulation.endswith(".html"):
+            supervisor.animationStartRecording(game.record_simulation)
+        elif game.record_simulation.endswith(".mp4"):
+            supervisor.movieStartRecording(game.record_simulation, width=1280, height=720, codec=0, quality=100,
+                                           acceleration=1, caption=False)
+            if supervisor.movieFailed():
+                raise RuntimeError("Failed to Open Movie")
+        else:
+            raise RuntimeError(f"Unknown extension for record_simulation: {game.record_simulation}")
+    except Exception:
+        error(f"Failed to start recording with exception: {traceback.format_exc()}", fatal=True)
+
 
 
 game.over = False
@@ -1155,6 +1211,9 @@ game.finished_state_processed = False
 finish_just_sended = False
 
 game.ball.enableContactPointsTracking(time_step)
+
+info(f'simulationGetMode={supervisor.simulationGetMode()}')
+supervisor.simulationSetMode(supervisor.SIMULATION_MODE_FAST)
 
 while supervisor.step(time_step) != -1 and not game.over:    
     perform_status_update() # To show realtime simulation factor if needed
