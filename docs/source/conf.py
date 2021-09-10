@@ -22,7 +22,7 @@ print(os.getcwd())
 
 # -- Project information -----------------------------------------------------
 
-project = 'Robot Control API'
+project = 'ELSIROS'
 copyright = '2021, Starkit Team'
 author = 'Azer Babaev, Egor Davydenko, Ilya Ryakin, Vladimir Litvinenko, Aleksandr Matsun and Ivan Khokhlov'
 
