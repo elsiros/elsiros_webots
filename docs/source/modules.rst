@@ -1,4 +1,4 @@
-elsiros_webots
+modules
 ==============
 
 .. toctree::
