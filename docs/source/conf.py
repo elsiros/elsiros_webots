@@ -47,7 +47,8 @@ extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
-    'myst_parser']
+    'myst_parser',
+    'autoapi.extension']
 
 # Napoleon settings
 napoleon_google_docstring = True
@@ -86,3 +87,8 @@ html_theme = 'sphinx_rtd_theme'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+
+# Document Python Code
+autoapi_type = 'python'
+autoapi_dir = '../controllers'

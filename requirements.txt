@@ -4,3 +4,4 @@ matplotlib==2.1.1
 construct==2.10.67
 controller==0.1.0
 myst_parser
+sphinx-autoapi
