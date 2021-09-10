@@ -52,7 +52,7 @@ with open('../referee/' + game_data['red']['config'], "r") as f:
 with open('../referee/' + game_data['blue']['config'], "r") as f:
     team_2_data = json.loads(f.read())
 
-Port = sys.argv[1]
+
 
 class Falling:
     def __init__(self):
@@ -67,26 +67,28 @@ pause = Pause()
 def main_procedure():
     global player_data
     global pause
-    robot_color = player_data[Port]['robot_color']
-    robot_number = player_data[Port]['robot_number']
-    team = player_data[Port]['team']
-    second_pressed_button = player_data[Port]['second_pressed_button']
-    initial_coord = player_data[Port]['initial_coord']
-    role = player_data[Port]['role']
-    robot = CommunicationManager(1, player_data[Port]['IP_address'], int(Port))
+    Port = sys.argv[1]
+    robot = CommunicationManager(1, '127.0.0.1', int(Port))
     sensors = {"gps_body": 5, "imu_body": 5, "camera": 200}
     robot.enable_sensors(sensors)
     th0 = threading.Thread(target=robot.run)
     th0.start()
     th0.join
     falling = Falling()
-    if player_data['with_GC']:
-        player_super_cycle(falling, team, robot_number, SIMULATION, current_work_directory, robot, pause)
-    print('teamColor = ', robot_color)
+
+    team_id = int(sys.argv[2])
+    role = sys.argv[5]
+    if team_id > 0:
+        robot_color = sys.argv[3]
+        robot_number = int(sys.argv[4])
+        player_super_cycle(falling, team_id, robot_number, SIMULATION, current_work_directory, robot, pause)
+
+    second_pressed_button = int(sys.argv[6])
+    initial_coord = eval(sys.argv[7])
+    print(initial_coord)
     print('Player is going to play without Game Controller')
     glob = Glob(SIMULATION, current_work_directory)
     glob.pf_coord = initial_coord
-    #print(robot)
     motion = Motion_sim(glob, robot, None, pause)
     motion.sim_Start()
     motion.direction_To_Attack = -initial_coord[2]
@@ -97,6 +99,7 @@ def main_procedure():
     motion.falling_Flag = 0
     player = Player(role, second_pressed_button, glob, motion, local)
     player.play_game()
+    sys.exit(0)
 
 
 class RedirectText(object):
@@ -149,18 +152,15 @@ class Main_Panel(wx.Frame):
 
         self.SetSize((300, 200))
         global player_data
-        robot_color = player_data[Port]['robot_color']
-        robot_number = player_data[Port]['robot_number']
-        team = robot_color
-        #player_number = robot_number
-        title = 'Team ' + str(team) + ' player '+ str(robot_number)
+        robot_color = sys.argv[3]
+        robot_number = sys.argv[4]
+        title = 'Team ' + robot_color + ' player '+ robot_number
         self.SetTitle(title)
         width, height = wx.GetDisplaySize().Get()
-        teamColor = robot_color
-        if teamColor == 'red':
-            x_position = width - 300 * (5- robot_number)
+        if robot_color == 'red':
+            x_position = width - 300 * (5- int(robot_number))
         else:
-            x_position = width - 300 * (3- robot_number)
+            x_position = width - 300 * (3- int(robot_number))
         self.SetPosition((x_position, height -225))
         #self.Centre()
 

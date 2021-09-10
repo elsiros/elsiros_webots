@@ -17,10 +17,10 @@ def init_gcreceiver(team, player, is_goalkeeper):
     receiver.start() # Strat receiving and answering
     return receiver
 
-def player_super_cycle(falling, team, player_number, SIMULATION, current_work_directory, robot, pause):
+def player_super_cycle(falling, team_id, player_number, SIMULATION, current_work_directory, robot, pause):
     if player_number == 1: is_goalkeeper = True
     else: is_goalkeeper = False
-    receiver = init_gcreceiver(team, player_number, is_goalkeeper)
+    receiver = init_gcreceiver(team_id, player_number, is_goalkeeper)
     former_game_state = 'STATE_SET'
     former_player_penalty = 0
     print('waiting for game controller launch')
