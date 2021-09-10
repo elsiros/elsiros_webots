@@ -3,7 +3,8 @@ elsiros_webots
 
 .. toctree::
    :maxdepth: 4
+   :caption: Contents:
 
-   :ref: modules
-   :ref: intro
-   :ref: programming_hints
+   modules
+   intro
+   programming_hints
