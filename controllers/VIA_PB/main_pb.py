@@ -81,7 +81,7 @@ def main_procedure():
     if team_id > 0:
         robot_color = sys.argv[3]
         robot_number = int(sys.argv[4])
-        player_super_cycle(falling, team_id, robot_number, SIMULATION, current_work_directory, robot, pause)
+        player_super_cycle(falling, team_id, robot_color, robot_number, SIMULATION, current_work_directory, robot, pause)
 
     second_pressed_button = int(sys.argv[6])
     initial_coord = eval(sys.argv[7])

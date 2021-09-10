@@ -17,7 +17,18 @@ def init_gcreceiver(team, player, is_goalkeeper):
     receiver.start() # Strat receiving and answering
     return receiver
 
-def player_super_cycle(falling, team_id, player_number, SIMULATION, current_work_directory, robot, pause):
+def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION, current_work_directory, robot, pause):
+
+    with open('../referee/game.json', "r") as f:
+        game_data = json.loads(f.read())
+
+    with open('../referee/' + game_data[ robot_color]['config'], "r") as f:
+        team_data = json.loads(f.read())
+
+    initial_coord_goalkeeper  = team_data['players']['1']['readyStartingPose']['pf_coord']
+    initial_coord_forward = team_data['players']['2']['readyStartingPose']['pf_coord']
+    initial_coord_goalkeeper_at_penalty = team_data['players']['1']['goalKeeperStartingPose']['pf_coord']
+    initial_coord_forward_at_penalty = team_data['players']['2']['shootoutStartingPose']['pf_coord']
     if player_number == 1: is_goalkeeper = True
     else: is_goalkeeper = False
     receiver = init_gcreceiver(team_id, player_number, is_goalkeeper)
@@ -102,7 +113,7 @@ def player_super_cycle(falling, team_id, player_number, SIMULATION, current_work
                         second_pressed_button = 4
                     print('former_game_state == "STATE_SET"')
                     if player_number == 1:
-                        initial_coord = [-1.68, 0, 0]
+                        initial_coord = initial_coord_goalkeeper
                         if receiver.team_state.team_color == 'BLUE':
                             role = 'goalkeeper_old_style'
                         else:
@@ -110,7 +121,7 @@ def player_super_cycle(falling, team_id, player_number, SIMULATION, current_work
                         playing_allowed = True
                         print('playing allowed')
                     else: 
-                        initial_coord = [-0.4, 0, 0]
+                        initial_coord = initial_coord_forward
                         if receiver.team_state.team_color == 'BLUE':
                             role = 'forward_old_style'
                         else:
@@ -121,7 +132,8 @@ def player_super_cycle(falling, team_id, player_number, SIMULATION, current_work
                     statement1 = 2* (player_number == 1) - 1
                     statement2 = 2* (receiver.state.first_half) - 1
                     statement3 = 2* (receiver.team_state.team_color == 'RED') -1
-                    if statement1 * statement2 * statement3 == 1:
+                    statement4 = 2* (game_data['side_left'] == game_data['blue']['id']) - 1
+                    if statement1 * statement2 * statement3 * statement4 == 1:
                         initial_coord = [-0.9, 1.3, -math.pi/2]
                     else:
                         initial_coord = [-0.9, -1.3, math.pi/2]
@@ -134,7 +146,7 @@ def player_super_cycle(falling, team_id, player_number, SIMULATION, current_work
                 if former_game_state == 'STATE_SET':
                     print('former_game_state == "STATE_SET"')
                     if player_number == 1:
-                        initial_coord = [-1.68, 0, 0]
+                        initial_coord = initial_coord_goalkeeper_at_penalty
                         #if receiver.team_state.team_color == 'BLUE':
                         #    role = 'goalkeeper_old_style'
                         #else:
@@ -142,7 +154,7 @@ def player_super_cycle(falling, team_id, player_number, SIMULATION, current_work
                         playing_allowed = True
                         print('playing allowed')
                     else: 
-                        initial_coord = [0.2, 0, 0]
+                        initial_coord = initial_coord_forward_at_penalty
                         #if receiver.team_state.team_color == 'BLUE':
                         #    role = 'forward_old_style'
                         #else:
