@@ -1000,8 +1000,6 @@ children.importMFNodeFromString(-1, f'ElsirosField {{ size "{field_size}" }}')
 children.importMFNodeFromString(-1, f'DEF BALL Ball {{ translation 100 100 0.5 }}')
 game.ball_translation = supervisor.getFromDef('BALL').getField('translation')
 
-game.side_left = game.blue.id
-
 red_team['color'] = 'red'
 blue_team['color'] = 'blue'
 init_team(red_team)
@@ -1106,8 +1104,14 @@ game.wait_for_sec_phase = None
 game.font_size = 0.096
 game.font = 'Lucida Console'
 game.need_to_place_players_in_set = True # [Sol] For very first READY->SET transition
-game_kickoff_from_json = game.kickoff
-game.kickoff = game.red.id if game_kickoff_from_json == "red" else game.blue.id
+if game.side_left == "red" or game.side_left == "blue":
+    error('Team number for side_left value required in game.json, not team color', fatal=True)
+if game.kickoff == "red" or game.side_left == "blue":
+    error('Team number for kickoff value required in game.json, not team color', fatal=True)    
+#game_kickoff_from_json = game.kickoff
+#game.kickoff = game.red.id if game_kickoff_from_json == "red" else game.blue.id
+#game_side_left_from_json = game.side_left
+#game.side_left = game.red.id if game_side_left_from_json == "red" else game.blue.id
 
 setup_display()
 
