@@ -5,3 +5,5 @@ elsiros_webots
    :maxdepth: 4
 
     modules
+    intro
+    programming_hints
