@@ -8,4 +8,4 @@ elsiros_webots
    modules
    intro
    programming_hints
-   introduction
+   instruction
