@@ -71,31 +71,6 @@ class Motion_sim(Motion_real):
                              "left_shoulder_pitch", "head_yaw", "head_pitch"]
         #self.FACTOR =  [ 1,1,1,1, 1, 1, 1,1,1,1, 1, 1,1, 1,1, 1, 1, 1,1,1,1, 1, 1]
         self.trims = [ 0,0,0,0, 0, 0, 0, 0, -0.12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.12, 0, 0, 0]
-        #self.WBservos = {
-        #            (10,2) : "right_ankle_roll",
-        #            (9,2) : "right_ankle_pitch",
-        #            (8,2) : "right_knee",
-        #            (7,2) : "right_hip_pitch",
-        #            (6,2) : "right_hip_roll",
-        #            (5,2) : "right_hip_yaw",
-        #            (4, 2) : "right_elbow_pitch",
-        #            (3, 2) : "right_shoulder_twirl",
-        #            (2, 2) : "right_shoulder_roll",
-        #            (1, 2) : "right_shoulder_pitch",
-        #            (0, 2) : "pelvis_yaw",
-        #            (10,1) : "left_ankle_roll",
-        #            (9,1) : "left_ankle_pitch",
-        #            (8,1) : "left_knee",
-        #            (7,1) : "left_hip_pitch",
-        #            (6,1) : "left_hip_roll",
-        #            (5,1) : "left_hip_yaw",
-        #            (4,1) : "left_elbow_pitch",
-        #            (3,1) : "left_shoulder_twirl",
-        #            (2,1) : "left_shoulder_roll",
-        #            (1,1) : "left_shoulder_pitch",
-        #            (0,1) : "head_yaw",
-        #            (12,2): "head_pitch"
-        #          }
 
     def game_time(self):
         while True:
@@ -296,7 +271,10 @@ class Motion_sim(Motion_real):
 
     def sim_Get_Ball_Position(self):
         ball_pos = self.robot.get_sensor("ball")
-        if ball_pos: return ball_pos['position']
+        if ball_pos: 
+            ball_position = ball_pos['position']
+            print('ball_position =', ball_position)
+            return ball_position
         else: return False
 
     def sim_Get_Obstacles(self):
