@@ -50,7 +50,8 @@ class CommunicationManager():
                 self.sensors[sensor].put(message[sensor])
 
     def run(self):
-        data = {"head_pitch": -1.5}
+        data = {"head_pitch": -1.0, "head_yaw": 0.9}
+
         self.add_to_queue(data)
         while(True):
             self.send_message()
@@ -70,7 +71,7 @@ class CommunicationManager():
 if __name__ == '__main__':
     manager = CommunicationManager(5, '127.0.0.1', 10001)
     # инициализация сенсоров
-    sensors = {"gps_body": 5,"head_pitch_sensor": 5, "imu_body": 5, "recognition": 5}#
+    sensors = {"gps_body": 5,"head_pitch_sensor": 5, "head_yaw_sensor": 5, "imu_body": 5, "recognition": 5, "camera": 20}#
     manager.enable_sensors(sensors)
 
     th1 = Thread(target=manager.run)

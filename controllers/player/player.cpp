@@ -710,6 +710,9 @@ public:
 
         const double *gps = new double[3];
         const double *imu = new double[3];
+
+        double neckPan = 0;
+        double neckTilt = 0;
         for (const auto &entry : sensors) 
         {
           webots::Device *dev = entry.first;
@@ -724,7 +727,28 @@ public:
               imu = imu_dev->getRollPitchYaw();
             continue;
           }
+        
+          webots::PositionSensor *position_sensor = dynamic_cast<webots::PositionSensor *>(dev);
+          if (position_sensor) {
+            // std::cout << "POsition sensor: " << position_sensor->getName() << std::endl;
+            if (position_sensor->getName() == "head_yaw_sensor")
+            {
+              std::cout << "ARRR" << std::endl;
+              neckPan = position_sensor->getValue();
+              continue;
+            }
+            if (position_sensor->getName() == "head_pitch_sensor")
+            {
+              std::cout << "ARRR2" << std::endl;
+              neckTilt = position_sensor->getValue();
+              continue;
+            }
+            
+            continue;
+          }
         }
+        // double neckPan = 0;
+        // double neck_tilt = -1.5;
         // const double *gps = sensors["gps_body"]->getValues();
         
         double distance = std::sqrt((gps[0] - values[0]) * (gps[0] - values[0]) + (gps[1] - values[1]) * (gps[1] - values[1]));
@@ -737,14 +761,13 @@ public:
         double angle = tmp_angle * (values[1] - gps[1]) / std::abs(gps[1] - values[1]) - imu[2];
         std::cout << "angle: " << angle << " distance: " << distance << " imu: " << imu[2] << std::endl;
 
-        double neckPan = 0;
-        double neck_tilt = -1.5;
+        
         
         double right_yaw_visible_area = -neckPan - 60 * 3.14 / 360;
         double left_yaw_visible_area = -neckPan + 60 * 3.14 / 360;
-        double bottom_distance_visible_area = std::tan(3.1415/2 + neck_tilt -
+        double bottom_distance_visible_area = std::tan(3.1415/2 + neckTilt -
                                         45 * 3.14 / 360) * 0.413;
-        double top_distance_visible_area = std::tan(3.1415/2 + neck_tilt +
+        double top_distance_visible_area = std::tan(3.1415/2 + neckTilt +
                                         45 * 3.14 / 360) * 0.413;
 
         // std::cout << "right_yaw_visible_area: " << right_yaw_visible_area << std::endl;
@@ -754,7 +777,14 @@ public:
         bool objectInImage = false;
         if ((distance > bottom_distance_visible_area) && (distance < top_distance_visible_area) && (angle < left_yaw_visible_area) && (angle > right_yaw_visible_area))
           objectInImage = true;
+        
+        if (objectInImage)
+          std::cout << "I'm in image" << std::endl;
+        else
+          std::cout << "I'm not in image" << std::endl;
+
         // add to message
+        
       }
     }
     // std::cerr << "BEfore sensors" << std::endl;
