@@ -30,9 +30,12 @@ Since 2019 the game was included into program of Robocup Asia - Pacific.
 ![IMG_8937_Moment](https://user-images.githubusercontent.com/57300002/132953271-f9276ed3-9711-4b97-b38a-80c9358ded82.jpg)
 
 ## The field
-The field is made from 3mm carpet with total size of 3 x 4 m, with goals made from plumbing tubes, colored to yellow ant blue color.
+The field is made from 3mm carpet with total size of 3 x 4 m, 
 
 ![26975375-2921-43c6-b4a6-0cbb64f13c28](https://user-images.githubusercontent.com/57300002/132953405-5f038625-c4c1-42b7-b468-0d9d08d4717d.JPG)
+
+with goals made from plumbing tubes, colored to yellow ant blue color.
+
 ![502e404a-0361-4e98-9f40-34361cb9ab21](https://user-images.githubusercontent.com/57300002/132953411-2d426a66-a673-4e5c-83b5-6d211f36d3d3.JPG)
 
 ## The ball
