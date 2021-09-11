@@ -9,3 +9,4 @@ elsiros_webots
    intro
    programming_hints
    instruction
+   example
