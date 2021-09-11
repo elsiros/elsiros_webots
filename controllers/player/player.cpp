@@ -708,12 +708,13 @@ public:
 
         // move to rotation distance
 
-        const double *gps;
-        const double *imu;
-        for (auto entry : sensors) 
+        const double *gps = new double[3];
+        const double *imu = new double[3];
+        std::cerr << "Before for" << std::endl;
+        for (const auto &entry : sensors) 
         {
-          auto dev = entry.first;
-          std::cout << "AAAAAAAAA" << std::endl;
+          std::cerr << "AAAAAAAAA" << std::endl;
+          webots::Device *dev = entry.first;
           webots::GPS *gps_dev = dynamic_cast<webots::GPS *>(dev);
           if (gps_dev) {
             std::cout << "got gps" << std::endl;
@@ -735,9 +736,11 @@ public:
 
         // const double *imu = sensors["imu_body"]->getRollPitchYaw(); //yaw 2
 
-        double angle = std::atan(std::abs(gps[0] - values[0]) / std::abs(gps[1] - values[1]))- imu[2];
-
-        std::cout << "angle: " << angle << " distance: " << distance << std::endl;
+        double tmp_angle = std::atan(std::abs(gps[1] - values[1]) / std::abs(gps[0] - values[0]));;
+        if (values[0] < gps[0])
+          tmp_angle = 3.1415 - tmp_angle;
+        double angle = tmp_angle * (values[1] - gps[1]) / std::abs(gps[1] - values[1]) - imu[2];
+        std::cout << "angle: " << angle << " distance: " << distance << " imu: " << imu << std::endl;
 
 
           
