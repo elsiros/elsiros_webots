@@ -70,7 +70,7 @@ class CommunicationManager():
 if __name__ == '__main__':
     manager = CommunicationManager(5, '127.0.0.1', 10001)
     # инициализация сенсоров
-    sensors = {"gps_body": 5,"head_pitch_sensor": 5, "imu_head": 5}#
+    sensors = {"gps_body": 5,"head_pitch_sensor": 5, "imu_body": 5, "recognition": 5}#
     manager.enable_sensors(sensors)
 
     th1 = Thread(target=manager.run)

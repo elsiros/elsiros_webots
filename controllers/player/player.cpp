@@ -265,7 +265,7 @@ class Blurrer {
 
 class PlayerServer {
 public:
-  PlayerServer(Blurrer *blurrer_, const std::vector<std::string> &allowed_hosts, int port, int player_id, int team, webots::Supervisor *robot) :
+  PlayerServer(const std::vector<std::string> &allowed_hosts, int port, int player_id, int team, webots::Supervisor *robot) :
     allowed_hosts(allowed_hosts),
     port(port),
     player_id(player_id),
@@ -275,7 +275,6 @@ public:
     recv_buffer(NULL),
     recv_index(0),
     recv_size(0),
-    blurrer(blurrer_),
     content_size(0),
     robot(robot) {
     actuators_enabled = TRUE;
@@ -348,10 +347,15 @@ public:
 
       auto after_receive = sc::now();
       // Independently from if we received a message or not, send a message to the Controller
+      // std::cerr << "prepareSensorMessage" << std::endl;
       prepareSensorMessage();
+      // std::cerr << "preparedSensorMessage" << std::endl;
       auto after_prepare = sc::now();
       updateDevices();
+      // std::cerr << "preparedDevices" << std::endl;
       sendSensorMessage();
+      // std::cerr << "sendedSensor" << std::endl;
+
       auto after_send = sc::now();
 
       double step_time = duration(after_send - start).count();
@@ -492,6 +496,50 @@ public:
     }
   }
 
+  void disableSensor(webots::Device *device)
+  {
+    switch (device->getNodeType()) {
+      case webots::Node::ACCELEROMETER: {
+        webots::Accelerometer *accelerometer = static_cast<webots::Accelerometer *>(device);
+        accelerometer->disable();
+        break;
+      }
+      case webots::Node::GPS: {
+        webots::GPS *gps = static_cast<webots::GPS *>(device);
+        gps->disable();
+        break;
+      }
+      case webots::Node::INERTIAL_UNIT: {
+        webots::InertialUnit *imu = static_cast<webots::InertialUnit *>(device);
+        imu->disable();
+        break;
+      }
+      case webots::Node::CAMERA: {
+        webots::Camera *camera = static_cast<webots::Camera *>(device);
+        camera->recognitionDisable();
+        camera->disable();
+        break;
+      }
+      case webots::Node::GYRO: {
+        webots::Gyro *gyro = static_cast<webots::Gyro *>(device);
+        gyro->disable();
+        break;
+      }
+      case webots::Node::POSITION_SENSOR: {
+        webots::PositionSensor *positionSensor = static_cast<webots::PositionSensor *>(device);
+        positionSensor->disable();
+        break;
+      }
+      case webots::Node::TOUCH_SENSOR: {
+        webots::TouchSensor *touchSensor = static_cast<webots::TouchSensor *>(device);
+        touchSensor->disable();
+        break;
+      }
+      default:
+        warn(sensor_measurements, "Device \"" + device->getName() + "\" is not supported, time step command, ignored.");
+    }
+  }
+
   void processBuffer() {
     ActuatorRequests actuatorRequests;
     actuatorRequests.ParseFromArray(recv_buffer, recv_index);
@@ -617,7 +665,13 @@ public:
             continue;
           enableSensor(device, sensor_time_step);
         }
-      } else
+      }
+      else if (sensorTimeStep.name() == "recognition")
+      {
+        std::cout << "Recognition requested" << std::endl;
+        recognition_requested = true;
+      }
+      else
         warn(sensor_measurements, "Device \"" + sensorTimeStep.name() + "\" not found, time step command, ignored.");
     }
   }
@@ -632,6 +686,67 @@ public:
       return;
     std::string active_sensor;
     std::chrono::time_point<sc> sensor_start;
+    if (recognition_requested)
+    {
+      std::vector<std::string> protoNames = {"BALL"};//, "RED_PLAYER_1", "RED_PLAYER_2", "BLUE_PLAYER_1", "BLUE_PLAYER_2"};
+      for (std::string protoName : protoNames)
+      {
+        // std::cerr << protoName << std::endl;
+        const double *values;
+        // get positions of all robots
+        // try {
+        //   values = robot->getFromDef(protoName)->getPosition();
+        //   if (values)
+        //     std::cout << protoName << " x: " << values[0] << " y: " << values[1] << std::endl;
+        // }
+        // catch (...) {
+        //   std::cerr << "Exception in get from def" << std::endl;
+        // }
+        
+        values = robot->getFromDef(protoName)->getPosition();
+        std::cout << protoName << " x: " << values[0] << " y: " << values[1] << std::endl;
+
+        // move to rotation distance
+
+        const double *gps;
+        const double *imu;
+        for (auto entry : sensors) 
+        {
+          auto dev = entry.first;
+          std::cout << "AAAAAAAAA" << std::endl;
+          webots::GPS *gps_dev = dynamic_cast<webots::GPS *>(dev);
+          if (gps_dev) {
+            std::cout << "got gps" << std::endl;
+            gps = gps_dev->getValues();
+            continue;
+          }
+          webots::InertialUnit *imu_dev = dynamic_cast<webots::InertialUnit *>(dev);
+          if (imu_dev) {
+            std::cout << "got imu " << imu_dev->getName() << std::endl;
+            if (imu_dev->getName() == "imu_body")
+              imu = imu_dev->getRollPitchYaw();
+            continue;
+          }
+        }
+        std::cerr << "After sensors" << std::endl;
+        // const double *gps = sensors["gps_body"]->getValues();
+        
+        double distance = std::sqrt((gps[0] - values[0]) * (gps[0] - values[0]) + (gps[1] - values[1]) * (gps[1] - values[1]));
+
+        // const double *imu = sensors["imu_body"]->getRollPitchYaw(); //yaw 2
+
+        double angle = std::atan(std::abs(gps[0] - values[0]) / std::abs(gps[1] - values[1]))- imu[2];
+
+        std::cout << "angle: " << angle << " distance: " << distance << std::endl;
+
+
+          
+        // check if they in camera range
+
+        // add to message
+      }
+    }
+    // std::cerr << "BEfore sensors" << std::endl;
     for (const auto &entry : sensors) {
       if (benchmark_level >= 4 && active_sensor != "") {
         std::cout << "\t\t" << active_sensor << " update time " << duration(sc::now() - sensor_start).count() << "ms"
@@ -809,6 +924,7 @@ public:
       std::cout << "\t\t" << active_sensor << " update time " << duration(sc::now() - sensor_start).count() << "ms"
                 << std::endl;
     }
+
   }
 
   void updateDevices() {
@@ -924,12 +1040,15 @@ private:
   /// The rendering bandwidth allowed for a team [MB/s] (per simulated second)
   static double team_rendering_quota;
 
-public:
   Blurrer blurrer;
+  bool recognition_requested = false;
+
+
+public:
   static int nb_robots_in_team;
 };
 
-int PlayerServer::benchmark_level = 3;
+int PlayerServer::benchmark_level = 0;
 double PlayerServer::budget_ms = 1.0;
 double PlayerServer::team_network_quota = 350.0;
 double PlayerServer::window_duration = 1.0;
@@ -953,9 +1072,9 @@ int main(int argc, char *argv[]) {
   const std::string name = robot->getName();
   const int player_id = std::stoi(name.substr(name.find_last_of(' ') + 1));
   const int player_team = name[0] == 'r' ? RED : BLUE;
-  Blurrer *blurrer = new Blurrer;
+  // Blurrer *blurrer = new Blurrer;
 
-  PlayerServer server(blurrer, allowed_hosts, port, player_id, player_team, robot);
+  PlayerServer server(allowed_hosts, port, player_id, player_team, robot);
 
   while (robot->step(basic_time_step) != -1)
     server.step();
