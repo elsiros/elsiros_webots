@@ -9,4 +9,3 @@ elsiros_webots
    programming_hints
    instruction
    example
-   modules
