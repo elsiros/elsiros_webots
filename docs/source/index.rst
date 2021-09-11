@@ -6,6 +6,7 @@ elsiros_webots
    :caption: Contents:
 
    intro
+   History
    programming_hints
    instruction
    example
