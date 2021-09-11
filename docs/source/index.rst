@@ -5,6 +5,5 @@ elsiros_webots
    :maxdepth: 1
    :caption: Contents:
 
-   modules
    intro
    programming_hints
