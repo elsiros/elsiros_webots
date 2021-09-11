@@ -710,26 +710,21 @@ public:
 
         const double *gps = new double[3];
         const double *imu = new double[3];
-        std::cerr << "Before for" << std::endl;
         for (const auto &entry : sensors) 
         {
-          std::cerr << "AAAAAAAAA" << std::endl;
           webots::Device *dev = entry.first;
           webots::GPS *gps_dev = dynamic_cast<webots::GPS *>(dev);
           if (gps_dev) {
-            std::cout << "got gps" << std::endl;
             gps = gps_dev->getValues();
             continue;
           }
           webots::InertialUnit *imu_dev = dynamic_cast<webots::InertialUnit *>(dev);
           if (imu_dev) {
-            std::cout << "got imu " << imu_dev->getName() << std::endl;
             if (imu_dev->getName() == "imu_body")
               imu = imu_dev->getRollPitchYaw();
             continue;
           }
         }
-        std::cerr << "After sensors" << std::endl;
         // const double *gps = sensors["gps_body"]->getValues();
         
         double distance = std::sqrt((gps[0] - values[0]) * (gps[0] - values[0]) + (gps[1] - values[1]) * (gps[1] - values[1]));
@@ -740,12 +735,25 @@ public:
         if (values[0] < gps[0])
           tmp_angle = 3.1415 - tmp_angle;
         double angle = tmp_angle * (values[1] - gps[1]) / std::abs(gps[1] - values[1]) - imu[2];
-        std::cout << "angle: " << angle << " distance: " << distance << " imu: " << imu << std::endl;
+        std::cout << "angle: " << angle << " distance: " << distance << " imu: " << imu[2] << std::endl;
 
+        double neckPan = 0;
+        double neck_tilt = -1.5;
+        
+        double right_yaw_visible_area = -neckPan - 60 * 3.14 / 360;
+        double left_yaw_visible_area = -neckPan + 60 * 3.14 / 360;
+        double bottom_distance_visible_area = std::tan(3.1415/2 + neck_tilt -
+                                        45 * 3.14 / 360) * 0.413;
+        double top_distance_visible_area = std::tan(3.1415/2 + neck_tilt +
+                                        45 * 3.14 / 360) * 0.413;
 
-          
-        // check if they in camera range
-
+        // std::cout << "right_yaw_visible_area: " << right_yaw_visible_area << std::endl;
+        // std::cout << "left_yaw_visible_area: " << left_yaw_visible_area << std::endl;
+        // std::cout << "bottom_distance_visible_area: " << bottom_distance_visible_area << std::endl;
+        // std::cout << "top_distance_visible_area: " << top_distance_visible_area << std::endl;
+        bool objectInImage = false;
+        if ((distance > bottom_distance_visible_area) && (distance < top_distance_visible_area) && (angle < left_yaw_visible_area) && (angle > right_yaw_visible_area))
+          objectInImage = true;
         // add to message
       }
     }
