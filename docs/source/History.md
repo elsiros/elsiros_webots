@@ -40,6 +40,16 @@ The ball is orange color sponge ball with 80mm diameter.
 
 ![IMG_8581](https://user-images.githubusercontent.com/57300002/132953448-8cfe521b-5d51-4a76-af99-724006e2d472.jpg)
 
+## The Robots
 
+Currently 2 types of robots mostly used by teams:
 
+### Bioloid type with added camera head and computer
 
+![8e252a74-5709-4b2c-8289-a9adb70b4957](https://user-images.githubusercontent.com/57300002/132953739-d96e403d-917b-491c-a61c-b78c6aaf2cf0.JPG)
+
+### Robokit - a robot designed in MIPT with using Kondo servomotors from Japan
+
+![IMG_0019](https://user-images.githubusercontent.com/57300002/132953948-0caa137c-31c7-475f-8e48-2f1b1b94f314.JPG)
+
+Last robot which performed best results in soccer game being champion of Asia-Pacific games of 2019 and 2020 is used as prototype for virtual model of standart robot in ELSIROS platform. 
