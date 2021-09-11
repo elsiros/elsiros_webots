@@ -8,5 +8,6 @@ elsiros_webots
    intro
    History
    programming_hints
+   Rules
    instruction
    example
