@@ -688,7 +688,8 @@ public:
     std::chrono::time_point<sc> sensor_start;
     if (recognition_requested)
     {
-      std::vector<std::string> protoNames = {"BALL"};//, "RED_PLAYER_1", "RED_PLAYER_2", "BLUE_PLAYER_1", "BLUE_PLAYER_2"};
+      recognition_requested = false;
+      std::vector<std::string> protoNames = {"BALL", "RED_PLAYER_1", "RED_PLAYER_2", "BLUE_PLAYER_1", "BLUE_PLAYER_2"};
       for (std::string protoName : protoNames)
       {
         // std::cerr << protoName << std::endl;
@@ -713,6 +714,9 @@ public:
 
         double neckPan = 0;
         double neckTilt = 0;
+
+        double checkZeroLegs = 0;
+
         for (const auto &entry : sensors) 
         {
           webots::Device *dev = entry.first;
@@ -727,23 +731,49 @@ public:
               imu = imu_dev->getRollPitchYaw();
             continue;
           }
-        
           webots::PositionSensor *position_sensor = dynamic_cast<webots::PositionSensor *>(dev);
           if (position_sensor) {
             // std::cout << "POsition sensor: " << position_sensor->getName() << std::endl;
             if (position_sensor->getName() == "head_yaw_sensor")
             {
-              std::cout << "ARRR" << std::endl;
               neckPan = position_sensor->getValue();
               continue;
             }
             if (position_sensor->getName() == "head_pitch_sensor")
             {
-              std::cout << "ARRR2" << std::endl;
               neckTilt = position_sensor->getValue();
               continue;
             }
+            if (position_sensor->getName() == "left_knee_sensor")
+            {
+              checkZeroLegs += position_sensor->getValue();
+            }
             
+            if (position_sensor->getName() == "right_knee_sensor")
+            {
+              checkZeroLegs += position_sensor->getValue();
+            }
+            
+            if (position_sensor->getName() == "left_ankle_pitch_sensor")
+            {
+              checkZeroLegs += position_sensor->getValue();
+            }
+
+            if (position_sensor->getName() == "right_ankle_pitch_sensor")
+            {
+              checkZeroLegs += position_sensor->getValue();
+            }
+
+            if (position_sensor->getName() == "right_hip_pitch_sensor")
+            {
+              checkZeroLegs += position_sensor->getValue();
+            }
+
+            if (position_sensor->getName() == "left_hip_pitch_sensor")
+            {
+              checkZeroLegs += position_sensor->getValue();
+            }
+
             continue;
           }
         }
@@ -775,6 +805,7 @@ public:
         // std::cout << "bottom_distance_visible_area: " << bottom_distance_visible_area << std::endl;
         // std::cout << "top_distance_visible_area: " << top_distance_visible_area << std::endl;
         bool objectInImage = false;
+        bool robotIsReady = false;
         if ((distance > bottom_distance_visible_area) && (distance < top_distance_visible_area) && (angle < left_yaw_visible_area) && (angle > right_yaw_visible_area))
           objectInImage = true;
         
@@ -783,7 +814,21 @@ public:
         else
           std::cout << "I'm not in image" << std::endl;
 
+        if (checkZeroLegs < 0.01)
+        {
+          robotIsReady = true;
+        }
+
+        // std::cout << "checkZeroLegs: " << checkZeroLegs << std::endl;
         // add to message
+
+        if (robotIsReady && objectInImage)
+        {
+          DetectionMeasurement *measurement = sensor_measurements.add_objects();
+          measurement->set_name(protoName);
+          measurement->set_course(angle);
+          measurement->set_distance(distance);
+        }
         
       }
     }
@@ -850,35 +895,35 @@ public:
         // measurement->set_image(rgb_image, rgb_image_size);
         // delete[] rgb_image;
 
-        const webots::CameraRecognitionObject *recognition_objects = camera->getRecognitionObjects();
-        for (int i = 0; i < camera->getRecognitionNumberOfObjects(); ++i)
-        {
-          webots::CameraRecognitionObject recognition_object = recognition_objects[i];
-          DetectionMeasurement *measurement = sensor_measurements.add_objects();
-          measurement->set_name(recognition_object.model);
-          const int *position_on_image = recognition_objects[i].position_on_image;
-          const int *size_on_image = recognition_objects[i].size_on_image;
-          Vector2Int *position_on_image_proto = measurement->mutable_position_on_image();
-          Vector2Int *size_on_image_proto = measurement->mutable_size_on_image();
-          position_on_image_proto->set_x(position_on_image[0]);
-          position_on_image_proto->set_y(position_on_image[1]);
+        // const webots::CameraRecognitionObject *recognition_objects = camera->getRecognitionObjects();
+        // for (int i = 0; i < camera->getRecognitionNumberOfObjects(); ++i)
+        // {
+        //   webots::CameraRecognitionObject recognition_object = recognition_objects[i];
+        //   DetectionMeasurement *measurement = sensor_measurements.add_objects();
+        //   measurement->set_name(recognition_object.model);
+        //   const int *position_on_image = recognition_objects[i].position_on_image;
+        //   const int *size_on_image = recognition_objects[i].size_on_image;
+        //   Vector2Int *position_on_image_proto = measurement->mutable_position_on_image();
+        //   Vector2Int *size_on_image_proto = measurement->mutable_size_on_image();
+        //   position_on_image_proto->set_x(position_on_image[0]);
+        //   position_on_image_proto->set_y(position_on_image[1]);
 
-          size_on_image_proto->set_x(size_on_image[0]);
-          size_on_image_proto->set_y(size_on_image[1]);
-          // webots::Supervisor *supervisor = new webots::Supervisor();
-          // getFromId()
-          const double *values  = robot->getFromId(recognition_object.id)->getPosition();
+        //   size_on_image_proto->set_x(size_on_image[0]);
+        //   size_on_image_proto->set_y(size_on_image[1]);
+        //   // webots::Supervisor *supervisor = new webots::Supervisor();
+        //   // getFromId()
+        //   const double *values  = robot->getFromId(recognition_object.id)->getPosition();
 
-          // std::cout << "Position " << values[0] << "," << values[1] << std::endl;
-          measurement->set_x(values[0]);
-          measurement->set_y(values[1]);
+        //   // std::cout << "Position " << values[0] << "," << values[1] << std::endl;
+        //   measurement->set_x(values[0]);
+        //   measurement->set_y(values[1]);
           
           
-          // std::cout << "Position of the ball" << std::endl;
-          // std::cout << recognition_objects[i].position[0] << std::endl;
-          // std::cout << recognition_objects[i].position[1] << std::endl;
-          // std::cout << recognition_objects[i].position[2] << std::endl;
-        }
+        //   // std::cout << "Position of the ball" << std::endl;
+        //   // std::cout << recognition_objects[i].position[0] << std::endl;
+        //   // std::cout << recognition_objects[i].position[1] << std::endl;
+        //   // std::cout << recognition_objects[i].position[2] << std::endl;
+        // }
 
         
 

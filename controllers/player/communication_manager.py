@@ -16,9 +16,13 @@ class CommunicationManager():
     def enable_sensors(self, sensors):
         for sensor in sensors:
             self.client.add_initial_sensor(sensor, sensors[sensor])
-            if sensor == "camera":
-                self.sensors.update({"ball": queue.Queue(self.maxsize)})
-                self.sensors.update({"robot": queue.Queue(self.maxsize)})
+            if sensor == "recognition":
+                self.sensors.update({"BALL": queue.Queue(self.maxsize)})
+                self.sensors.update({"RED_PLAYER_1": queue.Queue(self.maxsize)})
+                self.sensors.update({"RED_PLAYER_2": queue.Queue(self.maxsize)})
+                self.sensors.update({"BLUE_PLAYER_1": queue.Queue(self.maxsize)})
+                self.sensors.update({"BLUE_PLAYER_2": queue.Queue(self.maxsize)})
+
             self.sensors.update({str(sensor): queue.Queue(self.maxsize)})
         self.client.send_request("init")
 
@@ -65,13 +69,13 @@ class CommunicationManager():
         while(True):
             time.sleep(1)
             # пример получения данных из включенного и существующего сенсора
-            print("ball: ", self.get_sensor("ball"))
+            print("ball: ", self.get_sensor("BALL"))
             print("imu_head: ", self.get_sensor("imu_head"))
 
 if __name__ == '__main__':
     manager = CommunicationManager(5, '127.0.0.1', 10001)
     # инициализация сенсоров
-    sensors = {"gps_body": 5,"head_pitch_sensor": 5, "head_yaw_sensor": 5, "imu_body": 5, "recognition": 5, "camera": 20}#
+    sensors = {"left_knee_sensor": 5, "right_knee_sensor": 5, "left_ankle_pitch_sensor": 5, "right_ankle_pitch_sensor": 5, "right_hip_pitch_sensor": 5, "left_hip_pitch_sensor": 5,  "gps_body": 5,"head_pitch_sensor": 5, "head_yaw_sensor": 5, "imu_body": 5, "recognition": 5, "camera": 20}#
     manager.enable_sensors(sensors)
 
     th1 = Thread(target=manager.run)
