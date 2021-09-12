@@ -259,7 +259,7 @@ class Blurrer {
       std::string line;
       while(std::getline(inFile,line))
       {
-        std::cout << "Line(" << line << ")\n";
+        // std::cout << "Line(" << line << ")\n";
 
         int pos = line.find(":", 0);
         double value = std::stod(line.substr(pos+1, line.length()));
@@ -281,7 +281,7 @@ class Blurrer {
         {
           std::cerr << "Incorrect type [" << type << "] in blurrer json. " << std::endl;
         }
-        std::cout << "Line(" << value << ")\n";
+        // std::cout << "Line(" << value << ")\n";
       }
 
 
@@ -733,7 +733,7 @@ public:
     std::chrono::time_point<sc> sensor_start;
     if (recognition_requested)
     {
-      // recognition_requested = false;
+      recognition_requested = false;
       std::vector<std::string> protoNames = {"BALL"};//, "RED_PLAYER_1", "RED_PLAYER_2", "BLUE_PLAYER_1", "BLUE_PLAYER_2"};
       for (std::string protoName : protoNames)
       {
