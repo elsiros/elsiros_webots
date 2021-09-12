@@ -16,6 +16,8 @@
 #include <math.h>
 #include <stdio.h>
 #include <sys/time.h>
+#include <fstream>
+
 
 #ifdef _WIN32
 #include <winsock.h>
@@ -242,7 +244,50 @@ class Blurrer {
       object_angle_noize(0.03), 
       object_distance_noize(0.1), 
       position_coords_noize(0.1)
-      {};
+      {
+        loadJson();
+      };
+
+    void loadJson()
+    {
+      std::cout << "Loading json..." << std::endl;
+      std::ifstream inFile("blurrer.txt");
+      if (!inFile) {
+          std::cout << "Unable to open file";
+          exit(1); // terminate with error
+      }
+      std::string line;
+      while(std::getline(inFile,line))
+      {
+        std::cout << "Line(" << line << ")\n";
+
+        int pos = line.find(":", 0);
+        double value = std::stod(line.substr(pos+1, line.length()));
+        std::string type = line.substr(0, pos);
+
+        if (type == "object_angle_noize")
+        {
+          object_angle_noize = value;
+        }
+        else if (type == "object_distance_noize")
+        {
+          object_distance_noize = value;
+        }
+        else if (type == "position_coords_noize")
+        {
+          position_coords_noize = value;
+        }
+        else
+        {
+          std::cerr << "Incorrect type [" << type << "] in blurrer json. " << std::endl;
+        }
+        std::cout << "Line(" << value << ")\n";
+      }
+
+
+      inFile.close();
+    }
+    
 
     double blur_coord(double coord)
     {
