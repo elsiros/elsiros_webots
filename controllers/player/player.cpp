@@ -15,64 +15,9 @@
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>
-#ifndef _WIN32
-    #include <sys/time.h>
-#endif
-#include <time.h>
-#include <windows.h> 
 
-#ifdef _WIN32
-const __int64 DELTA_EPOCH_IN_MICROSECS = 11644473600000000;
-
-/* IN UNIX the use of the timezone struct is obsolete;
- I don't know why you use it. See http://linux.about.com/od/commands/l/blcmdl2_gettime.htm
- But if you want to use this structure to know about GMT(UTC) diffrence from your local time
- it will be next: tz_minuteswest is the real diffrence in minutes from GMT(UTC) and a tz_dsttime is a flag
- indicates whether daylight is now in use
-*/
-struct timezone2
-{
-    __int32  tz_minuteswest; /* minutes W of Greenwich */
-    bool  tz_dsttime;     /* type of dst correction */
-};
-
-struct timeval2 {
-    __int32    tv_sec;         /* seconds */
-    __int32    tv_usec;        /* microseconds */
-};
-
-int gettimeofday(struct timeval2* tv/*in*/, struct timezone2* tz/*in*/)
-{
-    FILETIME ft;
-    __int64 tmpres = 0;
-    TIME_ZONE_INFORMATION tz_winapi;
-    int rez = 0;
-
-    ZeroMemory(&ft, sizeof(ft));
-    ZeroMemory(&tz_winapi, sizeof(tz_winapi));
-
-    GetSystemTimeAsFileTime(&ft);
-
-    tmpres = ft.dwHighDateTime;
-    tmpres <<= 32;
-    tmpres |= ft.dwLowDateTime;
-
-    /*converting file time to unix epoch*/
-    tmpres /= 10;  /*convert into microseconds*/
-    tmpres -= DELTA_EPOCH_IN_MICROSECS;
-    tv->tv_sec = (__int32)(tmpres * 0.000001);
-    tv->tv_usec = (tmpres % 1000000);
-
-
-    //_tzset(),don't work properly, so we use GetTimeZoneInformation
-    rez = GetTimeZoneInformation(&tz_winapi);
-    tz->tz_dsttime = (rez == 2) ? true : false;
-    tz->tz_minuteswest = tz_winapi.Bias + ((rez == 2) ? tz_winapi.DaylightBias : 0);
-
-    return 0;
-}
-#endif
-
+#include <sys/time.h>
+#include <fstream>
 #ifdef _WIN32
 #include <winsock.h>
 typedef int socklen_t;
@@ -298,10 +243,53 @@ public:
 class Blurrer {
   public:
     Blurrer() :
-      object_angle_noize(3), 
+      object_angle_noize(0.03), 
       object_distance_noize(0.1), 
       position_coords_noize(0.1)
-      {};
+      {
+        loadJson();
+      };
+
+    void loadJson()
+    {
+      std::cout << "Loading json..." << std::endl;
+      std::ifstream inFile("blurrer.txt");
+      if (!inFile) {
+          std::cout << "Unable to open file";
+          exit(1); // terminate with error
+      }
+      std::string line;
+      while(std::getline(inFile,line))
+      {
+        // std::cout << "Line(" << line << ")\n";
+
+        int pos = line.find(":", 0);
+        double value = std::stod(line.substr(pos+1, line.length()));
+        std::string type = line.substr(0, pos);
+
+        if (type == "object_angle_noize")
+        {
+          object_angle_noize = value;
+        }
+        else if (type == "object_distance_noize")
+        {
+          object_distance_noize = value;
+        }
+        else if (type == "position_coords_noize")
+        {
+          position_coords_noize = value;
+        }
+        else
+        {
+          std::cerr << "Incorrect type [" << type << "] in blurrer json. " << std::endl;
+        }
+        // std::cout << "Line(" << value << ")\n";
+      }
+
+
+      inFile.close();
+    }
+    
 
     double blur_coord(double coord)
     {
@@ -315,7 +303,7 @@ class Blurrer {
 
     double blur_distance(double distance)
     {
-      return distance * (1 + (object_angle_noize - (float) std::rand() / RAND_MAX * object_angle_noize * 2));
+      return distance * (1 + (object_distance_noize - (float) std::rand() / RAND_MAX * object_distance_noize * 2));
     }
     double object_angle_noize;
     double object_distance_noize;
@@ -772,24 +760,15 @@ public:
     std::chrono::time_point<sc> sensor_start;
     if (recognition_requested)
     {
-      recognition_requested = false;
+      // recognition_requested = false;
       std::vector<std::string> protoNames = {"BALL", "RED_PLAYER_1", "RED_PLAYER_2", "BLUE_PLAYER_1", "BLUE_PLAYER_2"};
       for (std::string protoName : protoNames)
       {
-        // std::cerr << protoName << std::endl;
         const double *values;
-        // get positions of all robots
-        // try {
-        //   values = robot->getFromDef(protoName)->getPosition();
-        //   if (values)
-        //     std::cout << protoName << " x: " << values[0] << " y: " << values[1] << std::endl;
-        // }
-        // catch (...) {
-        //   std::cerr << "Exception in get from def" << std::endl;
-        // }
         
         values = robot->getFromDef(protoName)->getPosition();
-        std::cout << protoName << " x: " << values[0] << " y: " << values[1] << std::endl;
+
+        // std::cout << protoName << " x: " << values[0] << " y: " << values[1] << std::endl;
 
         // move to rotation distance
 
@@ -873,7 +852,7 @@ public:
         if (values[0] < gps[0])
           tmp_angle = 3.1415 - tmp_angle;
         double angle = tmp_angle * (values[1] - gps[1]) / std::abs(gps[1] - values[1]) - imu[2];
-        std::cout << "angle: " << angle << " distance: " << distance << " imu: " << imu[2] << std::endl;
+        std::cout << "angle: " << blurrer.blur_angle(angle) << " distance: " << blurrer.blur_distance(distance) << " imu: " << imu[2] << std::endl;
 
         
         
@@ -910,8 +889,8 @@ public:
         {
           DetectionMeasurement *measurement = sensor_measurements.add_objects();
           measurement->set_name(protoName);
-          measurement->set_course(angle);
-          measurement->set_distance(distance);
+          measurement->set_course(blurrer.blur_angle(angle));
+          measurement->set_distance(blurrer.blur_distance(distance));
         }
         
       }

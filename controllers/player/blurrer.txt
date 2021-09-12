@@ -1,0 +1,3 @@
+object_angle_noize:0.03
+object_distance_noize:0.1
+position_coords_noize:0.1
