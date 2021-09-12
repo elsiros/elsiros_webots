@@ -78,7 +78,7 @@ class CommunicationManager():
     def run(self):
         data = {"head_pitch": -1.0, "head_yaw": 0.9}
 
-        self.add_to_queue(data)
+        #self.add_to_queue(data)
         while(True):
             self.send_message()
             message = self.client.receive()
@@ -96,12 +96,19 @@ class CommunicationManager():
         while(True):
             time.sleep(0.02)
             # пример получения данных из включенного и существующего сенсора
-            print("recognition: ", self.get_sensor("recognition"))
+            #print("recognition: ", self.get_sensor("recognition"))
             #print("imu_head: ", self.get_sensor("imu_head"))
             #print(self.get_sensor("time"))
             print('imu_body =', self.get_sensor("imu_body"))
             print('gps_body =', self.get_sensor("gps_body"))
-            #print(self.get_sensor("ball"))
+            sensors = {"recognition": 5, "camera": 5}
+            manager.enable_sensors(sensors)
+            time.sleep(0.02)
+            print('ball =', self.get_sensor("BALL"))
+            sensors = {"recognition": 5, "camera": 5}
+            manager.enable_sensors(sensors)
+            time.sleep(0.02)
+            print('RED_PLAYER_2 =', self.get_sensor("RED_PLAYER_2"))
             servo_data = {}
             for key in self.WBservosList:
                 servo_data.update({key: 0})
@@ -111,8 +118,9 @@ class CommunicationManager():
 if __name__ == '__main__':
     manager = CommunicationManager(1, '127.0.0.1', 7001)
     # инициализация сенсоров
-    sensors = {"gps_body": 5,"head_pitch_sensor": 5, "head_yaw_sensor": 5, "imu_body": 5, "recognition": 5}#
-    # sensors = {"gps_body": 5, "imu_head": 5, "imu_body": 5,  "camera": 20}#
+    sensors = {"left_knee_sensor": 5, "right_knee_sensor": 5, "left_ankle_pitch_sensor": 5,
+              "right_ankle_pitch_sensor": 5, "right_hip_pitch_sensor": 5, "left_hip_pitch_sensor": 5,
+            "gps_body": 5,"head_pitch_sensor": 5, "head_yaw_sensor": 5, "imu_body": 5, "recognition": 5, "camera": 5}
     manager.enable_sensors(sensors)
 
     th1 = Thread(target=manager.run)
