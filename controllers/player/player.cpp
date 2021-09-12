@@ -239,7 +239,7 @@ public:
 class Blurrer {
   public:
     Blurrer() :
-      object_angle_noize(3), 
+      object_angle_noize(0.03), 
       object_distance_noize(0.1), 
       position_coords_noize(0.1)
       {};
@@ -256,7 +256,7 @@ class Blurrer {
 
     double blur_distance(double distance)
     {
-      return distance * (1 + (object_angle_noize - (float) std::rand() / RAND_MAX * object_angle_noize * 2));
+      return distance * (1 + (object_distance_noize - (float) std::rand() / RAND_MAX * object_distance_noize * 2));
     }
     double object_angle_noize;
     double object_distance_noize;
@@ -688,24 +688,15 @@ public:
     std::chrono::time_point<sc> sensor_start;
     if (recognition_requested)
     {
-      recognition_requested = false;
-      std::vector<std::string> protoNames = {"BALL", "RED_PLAYER_1", "RED_PLAYER_2", "BLUE_PLAYER_1", "BLUE_PLAYER_2"};
+      // recognition_requested = false;
+      std::vector<std::string> protoNames = {"BALL"};//, "RED_PLAYER_1", "RED_PLAYER_2", "BLUE_PLAYER_1", "BLUE_PLAYER_2"};
       for (std::string protoName : protoNames)
       {
-        // std::cerr << protoName << std::endl;
         const double *values;
-        // get positions of all robots
-        // try {
-        //   values = robot->getFromDef(protoName)->getPosition();
-        //   if (values)
-        //     std::cout << protoName << " x: " << values[0] << " y: " << values[1] << std::endl;
-        // }
-        // catch (...) {
-        //   std::cerr << "Exception in get from def" << std::endl;
-        // }
         
         values = robot->getFromDef(protoName)->getPosition();
-        std::cout << protoName << " x: " << values[0] << " y: " << values[1] << std::endl;
+
+        // std::cout << protoName << " x: " << values[0] << " y: " << values[1] << std::endl;
 
         // move to rotation distance
 
@@ -789,7 +780,7 @@ public:
         if (values[0] < gps[0])
           tmp_angle = 3.1415 - tmp_angle;
         double angle = tmp_angle * (values[1] - gps[1]) / std::abs(gps[1] - values[1]) - imu[2];
-        std::cout << "angle: " << angle << " distance: " << distance << " imu: " << imu[2] << std::endl;
+        std::cout << "angle: " << blurrer.blur_angle(angle) << " distance: " << blurrer.blur_distance(distance) << " imu: " << imu[2] << std::endl;
 
         
         
@@ -826,8 +817,8 @@ public:
         {
           DetectionMeasurement *measurement = sensor_measurements.add_objects();
           measurement->set_name(protoName);
-          measurement->set_course(angle);
-          measurement->set_distance(distance);
+          measurement->set_course(blurrer.blur_angle(angle));
+          measurement->set_distance(blurrer.blur_distance(distance));
         }
         
       }
