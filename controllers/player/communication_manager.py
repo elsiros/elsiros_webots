@@ -96,21 +96,22 @@ class CommunicationManager():
         while(True):
             time.sleep(0.02)
             # пример получения данных из включенного и существующего сенсора
-            print("ball: ", self.get_sensor("BALL"))
-            print("imu_head: ", self.get_sensor("imu_head"))
+            print("recognition: ", self.get_sensor("recognition"))
+            #print("imu_head: ", self.get_sensor("imu_head"))
             #print(self.get_sensor("time"))
-            #print(self.get_sensor("imu_body"))
+            print('imu_body =', self.get_sensor("imu_body"))
+            print('gps_body =', self.get_sensor("gps_body"))
             #print(self.get_sensor("ball"))
             servo_data = {}
             for key in self.WBservosList:
                 servo_data.update({key: 0})
-            self.add_to_queue(servo_data)
+            #self.add_to_queue(servo_data)
 
 
 if __name__ == '__main__':
-    manager = CommunicationManager(1, '127.0.0.1', 10001)
+    manager = CommunicationManager(1, '127.0.0.1', 7001)
     # инициализация сенсоров
-    sensors = {"left_knee_sensor": 5, "right_knee_sensor": 5, "left_ankle_pitch_sensor": 5, "right_ankle_pitch_sensor": 5, "right_hip_pitch_sensor": 5, "left_hip_pitch_sensor": 5,  "gps_body": 5,"head_pitch_sensor": 5, "head_yaw_sensor": 5, "imu_body": 5, "recognition": 5}#
+    sensors = {"gps_body": 5,"head_pitch_sensor": 5, "head_yaw_sensor": 5, "imu_body": 5, "recognition": 5}#
     # sensors = {"gps_body": 5, "imu_head": 5, "imu_body": 5,  "camera": 20}#
     manager.enable_sensors(sensors)
 

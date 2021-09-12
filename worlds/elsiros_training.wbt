@@ -1,0 +1,106 @@
+#VRML_SIM R2021b utf8
+WorldInfo {
+  info [
+    "Description: official soccer simulation for the 2021 Robocup Virtual Humanoid League (kid size)"
+    "Version 0.2"
+  ]
+  title "ELSIROS training"
+  basicTimeStep 5
+  physicsDisableTime 0.1
+  physicsDisableLinearThreshold 0.1
+  physicsDisableAngularThreshold 0.1
+  contactProperties [
+    ContactProperties {
+      material1 "grass"
+      coulombFriction [
+        0.5
+      ]
+      softCFM 0.03
+    }
+    ContactProperties {
+      material1 "grass"
+      material2 "robocup soccer ball"
+      coulombFriction [
+        0.5
+      ]
+      bounce 0.76
+      softCFM 0.05
+    }
+    ContactProperties {
+      material2 "robocup soccer ball"
+      bounce 0.76
+    }
+  ]
+}
+Viewpoint {
+  orientation 0.9914995155272913 0.06640555405427813 0.11188839573383375 1.0787588925748823
+  position 0.9466175882704313 -2.744392445007145 1.274541430729646
+}
+TexturedBackground {
+  texture "stadium_dry"
+}
+TexturedBackgroundLight {
+  texture "stadium_dry"
+}
+ElsirosField {
+}
+DEF BALL Ball {
+  translation 0.231132 -0.54569 0.0399914
+  rotation 0.9979963915845991 -0.06327086510740826 3.5608493524979153e-06 0.00013185874062501487
+}
+DEF RED_PLAYER_1 Robokit1 {
+  hidden rotation_19 5.836300285876223e-10 1 -5.836302193149683e-10 1.570796
+  hidden rotation_20 0.7071067812581971 -0.707106781114898 -1.7550487798401054e-17 3.141593
+  hidden rotation_23 6.261340544179949e-10 1 -6.261342590354419e-10 1.570796
+  hidden rotation_24 0.7071067811123194 0.7071067812607758 -1.8182109415090826e-17 3.141593
+  translation 0 0 0.288354
+  name "red player 1"
+  controllerArgs [
+    "7001"
+    "2"
+    "127.0.0.1"
+    "192.168.123.21"
+    "192.168.123.22"
+    "192.168.123.23"
+    "192.168.123.24"
+  ]
+}
+DEF RED_PLAYER_2 Robokit1 {
+  translation -1.6 0.5 0.3
+  name "red player 2"
+  controllerArgs [
+    "7002"
+    "2"
+    "127.0.0.1"
+    "192.168.123.21"
+    "192.168.123.22"
+    "192.168.123.23"
+    "192.168.123.24"
+  ]
+}
+DEF BLUE_PLAYER_1 Robokit1 {
+  translation -1.6 1 0.3
+  name "blue player 1"
+  controllerArgs [
+    "7021"
+    "2"
+    "127.0.0.1"
+    "192.168.123.21"
+    "192.168.123.22"
+    "192.168.123.23"
+    "192.168.123.24"
+  ]
+}
+DEF BLUE_PLAYER_2 Robokit1 {
+  translation -1.6 -1 0.3
+  name "blue player 2"
+  controllerArgs [
+    "7022"
+    "2"
+    "127.0.0.1"
+    "192.168.123.21"
+    "192.168.123.22"
+    "192.168.123.23"
+    "192.168.123.24"
+  ]
+}
