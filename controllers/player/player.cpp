@@ -733,8 +733,8 @@ public:
     std::chrono::time_point<sc> sensor_start;
     if (recognition_requested)
     {
-      recognition_requested = false;
-      std::vector<std::string> protoNames = {"BALL"};//, "RED_PLAYER_1", "RED_PLAYER_2", "BLUE_PLAYER_1", "BLUE_PLAYER_2"};
+      // recognition_requested = false;
+      std::vector<std::string> protoNames = {"BALL", "RED_PLAYER_1", "RED_PLAYER_2", "BLUE_PLAYER_1", "BLUE_PLAYER_2"};
       for (std::string protoName : protoNames)
       {
         const double *values;
