@@ -10,4 +10,5 @@ elsiros_webots
    programming_hints
    instruction
    Rules
+   Robot Design
    example
