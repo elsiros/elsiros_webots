@@ -1,0 +1,52 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021, Starkit Team
+# This file is distributed under the same license as the ELSIROS package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ELSIROS \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-13 11:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/instruction.md:1
+msgid "Testing instructions"
+msgstr ""
+
+#: ../../source/instruction.md:3
+msgid "Image:"
+msgstr ""
+
+#: ../../source/instruction.md:5
+msgid ""
+"![starkit](https://user-"
+"images.githubusercontent.com/18539647/132945984-4406c492-a688-4cbb-"
+"b9b3-9350dbb68eeb.png)"
+msgstr ""
+
+#: ../../source/instruction.md:5
+msgid "starkit"
+msgstr ""
+
+#: ../../source/instruction.md:7
+msgid "YouTube video:"
+msgstr ""
+
+#: ../../source/instruction.md:9
+msgid ""
+"[![IMAGE ALT TEXT "
+"HERE](https://img.youtube.com/vi/Y7_bc8fjAnU/0.jpg)](https://youtu.be/Y7_bc8fjAnU)"
+msgstr ""
+
+#: ../../source/instruction.md:9
+msgid "IMAGE ALT TEXT HERE"
+msgstr ""
+

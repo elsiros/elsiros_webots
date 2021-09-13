@@ -1,0 +1,51 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021, Starkit Team
+# This file is distributed under the same license as the ELSIROS package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ELSIROS \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-13 11:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/autoapi/launcher_pb/index.rst:2
+msgid ":py:mod:`launcher_pb`"
+msgstr ""
+
+#: ../../source/autoapi/launcher_pb/index.rst:8
+msgid ""
+"The module is designed by team Robokit of Phystech Lyceum and team "
+"Starkit of MIPT under mentorship of Azer Babaev. The module is designed "
+"for strategy of soccer game by forward and goalkeeper."
+msgstr ""
+
+#: ../../source/autoapi/launcher_pb/index.rst:15
+msgid "Module Contents"
+msgstr ""
+
+#: ../../source/autoapi/launcher_pb/index.rst:19
+msgid "Functions"
+msgstr ""
+
+#: ../../source/autoapi/launcher_pb/index.rst:27:<autosummary>:1
+msgid ""
+":obj:`init_gcreceiver <launcher_pb.init_gcreceiver>`\\ \\(team\\, "
+"player\\, is\\_goalkeeper\\)"
+msgstr ""
+
+#: ../../source/autoapi/launcher_pb/index.rst:27:<autosummary>:1
+msgid ""
+":obj:`player_super_cycle <launcher_pb.player_super_cycle>`\\ "
+"\\(falling\\, team\\_id\\, player\\_number\\, SIMULATION\\, "
+"current\\_work\\_directory\\, robot\\, pause\\)"
+msgstr ""
+

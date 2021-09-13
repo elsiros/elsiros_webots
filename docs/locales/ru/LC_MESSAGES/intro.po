@@ -19,7 +19,7 @@ msgstr ""
 
 #: ../../source/intro.md:1
 msgid "ELSIROS INTRO"
-msgstr ""
+msgstr "Введение в ELSIROS"
 
 #: ../../source/intro.md:3
 msgid ""

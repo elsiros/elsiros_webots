@@ -92,3 +92,7 @@ html_static_path = ['_static']
 # Document Python Code
 autoapi_type = 'python'
 autoapi_dirs = ['../../controllers/VIA_PB']
+
+# Translations
+locale_dirs = ['../locales/']   # path is example but recommended.
+gettext_compact = False
