@@ -817,7 +817,7 @@ public:
     if (recognition_requested)
     {
       // recognition_requested = false;
-      std::vector<std::string> protoNames = {"BALL", "RED_PLAYER_1", "RED_PLAYER_2", "BLUE_PLAYER_1", "BLUE_PLAYER_2"};
+      std::vector<std::string> protoNames = {"BALL"};//, "RED_PLAYER_1", "RED_PLAYER_2", "BLUE_PLAYER_1", "BLUE_PLAYER_2"};
       for (std::string protoName : protoNames)
       {
         const double *values;
@@ -919,10 +919,10 @@ public:
         double top_distance_visible_area = std::tan(3.1415/2 + neckTilt +
                                         45 * 3.14 / 360) * 0.413;
 
-        // std::cout << "right_yaw_visible_area: " << right_yaw_visible_area << std::endl;
-        // std::cout << "left_yaw_visible_area: " << left_yaw_visible_area << std::endl;
-        // std::cout << "bottom_distance_visible_area: " << bottom_distance_visible_area << std::endl;
-        // std::cout << "top_distance_visible_area: " << top_distance_visible_area << std::endl;
+        std::cout << "right_yaw_visible_area: " << right_yaw_visible_area << std::endl;
+        std::cout << "left_yaw_visible_area: " << left_yaw_visible_area << std::endl;
+        std::cout << "bottom_distance_visible_area: " << bottom_distance_visible_area << std::endl;
+        std::cout << "top_distance_visible_area: " << top_distance_visible_area << std::endl;
         bool objectInImage = false;
         bool robotIsReady = false;
         if ((distance > bottom_distance_visible_area) && (distance < top_distance_visible_area) && (angle < left_yaw_visible_area) && (angle > right_yaw_visible_area))
