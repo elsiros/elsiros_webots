@@ -31,7 +31,11 @@ jobs:
       run: |
         git config --global user.name 'translation_generator'
         git config --global user.email 'vladimir.litvinenko.1997@gmail.com'
-        git add docs/locales
-        git commit -m "Automated translation generation" --allow-empty
-        echo ${GITHUB_REF#refs/heads/}
-        git push origin ${GITHUB_REF#refs/heads/}
+        if [ -n "$(git status --porcelain)" ]; then
+          git add docs/locales;
+          git commit -m "Automated translation generation" --allow-empty;
+          git push origin ${GITHUB_REF#refs/heads/};
+        else
+          echo "no changes";
+        fi
+        
