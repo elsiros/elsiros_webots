@@ -768,7 +768,7 @@ public:
     if (recognition_requested)
     {
       // recognition_requested = false;
-      std::vector<std::string> protoNames = {"BALL"};//, "RED_PLAYER_1", "RED_PLAYER_2", "BLUE_PLAYER_1", "BLUE_PLAYER_2"};
+      std::vector<std::string> protoNames = {"BALL", "RED_PLAYER_1", "RED_PLAYER_2", "BLUE_PLAYER_1", "BLUE_PLAYER_2"};
       for (std::string protoName : protoNames)
       {
         const double *values;
