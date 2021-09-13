@@ -30,4 +30,4 @@ jobs:
         git config --global user.name 'translation_generator'
         git config --global user.email 'vladimir.litvinenko.1997@gmail.com'
         git commit -am "Automated translation generation"
-        git push
+        git push origin ${GITHUB_REF##*/}
