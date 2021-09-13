@@ -76,7 +76,7 @@ class CommunicationManager():
                 self.sensors[sensor].put(message[sensor])
 
     def run(self):
-        data = {"head_pitch": -1.0, "head_yaw": 0.9}
+        data = {"head_pitch": 0.0, "head_yaw": 0.9}
 
         self.add_to_queue(data)
         while(True):
@@ -97,14 +97,7 @@ class CommunicationManager():
             time.sleep(0.02)
             # пример получения данных из включенного и существующего сенсора
             print("ball: ", self.get_sensor("BALL"))
-            print("imu_head: ", self.get_sensor("imu_head"))
-            #print(self.get_sensor("time"))
-            #print(self.get_sensor("imu_body"))
-            #print(self.get_sensor("ball"))
-            servo_data = {}
-            for key in self.WBservosList:
-                servo_data.update({key: 0})
-            self.add_to_queue(servo_data)
+            print("gps_body: ", self.get_sensor("gps_body"))
 
 
 if __name__ == '__main__':
