@@ -243,7 +243,9 @@ class Blurrer {
     Blurrer() :
       object_angle_noize(0.03), 
       object_distance_noize(0.1), 
-      position_coords_noize(0.1)
+      observation_bonus(0.1),
+      step_loss(0.01),
+      constant_loc_noize(0.01)
       {
         loadJson();
       };
@@ -273,24 +275,52 @@ class Blurrer {
         {
           object_distance_noize = value;
         }
-        else if (type == "position_coords_noize")
+        else if (type == "observation_bonus")
         {
-          position_coords_noize = value;
+          observation_bonus = value;
+        }
+        else if (type == "step_loss")
+        {
+          step_loss = value;
+        }
+        else if (type == "constant_loc_noize")
+        {
+          constant_loc_noize = value;
         }
         else
         {
           std::cerr << "Incorrect type [" << type << "] in blurrer json. " << std::endl;
         }
-        // std::cout << "Line(" << value << ")\n";
       }
 
 
       inFile.close();
     }
-    
+
+    void update_consistency(double value)
+    {
+      double tmp = consistency + value;
+      consistency = std::max(0.0, std::min(tmp, 1.0));
+    }
+
+    void step()
+    {
+      update_consistency(-step_loss);
+    }
+
+    void observation()
+    {
+      update_consistency(observation_bonus);
+    }
+
+    void reset()
+    {
+      consistency = 1;
+    }
 
     double blur_coord(double coord)
     {
+      double position_coords_noize = 1 - consistency + constant_loc_noize;
       return coord * (1 + (position_coords_noize - (float) std::rand() / RAND_MAX * position_coords_noize * 2));
     }
 
@@ -305,7 +335,10 @@ class Blurrer {
     }
     double object_angle_noize;
     double object_distance_noize;
-    double position_coords_noize;
+    double observation_bonus;
+    double step_loss;
+    double consistency = 1;
+    double constant_loc_noize;
 };
 
 class PlayerServer {
@@ -379,6 +412,7 @@ public:
       if (customData == "" && actuators_enabled == FALSE) {
         resumeMotors();
         actuators_enabled = TRUE;
+        blurrer.reset();
       } else if (customData == "penalized" && actuators_enabled) {
         // penalized robots gets only their actuators disabled so that they become asleep
         stopMotors();
@@ -881,6 +915,7 @@ public:
         if (checkZeroLegs < 0.01)
         {
           robotIsReady = true;
+          blurrer.observation();
         }
 
         // std::cout << "checkZeroLegs: " << checkZeroLegs << std::endl;
@@ -916,9 +951,9 @@ public:
         measurement->set_name(gps->getName());
         const double *values = gps->getValues();
         Vector3 *vector3 = measurement->mutable_value();
-        vector3->set_x(values[0]);
-        vector3->set_y(values[1]);
-        vector3->set_z(values[2]);
+        vector3->set_x(blurrer.blur_coord(values[0]));
+        vector3->set_y(blurrer.blur_coord(values[1]));
+        vector3->set_z(blurrer.consistency);
         // std::cout << "Position sensors: " << values[0] << values[1] << values[3] << std::endl;
         continue;
       }
@@ -1074,6 +1109,7 @@ public:
       std::cout << "\t\t" << active_sensor << " update time " << duration(sc::now() - sensor_start).count() << "ms"
                 << std::endl;
     }
+    blurrer.step();
 
   }
 
