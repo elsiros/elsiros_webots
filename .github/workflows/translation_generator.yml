@@ -21,7 +21,6 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install sphinx sphinx-intl
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Generate .po files for translation
       run: |
         sphinx-build -b gettext docs/source docs/_build/gettext
