@@ -24,7 +24,9 @@ jobs:
     - name: Generate .po files for translation
       run: |
         sphinx-build -b gettext docs/source docs/_build/gettext
-        sphinx-intl update -p docs/_build/gettext -l ru
+        cd docs
+        sphinx-intl update -p _build/gettext -l ru
+        cd ..
     - name: Commit report
       run: |
         git config --global user.name 'translation_generator'
