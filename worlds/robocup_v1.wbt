@@ -17,16 +17,13 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.12894538031806083 0.4993206617503216 0.8567683267043966 2.900835833137956
-  position 1.912031083329368 4.628816727098789 2.4726735732351006
+  orientation 0.28039255580830064 0.4917660000205678 0.8243459321614076 2.4560166501074403
+  position 3.96778393485517 2.8865283485215767 2.15994679796346
   follow "soccer ball"
 }
 DEF BALL Ball {
   translation 0 0 0.0471872
   rotation -1 0 0 0.03186633972565336
-  centerOfMass [
-    0 0 0
-  ]
 }
 TexturedBackground {
   texture "stadium"
@@ -37,12 +34,12 @@ TexturedBackgroundLight {
 }
 ElsirosField {
 }
-Kondo006 {
+DEF BLUE_PLAYER_2 Kondo006 {
   translation -0.7 0 0.3
   name "Kondo006(1)"
   controllerArgs [
     "forward"
-    "1"
+    "4"
     "[-0.7, 0, 0]"
     "2"
     "2"
@@ -51,7 +48,7 @@ Kondo006 {
   teamColor "blue"
   playerNumber "2"
 }
-Kondo006 {
+DEF BLUE_PLAYER_1 Kondo006 {
   translation -1.8 0 0.3
   name "Kondo006(2)"
   controllerArgs [
@@ -65,7 +62,7 @@ Kondo006 {
   teamColor "blue"
   playerNumber "1"
 }
-Kondo006 {
+DEF RED_PLAYER_1 Kondo006 {
   translation 1.8 0 0.3
   rotation 0 0 1 3.141592653589793
   name "Kondo006(3)"
@@ -78,11 +75,12 @@ Kondo006 {
     "1"
   ]
   teamColor "red"
+  playerNumber "1"
 }
-Kondo006 {
+DEF RED_PLAYER_2 Kondo006 {
   translation 0.4 0 0.3
   rotation 0 0 1 3.141592653589793
-  name "Kondo006(3)"
+  name "Kondo006(4)"
   controllerArgs [
     "forward"
     "1"
@@ -92,4 +90,5 @@ Kondo006 {
     "1"
   ]
   teamColor "red"
+  playerNumber "2"
 }

@@ -34,12 +34,12 @@ PROTO RobocupGoal [
       goal_height = 0.6
     end
 
-    post_radius = 0.03 -- Diameter/width/depth must be between 0.08-0.12
+    post_radius = 0.025 -- Diameter/width/depth must be between 0.08-0.12
     post_spacing = D + 2 * post_radius
     post_height = goal_height + post_radius
     backpost_radius = 0.02 -- Not defined in rules
     bounding_object_thickness_sides = 2 * backpost_radius -- Not defined in rules
-    bounding_object_thickness_back = 0.3 -- Not defined in rules
+    bounding_object_thickness_back = backpost_radius -- Not defined in rules
   }%
 
   Solid {

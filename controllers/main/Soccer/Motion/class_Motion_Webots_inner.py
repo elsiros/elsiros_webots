@@ -22,7 +22,8 @@ from class_Motion_real import Motion_real
 from compute_Alpha_v3 import Alpha
 
 class Motion_sim(Motion_real):
-    def __init__(self, glob, robot, gcreceiver):
+    def __init__(self, glob, robot, gcreceiver, pause):
+        self.pause = pause
         self.FRAMELENGTH = 0.02
         import random as random
         self.random = random
@@ -51,6 +52,8 @@ class Motion_sim(Motion_real):
         self.sim_step_counter = 0
         self.gcreceiver = gcreceiver
         self.robot = robot
+        self.synchronization = True #self.robot.getSelf().getField('synchronization').getSFBool()
+        self.former_step_time = 0
         super().__init__(glob)
         with open(current_work_directory + "Init_params/Sim_calibr.json", "r") as f:
             data1 = json.loads(f.read())
@@ -59,7 +62,7 @@ class Motion_sim(Motion_real):
         self.head_pitch_with_horizontal_camera = data1['head_pitch_with_horizontal_camera']
         self.neck_tilt = self.neck_calibr
         self.Vision_Sensor_Display_On = self.glob.params['Vision_Sensor_Display_On']
-        self.timestep = int(self.robot.getBasicTimeStep())
+        self.timestep = 20  #int(self.robot.getBasicTimeStep())
         self.ACTIVEJOINTS = ['Leg_right_10','Leg_right_9','Leg_right_8','Leg_right_7','Leg_right_6','Leg_right_5','hand_right_4',
             'hand_right_3','hand_right_2','hand_right_1','Tors1','Leg_left_10','Leg_left_9','Leg_left_8',
             'Leg_left_7','Leg_left_6','Leg_left_5','hand_left_4','hand_left_3','hand_left_2','hand_left_1','head0','head12']
@@ -100,15 +103,39 @@ class Motion_sim(Motion_real):
                     (12,2): "head_pitch"
                   }
 
+    def game_time(self):
+        return self.robot.getTime()
+
     def pause_in_ms(self, time_in_ms):
         self.sim_Progress(time_in_ms/1000)
 
     def sim_Trigger(self):
-        if self.robot.getSelf().getField('customData').getSFString() == 'penalized':
-            self.falling_Flag = 3
-            for i in range(len(self.WBservosList)):
-                self.robot.getDevice(self.WBservosList[i]).setPosition(0)
-        self.robot.step(20)
+        if not self.pause.Flag:
+            #if self.robot.getSelf().getField('customData').getSFString() == 'penalized':
+            #    self.falling_Flag = 3
+            #    for i in range(len(self.WBservosList)):
+            #        self.robot.getDevice(self.WBservosList[i]).setPosition(0)
+            if self.gcreceiver != None:
+                if self.gcreceiver.team_state != None:
+                    if self.gcreceiver.player_state.penalty != 0:
+                        self.falling_Flag = 3
+                        for i in range(len(self.WBservosList)):
+                            self.robot.getDevice(self.WBservosList[i]).setPosition(0)
+            if self.synchronization:
+                self.robot.step(self.timestep)
+            else:
+                self.wait_for_step()
+
+    def wait_for_step(self):
+        while True:
+            time1 = int( self.game_time() * 1000 )
+            print(time1)
+            if time1 >= (self.former_step_time + self.timestep):
+                self.former_step_time = time1
+                break
+            else:
+                time.sleep(0.001)
+
 
     def imu_activation(self):
         self.robot.getDevice("imu_head").enable(1)
@@ -232,6 +259,22 @@ class Motion_sim(Motion_real):
     def sim_Get_Ball_Position(self):
         return self.robot.getFromDef("BALL").getPosition()
 
+    def sim_Get_Obstacles(self):
+        robot_names = ['RED_PLAYER_1', 'RED_PLAYER_2', 'BLUE_PLAYER_1', 'BLUE_PLAYER_2']
+        my_name = self.robot.getSelf().getDef()
+        robot_names.pop(robot_names.index(my_name))
+        #print('my_name:', my_name)
+        factor = self.local.side_factor
+        new_obstacles = []
+        ball_position = self.robot.getFromDef("BALL").getPosition()
+        new_obstacles.append([factor*ball_position[0], factor*ball_position[1], 0.15] )
+        for name in robot_names:
+            obstacle = self.robot.getFromDef(name).getPosition()
+            new_obstacles.append([factor*obstacle[0], factor*obstacle[1], 0.20])
+        self.glob.obstacles = new_obstacles
+        print ('new_obstacles:', new_obstacles)
+        return
+
     def sim_Get_Robot_Position(self):
         self.sim_Trigger()
         x, y, z  = self.robot.getSelf().getPosition()
@@ -241,7 +284,8 @@ class Motion_sim(Motion_real):
 
     def sim_Start(self):
         for i in range(len(self.ACTIVEJOINTS)):
-            position = self.robot.getDevice(self.WBservosList[i]).getTargetPosition()
+            #position = self.robot.getDevice(self.WBservosList[i]).getTargetPosition()
+            position = 0
             self.activePose.append(position)
 
     def sim_Progress(self,simTime):  # simTime in seconds
