@@ -20,6 +20,7 @@
 #include <sys/time.h>
 #endif
 #include <time.h>
+#define NOMINMAX
 #include <windows.h> 
 
 #ifdef _WIN32
