@@ -827,15 +827,43 @@ public:
         double angle = tmp_angle * (values[1] - gps[1]) / std::abs(gps[1] - values[1]) - imu[2];
         std::cout << "angle: " << blurrer.blur_angle(angle) << " distance: " << blurrer.blur_distance(distance) << " imu: " << imu[2] << std::endl;
 
-        
+        double max_distance = 4.0;
+        double min_distance = 0.0;
         
         double right_yaw_visible_area = -neckPan - 60 * 3.14 / 360;
         double left_yaw_visible_area = -neckPan + 60 * 3.14 / 360;
-        double bottom_distance_visible_area = std::tan(3.1415/2 + neckTilt -
-                                        45 * 3.14 / 360) * 0.413;
-        double top_distance_visible_area = std::tan(3.1415/2 + neckTilt +
-                                        45 * 3.14 / 360) * 0.413;
 
+        double top_distance_visible_area = 0;
+        double bottom_distance_visible_area = 0;
+
+        if (-neckTilt < 45 * 3.14 / 360 + 0.01)
+        {
+          top_distance_visible_area = max_distance;
+        }
+        else 
+        {
+          top_distance_visible_area = std::tan(3.1415/2 + neckTilt +
+                                        45 * 3.14 / 360) * 0.413;
+        }
+
+        if (-neckTilt > 3.14/2 - 45 * 3.14 / 360 - 0.01)
+        {
+          bottom_distance_visible_area = min_distance;
+        }
+        else 
+        {
+          bottom_distance_visible_area = std::tan(3.1415/2 + neckTilt -
+                                        45 * 3.14 / 360) * 0.413;
+        }
+
+
+  
+        // double bottom_distance_visible_area = std::tan(3.1415/2 + neckTilt +
+        //                                 45 * 3.14 / 360) * 0.413;
+
+                  
+        std::cout << "neckTilt: " << neckTilt << std::endl;
+        std::cout << "neckPan: " << neckPan << std::endl;
         std::cout << "right_yaw_visible_area: " << right_yaw_visible_area << std::endl;
         std::cout << "left_yaw_visible_area: " << left_yaw_visible_area << std::endl;
         std::cout << "bottom_distance_visible_area: " << bottom_distance_visible_area << std::endl;
