@@ -1,68 +1,31 @@
-"""[summary]
+import queue
 
-    Returns:
-        [type]: [description]
-"""
 from google.protobuf import text_format
 
 import messages_pb2
 
 
 class MessageManager():
-    """[summary]
-    """
     def __init__(self, init_buffer_size=4):
         self.size = init_buffer_size
-        self.init_request = None
+        self.init_request = 0
 
     def get_size(self):
-        """[summary]
-        Returns:
-            [type]: [description]
-        """
         return self.size
 
-    @staticmethod
-    def create_requests_message():
-        """[summary]
-
-        Returns:
-            [type]: [description]
-        """
+    def create_requests_message(self):
         return messages_pb2.ActuatorRequests()
 
-    @staticmethod
-    def create_answer_message():
-        """[summary]
-
-        Returns:
-            [type]: [description]
-        """
+    def create_answer_message(self):
         return messages_pb2.SensorMeasurements()
 
     def build_request_from_file(self, path):
-        """[summary]
-
-        Args:
-            path ([type]): [description]
-
-        Returns:
-            [type]: [description]
-        """
         request = messages_pb2.ActuatorRequests()
-        with open(path, 'r') as actuator_requests:
+        with open(path) as actuator_requests:
             text_format.Parse(actuator_requests.read(), request)
         return request
 
     def build_request_positions(self, positions):
-        """[summary]
-
-        Args:
-            positions ([type]): [description]
-
-        Returns:
-            [type]: [description]
-        """
         request = messages_pb2.ActuatorRequests()
         for pos in positions:
             motor = request.motor_positions.add()
@@ -71,25 +34,9 @@ class MessageManager():
         return self.generate_message(request)
 
     def generate_message(self, message):
-        """[summary]
-
-        Args:
-            message ([type]): [description]
-
-        Returns:
-            [type]: [description]
-        """
         return message.ByteSize().to_bytes(4, byteorder='big', signed=False)+message.SerializeToString()
 
     def message_from_file(self, path):
-        """[summary]
-
-        Args:
-            path ([type]): [description]
-
-        Returns:
-            [type]: [description]
-        """
         return self.generate_message(self.build_request_from_file(path))
 
     def get_answer_size(self, content_size):
@@ -97,7 +44,7 @@ class MessageManager():
         return size
 
     def add_initial_request(self, sensor_name, sensor_time):
-        if self.init_request is None:
+        if self.init_request == 0:
             self.init_request = messages_pb2.ActuatorRequests()
         sensor = self.init_request.sensor_time_steps.add()
         sensor.name = sensor_name
@@ -107,37 +54,21 @@ class MessageManager():
         return self.generate_message(self.init_request)
 
     def parse_answer_message(self, data):
-        """[summary]
-
-        Args:
-            data ([type]): [description]
-
-        Returns:
-            [type]: [description]
-        """
         message = messages_pb2.SensorMeasurements()
         message.ParseFromString(data)
         return self.parse_message(message)
 
-    @staticmethod
-    def parse_message(message) -> dict:
-        """[summary]
-
-        Args:
-            message ([type]): [description]
-
-        Returns:
-            dict: dict with keys of names sensors
-        """
+    def parse_message(self, message):
         parse_message = {}
-        parse_message.update({"time": {"unix time": message.real_time, "sim time": message.time}})
+        #parse_message.update({"real_time": message.real_time})
+        #parse_message.update({"messages": message.messages})
+        #parse_message.update({"accelerometers": message.accelerometers})
         for sensor in message.accelerometers:
             parse_message.update({sensor.name: {"position": [
-                sensor.value.X, sensor.value.Y, sensor.value.Z], "time": message.time}})
+                                 sensor.value.X, sensor.value.Y, sensor.value.Z], "time": message.time}})
         for sensor in message.cameras:
             parse_message.update({sensor.name: {"width": sensor.width, "height": sensor.height,
-                                                "quality": sensor.quality, "image": sensor.image, 
-                                                "time": message.time}})
+                                 "quality": sensor.quality, "image": sensor.image, "time": message.time}})
         for sensor in message.position_sensors:
             parse_message.update(
                 {sensor.name: {"position": sensor.value, "time": message.time}})
@@ -153,6 +84,5 @@ class MessageManager():
                     {sensor.name: {"distance": sensor.distance, "course": sensor.course, "time": message.time}})
         for sensor in message.imu:
             parse_message.update(
-                {sensor.name: {"position": [sensor.angles.roll, sensor.angles.pitch,
-                sensor.angles.yaw], "time": message.time}})
+                {sensor.name: {"position": [sensor.angles.pitch, sensor.angles.roll, sensor.angles.yaw], "time": message.time}})
         return parse_message
