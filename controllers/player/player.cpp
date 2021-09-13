@@ -15,8 +15,9 @@
 #include <assert.h>
 #include <math.h>
 #include <stdio.h>
+#include <fstream>
 #ifndef _WIN32
-    #include <sys/time.h>
+#include <sys/time.h>
 #endif
 #include <time.h>
 #include <windows.h> 
@@ -78,13 +79,13 @@ int gettimeofday(struct timeval2* tv/*in*/, struct timezone2* tz/*in*/)
 typedef int socklen_t;
 #define MSG_NOSIGNAL 0
 void usleep(__int64 usec) {
-  HANDLE timer;
-  LARGE_INTEGER ft;
-  ft.QuadPart = -10 * usec;
-  timer = CreateWaitableTimer(NULL, TRUE, NULL);
-  SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0);
-  WaitForSingleObject(timer, INFINITE);
-  CloseHandle(timer);
+    HANDLE timer;
+    LARGE_INTEGER ft;
+    ft.QuadPart = -10 * usec;
+    timer = CreateWaitableTimer(NULL, TRUE, NULL);
+    SetWaitableTimer(timer, &ft, 0, NULL, NULL, 0);
+    WaitForSingleObject(timer, INFINITE);
+    CloseHandle(timer);
 }
 #else
 
@@ -298,10 +299,53 @@ public:
 class Blurrer {
   public:
     Blurrer() :
-      object_angle_noize(3), 
+      object_angle_noize(0.03), 
       object_distance_noize(0.1), 
       position_coords_noize(0.1)
-      {};
+      {
+        loadJson();
+      };
+
+    void loadJson()
+    {
+      std::cout << "Loading json..." << std::endl;
+      std::ifstream inFile("blurrer.txt");
+      if (!inFile) {
+          std::cout << "Unable to open file";
+          exit(1); // terminate with error
+      }
+      std::string line;
+      while(std::getline(inFile,line))
+      {
+        // std::cout << "Line(" << line << ")\n";
+
+        int pos = line.find(":", 0);
+        double value = std::stod(line.substr(pos+1, line.length()));
+        std::string type = line.substr(0, pos);
+
+        if (type == "object_angle_noize")
+        {
+          object_angle_noize = value;
+        }
+        else if (type == "object_distance_noize")
+        {
+          object_distance_noize = value;
+        }
+        else if (type == "position_coords_noize")
+        {
+          position_coords_noize = value;
+        }
+        else
+        {
+          std::cerr << "Incorrect type [" << type << "] in blurrer json. " << std::endl;
+        }
+        // std::cout << "Line(" << value << ")\n";
+      }
+
+
+      inFile.close();
+    }
+    
 
     double blur_coord(double coord)
     {
@@ -315,7 +359,7 @@ class Blurrer {
 
     double blur_distance(double distance)
     {
-      return distance * (1 + (object_angle_noize - (float) std::rand() / RAND_MAX * object_angle_noize * 2));
+      return distance * (1 + (object_distance_noize - (float) std::rand() / RAND_MAX * object_distance_noize * 2));
     }
     double object_angle_noize;
     double object_distance_noize;
@@ -772,24 +816,15 @@ public:
     std::chrono::time_point<sc> sensor_start;
     if (recognition_requested)
     {
-      recognition_requested = false;
+      // recognition_requested = false;
       std::vector<std::string> protoNames = {"BALL", "RED_PLAYER_1", "RED_PLAYER_2", "BLUE_PLAYER_1", "BLUE_PLAYER_2"};
       for (std::string protoName : protoNames)
       {
-        // std::cerr << protoName << std::endl;
         const double *values;
-        // get positions of all robots
-        // try {
-        //   values = robot->getFromDef(protoName)->getPosition();
-        //   if (values)
-        //     std::cout << protoName << " x: " << values[0] << " y: " << values[1] << std::endl;
-        // }
-        // catch (...) {
-        //   std::cerr << "Exception in get from def" << std::endl;
-        // }
         
         values = robot->getFromDef(protoName)->getPosition();
-        std::cout << protoName << " x: " << values[0] << " y: " << values[1] << std::endl;
+
+        // std::cout << protoName << " x: " << values[0] << " y: " << values[1] << std::endl;
 
         // move to rotation distance
 
@@ -873,7 +908,7 @@ public:
         if (values[0] < gps[0])
           tmp_angle = 3.1415 - tmp_angle;
         double angle = tmp_angle * (values[1] - gps[1]) / std::abs(gps[1] - values[1]) - imu[2];
-        std::cout << "angle: " << angle << " distance: " << distance << " imu: " << imu[2] << std::endl;
+        std::cout << "angle: " << blurrer.blur_angle(angle) << " distance: " << blurrer.blur_distance(distance) << " imu: " << imu[2] << std::endl;
 
         
         
@@ -910,8 +945,8 @@ public:
         {
           DetectionMeasurement *measurement = sensor_measurements.add_objects();
           measurement->set_name(protoName);
-          measurement->set_course(angle);
-          measurement->set_distance(distance);
+          measurement->set_course(blurrer.blur_angle(angle));
+          measurement->set_distance(blurrer.blur_distance(distance));
         }
         
       }
