@@ -1,4 +1,9 @@
 """
+The module is designed by team Robokit of Phystech Lyceum and team Starkit
+of MIPT under mentorship of Azer Babaev.
+The module is designed for strategy of soccer game by forward and goalkeeper.
+"""
+"""
 Possible values of 1-st argument role: 
 forward, goalkeeper, penalty_Shooter, penalty_Goalkeeper, run_test
 Possible values of 2-nd argument: 1-8
@@ -35,15 +40,22 @@ class Falling:
     def __init__(self):
         self.Flag = 0
 
+class Pause:
+    def __init__(self):
+        self.Flag = False
+global pause
+pause = Pause()
+
 def main_procedure():
     global robot
+    global pause
     arguments = sys.argv
     second_pressed_button = int(arguments[2])
     team = int(arguments[4])
     player_number = int(arguments[5])
     falling = Falling()
     if second_pressed_button == 0:
-        player_super_cycle(falling, team, player_number, SIMULATION, current_work_directory, robot)
+        player_super_cycle(falling, team, player_number, SIMULATION, current_work_directory, robot, pause)
     print('teamColor = ', robot.getSelf().getField('teamColor').getSFString())
     print('Player is going to play without Game Controller')
     role = arguments[1]
@@ -51,7 +63,7 @@ def main_procedure():
     glob = Glob(SIMULATION, current_work_directory)
     glob.pf_coord = initial_coord
     #print(robot)
-    motion = Motion_sim(glob, robot, None)
+    motion = Motion_sim(glob, robot, None, pause)
     motion.sim_Start()
     motion.direction_To_Attack = -initial_coord[2]
     motion.activation()
@@ -76,7 +88,6 @@ class RedirectText(object):
 class Main_Panel(wx.Frame):
     def __init__(self, *args, **kwargs):
         super(Main_Panel, self).__init__(*args, **kwargs)
-
         self.InitUI()
         wx.CallLater(1000, self.main_procedure)
 
@@ -134,7 +145,13 @@ class Main_Panel(wx.Frame):
         sys.exit(0)
 
     def ShowMessage2(self, event):
+        global pause
+        if pause.Flag:
+            pause.Flag = False
+        else:
+            pause.Flag = True
         print('Pause button pressed')
+
 
 def main():
 
