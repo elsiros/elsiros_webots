@@ -24,6 +24,3 @@ Below is technical description of real Robokit robot.
 ![Robokit description-0](https://user-images.githubusercontent.com/57300002/133003954-6c4c3827-8f13-4a8a-9528-364fb16dd564.jpg)
 
 ![Robokit description-1](https://user-images.githubusercontent.com/57300002/133003963-c74acbd5-3d44-4ffd-adee-4b687d35d40c.jpg)
-
-
-

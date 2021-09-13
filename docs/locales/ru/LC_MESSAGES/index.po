@@ -19,7 +19,7 @@ msgstr ""
 
 #: ../../source/index.rst:4
 msgid "Contents:"
-msgstr ""
+msgstr "Содержание:"
 
 #: ../../source/index.rst:2
 msgid "elsiros_webots"

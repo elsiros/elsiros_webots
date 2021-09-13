@@ -19,7 +19,7 @@ msgstr ""
 
 #: ../../source/Rules.md:1
 msgid "Rules"
-msgstr ""
+msgstr "Правила"
 
 #: ../../source/Rules.md:2
 msgid ""

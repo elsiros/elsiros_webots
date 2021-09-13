@@ -12,3 +12,4 @@ elsiros_webots
    Rules
    Robot Design
    example
+   integration
