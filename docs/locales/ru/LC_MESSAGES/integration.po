@@ -17,22 +17,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: ../../source/example.md:1
-msgid "EXAMPLE"
+#: ../../source/integration.md:1
+msgid "Integration test"
 msgstr ""
 
-#: ../../source/example.md:2
-msgid ""
-"![robocup_hsjl-1](https://user-"
-"images.githubusercontent.com/57300002/132947003-51c07a9a-"
-"2a49-4b09-8e90-e2df6ba3ad22.png)"
-msgstr ""
-
-#: ../../source/example.md:2
-msgid "robocup_hsjl-1"
-msgstr ""
-
-#: ../../source/example.md:4
-msgid "This is an example of the image"
+#: ../../source/integration.md:3
+msgid "This is an integration test"
 msgstr ""
 
