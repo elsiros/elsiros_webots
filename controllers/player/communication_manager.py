@@ -77,7 +77,7 @@ class CommunicationManager():
                 self.sensors[sensor].put(message[sensor])
 
     def run(self):
-        data = ({"head_pitch": 0.0, "head_yaw": 0.9}, {"camera":20})
+        data = ({"head_pitch": -0.3, "head_yaw": 0.0}, {"recognition":5})
 
         self.add_to_queue(data)
         while(True):
@@ -96,7 +96,7 @@ class CommunicationManager():
                              "left_elbow_pitch", "left_shoulder_twirl", "left_shoulder_roll",
                              "left_shoulder_pitch", "head_yaw", "head_pitch"]
         while(True):
-            time.sleep(0.02)
+            time.sleep(0.5)
             # пример получения данных из включенного и существующего сенсора
             print("ball: ", self.get_sensor("BALL"))
             #print("gps_body: ", self.get_sensor("gps_body"))
