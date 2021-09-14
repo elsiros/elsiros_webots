@@ -63,11 +63,16 @@ class MessageManager():
         Returns:
             [type]: [description]
         """
+       
         request = messages_pb2.ActuatorRequests()
-        for pos in positions:
+        for sen in positions[1]:
+            sensor = request.sensor_time_steps.add()
+            sensor.name = sen
+            sensor.timeStep = positions[1][sen]
+        for pos in positions[0]:
             motor = request.motor_positions.add()
             motor.name = pos
-            motor.position = positions[pos]
+            motor.position = positions[0][pos]
         return self.generate_message(request)
 
     def generate_message(self, message):
@@ -149,10 +154,17 @@ class MessageManager():
                 {sensor.name: {"position": [sensor.value.X, sensor.value.Y], "consistency": sensor.value.Z, "time": message.time}})
         if hasattr(message, "objects"):
             for sensor in message.objects:
-                parse_message.update(
-                    {sensor.name: {"distance": sensor.distance, "course": sensor.course, "time": message.time}})
+                if sensor.name == "ball":
+                    parse_message.update(
+                        {sensor.name: {"position": [sensor.X, sensor.Y], "time": message.time}})
+                elif sensor.name == "robot":
+                    parse_message.update(
+                    {sensor.name: {"position": [sensor.X, sensor.Y], "time": message.time}})
         for sensor in message.imu:
             parse_message.update(
                 {sensor.name: {"position": [sensor.angles.roll, sensor.angles.pitch,
                 sensor.angles.yaw], "time": message.time}})
+        for sensor in message.messages:
+            parse_message.update(
+                {sensor.name: {"message_type": sensor.message_type, "text": sensor.text, "time": message.time}})
         return parse_message
