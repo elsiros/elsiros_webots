@@ -56,7 +56,7 @@ class Motion_sim(Motion_real):
         self.head_pitch_with_horizontal_camera = data1['head_pitch_with_horizontal_camera']
         self.neck_tilt = self.neck_calibr
         self.Vision_Sensor_Display_On = self.glob.params['Vision_Sensor_Display_On']
-        self.timestep = 20  #int(self.robot.getBasicTimeStep())
+        self.timestep = 15  #int(self.robot.getBasicTimeStep())
         self.ACTIVEJOINTS = ['Leg_right_10','Leg_right_9','Leg_right_8','Leg_right_7','Leg_right_6','Leg_right_5','hand_right_4',
             'hand_right_3','hand_right_2','hand_right_1','Tors1','Leg_left_10','Leg_left_9','Leg_left_8',
             'Leg_left_7','Leg_left_6','Leg_left_5','hand_left_4','hand_left_3','hand_left_2','hand_left_1','head0','head12']
@@ -224,7 +224,7 @@ class Motion_sim(Motion_real):
             servo_data.update({key:value})
         self.robot.add_to_queue(servo_data)
         self.sim_Trigger()
-        self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.get_sensor("imu_body")['position']
+        #self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.get_sensor("imu_body")['position']
         
 
     def move_head(self, pan, tilt):

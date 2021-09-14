@@ -3,6 +3,7 @@
 
 import sys, os
 import math, time, json
+import starkit
 
 #from ball_Approach_Steps_Seq import *
 from .compute_Alpha_v3 import Alpha
@@ -66,7 +67,7 @@ class Motion1:
         self.rotation = 0           # -45 - +45 degrees Centigrade per step + CW, - CCW.
         self.first_Leg_Is_Right_Leg = True
         # Following paramenetrs Not recommended for change
-        self.amplitude = 32          # mm side amplitude (maximum distance between most right and most left position of Center of Mass) 53.4*2
+        self.amplitude = 50#32          # mm side amplitude (maximum distance between most right and most left position of Center of Mass) 53.4*2
         self.fr1 =8                  # frame number for 1-st phase of gait ( two legs on floor)
         self.fr2 = 12                # frame number for 2-nd phase of gait ( one leg in air)
         self.gaitHeight= 180         # Distance between Center of mass and floor in walk pose
@@ -146,8 +147,10 @@ class Motion1:
         angles =[]
         anglesR=[]
         anglesL=[]
-        anglesR = self.al.compute_Alpha_v3(self.xtr,self.ytr,self.ztr,self.xr,self.yr,self.zr,self.wr, sizes, limAlpha)
-        anglesL = self.al.compute_Alpha_v3(self.xtl,-self.ytl,self.ztl,self.xl,-self.yl,self.zl,self.wl, sizes, limAlpha)
+        #anglesR = self.al.compute_Alpha_v3(self.xtr,self.ytr,self.ztr,self.xr,self.yr,self.zr,self.wr, sizes, limAlpha)
+        #anglesL = self.al.compute_Alpha_v3(self.xtl,-self.ytl,self.ztl,self.xl,-self.yl,self.zl,self.wl, sizes, limAlpha)
+        anglesR = starkit.starkit_alpha_calculation(self.xtr,self.ytr,self.ztr,self.xr,self.yr,self.zr,self.wr, sizes, limAlpha)
+        anglesL = starkit.starkit_alpha_calculation(self.xtl,-self.ytl,self.ztl,self.xl,-self.yl,self.zl,self.wl, sizes, limAlpha)
         if len(anglesR)>1:
             for i in range(len(anglesR)):
                 if len(anglesR)==1: break

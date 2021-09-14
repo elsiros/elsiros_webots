@@ -1,0 +1,258 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021, Starkit Team
+# This file is distributed under the same license as the ELSIROS package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ELSIROS \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-14 15:22+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/intro.md:1
+msgid "ELSIROS Intro"
+msgstr "Введение в ELSIROS"
+
+#: ../../source/intro.md:3
+msgid ""
+"Soccer game of Humanoid robots is becoming popular between teams in "
+"education and academic society. This type of competitions generates many "
+"scientific research points. For students in high schools, colleges or "
+"universities in general there are 3 obstacles preventing them to set up "
+"and maintain a humanoid robot soccer team:"
+msgstr ""
+"Игра в футбол человекоподобными роботами (гуманоидами) становится "
+"популярным в университетском и научном сообществе. Этот вид соревнований "
+"является источником для большого количества научно – прикладных "
+"исследований. Для учеников школ, колледжей и студентов в общем можно "
+"сформулировать 3 основных препятствия для создания и поддержания команды "
+"из роботов-гуманоидов-футболистов:"
+
+#: ../../source/intro.md:5
+msgid "extremely high price of humanoid robots,"
+msgstr "Слишком высокая цена роботов – гуманоидов,"
+
+#: ../../source/intro.md:7
+msgid ""
+"too complex algorithmic problems to be solved at initial steps of setting"
+" robot into game,"
+msgstr ""
+"Слишком сложные алгоритмические задачи, которые необходимо решить на "
+"начальном этапе включения робота в игру,"
+
+#: ../../source/intro.md:9
+msgid ""
+"small number of teams in one geographical location – means every game is "
+"possible only together with travelling to far distance with relatively "
+"high travel charges."
+msgstr ""
+"Маленькое число команд в одном населенном пункте – означает, что "
+"каждаигра возможна только в комбинации с поездкой на дальние расстояния с"
+" относительно большими расходами на командировку."
+
+#: ../../source/intro.md:11
+msgid ""
+"All 3 obstacles can be eliminated if teams start their Humanoid Soccer "
+"experience from ELSIROS. Following advantages are obtained with using "
+"ELSIROS:"
+msgstr ""
+"Все 3 препятствия можно избежать, если новая команда начинает приобретать"
+" опыт футбола гуманоидов с ELSIROS. Используя ELSIROS, можно "
+"воспользоваться следующими преимуществами:"
+
+#: ../../source/intro.md:13
+msgid "ELSIROS is free of charge and open source."
+msgstr "ELSIROS полностью бесплатный и с открытым кодом."
+
+#: ../../source/intro.md:15
+msgid ""
+"Most difficult parts of humanoid robot development which are beyond of "
+"school or college program like Inverse Kinematics, walking engine, path "
+"planning, detecting of ball and obstacles and localization are provided "
+"readymade in source codes. Example of playing strategy which proved to be"
+" a leading strategy at games of real robots is provided for study and "
+"improvement."
+msgstr ""
+"Самые трудные части освоения гуманоидных роботов, которые выходят за "
+"рамки программы школы и колледжей, такие как обратная кинематика, "
+"генератор ходьбы, планирование траекторий, детекция мяча и препятствий и "
+"локализация обеспечены в готовом виде с предоставлением исходного кода. "
+"Пример стратегии игры, который был доказан как успешный на играх реальных"
+" роботов предоставляется для изучения и дальнейшего совершенствования."
+
+#: ../../source/intro.md:17
+msgid ""
+"In order to participate in competitions or challenges it is not necessary"
+" to travel. Participating teams can compile their source code into "
+"executable binary code which is safe against source code leaking and "
+"upload to referees server."
+msgstr ""
+"Для участия в соревнованиях и товарищеских играх нет необходимости в "
+"командировках. Команды – участники могут скомпилировать свой исходный код"
+" в исполняемый бинарный код, который обеспечен защитой от копирования "
+"алгоритмов, и выгрузить его на сервер судьи."
+
+#: ../../source/intro.md:19
+msgid ""
+"Teams don’t suffer from backlashes, mis-tunings, mis-calibrations because"
+" models are tuned, calibrated and free of backlashes."
+msgstr ""
+"Команды не испытывают проблем с люфтами сервомоторов, разрегулировкой, "
+"раскалибровкой, так как виртуальная модель предоставляется без люфтов, "
+"отрегулированной и откалиброванной."
+
+#: ../../source/intro.md:21
+msgid ""
+"Strategy modules developed by teams will be ready to be used on real "
+"robots which teams may decide to build or to buy from market in future."
+msgstr ""
+"Модули стратегии, которые будут создавать команды в дальнейшем готовы к "
+"использованию на физических роботах, которые команды могут захотеть "
+"построить сами или приобрести готовыми."
+
+#: ../../source/intro.md:23
+msgid ""
+"It is not necessarily powerful servers for running training games, "
+"simulation can run even at laptop."
+msgstr ""
+"Для симуляции тренировочных игр не требуется мощных серверов, симуляцию "
+"игры можно запустить даже на портативном компьютере."
+
+#: ../../source/intro.md:25
+msgid ""
+"ELSIROS is created by Humanoid Robot Soccer team “Starkit” from MIPT "
+"(Moscow) after winning Robocup World Championship 2021. ELSIROS is free "
+"of charge and open-source platform pretending from one side to help new "
+"research groups to enter into Humanoid Soccer Competitions world, from "
+"other side to host virtual games. ELSIROS comprises of following "
+"components:"
+msgstr ""
+"ELSIROS – бесплатная с открытым кодом платформа, претендующая с одной "
+"стороны помочь новым исследовательским кружкам войти в мир футбола "
+"гуманоидных роботов, с другой стороны стать основой для виртуальных "
+"соревнований"
+
+#: ../../source/intro.md:29
+msgid "Webots simulator (to be downloaded from vendors’ site);"
+msgstr "Симулятор Webots (скачивается с сайта разработчика);"
+
+#: ../../source/intro.md:31
+msgid ""
+"Primary robot model, which is a virtual model of existing physical robot "
+"– a winner of international humanoid soccer challenges in 2019, 2020 and "
+"2021 used by team “Robokit”;"
+msgstr ""
+"Первоначальная модель робота, которая является виртуальной моделью "
+"физически существующего робота – победителя международных соревнований "
+"футбола гуманоидных роботов в 2019, 2020 и 2021 годах, использовавшийся "
+"командой «Robokit»;"
+
+#: ../../source/intro.md:33
+msgid "Soccer simulation environment for simulator;"
+msgstr "Виртуальное окружение симулятора в виде футбольного поля; "
+
+#: ../../source/intro.md:35
+msgid "Autonomous/Human referee program and game controller;"
+msgstr ""
+"Программа судьи, действующего Автономно или под управлением человека, а "
+"также программа управления игрой (game controller);"
+
+#: ../../source/intro.md:37
+msgid "Robot controller software pack capable to play games;"
+msgstr ""
+"Пакет программ управления виртуальным роботом, обеспечивающий игру в "
+"футбол;"
+
+#: ../../source/intro.md:39
+msgid ""
+"Teams can participate in competitions with Robokit robot and use it for "
+"study of basics of programming of strategy of soccer game for humanoid "
+"robots. This is convenient instrument for study of Artificial "
+"Intelligence in schools, colleges and universities. Programming of robots"
+" is supported with Python 3 language. But in case of necessity also C, "
+"C++, Java or MATLAB languages can be used for your convenience"
+msgstr ""
+"Вновь образованные команды могут использовать для участия в соревнованиях"
+" виртуальную модель робота «Robokit-1» а также использовать его для "
+"изучения основ программирования стратегии игры в футбол "
+"роботами-гуманоидами. Это удобный инструмент для изучения Искусственного "
+"Интеллекта в школах, колледжах и университетах"
+
+#: ../../source/intro.md:42
+msgid ""
+"Structure of robot controlling software is built for 4 level of robot "
+"developers: Beginner, Medium, Advanced and Expert level. Beginner level "
+"developers can access to programming of strategy.py file with purpose to "
+"change current robot behavior in game play. Initially supplied source "
+"code represents strategy of game used by leading Russian team at National"
+" championship 2021. Video of this game can be found under link below:"
+msgstr ""
+"Структура пакета управляющей программы построена для 4 уровней "
+"программирования робота: Начальный, Средний, Продвинутый и Экспертный"
+
+#: ../../source/intro.md:47
+msgid ""
+"Medium level developers can try to improve launcher.py module. This "
+"module stands for detecting game state, player state and team state, "
+"managing players role and their starting positions. Advanced developers "
+"can try to modify other modules of source code which are responsible for "
+"inverse kinematics, motion, localization, robots’ path planning."
+msgstr ""
+"Программисты среднего уровня могут пробовать изменять модуль launcher.py."
+" Этот модуль отвечает за детекцию состояния игры, состояния игрока, "
+"управление ролями игроков и их начальных позиций."
+
+#: ../../source/intro.md:50
+msgid ""
+"Expert level developers are allowed to compose their own model of robot "
+"and use their own controller software with or without using source code "
+"included into ELSIROS open-source package. In order to be admitted to "
+"competition program team providing virtual model of their own robot "
+"design have to be qualified. Main requirement to robot model is that "
+"virtual model and real robot must have the same technical performance in "
+"all details. Special requirements to robots’ PROTO which appear from "
+"simulation environment can be sent after special request."
+msgstr ""
+"Специалисты экспертного уровня могут собрать свою модель робота и "
+"использовать свои программы управления роботом, решая сами пользоваться "
+"или не пользоваться исходным кодом, который предоставлен разработчиками "
+"ELSIROS. Для допуска к соревнованиям команда, предоставляющая свою "
+"собственную виртуальную модель робота, должна пройти квалификацию модели "
+"робота. Основное требование к модели робота состоит в том, что модель "
+"должна иметь такие же технические характеристики, как и физический робот."
+" Специальные требования к PROTO модели, которые следуют исходя из свойств"
+" виртуальной среды, могут быть высланы по запросу. "
+
+#: ../../source/intro.md:53
+msgid ""
+"If you are a mentor of potential Humanoid Robot Soccer team you can "
+"easily start-up with your team. It is necessary simply download and "
+"install ELSIROS in your computer. There is executable version for Windows"
+" 10 or source code for Linux. Please follow instructions and sample code "
+"will play soccer just after installation. Please use your favorite Python"
+" 3 IDE for improving players’ source code and you are ready to Virtual "
+"Humanoid Robot Soccer challenges in simulation. You can train your games "
+"at your laptop computer."
+msgstr ""
+"Если вы руководитель потенциальной команды, которая хочет играть в футбол"
+" гуманоидными роботами, то вы можете самостоятельно начинать без особых "
+"трудностей. Необходимо скачать и установить ELSIROS на ваш компьютер. На "
+"выбор есть версия в исполняемых файлах для Windows 10 или версия для "
+"самостоятельной сборки для Linux. Следуйте инструкциям по установке и "
+"программа, приведенная как пример, начнет играть в футбол сразу после "
+"установки. Используйте вашу предпочитаемую среду разработки программ "
+"Python 3 для улучшения исходного кода игры игрока и вы уже готовы к "
+"виртуальным соревнованиям в футбол гуманоидных роботов в симуляции. Вы "
+"можете проводить тренировочные игры на своем переносном компьютере. "
+
+#~ msgid "ELSIROS INTRO"
+#~ msgstr "Введение в ELSIROS"
+
