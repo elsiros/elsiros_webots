@@ -23,10 +23,14 @@ class CommunicationManager():
 
     def enable_sensors(self, sensors) -> None:
         for sensor in sensors:
-            self.client.add_initial_sensor(sensor, sensors[sensor])
-            if sensor == "camera":
-                self.sensors.update({"ball": queue.Queue(self.maxsize)})
-                self.sensors.update({"robot": queue.Queue(self.maxsize)})
+            self.client.initial(sensor, sensors[sensor])
+            if sensor == "recognition":
+                self.sensors.update({"BALL": queue.Queue(self.maxsize)})
+                self.sensors.update({"RED_PLAYER_1": queue.Queue(self.maxsize)})
+                self.sensors.update({"RED_PLAYER_2": queue.Queue(self.maxsize)})
+                self.sensors.update({"BLUE_PLAYER_1": queue.Queue(self.maxsize)})
+                self.sensors.update({"BLUE_PLAYER_2": queue.Queue(self.maxsize)})
+
             self.sensors.update({str(sensor): queue.Queue(self.maxsize)})
         self.sensors.update({"time": queue.Queue(1)})
         self.client.send_request("init")
@@ -40,6 +44,7 @@ class CommunicationManager():
         Returns:
             dict: [description]
         """
+        
         value_dict = {}
         if not name in self.sensors:
             logging.error("sensor is not enable")
@@ -72,11 +77,14 @@ class CommunicationManager():
                 self.sensors[sensor].put(message[sensor])
 
     def run(self):
-        #data = {"head_pitch": -1.5}
-        #self.add_to_queue(data)
+        data = ({"head_pitch": -0.3, "head_yaw": 0.0}, {"recognition":5})
+
+        self.add_to_queue(data)
         while(True):
+            self.add_to_queue(data)
             self.send_message()
             message = self.client.receive()
+            # print(message)
             self.update_history(message)
 
     def test_run(self):
@@ -88,21 +96,17 @@ class CommunicationManager():
                              "left_elbow_pitch", "left_shoulder_twirl", "left_shoulder_roll",
                              "left_shoulder_pitch", "head_yaw", "head_pitch"]
         while(True):
-            time.sleep(0.02)
+            time.sleep(0.5)
             # пример получения данных из включенного и существующего сенсора
-            #print(self.get_sensor("time"))
-            #print(self.get_sensor("imu_body"))
-            #print(self.get_sensor("ball"))
-            servo_data = {}
-            for key in self.WBservosList:
-                servo_data.update({key: 0})
-            self.add_to_queue(servo_data)
+            print("ball: ", self.get_sensor("BALL"))
+            #print("gps_body: ", self.get_sensor("gps_body"))
 
 
 if __name__ == '__main__':
-    manager = CommunicationManager(1, '127.0.0.1', 10001)
+    manager = CommunicationManager(1, '127.0.0.1', 7001)
     # инициализация сенсоров
-    sensors = {"gps_body": 5, "imu_head": 5, "imu_body": 5,  "camera": 20}#
+    sensors = {"left_knee_sensor": 5, "right_knee_sensor": 5, "left_ankle_pitch_sensor": 5, "right_ankle_pitch_sensor": 5, "right_hip_pitch_sensor": 5, "left_hip_pitch_sensor": 5,  "gps_body": 5,"head_pitch_sensor": 5, "head_yaw_sensor": 5, "imu_body": 5, "recognition": 5}#
+    # sensors = {"gps_body": 5, "imu_head": 5, "imu_body": 5,  "camera": 20}#
     manager.enable_sensors(sensors)
 
     th1 = Thread(target=manager.run)

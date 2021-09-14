@@ -38,24 +38,24 @@ role = red_team_data['players']['1']['role']
 
 with open('output10001.txt', "a") as f1001:
     print(datetime.datetime.now(), file = f1001)
-    p10001 = subprocess.Popen(['python', red_team_controller_filename, '10001', str(game_data['red']['id']),
+    p10001 = subprocess.Popen(['python', red_team_controller_filename, str(game_data['red']['ports'][0]), str(game_data['red']['id']),
                               'red', '1', red_team_data['players']['1']['role']], stderr=f1001)
 
 with open('output10002.txt', "a") as f1002:
     print(datetime.datetime.now(), file = f1002)
-    p10002 = subprocess.Popen(['python', red_team_controller_filename, '10002', str(game_data['red']['id']),
+    p10002 = subprocess.Popen(['python', red_team_controller_filename, str(game_data['red']['ports'][1]), str(game_data['red']['id']),
                               'red', '2', red_team_data['players']['2']['role']], stderr=f1002)
 
 os.chdir(current_working_directory.parent/blue_team_controller_subdirectory)
 
 with open('output10021.txt', "a") as f1021:
     print(datetime.datetime.now(), file = f1021)
-    p10021 = subprocess.Popen(['python', blue_team_controller_filename, '10021', str(game_data['blue']['id']),
+    p10021 = subprocess.Popen(['python', blue_team_controller_filename, str(game_data['blue']['ports'][0]) , str(game_data['blue']['id']),
                               'blue', '1', blue_team_data['players']['1']['role']],  stderr=f1021)
 
 with open('output10022.txt', "a") as f1022:
     print(datetime.datetime.now(), file = f1022)
-    p10022 = subprocess.Popen(['python', blue_team_controller_filename, '10022', str(game_data['blue']['id']),
+    p10022 = subprocess.Popen(['python', blue_team_controller_filename, str(game_data['blue']['ports'][1]), str(game_data['blue']['id']),
                               'blue', '2', blue_team_data['players']['2']['role']], stderr=f1022)
 
 p10001.wait()

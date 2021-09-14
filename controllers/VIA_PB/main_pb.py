@@ -1,7 +1,8 @@
 """
 The module is designed by team Robokit of Phystech Lyceum and team Starkit
 of MIPT under mentorship of Azer Babaev.
-The module is designed for strategy of soccer game by forward and goalkeeper.
+The module is designed for creating players' dashboard and alternating between 
+team game with Game Controller or individual play without Game Controller.
 """
 """
 Possible values of 1-st argument role: 
@@ -9,8 +10,6 @@ forward, goalkeeper, penalty_Shooter, penalty_Goalkeeper, run_test
 Possible values of 2-nd argument: 1-8
 Possible values of 3-rd argument: [0.0, 0.0, 0.0]
 """
-
-#PlayerID = '11'
 
 import sys
 import os
@@ -22,7 +21,6 @@ import threading
 from pathlib import Path
 
 current_work_directory = Path.cwd()
-#current_work_directory = os.getcwd().replace('\\', '/') + '/'
 
 SIMULATION = 4                       # 0 - Simulation without physics, 
                                      # 1 - Simulation synchronous with physics, 
@@ -36,12 +34,6 @@ from Soccer.Motion.class_Motion_Webots_PB import Motion_sim
 from launcher_pb import *
 sys.path.append(str(current_work_directory.parent/'player'))
 from communication_manager import CommunicationManager
-
-
-global player_data
-global robot
-with open("teams.json", "r") as f:
-    player_data = json.loads(f.read())
 
 with open('../referee/game.json', "r") as f:
     game_data = json.loads(f.read())
@@ -65,9 +57,9 @@ global pause
 pause = Pause()
 
 def main_procedure():
-    global player_data
     global pause
     Port = sys.argv[1]
+    print('port =', Port)
     robot = CommunicationManager(1, '127.0.0.1', int(Port))
     sensors = {"gps_body": 5, "imu_body": 5, "camera": 200}
     robot.enable_sensors(sensors)
@@ -78,10 +70,11 @@ def main_procedure():
 
     team_id = int(sys.argv[2])
     role = sys.argv[5]
+    print('role =', role)
     if team_id > 0:
         robot_color = sys.argv[3]
         robot_number = int(sys.argv[4])
-        player_super_cycle(falling, team_id, robot_number, SIMULATION, current_work_directory, robot, pause)
+        player_super_cycle(falling, team_id, robot_color, robot_number, SIMULATION, current_work_directory, robot, pause)
 
     second_pressed_button = int(sys.argv[6])
     initial_coord = eval(sys.argv[7])
@@ -151,7 +144,6 @@ class Main_Panel(wx.Frame):
         btn2.Bind(wx.EVT_BUTTON, self.ShowMessage2)
 
         self.SetSize((300, 200))
-        global player_data
         robot_color = sys.argv[3]
         robot_number = sys.argv[4]
         title = 'Team ' + robot_color + ' player '+ robot_number

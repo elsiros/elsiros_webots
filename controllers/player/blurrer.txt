@@ -1,0 +1,5 @@
+object_angle_noize:0.03
+object_distance_noize:0.1
+observation_bonus:0.1
+step_loss:0.01
+constant_loc_noize:0.01

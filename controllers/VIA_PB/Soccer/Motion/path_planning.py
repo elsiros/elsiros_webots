@@ -220,7 +220,7 @@ class PathPlan:
             start_coord:      list or tuple of floats [x, y, yaw]
             target_coord:     list or tuple of floats [x, y, yaw]
         """
-        print('obstacles:', self.glob.obstacles)
+        #print('obstacles:', self.glob.obstacles)
         dest, centers, number_Of_Cycles = self.path_calc(start_coord, target_coord)
         if len(centers) > 0:
             x1, y1, x2, y2, cx, cy, R, CW = centers[0]

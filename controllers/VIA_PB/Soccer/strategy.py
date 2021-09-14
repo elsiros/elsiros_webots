@@ -1,7 +1,7 @@
 """
 The module is designed by team Robokit of Phystech Lyceum and team Starkit
 of MIPT under mentorship of Azer Babaev.
-The module is designed for strategy of soccer game by forward and goalkeeper.
+The module is designed for strategy of soccer game for forward and goalkeeper.
 """
 import sys
 import os
@@ -380,6 +380,8 @@ class Player():
         self.f = None
 
     def play_game(self):
+        success_Code, napravl, dist, speed = self.motion.seek_Ball_In_Pose(fast_Reaction_On = True)
+        self.motion.pause_in_ms(200)    # this is needed for camera renewal in simulation with streaming of camera data. pause have to be same langth as camera update time
         if self.role == 'goalkeeper': self.goalkeeper_main_cycle()
         if self.role == 'goalkeeper_old_style': self.goalkeeper_old_style_main_cycle()
         if self.role == 'penalty_Goalkeeper': self.penalty_Goalkeeper_main_cycle()
@@ -507,7 +509,8 @@ class Player():
                 self.motion.falling_Flag = 0
                 self.local.coordinate_fall_reset()                          # after falling localization must be blurered
             success_Code, napravl, dist, speed = self.motion.seek_Ball_In_Pose(fast_Reaction_On = True)
-            if self.glob.SIMULATION == 2 and self.glob.wifi_params['WIFI_IS_ON']: self.local.report_to_WIFI()  # telemetry for real robot 
+            print( 'napravl =', napravl, 'dist = ', dist )
+            #if self.glob.SIMULATION == 2 and self.glob.wifi_params['WIFI_IS_ON']: self.local.report_to_WIFI()  # telemetry for real robot 
             if pressed_button == 4 and (self.motion.game_time() - second_player_timer) < 10 : 
                 continue                                                    # motion is ignored diring 10 seconds for non-kick-off player 
             self.f.dir_To_Guest()                                           # loading kick direction from strategy_data.json into self.f.direction_To_Guest
@@ -543,6 +546,7 @@ class Player():
         usage:
             self.forward_main_cycle(int: pressed_button)
         """
+        
         second_player_timer = self.motion.game_time()                       # ignition of timer for non-kick-off forward player
         self.f = Forward(self.motion, self.local, self.glob)
         while (True):
@@ -555,6 +559,7 @@ class Player():
                 self.motion.falling_Flag = 0
                 self.local.coordinate_fall_reset()                          # after falling localization must be blurered
             success_Code, napravl, dist, speed = self.motion.seek_Ball_In_Pose(fast_Reaction_On = True)
+            print( 'napravl =', napravl, 'dist = ', dist )
             if pressed_button == 4 and (self.motion.game_time() - second_player_timer) < 10 : 
                 continue                                                    # motion is ignored diring 10 seconds for non-kick-off player
             if dist == 0 and success_Code == False:                         # condition when robot doesn't find ball
@@ -567,7 +572,7 @@ class Player():
             success_Code = self.motion.near_distance_ball_approach_and_kick(self.f.direction_To_Guest, strong_kick = False)
 
 
-    def goalkeeper_main_cycle(self):
+    def goalkeeper_main_cycle(self):        
         """
         goalkeeper main cycle method is based on vector matrix strategy. Goalkeeper doesn't leave goals too far. 
         Supposed that goalkeeper starts game at point on middle of goal line.
