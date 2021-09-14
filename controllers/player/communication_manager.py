@@ -78,14 +78,31 @@ class CommunicationManager():
 
     def run(self):
         data = ({"head_pitch": -0.3, "head_yaw": 0.0}, {"recognition":5})
-
-        self.add_to_queue(data)
+        flag = True
+        #self.add_to_queue(data)
+        flag = not flag
         while(True):
-            self.add_to_queue(data)
-            self.send_message()
-            message = self.client.receive()
+            if flag:
+                #self.add_to_queue(data)
+                flag = not flag
+                #self.send_message()
+                #message = self.client.receive()
             # print(message)
-            self.update_history(message)
+                #self.update_history(message)
+                #print("ball: ", self.get_sensor("BALL"))
+            else:
+                self.add_to_queue(({},{}))
+                flag = not flag
+                self.send_message()
+                message = self.client.receive()
+            # print(message)
+                self.update_history(message)
+               # print("ball: ", self.get_sensor("BALL"))
+
+            #print("imu_body: ", self.get_sensor("imu_body"))
+            #print("gps_body: ", self.get_sensor("gps_body"))
+            print("time: ", self.get_sensor("time"))
+            time.sleep(0.5)
 
     def test_run(self):
         # пример отправки данных серв
@@ -95,24 +112,49 @@ class CommunicationManager():
                              "left_ankle_pitch", "left_knee", "left_hip_pitch", "left_hip_roll", "left_hip_yaw",
                              "left_elbow_pitch", "left_shoulder_twirl", "left_shoulder_roll",
                              "left_shoulder_pitch", "head_yaw", "head_pitch"]
+        flag = True
+        data = ({"head_yaw": 0.0}, {"recognition": 5})
+        
+
         while(True):
-            time.sleep(0.5)
+            #time.sleep(1)
             # пример получения данных из включенного и существующего сенсора
-            print("ball: ", self.get_sensor("BALL"))
+            if flag: 
+                self.add_to_queue(data)
+                flag = not flag
+                self.send_message()
+                message = self.client.receive()
+                self.update_history(message)
+                print("ball: ", self.get_sensor("BALL"))
+            else:
+                self.add_to_queue(({}, {}))
+                flag = not flag
+                self.send_message()
+                message = self.client.receive()
+                self.update_history(message)
+                print("ball: ", self.get_sensor("BALL"))
+
+
+            #print("imu_body: ", self.get_sensor("imu_body"))
             #print("gps_body: ", self.get_sensor("gps_body"))
 
 
 if __name__ == '__main__':
     manager = CommunicationManager(1, '127.0.0.1', 7001)
     # инициализация сенсоров
-    sensors = {"left_knee_sensor": 5, "right_knee_sensor": 5, "left_ankle_pitch_sensor": 5, "right_ankle_pitch_sensor": 5, "right_hip_pitch_sensor": 5, "left_hip_pitch_sensor": 5,  "gps_body": 5,"head_pitch_sensor": 5, "head_yaw_sensor": 5, "imu_body": 5, "recognition": 5}#
+    sensors = {"left_knee_sensor": 5, "right_knee_sensor": 5, "left_ankle_pitch_sensor": 5,
+              "right_ankle_pitch_sensor": 5, "right_hip_pitch_sensor": 5, "left_hip_pitch_sensor": 5,
+            "gps_body": 5,"head_pitch_sensor": 5, "head_yaw_sensor": 5, "imu_body": 5, "recognition": 5}#
     # sensors = {"gps_body": 5, "imu_head": 5, "imu_body": 5,  "camera": 20}#
     manager.enable_sensors(sensors)
 
-    th1 = Thread(target=manager.run)
-    th2 = Thread(target=manager.test_run)
-    #manager.run()
-    th1.start()
-    th2.start()
-    th1.join
-    th2.join
+    while True:
+        manager.run()
+
+    ##th1 = Thread(target=manager.run)
+    #th2 = Thread(target=manager.test_run)
+    ##manager.run()
+    ##th1.start()
+    #th2.start()
+    ##th1.join
+    #th2.join

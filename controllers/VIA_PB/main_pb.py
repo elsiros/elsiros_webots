@@ -75,12 +75,12 @@ def main_procedure():
     robot = CommunicationManager(1, '127.0.0.1', int(Port))
     sensors = {"left_knee_sensor": 5, "right_knee_sensor": 5, "left_ankle_pitch_sensor": 5, "right_ankle_pitch_sensor": 5,
               "right_hip_pitch_sensor": 5, "left_hip_pitch_sensor": 5,  "gps_body": 5,"head_pitch_sensor": 5,
-              "head_yaw_sensor": 5, "imu_body": 5, "recognition": 200}
+              "head_yaw_sensor": 5, "imu_body": 5, "recognition": 5}
     #sensors = {"gps_body": 15,"imu_body": 5}#, "recognition": 5}
     robot.enable_sensors(sensors)
-    th0 = threading.Thread(target=robot.run)
-    th0.start()
-    th0.join
+    #th0 = threading.Thread(target=robot.run)
+    #th0.start()
+    #th0.join
     falling = Falling()
 
     team_id = int(sys.argv[2])

@@ -22,7 +22,7 @@ import json
 
 
 role = 'run_test'
-second_pressed_button = '9'
+second_pressed_button = '4'
 initial_coord = '[-1.8, 0, 0]'
 robot_color = 'red'
 robot_number = '1'
