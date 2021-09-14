@@ -1,5 +1,5 @@
-elsiros_webots
-==============
+Entry_Level_SImulation_of_RObot_Soccer
+======================================
 
 .. toctree::
    :maxdepth: 1
@@ -8,8 +8,6 @@ elsiros_webots
    intro
    History
    programming_hints
-   instruction
    Rules
    Robot Design
-   example
-   integration
+   API

@@ -19,7 +19,7 @@ msgstr ""
 
 #: ../../source/History.md:1
 msgid "History of Junior Humanoid Soccer games"
-msgstr ""
+msgstr "История юношеских гуманоидных футбольных игр"
 
 #: ../../source/History.md:2
 msgid ""

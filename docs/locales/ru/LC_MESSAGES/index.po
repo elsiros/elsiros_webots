@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ELSIROS \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-11 17:21+0300\n"
+"POT-Creation-Date: 2021-09-14 15:09+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,6 +22,9 @@ msgid "Contents:"
 msgstr "Содержание:"
 
 #: ../../source/index.rst:2
-msgid "elsiros_webots"
-msgstr ""
+msgid "Entry_Level_SImulation_of_RObot_Soccer"
+msgstr "Симуляция Футбола Роботов Начального Уровня"
+
+#~ msgid "elsiros_webots"
+#~ msgstr ""
 

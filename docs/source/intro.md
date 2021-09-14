@@ -1,4 +1,4 @@
-# ELSIROS INTRO
+# ELSIROS Intro
 
 Soccer game of Humanoid robots is becoming popular between teams in education and academic society. This type of competitions generates many scientific research points. For students in high schools, colleges or universities in general there are 3 obstacles preventing them to set up and maintain a humanoid robot soccer team:
 

@@ -89,9 +89,10 @@ html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 
 
-# Document Python Code
+# Document Python Code with autoAPI
 autoapi_type = 'python'
 autoapi_dirs = ['../../controllers/VIA_PB']
+autoapi_add_toctree_entry = False
 
 # Translations
 locale_dirs = ['../locales/']   # path is example but recommended.

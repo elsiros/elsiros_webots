@@ -1,4 +1,5 @@
 # History of Junior Humanoid Soccer games
+
 Known early examples of humanoid robot soccer built and programmed by junior students for Robocup refers to year 2016.
 
 ![2016](https://user-images.githubusercontent.com/57300002/132951057-175cb5cc-0532-4e93-b21a-31af2456f4b1.jpeg)
@@ -7,7 +8,7 @@ Some attepmts to play soccer by humanoid robot built by team from Israel were ma
 
 ![2016](https://user-images.githubusercontent.com/57300002/132952711-b1198492-efca-460f-a47d-101563bc5bfa.gif)
 
-Teams from Israel and Italy have played first International match as demo game at Robocup-2018 in Montreal 
+Teams from Israel and Italy have played first International match as demo game at Robocup-2018 in Montreal
 
 ![montreal 2018 with Raimondo's team](https://user-images.githubusercontent.com/57300002/132952846-99b75ff3-49ed-4243-8c31-35e931f167f8.png)
 
@@ -30,7 +31,8 @@ Since 2019 the game was included into program of Robocup Asia - Pacific.
 ![IMG_8937_Moment](https://user-images.githubusercontent.com/57300002/132953271-f9276ed3-9711-4b97-b38a-80c9358ded82.jpg)
 
 ## The field
-The field is made from 3mm carpet with total size of 3 x 4 m, 
+
+The field is made from 3mm carpet with total size of 3 x 4 m,
 
 ![26975375-2921-43c6-b4a6-0cbb64f13c28](https://user-images.githubusercontent.com/57300002/132953405-5f038625-c4c1-42b7-b468-0d9d08d4717d.JPG)
 
@@ -39,6 +41,7 @@ with goals made from plumbing tubes, colored to yellow ant blue color.
 ![502e404a-0361-4e98-9f40-34361cb9ab21](https://user-images.githubusercontent.com/57300002/132953411-2d426a66-a673-4e5c-83b5-6d211f36d3d3.JPG)
 
 ## The ball
+
 The ball is orange color sponge ball with 80mm diameter.
 
 ![IMG_8581](https://user-images.githubusercontent.com/57300002/132953448-8cfe521b-5d51-4a76-af99-724006e2d472.jpg)
@@ -55,4 +58,4 @@ Currently 2 types of robots mostly used by teams:
 
 ![IMG_0019](https://user-images.githubusercontent.com/57300002/132953948-0caa137c-31c7-475f-8e48-2f1b1b94f314.JPG)
 
-Last robot which performed best results in soccer game being champion of Asia-Pacific games of 2019 and 2020 is used as prototype for virtual model of standart robot in ELSIROS platform. 
+Last robot which performed best results in soccer game being champion of Asia-Pacific games of 2019 and 2020 is used as prototype for virtual model of standart robot in ELSIROS platform.
