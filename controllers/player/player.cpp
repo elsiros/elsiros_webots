@@ -770,7 +770,9 @@ public:
     // sending values for disabled sensors.
     for (int i = 0; i < actuatorRequests.sensor_time_steps_size(); i++) {
       const SensorTimeStep sensorTimeStep = actuatorRequests.sensor_time_steps(i);
-            webots::Device* device = robot->getDevice(sensorTimeStep.name());
+      webots::Device *device = nullptr;
+      if (sensorTimeStep.name() != "recognition")
+        device = robot->getDevice(sensorTimeStep.name());
       if (device) {
         const int sensor_time_step = sensorTimeStep.timestep();
 
