@@ -35,6 +35,7 @@ class Motion_sim(Motion_real):
         self.robot = robot
         self.synchronization = False
         self.former_step_time = 0
+        self.former_real_time = time.time()
         super().__init__(glob)
         with open(self.glob.current_work_directory / "Init_params" / "Sim_calibr.json", "r") as f:
             data1 = json.loads(f.read())
@@ -94,9 +95,11 @@ class Motion_sim(Motion_real):
     def wait_for_step(self, step):
         while True:
             time1 = self.game_time_ms()
-            #print(time1)
+            #print('simulation time', time1, 'real time ', time.time())
             if time1 >= (self.former_step_time + step):
+                print('simulation step time', time1 - self.former_step_time, 'real step time ', (time.time() - self.former_real_time)*1000)
                 self.former_step_time = time1
+                self.former_real_time = time.time()
                 break
             else:
                 time.sleep(0.001)
