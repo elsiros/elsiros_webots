@@ -1,5 +1,11 @@
-# This module is used for tuning of robot
-# must be used with training world
+"""
+The module is designed by team Robokit of Phystech Lyceum and team Starkit
+of MIPT under mentorship of A. Babaev.
+
+This module is used for tuning of robot
+ must be used with training world
+
+ """
 
 
 
@@ -18,8 +24,11 @@ import json
 role = 'run_test'
 second_pressed_button = '9'
 initial_coord = '[-1.8, 0, 0]'
+robot_color = 'red'
+robot_number = '1'
+team_id = '-1'
 
 with open('output10001.txt', "a") as f1001:
     print(datetime.datetime.now(), file = f1001)
-    p10001 = subprocess.Popen(['python', 'main_pb.py', '10001', '-1', 'red', '1', role, second_pressed_button, initial_coord], stderr=f1001)
+    p10001 = subprocess.Popen(['python', 'main_pb.py', '7001', team_id, robot_color, robot_number, role, second_pressed_button, initial_coord], stderr=f1001)
 

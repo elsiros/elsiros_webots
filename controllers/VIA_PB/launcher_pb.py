@@ -13,19 +13,57 @@ from Soccer.Motion.class_Motion_Webots_PB import Motion_sim
 
 
 def init_gcreceiver(team, player, is_goalkeeper):
+    """
+    The function creates and object receiver of Game Controller messages. Game Controller messages are broadcasted to 
+    teams and to referee. Format of messages can be seen in module gamestate.py. Messages from Game Controller 
+    contains Robot info, Team info and Game state info.
+    usage of function:
+        object: receiver = init_gcreceiver(int: team, int: player, bool: is_goalkeeper)
+            team - number of team id. For junior competitions it is recommended to use unique id
+                   for team in range 60 - 127
+            player - number of player displayed at his trunk
+            is_goalkeeper - True if player is appointed to play role of goalkeeper
+    """
     receiver = ThreadedGameStateReceiver(team, player, is_goalkeeper)    
     receiver.start() # Strat receiving and answering
     return receiver
 
 def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION, current_work_directory, robot, pause):
+    """
+    The function is called player_super_cycle because during game player can change several roles. Each role
+    appointed to player put it into cycle connected to playing it's role. Cycles of roles are defined in strategy.py
+    module. player_super_cycle is cycle of cycles. For example player playing role of 'forward' can change role to
+    'penalty_shooter' after main times and extra times of game finished. In some situations you may decide to switch
+    roles between forward player and goalkeeper. 
+    Usage:
+        player_super_cycle(object: falling, int: team_id, str: robot_color, int: player_number, int: SIMULATION,
+                            Path_object: current_work_directory, object: robot, object: pause)
+        falling - class object which contains int: falling.Flag which is used to deliver information about falling from
+                    low level logic to high level logic. falling.Flag can take 
+                    0 - nothing happend, 1 -falling on stomach, -1 - falling face up,
+                    2 - falling to left, -2 - falling to right, 3 - exit from playing fase
+        team_id - can take value from 60 to 127
+        robot_color - can be 'red' or 'blue'
+        player_number - can be from 1 to 5, with 1 to be assigned to goalkeeper
+        SIMULATION    - used for definition of simulation enviroment. value 4 is used for Webots simulation,
+                        value 2 is used for playing in real robot
+        current_work_directory - is Path type object 
+        robot       - object of class which is used for communication between robot model in simulation and controller
+                      program. In case of external controller program 'ProtoBuf' communication manager is used. 
+                      'ProtoBuf' - is protocol developed by Google.
+        pause       - object of class Pause which contains pause.Flag boolean variable. It is used to transfer pressing 
+                      pause button on player's dashboard event to player's high level logic. 
 
-    with open('../referee/game.json', "r") as f:
-        game_data = json.loads(f.read())
 
-    with open('../referee/' + game_data[ robot_color]['config'], "r") as f:
+    """
+    with open('../referee/game.json', "r") as f:        # extracting data from game.json file which have 
+        game_data = json.loads(f.read())                # to be created by human referee
+
+    with open('../referee/' + game_data[ robot_color]['config'], "r") as f:     # extracting data from team.json file 
         team_data = json.loads(f.read())
-
-    initial_coord_goalkeeper  = team_data['players']['1']['readyStartingPose']['pf_coord']
+    
+    # below  4 lines are initial coordinates of players depending on game fase
+    initial_coord_goalkeeper  = team_data['players']['1']['readyStartingPose']['pf_coord'] 
     initial_coord_forward = team_data['players']['2']['readyStartingPose']['pf_coord']
     initial_coord_goalkeeper_at_penalty = team_data['players']['1']['goalKeeperStartingPose']['pf_coord']
     initial_coord_forward_at_penalty = team_data['players']['2']['shootoutStartingPose']['pf_coord']
@@ -37,7 +75,7 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
     print('waiting for game controller launch')
     playing_allowed = False
     current_secondary_state = None
-    while True:
+    while True:                                 # this is main cycle of supercycle
         #if receiver.team_state == None:
         #    if current_secondary_state == 'STATE_PENALTYSHOOT':
         #        print('simulator reset')
@@ -46,7 +84,7 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
         while True:
             if receiver.team_state == None:
                 if seconds == 0:
-                    message = '\nGame Controller is not launched. Waiting..'
+                    message = '\n Game Controller is not launched. Waiting..'
                     print(message, end = '')
                 else:
                     print('.', end = '')
@@ -60,7 +98,7 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
                 if receiver.state.game_state == 'STATE_INITIAL':
                     former_game_state = 'STATE_INITIAL'
                     if seconds == 0:
-                        message = '\nGame Controller STATE_INITIAL. Waiting for READY..'
+                        message = '\n Game Controller STATE_INITIAL. Waiting for READY..'
                         print(message, end = '')
                     else:
                         print('.', end = '')
@@ -75,7 +113,7 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
                 if receiver.state.game_state == 'STATE_READY':
                     former_game_state = 'STATE_READY'
                     if seconds == 0:
-                        message = '\nGame Controller STATE_READY. Waiting for SET..'
+                        message = '\n Game Controller STATE_READY. Waiting for SET..'
                         print(message, end = '')
                     else:
                         print('.', end = '')
@@ -90,7 +128,7 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
                 if receiver.state.game_state == 'STATE_SET':
                     former_game_state = 'STATE_SET'
                     if seconds == 0:
-                        message = '\nGame Controller STATE_SET. Waiting for PLAYING..'
+                        message = '\n Game Controller STATE_SET. Waiting for PLAYING..'
                         print(message, end = '')
                     else:
                         print('.', end = '')
@@ -101,8 +139,6 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
             time.sleep(0.2)
         if receiver.team_state != None:
             current_game_state = receiver.state.game_state
-            #if current_game_state == 'STATE_FINISHED':
-            #    robot.simulationReset()
             current_secondary_state = receiver.state.secondary_state
             current_player_penalty = receiver.player_state.penalty
             if current_game_state == 'STATE_PLAYING' and current_secondary_state != 'STATE_PENALTYSHOOT' and current_player_penalty== 0:
@@ -179,13 +215,8 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
                 playing_allowed = False
             former_game_state = receiver.state.game_state
             former_player_penalty = receiver.player_state.penalty
-            #robot.step(20)
             time.sleep(0.02)
-        #else: 
-        #    #if current_game_state == 'STATE_FINISHED':
-        #    if current_secondary_state == 'STATE_PENALTYSHOOT':
-        #        print('simulator reset')
-        #        robot.simulationReset()
+
 
 
 

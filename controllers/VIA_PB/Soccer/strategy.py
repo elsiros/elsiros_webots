@@ -380,7 +380,7 @@ class Player():
         self.f = None
 
     def play_game(self):
-        success_Code, napravl, dist, speed = self.motion.seek_Ball_In_Pose(fast_Reaction_On = True)
+        #success_Code, napravl, dist, speed = self.motion.seek_Ball_In_Pose(fast_Reaction_On = True)
         self.motion.pause_in_ms(200)    # this is needed for camera renewal in simulation with streaming of camera data. pause have to be same langth as camera update time
         if self.role == 'goalkeeper': self.goalkeeper_main_cycle()
         if self.role == 'goalkeeper_old_style': self.goalkeeper_old_style_main_cycle()

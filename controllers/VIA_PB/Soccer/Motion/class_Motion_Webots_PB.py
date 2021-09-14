@@ -1,21 +1,12 @@
-#  Walking engine for Starkit Kondo OpenMV
-#  Copyright STARKIT Soccer team of MIPT
-
+"""
+The module is designed by team Robokit of Phystech Lyceum and team Starkit
+of MIPT under mentorship of A. Babaev.
+The module is designed to provide communication from motion controller to simulation
+"""
 import sys, os
 import math, time, json
-#from controller import *
 
-#current_work_directory = os.getcwd()
-#current_work_directory = current_work_directory.replace('\\', '/')
-#if current_work_directory.find('Soccer') >= 0:
-#    current_work_directory = current_work_directory[:-14]
-
-#current_work_directory += '/'
 import random
-
-#sys.path.append( current_work_directory + 'Soccer/')
-#sys.path.append( current_work_directory + 'Soccer/Motion/')
-#sys.path.append( current_work_directory + 'Soccer/Localisation/')
 
 from .class_Motion import *
 from .class_Motion_real import Motion_real
@@ -29,10 +20,6 @@ class Motion_sim(Motion_real):
         self.random = random
         import numpy as np
         self.np = np
-        #import matplotlib.pyplot as plt
-        #self.plt = plt
-        import cv2 as cv2
-        self.cv2 = cv2
         self.Dummy_HData =[]
         self.BallData =[]
         self.timeElapsed = 0
@@ -56,7 +43,7 @@ class Motion_sim(Motion_real):
         self.head_pitch_with_horizontal_camera = data1['head_pitch_with_horizontal_camera']
         self.neck_tilt = self.neck_calibr
         self.Vision_Sensor_Display_On = self.glob.params['Vision_Sensor_Display_On']
-        self.timestep = 15  #int(self.robot.getBasicTimeStep())
+        self.timestep = 15  
         self.ACTIVEJOINTS = ['Leg_right_10','Leg_right_9','Leg_right_8','Leg_right_7','Leg_right_6','Leg_right_5','hand_right_4',
             'hand_right_3','hand_right_2','hand_right_1','Tors1','Leg_left_10','Leg_left_9','Leg_left_8',
             'Leg_left_7','Leg_left_6','Leg_left_5','hand_left_4','hand_left_3','hand_left_2','hand_left_1','head0','head12']
@@ -69,22 +56,25 @@ class Motion_sim(Motion_real):
                              "left_ankle_pitch", "left_knee", "left_hip_pitch", "left_hip_roll", "left_hip_yaw",
                              "left_elbow_pitch", "left_shoulder_twirl", "left_shoulder_roll",
                              "left_shoulder_pitch", "head_yaw", "head_pitch"]
-        #self.FACTOR =  [ 1,1,1,1, 1, 1, 1,1,1,1, 1, 1,1, 1,1, 1, 1, 1,1,1,1, 1, 1]
         self.trims = [ 0,0,0,0, 0, 0, 0, 0, -0.12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.12, 0, 0, 0]
 
     def game_time(self):
         while True:
             time_s = self.robot.get_sensor("time")
+            #time_s = self.robot.get_sensor("gps_body")
             if time_s: break
             time.sleep(0.001)
         return time_s['sim time']/1000
+        #return time_s['time']/1000
 
     def game_time_ms(self):
         while True:
             time_ms = self.robot.get_sensor("time")
+            #time_ms = self.robot.get_sensor("gps_body")
             if time_ms: break
             time.sleep(0.001)
         return time_ms['sim time']
+        #return time_ms['time']
 
     def pause_in_ms(self, time_in_ms):
         self.sim_Progress(time_in_ms/1000)
@@ -212,29 +202,6 @@ class Motion_sim(Motion_real):
         for i in range(16):
             self.sim_Trigger()
 
-    def vision_Sensor_Get_Image(self):
-        if self.Vision_Sensor_Display_On:
-            #returnCode, resolution, image_Data = self.sim.simxGetVisionSensorImage(self.clientID, self.VisionHandle, 0 ,self.sim.simx_opmode_buffer)
-            nuimg = self.np.array(image_Data, dtype=self.np.uint8)
-            nuimg.shape = (resolution[1],resolution[0],3)
-            nuimg1 = self.cv2.cvtColor(nuimg, self.cv2.COLOR_RGB2BGR)
-            img = self.np.flip(nuimg1, 1)
-            return img
-
-    def vision_Sensor_Display(self, img):
-        if self.Vision_Sensor_Display_On:
-            self.cv2.imshow('Vision Sensor'+ self.robot_Number, img)
-            self.cv2.waitKey(10) & 0xFF
-            #if self.robot_Number != '':
-            #    self.cv2.waitKey(10) & 0xFF
-            #else:
-            #    res = self.cv2.waitKey(0)
-            #    if res == 115:
-            #        print('you have pressed "s"')
-            #        token = str(int(self.random.random()*10000))
-            #        filename = current_work_directory + "Soccer/CameraStill/VisionSensor" + token + '.png'
-            #        isWritten = self.cv2.imwrite(filename, img)
-
     def simulateMotion(self, number = 0, name = ''):
         #mot = [(0,'Initial_Pose'),(1,0),(2,0),(3,0),(4,0),(5,'Get_Up_Left'),
         #   (6,'Soccer_Get_UP_Stomach_N'),(7,0),(8,'Soccer_Walk_FF'),(9,0),(10,0),
@@ -310,15 +277,6 @@ class Motion_sim(Motion_real):
         while True:
             time.sleep(0.001)
             if simTime * 1000 + timer1 < self.game_time_ms(): break
-
-
-    def sim_Stop(self):
-        pass
-
-
-    def sim_Disable(self):            # Now close the connection to V-REP:
-        pass
-
 
 if __name__=="__main__":
     print('This is not main module!')

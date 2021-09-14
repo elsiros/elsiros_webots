@@ -1,6 +1,9 @@
-#  Walking engine for Starkit Kondo OpenMV
-#  Copyright STARKIT Soccer team of MIPT
+"""
+The module is designed by team Robokit of Phystech Lyceum and team Starkit
+of MIPT under mentorship of A. Babaev.
 
+The module is a part of motion generating functions
+"""
 #import sys, os
 import math, time, json
 
@@ -183,36 +186,6 @@ class Motion_real(Motion1):
     def see_ball_confirmation(self):
         self.move_head(self.neck_pan, 0)
         self.move_head(self.neck_pan, self.neck_tilt)
-
-    #def turn_To_Course(self, course, accurate = False):
-    #    stepLength = 0
-    #    sideLength = 0
-    #    rotation = 0
-    #    cycleNumber = 1
-    #    cycle = 0
-    #    target = course # + self.direction_To_Attack
-    #    old_neck_pan, old_neck_tilt = self.head_Up()
-    #    self.refresh_Orientation()
-    #    rotation1 = target - self.euler_angle['yaw']
-    #    if rotation1 > math.pi : rotation1 -= (2 * math.pi)
-    #    if rotation1 < -math.pi : rotation1 += (2 * math.pi)
-    #    if abs(rotation1)> 0.035 or accurate:
-    #        cycleNumber = int(math.floor(abs(rotation1)/self.params['ROTATION_YIELD']))+1       # rotation yield 0.23 with rotation order 0.21
-    #        self.walk_Initial_Pose()
-    #        for cycle in range (cycleNumber):
-    #            self.refresh_Orientation()
-    #            rotation1 = target - self.euler_angle['yaw']
-    #            if rotation1 > math.pi : rotation1 -= (2 * math.pi)
-    #            if rotation1 < -math.pi : rotation1 += (2 * math.pi)
-    #            if abs(rotation1)< 0.035 and not accurate: break
-    #            if abs(rotation1)< 0.01: break
-    #            rotation = rotation1/(cycleNumber - cycle)
-    #            self.walk_Cycle(stepLength, sideLength,rotation,cycle,cycleNumber)
-    #        self.walk_Final_Pose()
-    #    self.refresh_Orientation()
-    #    self.local.coord_shift = [0,0,0]
-    #    self.local.coordinate_record(odometry = True, shift = True)
-    #    self.head_Return(old_neck_pan, old_neck_tilt)
 
     def turn_To_Course(self, course, accurate = False):
         stepLength = 0

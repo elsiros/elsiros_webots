@@ -5,10 +5,21 @@ The module is designed for creating players' dashboard and alternating between
 team game with Game Controller or individual play without Game Controller.
 """
 """
-Possible values of 1-st argument role: 
-forward, goalkeeper, penalty_Shooter, penalty_Goalkeeper, run_test
-Possible values of 2-nd argument: 1-8
-Possible values of 3-rd argument: [0.0, 0.0, 0.0]
+The module must be used for running with arguments of command line:
+Order of arguments: port, team_id, robot_color, robot_number, role, second_pressed_button, initial_coord
+all arguments have to be transferred as str values with following type assignmet to other types:
+int: port  - TCP port of communication with player.exe, must be defined in team.json
+int: team_id  - value between 60 -127, must be appointed by human referee
+str: robot_color - can be 'red' or 'blue', defined in game.json
+int: robot_number - from 1 to 5. Must be defined in team.json
+str: role  - initial role of player in game. Possible values of role argument:
+             'forward', 'goalkeeper', 'penalty_Shooter', 'penalty_Goalkeeper', 'run_test'
+int: second_pressed_button  - possible values of 2-nd argument: 1-8. 
+                            At real robot second pressed button number is used to choose mode of role 
+list: initial_coord - initial localization and orientation values of robot transferred to controller
+                      by human handler of real robot or by auto-referee to controllor in simulation. 
+                      Elenets of list: [float: x, float: y, float: yaw]. x and y - coordinates expressed in m.
+                      yaw - orientation of robot in radians.
 """
 
 import sys
@@ -22,9 +33,10 @@ from pathlib import Path
 
 current_work_directory = Path.cwd()
 
-SIMULATION = 4                       # 0 - Simulation without physics, 
-                                     # 1 - Simulation synchronous with physics, 
-                                     # 3 - Simulation streaming with physics
+SIMULATION = 4                       # 0 - Simulation without physics in Coppelia, 
+                                     # 1 - Simulation synchronous with physics in Coppelia, 
+                                     # 2 - used for real robot
+                                     # 3 - Simulation streaming with physics in Coppelia
                                      # 4 - Simulation in Webots
 
 from Soccer.Localisation.class_Glob import Glob
@@ -61,7 +73,9 @@ def main_procedure():
     Port = sys.argv[1]
     print('port =', Port)
     robot = CommunicationManager(1, '127.0.0.1', int(Port))
-    sensors = {"gps_body": 5, "imu_body": 5, "camera": 200}
+    sensors = {"left_knee_sensor": 5, "right_knee_sensor": 5, "left_ankle_pitch_sensor": 5, "right_ankle_pitch_sensor": 5,
+              "right_hip_pitch_sensor": 5, "left_hip_pitch_sensor": 5,  "gps_body": 5,"head_pitch_sensor": 5,
+              "head_yaw_sensor": 5, "imu_body": 5, "recognition": 5}
     robot.enable_sensors(sensors)
     th0 = threading.Thread(target=robot.run)
     th0.start()

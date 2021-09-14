@@ -1,5 +1,9 @@
-#  Walking engine for Starkit Kondo OpenMV
-#  Copyright STARKIT Soccer team of MIPT
+"""
+The module is designed by team Robokit of Phystech Lyceum and team Starkit
+of MIPT under mentorship of A. Babaev.
+
+This module contains walking engine
+"""
 
 import sys, os
 import math, time, json

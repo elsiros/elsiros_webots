@@ -1,9 +1,17 @@
+"""
+The module is designed by team Robokit of Phystech Lyceum and team Starkit
+of MIPT under mentorship of A. Babaev.
+
+This module is assisting localization
+
+"""
+
 
 
 import sys, os
 import math, time, json, array
 
-LOCALISATION_VISUALISATION_IS_ON = True
+LOCALISATION_VISUALISATION_IS_ON = False
 OBSTACLE_VISUALISATION_IS_ON = False
 
 
