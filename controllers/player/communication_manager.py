@@ -23,7 +23,7 @@ class CommunicationManager():
 
     def enable_sensors(self, sensors) -> None:
         for sensor in sensors:
-            self.client.add_initial_sensor(sensor, sensors[sensor])
+            self.client.initial(sensor, sensors[sensor])
             if sensor == "recognition":
                 self.sensors.update({"BALL": queue.Queue(self.maxsize)})
                 self.sensors.update({"RED_PLAYER_1": queue.Queue(self.maxsize)})
@@ -44,6 +44,7 @@ class CommunicationManager():
         Returns:
             dict: [description]
         """
+        
         value_dict = {}
         if not name in self.sensors:
             logging.error("sensor is not enable")
@@ -76,10 +77,11 @@ class CommunicationManager():
                 self.sensors[sensor].put(message[sensor])
 
     def run(self):
-        data = {"head_pitch": 0.0, "head_yaw": 0.9}
+        data = ({"head_pitch": 0.0, "head_yaw": 0.9}, {"camera":20})
 
         self.add_to_queue(data)
         while(True):
+            self.add_to_queue(data)
             self.send_message()
             message = self.client.receive()
             # print(message)
@@ -97,11 +99,11 @@ class CommunicationManager():
             time.sleep(0.02)
             # пример получения данных из включенного и существующего сенсора
             print("ball: ", self.get_sensor("BALL"))
-            print("gps_body: ", self.get_sensor("gps_body"))
+            #print("gps_body: ", self.get_sensor("gps_body"))
 
 
 if __name__ == '__main__':
-    manager = CommunicationManager(1, '127.0.0.1', 10001)
+    manager = CommunicationManager(1, '127.0.0.1', 7001)
     # инициализация сенсоров
     sensors = {"left_knee_sensor": 5, "right_knee_sensor": 5, "left_ankle_pitch_sensor": 5, "right_ankle_pitch_sensor": 5, "right_hip_pitch_sensor": 5, "left_hip_pitch_sensor": 5,  "gps_body": 5,"head_pitch_sensor": 5, "head_yaw_sensor": 5, "imu_body": 5, "recognition": 5}#
     # sensors = {"gps_body": 5, "imu_head": 5, "imu_body": 5,  "camera": 20}#
