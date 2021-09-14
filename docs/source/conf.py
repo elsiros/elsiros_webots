@@ -92,7 +92,7 @@ html_static_path = ['_static']
 # Document Python Code with autoAPI
 autoapi_type = 'python'
 autoapi_dirs = ['../../controllers/VIA_PB']
-autoapi_add_toctree_entry = True
+autoapi_add_toctree_entry = False
 
 # Translations
 locale_dirs = ['../locales/']   # path is example but recommended.
