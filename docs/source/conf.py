@@ -12,7 +12,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath("../"))
+sys.path.insert(0, os.path.abspath("../../"))
 # import controllers
 # sys.path.insert(0, os.path.abspath('../'))
 # import messages
@@ -22,7 +22,7 @@ print(os.getcwd())
 
 # -- Project information -----------------------------------------------------
 
-project = 'Robot Control API'
+project = 'ELSIROS'
 copyright = '2021, Starkit Team'
 author = 'Azer Babaev, Egor Davydenko, Ilya Ryakin, Vladimir Litvinenko, Aleksandr Matsun and Ivan Khokhlov'
 
@@ -35,6 +35,8 @@ release = '0.0.1'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
+
+master_doc = 'index'
 extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
@@ -44,7 +46,9 @@ extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-    'sphinx.ext.napoleon',]
+    'sphinx.ext.napoleon',
+    'myst_parser',
+    'autoapi.extension']
 
 # Napoleon settings
 napoleon_google_docstring = True
@@ -83,3 +87,13 @@ html_theme = 'sphinx_rtd_theme'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+
+# Document Python Code with autoAPI
+autoapi_type = 'python'
+autoapi_dirs = ['../../controllers/VIA_PB']
+autoapi_add_toctree_entry = False
+
+# Translations
+locale_dirs = ['../locales/']   # path is example but recommended.
+gettext_compact = False
