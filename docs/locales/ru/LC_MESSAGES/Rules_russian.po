@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ELSIROS \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-15 19:18+0000\n"
+"POT-Creation-Date: 2021-09-15 19:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,4 +16,14 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
+
+#: ../../source/Rules_russian.md:1
+msgid ""
+"![image](https://user-"
+"images.githubusercontent.com/26925610/133496433-d81ecee4-8200-447d-8515-2a44c0e16a08.png)"
+msgstr ""
+
+#: ../../source/Rules_russian.md:1
+msgid "image"
+msgstr ""
 
