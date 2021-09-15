@@ -532,7 +532,8 @@ FodyWeavers.xsd
 # JetBrains Rider
 .idea/
 *.sln.iml
-.vscode/settings.json
+
+.vscode
 controllers/VIA_PB/output10001.txt
 controllers/VIA_PB/output10001.txt
 controllers/VIA_PB/output10002.txt

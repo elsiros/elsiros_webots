@@ -1,0 +1,56 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021, Starkit Team
+# This file is distributed under the same license as the ELSIROS package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ELSIROS \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-14 15:30+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/autoapi/Soccer/Motion/ball_Approach_Steps_Seq/index.rst:2
+msgid ":py:mod:`Soccer.Motion.ball_Approach_Steps_Seq`"
+msgstr ""
+
+#: ../../source/autoapi/Soccer/Motion/ball_Approach_Steps_Seq/index.rst:8
+msgid "Module Contents"
+msgstr ""
+
+#: ../../source/autoapi/Soccer/Motion/ball_Approach_Steps_Seq/index.rst:12
+msgid "Functions"
+msgstr ""
+
+#: ../../source/autoapi/Soccer/Motion/ball_Approach_Steps_Seq/index.rst:22:<autosummary>:1
+msgid ""
+":obj:`uprint <Soccer.Motion.ball_Approach_Steps_Seq.uprint>`\\ "
+"\\(\\*text\\)"
+msgstr ""
+
+#: ../../source/autoapi/Soccer/Motion/ball_Approach_Steps_Seq/index.rst:22:<autosummary>:1
+msgid ""
+":obj:`normalize_rotation "
+"<Soccer.Motion.ball_Approach_Steps_Seq.normalize_rotation>`\\ \\(yaw\\)"
+msgstr ""
+
+#: ../../source/autoapi/Soccer/Motion/ball_Approach_Steps_Seq/index.rst:22:<autosummary>:1
+msgid ""
+":obj:`steps <Soccer.Motion.ball_Approach_Steps_Seq.steps>`\\ \\(motion\\,"
+" x1\\, y1\\, u1\\, x2\\, y2\\, u2\\)"
+msgstr ""
+
+#: ../../source/autoapi/Soccer/Motion/ball_Approach_Steps_Seq/index.rst:22:<autosummary>:1
+msgid ""
+":obj:`ball_Approach "
+"<Soccer.Motion.ball_Approach_Steps_Seq.ball_Approach>`\\ \\(motion\\, "
+"local\\, glob\\, ball\\_coord\\)"
+msgstr ""
+

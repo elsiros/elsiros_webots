@@ -1,0 +1,106 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021, Starkit Team
+# This file is distributed under the same license as the ELSIROS package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ELSIROS \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-14 15:30+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/autoapi/main_pb/index.rst:2
+msgid ":py:mod:`main_pb`"
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:8
+msgid ""
+"The module is designed by team Robokit of Phystech Lyceum and team "
+"Starkit of MIPT under mentorship of Azer Babaev. The module is designed "
+"for strategy of soccer game by forward and goalkeeper."
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:15
+msgid "Module Contents"
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:18
+msgid "Classes"
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:28:<autosummary>:1
+msgid ":obj:`Falling <main_pb.Falling>`\\"
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:28:<autosummary>:1
+msgid ":obj:`Pause <main_pb.Pause>`\\"
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:28:<autosummary>:1
+msgid ":obj:`RedirectText <main_pb.RedirectText>`\\"
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:28:<autosummary>:1
+msgid ":obj:`Main_Panel <main_pb.Main_Panel>`\\"
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:30
+msgid "Functions"
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:38:<autosummary>:1
+msgid ":obj:`main_procedure <main_pb.main_procedure>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:38:<autosummary>:1
+msgid ":obj:`main <main_pb.main>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:40
+msgid "Attributes"
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:52:<autosummary>:1
+msgid ":obj:`current_work_directory <main_pb.current_work_directory>`\\"
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:52:<autosummary>:1
+msgid ":obj:`SIMULATION <main_pb.SIMULATION>`\\"
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:52:<autosummary>:1
+msgid ":obj:`player_data <main_pb.player_data>`\\"
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:52:<autosummary>:1
+msgid ":obj:`game_data <main_pb.game_data>`\\"
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:52:<autosummary>:1
+msgid ":obj:`team_1_data <main_pb.team_1_data>`\\"
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:52:<autosummary>:1
+msgid ":obj:`team_2_data <main_pb.team_2_data>`\\"
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:52:<autosummary>:1
+msgid ":obj:`pause <main_pb.pause>`\\"
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:99
+msgid "Bases: :py:obj:`object`"
+msgstr ""
+
+#: ../../source/autoapi/main_pb/index.rst:107
+msgid "Bases: :py:obj:`wx.Frame`"
+msgstr ""
+

@@ -13,13 +13,15 @@ from robot_client import RobotClient
 class CommunicationManager():
     """[summary]
     """
-    def __init__(self, maxsize=1, host='127.0.0.1', port=10001):
+    def __init__(self, maxsize=1, host='127.0.0.1', port=10001, team_color="RED", player_number = 1):
         verbosity = 4
         self.client = RobotClient(host, port, verbosity)
         self.client.connect_client()
         self.maxsize = maxsize
         self.messages = queue.Queue(maxsize)
         self.sensors = {}
+        self.robot_color = team_color
+        self.robot_number = player_number
 
     def enable_sensors(self, sensors) -> None:
         for sensor in sensors:
@@ -76,8 +78,42 @@ class CommunicationManager():
             else:
                 self.sensors[sensor].put(message[sensor])
 
+    def time_sleep(self, t = 0.001)->None:
+        time.sleep(t)
+
+    def get_imu_body(self):
+        self.time_sleep()
+        return self.get_sensor("imu_body")
+
+    def get_imu_head(self):
+        self.time_sleep()
+        return self.get_sensor("imu_head")
+
+    def get_localization(self):
+        self.time_sleep(0.5)
+        return self.get_sensor("gps_body")
+
+    def get_ball(self):
+        self.time_sleep(0.1)
+        return self.get_sensor("BALL")
+
+    def get_opponents(self):
+        self.time_sleep(0.1)
+        color = "BLUE" if self.robot_color == "RED" else "RED"    
+        return [self.get_sensor(color+"_PLAYER_1"), self.get_sensor(color+"_PLAYER_2")]
+
+    def get_teammates(self):
+        self.time_sleep(0.1)
+        number = 1 if self.robot_number == 2 else 1
+        return self.get_sensor(self.robot_color+"_PLAYER_"+number)
+
+    def send_servos(self, data = {}):
+        #self.time_sleep(0)
+        self.add_to_queue(data, {})
+        return 0 
+
     def run(self):
-        data = ({"head_pitch": -0.3, "head_yaw": 0.0}, {"recognition":5})
+        data = ({"head_pitch": -0.3, "head_yaw": 0.0}, {})
 
         self.add_to_queue(data)
         while(True):
@@ -98,21 +134,31 @@ class CommunicationManager():
         while(True):
             time.sleep(0.5)
             # пример получения данных из включенного и существующего сенсора
-            print("ball: ", self.get_sensor("BALL"))
+            # print("ball: ", self.get_sensor("BALL"))
             #print("gps_body: ", self.get_sensor("gps_body"))
+            # print(self.get_ball())
 
 
 if __name__ == '__main__':
-    manager = CommunicationManager(1, '127.0.0.1', 7001)
+    manager = CommunicationManager(1, '127.0.0.1', 10001)
     # инициализация сенсоров
-    sensors = {"left_knee_sensor": 5, "right_knee_sensor": 5, "left_ankle_pitch_sensor": 5, "right_ankle_pitch_sensor": 5, "right_hip_pitch_sensor": 5, "left_hip_pitch_sensor": 5,  "gps_body": 5,"head_pitch_sensor": 5, "head_yaw_sensor": 5, "imu_body": 5, "recognition": 5}#
+    sensors = {"left_knee_sensor": 50, "right_knee_sensor": 50,
+               "left_ankle_pitch_sensor": 50, "right_ankle_pitch_sensor": 50,
+               "right_hip_pitch_sensor": 50, "left_hip_pitch_sensor": 50,
+               "gps_body": 50, "head_pitch_sensor": 50, "head_yaw_sensor": 50,
+               "imu_body": 15, "recognition": 50}
     # sensors = {"gps_body": 5, "imu_head": 5, "imu_body": 5,  "camera": 20}#
     manager.enable_sensors(sensors)
 
     th1 = Thread(target=manager.run)
-    th2 = Thread(target=manager.test_run)
+    # th2 = Thread(target=manager.test_run)
     #manager.run()
     th1.start()
-    th2.start()
-    th1.join
-    th2.join
+    while (True):
+        # time.sleep(0.5)
+        # print("IMU: ", manager.get_imu_body())
+        print("Ball: ", manager.get_ball())
+        
+    # th2.start()
+    th1.join()
+    # th2.join
