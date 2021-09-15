@@ -71,7 +71,7 @@ class CommunicationManager():
             #return "sensor is not enable"
         elif not self.sensors[name].empty():
             value_dict = self.sensors[name].get()
-            self.sensors[name].put(value_dict)
+            self.sensors[name].update(value_dict)
             #logging.warn("nothing in queue")
             #return False
         #else:
@@ -105,6 +105,7 @@ class CommunicationManager():
             time.sleep(0.001)
 
     def get_imu_body(self):
+        # self.last_imu_body = self.get_sensor("imu_body")
         self.time_sleep()
         return self.get_sensor("imu_body")
 
@@ -139,11 +140,9 @@ class CommunicationManager():
         return 0 
 
     def run(self):
-        data = ({"head_pitch": -0.3, "head_yaw": 0.0}, {})
-
-        self.add_to_queue(data)
+        # self.add_to_queue(data)
         while(True):
-            self.add_to_queue(data)
+            # self.add_to_queue(data)
             self.send_message()
             message = self.client.receive()
             # print(message)
