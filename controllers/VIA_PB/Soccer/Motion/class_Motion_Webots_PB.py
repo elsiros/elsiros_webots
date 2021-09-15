@@ -68,7 +68,7 @@ class Motion_sim(Motion_real):
             time_s = self.robot.get_sensor("time")
             #time_s = self.robot.get_sensor("gps_body")
             if time_s: break
-            time.sleep(0.001)
+            #time.sleep(0.002)
         return time_s['sim time']/1000
         #return time_s['time']/1000
 
@@ -81,7 +81,7 @@ class Motion_sim(Motion_real):
             time_ms = self.robot.get_sensor("time")
             #time_ms = self.robot.get_sensor("gps_body")
             if time_ms: break
-            time.sleep(0.001)
+            #time.sleep(0.002)
         return time_ms['sim time']
         #return time_ms['time']
 
@@ -109,19 +109,20 @@ class Motion_sim(Motion_real):
                 #self.former_real_time = time.time()
                 break
             else:
-                time.sleep(0.001)
+                pass
+                #time.sleep(0.002)
 
 
     def imu_activation(self):
         print("imu_activation")
         while True:
-            #self.wait_for_step(5)
+            self.wait_for_step(15)
             print("imu_activation: imu request")
             self.robot.add_to_queue(({},{}))
             self.robot.send_message()
             message = self.robot.client.receive()
             self.robot.update_history(message)
-            print('message:', message)
+            #print('message:', message)
             #head_euler = self.robot.get_sensor("imu_head")
             body_euler = self.robot.get_sensor("imu_body")
             #if head_euler and body_euler:
@@ -142,7 +143,7 @@ class Motion_sim(Motion_real):
 
     def read_head_imu_euler_angle(self):
         while True:
-            self.wait_for_step(5)
+            #self.wait_for_step(5)
             self.robot.add_to_queue(({},{}))
             self.robot.send_message()
             message = self.robot.client.receive()
@@ -158,10 +159,11 @@ class Motion_sim(Motion_real):
         self.euler_angle['yaw'] = head_euler[2]
 
     def read_imu_body_yaw(self):
+        timer1 = time.perf_counter()
         while True:
-            self.wait_for_step(5)
-            self.robot.add_to_queue(({},{}))
-            self.robot.send_message()
+            #self.wait_for_step(5)
+            #self.robot.add_to_queue(({},{}))
+            #self.robot.send_message()
             message = self.robot.client.receive()
             self.robot.update_history(message)
             body_euler = self.robot.get_sensor("imu_body")
@@ -170,30 +172,33 @@ class Motion_sim(Motion_real):
                 break
             else:
                 print("read_imu_body_yaw: imu does't answer")
+                self.robot.add_to_queue(({},{}))
+                self.robot.send_message()
         self.body_euler_angle = {'roll': body_euler[0], 'pitch': body_euler[1], 'yaw': body_euler[2]}
+        print('imu_body_measurement_time:', time.perf_counter() - timer1)
         return body_euler[2]
 
     def falling_Test(self):
-        if self.gcreceiver != None:
-            if self.gcreceiver.team_state != None:
-                if self.gcreceiver.state.game_state != 'STATE_PLAYING' or self.gcreceiver.player_state.penalty != 0:
-                    self.falling_Flag = 3
-                    self.simulateMotion(name = 'Initial_Pose')
-                    return self.falling_Flag
-        while True:
-            self.wait_for_step(5)
-            self.robot.add_to_queue(({},{}))
-            self.robot.send_message()
-            message = self.robot.client.receive()
-            self.robot.update_history(message)
-            body_euler = self.robot.get_sensor("imu_body")
-            if body_euler:
-                body_euler = body_euler['position']
-                print('body_euler :', body_euler)
-                break
-            else:
-                print("falling_Test: imu does't answer")
-        self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = body_euler
+        #if self.gcreceiver != None:
+        #    if self.gcreceiver.team_state != None:
+        #        if self.gcreceiver.state.game_state != 'STATE_PLAYING' or self.gcreceiver.player_state.penalty != 0:
+        #            self.falling_Flag = 3
+        #            self.simulateMotion(name = 'Initial_Pose')
+        #            return self.falling_Flag
+        #while True:
+        #    #self.wait_for_step(5)
+        #    self.robot.add_to_queue(({},{}))
+        #    self.robot.send_message()
+        #    message = self.robot.client.receive()
+        #    self.robot.update_history(message)
+        #    body_euler = self.robot.get_sensor("imu_body")
+        #    if body_euler:
+        #        body_euler = body_euler['position']
+        #        #print('body_euler :', body_euler)
+        #        break
+        #    else:
+        #        print("falling_Test: imu does't answer")
+        #self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = body_euler
         #print('self.body_euler_angle[pitch] =', self.body_euler_angle['pitch'])
         #print('self.body_euler_angle[roll] =', self.body_euler_angle['roll'])
         #print('self.body_euler_angle[yaw] =', self.body_euler_angle['yaw'])
@@ -212,6 +217,10 @@ class Motion_sim(Motion_real):
         return self.falling_Flag
 
     def send_angles_to_servos(self, angles):
+        self.sim_Trigger()
+        time_ms = self.game_time_ms()
+        print('time_step:', time_ms - self.sim_step_counter)
+        self.sim_step_counter = time_ms
         servo_data = {}
         for i in range(len(angles)):
             key = self.WBservosList[i]
@@ -219,9 +228,10 @@ class Motion_sim(Motion_real):
             servo_data.update({key:value})
         self.robot.add_to_queue((servo_data,{}))
         self.robot.send_message()
-        message = self.robot.client.receive()
-        self.robot.update_history(message)
-        self.sim_Trigger()
+        #message = self.robot.client.receive()
+        #self.robot.update_history(message)
+
+        #self.sim_Trigger()
         #self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.get_sensor("imu_body")['position']
         
 
@@ -275,14 +285,6 @@ class Motion_sim(Motion_real):
                 self.sim_Trigger()
         return
 
-    #def sim_Get_Ball_Position(self):
-    #    ball_pos = self.robot.get_sensor("ball")
-    #    if ball_pos: 
-    #        ball_position = ball_pos['position']
-    #        print('ball_position =', ball_position)
-    #        return ball_position
-    #    else: return False
-
     def sim_Get_Ball_Position(self):
         self.robot.add_to_queue(({},{"recognition": 5}))
         self.robot.send_message()
@@ -317,8 +319,10 @@ class Motion_sim(Motion_real):
         self.robot.send_message()
         message = self.robot.client.receive()
         self.robot.update_history(message)
-        x, y  = self.robot.get_sensor("gps_body")['position']
+        Position = self.robot.get_sensor("gps_body")['position']
+        x, y  = Position
         self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.get_sensor("imu_body")['position']
+        print('Position: ', Position, 'yaw :', self.body_euler_angle['yaw'])
         self.body_euler_angle['yaw'] -= self.direction_To_Attack
         return x, y, self.body_euler_angle['yaw']
 
@@ -330,7 +334,7 @@ class Motion_sim(Motion_real):
     def sim_Progress(self, simTime):  # simTime in seconds
         timer1 = self.game_time_ms()
         while True:
-            time.sleep(0.001)
+            time.sleep(0.002)
             if simTime * 1000 + timer1 < self.game_time_ms(): break
 
 if __name__=="__main__":

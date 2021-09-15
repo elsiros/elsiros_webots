@@ -135,38 +135,21 @@ class Motion_real(Motion1):
         return False, 0, 0, [0, 0]
 
     def seek_Ball_In_Frame(self, with_Localization = True):
-        self.pause_in_ms(100)
+        #self.pause_in_ms(100)
         Ballposition = self.sim_Get_Ball_Position()
+        #print('Ballposition: ', Ballposition)
         if Ballposition:
-            x, y, yaw = self.sim_Get_Robot_Position()
-            yaw = self.body_euler_angle['yaw'] + self.direction_To_Attack
-            dx = Ballposition[0] - x
-            dy = Ballposition[1] - y
-            distance = math.sqrt(dx**2 + dy**2)
-            if distance == 0: course = 0
-            else:
-                course = math.atan2(dy, dx)
-                course -= yaw
-                course = self.norm_yaw(course)
+            course, distance = Ballposition
             return True, course, distance
         else: return False, 0, 0
 
     def detect_Ball_Speed(self):
         position = []
         for number in range (2):
-            self.pause_in_ms(100)
+            #self.pause_in_ms(100)
             Ballposition = self.sim_Get_Ball_Position()
             if Ballposition:
-                x, y, yaw = self.sim_Get_Robot_Position()
-                yaw = self.body_euler_angle['yaw'] + self.direction_To_Attack
-                dx = Ballposition[0] - x
-                dy = Ballposition[1] - y
-                distance = math.sqrt(dx**2 + dy**2)
-                if distance == 0: course = 0
-                else:
-                    course = math.atan2(dy, dx)
-                    course -= yaw
-                    course = self.norm_yaw(course)
+                course, distance = Ballposition
                 position.append([course,distance])
         n = len(position)
         speed = [0,0]
@@ -271,7 +254,7 @@ class Motion_real(Motion1):
     def near_distance_omni_motion(self, dist_mm, napravl):
         old_neck_pan, old_neck_tilt = self.head_Up()
         dist = dist_mm/1000
-        self.refresh_Orientation()
+        #self.refresh_Orientation()
         initial_direction = self.imu_body_yaw()
         print('initial_direction', initial_direction)
         n = int(math.floor((dist_mm*math.cos(napravl)-self.first_step_yield)/self.cycle_step_yield)+1)+1         #calculating the number of potential full steps forward
@@ -296,7 +279,7 @@ class Motion_real(Motion1):
         self.local.correct_yaw_in_pf()
         self.walk_Initial_Pose()
         for cycle in range(number_Of_Cycles):
-            self.refresh_Orientation()
+            #self.refresh_Orientation()
             rotation = initial_direction - self.imu_body_yaw() * 1
             rotation = self.normalize_rotation(rotation)
             stepLength1 = stepLength
@@ -372,7 +355,7 @@ class Motion_real(Motion1):
                 #if abs(sideLength) > 20:
                 #    sideLength = sideLength / abs(sideLength) * 20
                 self.walk_Cycle(stepLength1, sideLength1, invert*rotation,cycle,number_Of_Cycles)
-                self.refresh_Orientation()
+                #self.refresh_Orientation()
                 delta_yaw = self.norm_yaw(self.imu_body_yaw() - init_yaw)
                 stepLengthResidue = stepLength1 * (1 - math.cos(delta_yaw)) - sideLength1 * math.sin(delta_yaw) * invert
                 sideLengthResidue = sideLength1 * (1 - math.cos(delta_yaw)) + stepLength1 * math.sin(delta_yaw) * invert
@@ -447,7 +430,7 @@ class Motion_real(Motion1):
             if acceleration:
                 if cycle == 0: stepLength1 = stepLength / 3
                 if cycle == 1: stepLength1 = stepLength * 2 / 3
-            self.refresh_Orientation()
+            #self.refresh_Orientation()
             rotation = start_yaw + delta_yaw_step * (cycle + 1) - self.imu_body_yaw()
             rotation = self.normalize_rotation(rotation)
             self.walk_Cycle(stepLength1, sideLength, rotation, cycle, number_Of_Cycles+1)
@@ -467,7 +450,7 @@ class Motion_real(Motion1):
                 if acceleration:
                     if cycle == 0: stepLength1 = stepLength / 3
                     if cycle == 1: stepLength1 = stepLength * 2 / 3
-                self.refresh_Orientation()
+                #self.refresh_Orientation()
                 rotation = dest_yaw - self.imu_body_yaw()
                 rotation = self.normalize_rotation(rotation)
                 self.walk_Cycle(stepLength1, sideLength, rotation, cycle + 1, number_Of_Cycles+2)
@@ -495,7 +478,7 @@ class Motion_real(Motion1):
                     if acceleration:
                         if cycle == 0: stepLength1 = stepLength / 3
                         if cycle == 1: stepLength1 = stepLength * 2 / 3
-                    self.refresh_Orientation()
+                    #self.refresh_Orientation()
                     rotation = start_yaw + delta_yaw_step * (cycle + 1) - self.imu_body_yaw()
                     rotation = self.normalize_rotation(rotation)
                     if price < 100:
@@ -518,7 +501,7 @@ class Motion_real(Motion1):
                     if acceleration:
                         if cycle == 0: stepLength1 = stepLength / 3
                         if cycle == 1: stepLength1 = stepLength * 2 / 3
-                    self.refresh_Orientation()
+                    #self.refresh_Orientation()
                     rotation = dest_yaw - self.imu_body_yaw()
                     rotation = self.normalize_rotation(rotation)
                     self.walk_Cycle(stepLength1, sideLength, rotation, cycle + 1, number_Of_Cycles+2)
@@ -551,7 +534,7 @@ class Motion_real(Motion1):
                     if deceleration:
                         if cycle == number_Of_Cycles - 1: stepLength1 = stepLength / 3
                         if cycle == number_Of_Cycles - 2: stepLength1 = stepLength * 2 / 3
-                    self.refresh_Orientation()
+                    #self.refresh_Orientation()
                     rotation = start_yaw + delta_yaw_step * (cycle + 1) - self.imu_body_yaw()
                     rotation = self.normalize_rotation(rotation)
                     self.walk_Cycle(stepLength1, sideLength, rotation, cycle + 1, number_Of_Cycles + 1)
@@ -559,7 +542,7 @@ class Motion_real(Motion1):
             number_Of_Cycles = 4
             stepLength = 0
             for cycle in range(1, number_Of_Cycles+1, 1):
-                self.refresh_Orientation()
+                #self.refresh_Orientation()
                 rotation = target_yaw - self.imu_body_yaw()
                 rotation = self.normalize_rotation(rotation)
                 self.walk_Cycle(stepLength, sideLength, rotation, cycle, number_Of_Cycles+1)
@@ -574,7 +557,7 @@ class Motion_real(Motion1):
                 if acceleration:
                     if cycle == 0: stepLength1 = stepLength / 3
                     if cycle == 1: stepLength1 = stepLength * 2 / 3
-                self.refresh_Orientation()
+                #self.refresh_Orientation()
                 rotation = dest_yaw - self.imu_body_yaw()
                 rotation = self.normalize_rotation(rotation)
                 if deceleration:

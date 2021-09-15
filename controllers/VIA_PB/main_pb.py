@@ -73,9 +73,9 @@ def main_procedure():
     Port = sys.argv[1]
     print('port =', Port)
     robot = CommunicationManager(1, '127.0.0.1', int(Port))
-    sensors = {"left_knee_sensor": 5, "right_knee_sensor": 5, "left_ankle_pitch_sensor": 5, "right_ankle_pitch_sensor": 5,
-              "right_hip_pitch_sensor": 5, "left_hip_pitch_sensor": 5,  "gps_body": 5,"head_pitch_sensor": 5,
-              "head_yaw_sensor": 5, "imu_body": 5, "recognition": 5}
+    sensors = {"left_knee_sensor": 15, "right_knee_sensor": 15, "left_ankle_pitch_sensor": 15, "right_ankle_pitch_sensor": 15,
+              "right_hip_pitch_sensor": 15, "left_hip_pitch_sensor": 15,  "gps_body": 15,"head_pitch_sensor": 15,
+              "head_yaw_sensor": 15, "imu_body": 5, "recognition": 15}
     #sensors = {"gps_body": 15,"imu_body": 5}#, "recognition": 5}
     robot.enable_sensors(sensors)
     #th0 = threading.Thread(target=robot.run)

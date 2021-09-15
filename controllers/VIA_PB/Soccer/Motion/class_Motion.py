@@ -153,8 +153,8 @@ class Motion1:
         anglesL=[]
         #anglesR = self.al.compute_Alpha_v3(self.xtr,self.ytr,self.ztr,self.xr,self.yr,self.zr,self.wr, sizes, limAlpha)
         #anglesL = self.al.compute_Alpha_v3(self.xtl,-self.ytl,self.ztl,self.xl,-self.yl,self.zl,self.wl, sizes, limAlpha)
-        anglesR = starkit.starkit_alpha_calculation(self.xtr,self.ytr,self.ztr,self.xr,self.yr,self.zr,self.wr, sizes, limAlpha)
-        anglesL = starkit.starkit_alpha_calculation(self.xtl,-self.ytl,self.ztl,self.xl,-self.yl,self.zl,self.wl, sizes, limAlpha)
+        anglesR = starkit.alpha_calculation(self.xtr,self.ytr,self.ztr,self.xr,self.yr,self.zr,self.wr, sizes, limAlpha)
+        anglesL = starkit.alpha_calculation(self.xtl,-self.ytl,self.ztl,self.xl,-self.yl,self.zl,self.wl, sizes, limAlpha)
         if len(anglesR)>1:
             for i in range(len(anglesR)):
                 if len(anglesR)==1: break
@@ -352,7 +352,7 @@ class Motion1:
         if self.first_Leg_Is_Right_Leg:
             self.local.coord_shift[1] = -self.side_step_right_yield * abs(sideLength)/20/1000
         else: self.local.coord_shift[1] = self.side_step_left_yield * abs(sideLength)/20/1000
-        self.local.coordinate_record(odometry = True, shift = True)
+        #self.local.coordinate_record(odometry = True, shift = True)
         #self.first_Leg_Is_Right_Leg = tmp1
 
     def walk_Final_Pose(self):
@@ -470,7 +470,7 @@ class Motion1:
         self.walk_Final_Pose()
         self.local.coord_shift[0] = self.first_step_yield/2000
         self.local.coord_shift[1] = 0
-        self.local.coordinate_record(odometry = True, shift = True)
+        #self.local.coordinate_record(odometry = True, shift = True)
         self.gaitHeight = tmp
         self.first_Leg_Is_Right_Leg = tmp1
 
