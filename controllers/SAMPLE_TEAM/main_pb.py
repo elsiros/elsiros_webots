@@ -45,7 +45,7 @@ from Soccer.strategy import Player
 from Soccer.Motion.class_Motion_Webots_PB import Motion_sim
 from launcher_pb import *
 sys.path.append(str(current_work_directory.parent/'player'))
-from communication_manager import CommunicationManager
+from communication_manager_robokit import CommunicationManager
 
 with open('../referee/game.json', "r") as f:
     game_data = json.loads(f.read())
@@ -72,12 +72,12 @@ def main_procedure():
     global pause
     Port = sys.argv[1]
     print('port =', Port)
-    robot = CommunicationManager(1, '127.0.0.1', int(Port))
-    sensors = {"left_knee_sensor": 15, "right_knee_sensor": 15, "left_ankle_pitch_sensor": 15, "right_ankle_pitch_sensor": 15,
-              "right_hip_pitch_sensor": 15, "left_hip_pitch_sensor": 15,  "gps_body": 15,"head_pitch_sensor": 15,
-              "head_yaw_sensor": 15, "imu_body": 5, "recognition": 15}
+    robot = CommunicationManager(1, '127.0.0.1', int(Port), team_color=sys.argv[3].upper(), player_number = int(sys.argv[4]), time_step = 15)
+    #sensors = {"left_knee_sensor": 15, "right_knee_sensor": 15, "left_ankle_pitch_sensor": 15, "right_ankle_pitch_sensor": 15,
+    #          "right_hip_pitch_sensor": 15, "left_hip_pitch_sensor": 15,  "gps_body": 15,"head_pitch_sensor": 15,
+    #          "head_yaw_sensor": 15, "imu_body": 5, "recognition": 15}
     #sensors = {"gps_body": 15,"imu_body": 5}#, "recognition": 5}
-    robot.enable_sensors(sensors)
+    #robot.enable_sensors(sensors)
     #th0 = threading.Thread(target=robot.run)
     #th0.start()
     #th0.join
