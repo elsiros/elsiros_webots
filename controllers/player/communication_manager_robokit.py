@@ -13,7 +13,7 @@ from robot_client import RobotClient
 class CommunicationManager():
     """[summary]
     """
-    def __init__(self, maxsize=1, host='127.0.0.1', port=10001, team_color="RED", player_number = 1):
+    def __init__(self, maxsize=1, host='127.0.0.1', port=10001, team_color="RED", player_number = 1, time_step = 15):
         verbosity = 4
         self.client = RobotClient(host, port, verbosity)
         self.client.connect_client()
@@ -22,6 +22,24 @@ class CommunicationManager():
         self.sensors = {}
         self.robot_color = team_color
         self.robot_number = player_number
+        self.time_step = time_step
+
+        self.current_time = 0
+
+        self.sensor_time_step = time_step * 4
+
+        sensors = {"left_knee_sensor": self.sensor_time_step, "right_knee_sensor": self.sensor_time_step,
+                    "left_ankle_pitch_sensor": self.sensor_time_step, "right_ankle_pitch_sensor": self.sensor_time_step,
+                    "right_hip_pitch_sensor": self.sensor_time_step, "left_hip_pitch_sensor": self.sensor_time_step,
+                    "head_pitch_sensor": self.sensor_time_step, "head_yaw_sensor": self.sensor_time_step,
+                    "imu_body": self.time_step, "recognition": self.sensor_time_step, "gps_body": self.sensor_time_step}
+        # sensors = {"gps_body": 5, "imu_head": 5, "imu_body": 5,  "camera": 20}#
+        self.enable_sensors(sensors)
+        self.thread = Thread(target = self.run)
+        # th2 = Thread(target=manager.test_run)
+        #manager.run()
+        self.thread.start()
+        
 
     def enable_sensors(self, sensors) -> None:
         for sensor in sensors:
@@ -72,6 +90,8 @@ class CommunicationManager():
 
     def update_history(self, message):
         for sensor in message:
+            if (sensor == "time"):
+                self.current_time = message[sensor]['sim time']
             if self.sensors[sensor].full():
                 self.sensors[sensor].get()
                 self.sensors[sensor].put(message[sensor])
@@ -79,7 +99,9 @@ class CommunicationManager():
                 self.sensors[sensor].put(message[sensor])
 
     def time_sleep(self, t = 0.001)->None:
-        time.sleep(t)
+        start_time = self.current_time
+        while (self.current_time - start_time < t * 1000):
+            time.sleep(0.001)
 
     def get_imu_body(self):
         self.time_sleep()
@@ -106,6 +128,9 @@ class CommunicationManager():
         self.time_sleep(0.1)
         number = 1 if self.robot_number == 2 else 1
         return self.get_sensor(self.robot_color+"_PLAYER_"+number)
+    
+    def get_time(self):
+        return self.get_sensor("time")
 
     def send_servos(self, data = {}):
         #self.time_sleep(0)
@@ -140,25 +165,21 @@ class CommunicationManager():
 
 
 if __name__ == '__main__':
-    manager = CommunicationManager(1, '127.0.0.1', 10001)
+    manager = CommunicationManager(1, '127.0.0.1', 10001, time_step = 20)
     # инициализация сенсоров
-    sensors = {"left_knee_sensor": 50, "right_knee_sensor": 50,
-               "left_ankle_pitch_sensor": 50, "right_ankle_pitch_sensor": 50,
-               "right_hip_pitch_sensor": 50, "left_hip_pitch_sensor": 50,
-               "gps_body": 50, "head_pitch_sensor": 50, "head_yaw_sensor": 50,
-               "imu_body": 15, "recognition": 50}
-    # sensors = {"gps_body": 5, "imu_head": 5, "imu_body": 5,  "camera": 20}#
-    manager.enable_sensors(sensors)
+    
 
-    th1 = Thread(target=manager.run)
-    # th2 = Thread(target=manager.test_run)
-    #manager.run()
-    th1.start()
+    
     while (True):
+        # pass
         # time.sleep(0.5)
         # print("IMU: ", manager.get_imu_body())
-        print("Ball: ", manager.get_ball())
+        print(manager.current_time)
+        print("get_localization: ", manager.get_localization())
+        print(manager.current_time)
+
+        # print("Time: ", manager.get_time())
         
     # th2.start()
-    th1.join()
+    manager.thread.join()
     # th2.join

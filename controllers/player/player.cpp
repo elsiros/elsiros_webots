@@ -827,6 +827,8 @@ public:
       {
         std::cout << "Recognition requested" << std::endl;
         recognition_requested = true;
+        recognition_timestep = sensorTimeStep.timestep();
+
       }
       else
         warn(sensor_measurements, "Device \"" + sensorTimeStep.name() + "\" not found, time step command, ignored.");
@@ -851,7 +853,7 @@ public:
       return;
     std::string active_sensor;
     std::chrono::time_point<sc> sensor_start;
-    if (recognition_requested && (controller_time % 50 == 0))
+    if (recognition_requested && (controller_time % recognition_timestep == 0))
     {
       // recognition_requested = false;
       const double *gps = new double[3];
@@ -1315,6 +1317,7 @@ private:
 
   Blurrer blurrer;
   bool recognition_requested = false;
+  int recognition_timestep;
 
 
 public:
