@@ -1,4 +1,5 @@
 from communication_manager import CommunicationManager
+from threading import Thread
 
 ports = [10001, 10002, 10021]
 sensors = {"left_knee_sensor": 5, "right_knee_sensor": 5,

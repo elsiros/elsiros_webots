@@ -113,7 +113,7 @@ class CommunicationManager():
         return 0 
 
     def run(self):
-        data = ({"head_pitch": -0.3, "head_yaw": 0.0}, {"recognition":5})
+        data = ({"head_pitch": -0.3, "head_yaw": 0.0}, {})
 
         self.add_to_queue(data)
         while(True):
@@ -140,7 +140,7 @@ class CommunicationManager():
 
 
 if __name__ == '__main__':
-    manager = CommunicationManager(1, '127.0.0.1', 7001)
+    manager = CommunicationManager(1, '127.0.0.1', 10001)
     # инициализация сенсоров
     sensors = {"left_knee_sensor": 50, "right_knee_sensor": 50,
                "left_ankle_pitch_sensor": 50, "right_ankle_pitch_sensor": 50,

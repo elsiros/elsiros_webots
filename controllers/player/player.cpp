@@ -21,9 +21,10 @@
 #endif
 #include <time.h>
 #define NOMINMAX
-#include <windows.h> 
 
 #ifdef _WIN32
+#include <windows.h> 
+
 const __int64 DELTA_EPOCH_IN_MICROSECS = 11644473600000000;
 
 /* IN UNIX the use of the timezone struct is obsolete;
@@ -414,8 +415,8 @@ public:
     recv_size(0),
     content_size(0),
     robot(robot) {
-    actuators_enabled = TRUE;
-    devices_enabled = TRUE;
+    actuators_enabled = true;
+    devices_enabled = true;
     basic_time_step = robot->getBasicTimeStep();
     printMessage("server started on port " + std::to_string(port));
     server_fd = create_socket_server(port);
@@ -471,17 +472,17 @@ public:
       else
         receiveMessages();
       std::string customData = robot->getCustomData();
-      if (customData == "" && actuators_enabled == FALSE) {
+      if (customData == "" && actuators_enabled == false) {
         resumeMotors();
-        actuators_enabled = TRUE;
+        actuators_enabled = true;
         blurrer.reset();
       } else if (customData == "penalized" && actuators_enabled) {
         // penalized robots gets only their actuators disabled so that they become asleep
         stopMotors();
-        actuators_enabled = FALSE;
+        actuators_enabled = false;
             }
             else if (customData == "red_card") {  // robots with a red card get both sensors and actuators disabled
-        devices_enabled = FALSE;
+        devices_enabled = false;
                 for (const auto& entry : sensors)
           enableSensor(entry.first, 0);
         sensors.clear();
@@ -850,12 +851,11 @@ public:
       return;
     std::string active_sensor;
     std::chrono::time_point<sc> sensor_start;
-    if (recognition_requested)
+    if (recognition_requested && (controller_time % 50 == 0))
     {
-      recognition_requested = false;
+      // recognition_requested = false;
       const double *gps = new double[3];
       const double *imu = new double[3];
-
       double neckPan = 0;
       double neckTilt = 0;
 
@@ -1005,6 +1005,7 @@ public:
 
         if (robotIsReady && objectInImage)
         {
+          // std::cout << "Controller time: " << controller_time << std::endl;
           DetectionMeasurement *measurement = sensor_measurements.add_objects();
           measurement->set_name(protoName);
           measurement->set_course(blurrer.blur_angle(angle));
