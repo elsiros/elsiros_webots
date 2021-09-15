@@ -71,6 +71,7 @@ class CommunicationManager():
             #return "sensor is not enable"
         elif not self.sensors[name].empty():
             value_dict = self.sensors[name].get()
+            self.sensors[name].update(value_dict)
             #logging.warn("nothing in queue")
             #return False
         #else:
