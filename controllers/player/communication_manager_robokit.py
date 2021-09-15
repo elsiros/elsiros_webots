@@ -136,7 +136,7 @@ class CommunicationManager():
 
     def send_servos(self, data = {}):
         #self.time_sleep(0)
-        self.add_to_queue(data, {})
+        self.add_to_queue((data, {}))
         return 0 
 
     def run(self):
@@ -176,7 +176,10 @@ if __name__ == '__main__':
         # print("IMU: ", manager.get_imu_body())
         print(manager.current_time)
         print("get_localization: ", manager.get_localization())
+        print("ball: ", manager.get_ball())
+        manager.send_servos({"head_pitch": 1.3})
         print(manager.current_time)
+        
 
         # print("Time: ", manager.get_time())
         
