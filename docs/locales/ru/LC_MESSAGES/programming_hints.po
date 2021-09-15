@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ELSIROS \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-14 15:09+0300\n"
+"POT-Creation-Date: 2021-09-15 18:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -138,8 +138,7 @@ msgid ""
 "Each element of list is coded as follows: [column, row, power, yaw]. "
 "Soccer field is split to sectors in 13 rows and 18 columns.  Column 0 is "
 "near own goals, column 17 is near opposed goals. Row 0 is in positive Y "
-"coordinate, row 12 is in negative Y coordinate. ![image](https://user-"
-"images.githubusercontent.com/26925610/133053646-ee7dd1f7-8d13-417f-8264-eb5e24235e35.png)"
+"coordinate, row 12 is in negative Y coordinate."
 msgstr ""
 "Нормальный игрок “forward” использует предварительно запрограммированную "
 "стратегию, заложенную в матрицу векторов. Матрица закодирована в файле "
@@ -158,11 +157,17 @@ msgstr ""
 "находится в области с отрицательной Y координатой. ![image](https://user-"
 "images.githubusercontent.com/26925610/133053646-ee7dd1f7-8d13-417f-8264-eb5e24235e35.png)"
 
-#: ../../source/programming_hints.md:15
+#: ../../source/programming_hints.md:17
+msgid ""
+"![image](https://user-"
+"images.githubusercontent.com/26925610/133053646-ee7dd1f7-8d13-417f-8264-eb5e24235e35.png)"
+msgstr ""
+
+#: ../../source/programming_hints.md:17
 msgid "image"
 msgstr ""
 
-#: ../../source/programming_hints.md:18
+#: ../../source/programming_hints.md:19
 msgid ""
 "During game player can take 4 roles: ‘forward’, ‘goalkeeper’, "
 "‘penalty_Shooter’, ‘penlaty_Goalkeeper’. For each role strategy code is "
