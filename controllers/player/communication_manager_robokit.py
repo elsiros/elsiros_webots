@@ -6,6 +6,9 @@ import queue
 import time
 import logging
 from threading import Thread
+import logging
+
+logging.basicConfig(filename='cm_robokit.txt', encoding='utf-8', level=logging.DEBUG)
 
 from robot_client import RobotClient
 
@@ -88,7 +91,11 @@ class CommunicationManager():
 
     def send_message(self):
         while(not self.messages.empty()):
-            self.client.send_request("positions", self.messages.get())
+            positions = self.messages.get()
+            logging.debug("Sending...")
+            logging.debug(f"Time: {self.current_time}")
+            logging.debug(positions)
+            self.client.send_request("positions", positions)
 
     def update_history(self, message):
         for sensor in message:
@@ -141,9 +148,14 @@ class CommunicationManager():
 
     def send_servos(self, data = {}):
         #self.time_sleep(0)
+        logging.debug("Getting servo commands:")
+        logging.debug(f"Time: {self.current_time}")
+        logging.debug(data)
+
         self.add_to_queue((data, {}))
         return 0 
 
+        
     def run(self):
         while(True):
             do_not_block = True
