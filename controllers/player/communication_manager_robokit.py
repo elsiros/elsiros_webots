@@ -27,6 +27,7 @@ class CommunicationManager():
         self.current_time = 0
 
         self.sensor_time_step = time_step * 4
+        #self.sensor_time_step = 5
 
         sensors = {"left_knee_sensor": self.sensor_time_step, "right_knee_sensor": self.sensor_time_step,
                     "left_ankle_pitch_sensor": self.sensor_time_step, "right_ankle_pitch_sensor": self.sensor_time_step,
@@ -92,6 +93,9 @@ class CommunicationManager():
     def update_history(self, message):
         for sensor in message:
             if (sensor == "time"):
+                delta = message[sensor]['sim time'] - self.current_time
+                if delta > 5:
+                    print(f"WARNING! Large protobuf time rx delta = {delta}")                
                 self.current_time = message[sensor]['sim time']
             if self.sensors[sensor].full():
                 self.sensors[sensor].get()
@@ -100,6 +104,7 @@ class CommunicationManager():
                 self.sensors[sensor].put(message[sensor])
 
     def time_sleep(self, t = 0.001)->None:
+        print(f"Emulating delay of {t*1000} ms")
         start_time = self.current_time
         while (self.current_time - start_time < t * 1000):
             time.sleep(0.001)
@@ -129,7 +134,7 @@ class CommunicationManager():
     def get_teammates(self):
         self.time_sleep(0.1)
         number = 1 if self.robot_number == 2 else 1
-        return self.get_sensor(self.robot_color+"_PLAYER_"+number)
+        return self.get_sensor(f"{self.robot_color}_PLAYER_+{number}")
     
     def get_time(self):
         return self.get_sensor("time")
@@ -140,13 +145,28 @@ class CommunicationManager():
         return 0 
 
     def run(self):
-        # self.add_to_queue(data)
         while(True):
-            # self.add_to_queue(data)
-            self.send_message()
-            message = self.client.receive()
-            # print(message)
-            self.update_history(message)
+            do_not_block = True
+            if do_not_block:
+                # Sending/receiving protobuf in non-blocking way 
+                # If we have any data to send - do sending
+                # If full packet data is ready in socket - receive it, otherwise switch to check if sending is needed
+                if not self.messages.empty():
+                    self.send_message()
+                message = self.client.receive2()
+                if message:
+                    self.update_history(message)
+            else:
+                # Sending/receiving protobuf in blocking way:
+                # wait for a message ready to be sent, then send it
+                # Then wait for a message to be received, and receive it
+                self.send_message()
+                message = []
+                while not message:
+                    message = self.client.receive2()
+                self.update_history(message)
+            
+
 
     def test_run(self):
         # пример отправки данных серв
@@ -180,6 +200,21 @@ if __name__ == '__main__':
         print("get_imu: ", manager.get_imu_body())
         manager.send_servos({"head_yaw": 1, "head_pitch": 1})
         print(manager.current_time)
+    # manager = CommunicationManager(1, '127.0.0.1', 10001, time_step = 20)
+    # # инициализация сенсоров
+    # while (True):
+    #     # pass
+    #     # time.sleep(0.5)
+    #     print("IMU: ", manager.get_imu_body())
+    #     print(manager.current_time)
+    #     print("get_localization: ", manager.get_localization())
+    #     print("ball: ", manager.get_ball())
+    #     print("opp: ", manager.get_opponents())
+    #     print("mates: ", manager.get_teammates())
+
+    #     manager.send_servos({"head_pitch": -0.3})
+    #     print(manager.current_time)
+        
 
         # print("Time: ", manager.get_time())
         

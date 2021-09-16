@@ -106,9 +106,9 @@ class Motion_sim(Motion_real):
         while True:
             time1 = self.game_time_ms()
             if time1 >= (self.former_step_time + step):
-                #print('simulation step time', time1 - self.former_step_time, 'real step time ', (time.time() - self.former_real_time)*1000)
+                print('simulation step time', time1 - self.former_step_time, 'real step time ', (time.time() - self.former_real_time)*1000)
                 self.former_step_time = time1
-                #self.former_real_time = time.time()
+                self.former_real_time = time.time()
                 break
             else:
                 pass
@@ -309,7 +309,7 @@ class Motion_sim(Motion_real):
         ball_position = self.robot.get_ball()
         print('ball_position', ball_position)
         if ball_position:
-            return ball_position
+            return ball_position["position"]
         else: return False
 
     def sim_Get_Obstacles(self):

@@ -26,6 +26,9 @@ class RobotClient():
         self.wait_time_sec = wait_time_sec
         self.message_manager = MessageManager()
         self.socket = None
+        self.rx_buf = bytearray()
+        self.rx_wait_for_data = False
+        self.rx_expected_data_size = 0
 
     def connect_client(self):
         """[summary]
@@ -111,3 +114,21 @@ class RobotClient():
         data = self.socket.recv(buffer_size)
         #print('content_size:', str(content_size), 'buffer_size:', str(buffer_size))
         return self.message_manager.parse_answer_message(data)
+
+    def receive2(self):
+        chunk = self.socket.recv(1024)
+        self.rx_buf.extend(chunk)
+        if self.rx_wait_for_data == False:
+            header_size = self.message_manager.get_size()
+            if len(self.rx_buf) >= header_size:
+                self.rx_wait_for_data = True
+                header = self.rx_buf[:header_size]     
+                self.rx_buf = self.rx_buf[header_size:]
+                self.rx_expected_data_size = self.message_manager.get_answer_size(header)
+        else:
+            if len(self.rx_buf) >= self.rx_expected_data_size:
+                self.rx_wait_for_data = False
+                data = self.rx_buf[:self.rx_expected_data_size]     
+                self.rx_buf = self.rx_buf[self.rx_expected_data_size:]  
+                return self.message_manager.parse_answer_message(data)
+        return []              
