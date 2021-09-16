@@ -154,12 +154,20 @@ class MessageManager():
                 {sensor.name: {"position": [sensor.value.X, sensor.value.Y], "time": message.time}})
         if hasattr(message, "objects"):
             for sensor in message.objects:
-                if sensor.name == "BALL":
-                    parse_message.update(
-                        {sensor.name: {"position": [sensor.course, sensor.distance], "time": message.time}})
-                else:
-                    parse_message.update(
-                    {sensor.name: {"position": [sensor.course, sensor.distance], "time": message.time}})
+                parse_message.update(
+                    {
+                        sensor.name: 
+                            {
+                                "position": [sensor.value.X, sensor.value.Y],
+                                "time": message.time
+                            }
+                    })
+                # if sensor.name == "BALL":
+                #     parse_message.update(
+                #         {sensor.name: {"position": [sensor.course, sensor.distance], "time": message.time}})
+                # else:
+                #     parse_message.update(
+                #     {sensor.name: {"position": [sensor.course, sensor.distance], "time": message.time}})
         for sensor in message.imu:
             parse_message.update(
                 {sensor.name: {"position": [sensor.angles.roll, sensor.angles.pitch,

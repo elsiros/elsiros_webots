@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='messages.proto',
   package='',
   syntax='proto3',
-  serialized_pb=_b('\n\x0emessages.proto\"*\n\x07Vector3\x12\t\n\x01X\x18\x01 \x01(\x01\x12\t\n\x01Y\x18\x02 \x01(\x01\x12\t\n\x01Z\x18\x03 \x01(\x01\"5\n\tIMUVector\x12\r\n\x05pitch\x18\x01 \x01(\x01\x12\x0c\n\x04roll\x18\x02 \x01(\x01\x12\x0b\n\x03yaw\x18\x03 \x01(\x01\"\"\n\nVector2Int\x12\t\n\x01X\x18\x01 \x01(\x05\x12\t\n\x01Y\x18\x02 \x01(\x05\"@\n\x14IMUSensorMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1a\n\x06\x61ngles\x18\x02 \x01(\x0b\x32\n.IMUVector\"8\n\x19PositionSensorMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x01\"7\n\x0eGPSMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x17\n\x05value\x18\x02 \x01(\x0b\x32\x08.Vector3\"F\n\x14\x44\x65tectionMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06\x63ourse\x18\x02 \x01(\x01\x12\x10\n\x08\x64istance\x18\x03 \x01(\x01\"A\n\x18\x41\x63\x63\x65lerometerMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x17\n\x05value\x18\x02 \x01(\x0b\x32\x08.Vector3\"8\n\x0fGyroMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x17\n\x05value\x18\x02 \x01(\x0b\x32\x08.Vector3\"0\n\x11\x42umperMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x08\"/\n\x10\x46orceMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x01\";\n\x12\x46orce3DMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x17\n\x05value\x18\x02 \x01(\x0b\x32\x08.Vector3\"U\n\x12\x46orce6DMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x17\n\x05\x66orce\x18\x02 \x01(\x0b\x32\x08.Vector3\x12\x18\n\x06torque\x18\x03 \x01(\x0b\x32\x08.Vector3\"`\n\x11\x43\x61meraMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05width\x18\x02 \x01(\r\x12\x0e\n\x06height\x18\x03 \x01(\r\x12\x0f\n\x07quality\x18\x04 \x01(\x11\x12\r\n\x05image\x18\x05 \x01(\x0c\"z\n\x07Message\x12*\n\x0cmessage_type\x18\x01 \x01(\x0e\x32\x14.Message.MessageType\x12\x0c\n\x04text\x18\x02 \x01(\t\"5\n\x0bMessageType\x12\x11\n\rERROR_MESSAGE\x10\x00\x12\x13\n\x0fWARNING_MESSAGE\x10\x01\"\x80\x04\n\x12SensorMeasurements\x12\x0c\n\x04time\x18\x01 \x01(\r\x12\x11\n\treal_time\x18\x02 \x01(\x04\x12\x1a\n\x08messages\x18\x03 \x03(\x0b\x32\x08.Message\x12\x31\n\x0e\x61\x63\x63\x65lerometers\x18\x04 \x03(\x0b\x32\x19.AccelerometerMeasurement\x12#\n\x07\x62umpers\x18\x05 \x03(\x0b\x32\x12.BumperMeasurement\x12#\n\x07\x63\x61meras\x18\x06 \x03(\x0b\x32\x12.CameraMeasurement\x12!\n\x06\x66orces\x18\x07 \x03(\x0b\x32\x11.ForceMeasurement\x12%\n\x08\x66orce3ds\x18\x08 \x03(\x0b\x32\x13.Force3DMeasurement\x12%\n\x08\x66orce6ds\x18\t \x03(\x0b\x32\x13.Force6DMeasurement\x12\x1f\n\x05gyros\x18\n \x03(\x0b\x32\x10.GyroMeasurement\x12\x34\n\x10position_sensors\x18\x0b \x03(\x0b\x32\x1a.PositionSensorMeasurement\x12\x1c\n\x03gps\x18\x0c \x03(\x0b\x32\x0f.GPSMeasurement\x12&\n\x07objects\x18\r \x03(\x0b\x32\x15.DetectionMeasurement\x12\"\n\x03imu\x18\x0e \x03(\x0b\x32\x15.IMUSensorMeasurement\"/\n\rMotorPosition\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08position\x18\x02 \x01(\x01\"/\n\rMotorVelocity\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08velocity\x18\x02 \x01(\x01\")\n\nMotorForce\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05\x66orce\x18\x02 \x01(\x01\"+\n\x0bMotorTorque\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06torque\x18\x02 \x01(\x01\"/\n\x08MotorPID\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x15\n\x03PID\x18\x02 \x01(\x0b\x32\x08.Vector3\"0\n\x0eSensorTimeStep\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08timeStep\x18\x02 \x01(\r\".\n\rCameraQuality\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07quality\x18\x02 \x01(\x11\"0\n\x0e\x43\x61meraExposure\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08\x65xposure\x18\x02 \x01(\x01\"\xcd\x02\n\x10\x41\x63tuatorRequests\x12\'\n\x0fmotor_positions\x18\x01 \x03(\x0b\x32\x0e.MotorPosition\x12(\n\x10motor_velocities\x18\x02 \x03(\x0b\x32\x0e.MotorVelocity\x12!\n\x0cmotor_forces\x18\x03 \x03(\x0b\x32\x0b.MotorForce\x12#\n\rmotor_torques\x18\x04 \x03(\x0b\x32\x0c.MotorTorque\x12\x1d\n\nmotor_pids\x18\x05 \x03(\x0b\x32\t.MotorPID\x12*\n\x11sensor_time_steps\x18\x06 \x03(\x0b\x32\x0f.SensorTimeStep\x12(\n\x10\x63\x61mera_qualities\x18\x07 \x03(\x0b\x32\x0e.CameraQuality\x12)\n\x10\x63\x61mera_exposures\x18\x08 \x03(\x0b\x32\x0f.CameraExposureb\x06proto3')
+  serialized_pb=_b('\n\x0emessages.proto\"*\n\x07Vector3\x12\t\n\x01X\x18\x01 \x01(\x01\x12\t\n\x01Y\x18\x02 \x01(\x01\x12\t\n\x01Z\x18\x03 \x01(\x01\"5\n\tIMUVector\x12\r\n\x05pitch\x18\x01 \x01(\x01\x12\x0c\n\x04roll\x18\x02 \x01(\x01\x12\x0b\n\x03yaw\x18\x03 \x01(\x01\"\"\n\nVector2Int\x12\t\n\x01X\x18\x01 \x01(\x05\x12\t\n\x01Y\x18\x02 \x01(\x05\"@\n\x14IMUSensorMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x1a\n\x06\x61ngles\x18\x02 \x01(\x0b\x32\n.IMUVector\"8\n\x19PositionSensorMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x01\"7\n\x0eGPSMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x17\n\x05value\x18\x02 \x01(\x0b\x32\x08.Vector3\"F\n\x14\x44\x65tectionMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06\x63ourse\x18\x02 \x01(\x01\x12\x10\n\x08\x64istance\x18\x03 \x01(\x01\"A\n\x18\x41\x63\x63\x65lerometerMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x17\n\x05value\x18\x02 \x01(\x0b\x32\x08.Vector3\"8\n\x0fGyroMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x17\n\x05value\x18\x02 \x01(\x0b\x32\x08.Vector3\"0\n\x11\x42umperMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x08\"/\n\x10\x46orceMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x01\";\n\x12\x46orce3DMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x17\n\x05value\x18\x02 \x01(\x0b\x32\x08.Vector3\"U\n\x12\x46orce6DMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x17\n\x05\x66orce\x18\x02 \x01(\x0b\x32\x08.Vector3\x12\x18\n\x06torque\x18\x03 \x01(\x0b\x32\x08.Vector3\"`\n\x11\x43\x61meraMeasurement\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05width\x18\x02 \x01(\r\x12\x0e\n\x06height\x18\x03 \x01(\r\x12\x0f\n\x07quality\x18\x04 \x01(\x11\x12\r\n\x05image\x18\x05 \x01(\x0c\"z\n\x07Message\x12*\n\x0cmessage_type\x18\x01 \x01(\x0e\x32\x14.Message.MessageType\x12\x0c\n\x04text\x18\x02 \x01(\t\"5\n\x0bMessageType\x12\x11\n\rERROR_MESSAGE\x10\x00\x12\x13\n\x0fWARNING_MESSAGE\x10\x01\"\xa6\x04\n\x12SensorMeasurements\x12\x0c\n\x04time\x18\x01 \x01(\r\x12\x11\n\treal_time\x18\x02 \x01(\x04\x12\x1a\n\x08messages\x18\x03 \x03(\x0b\x32\x08.Message\x12\x31\n\x0e\x61\x63\x63\x65lerometers\x18\x04 \x03(\x0b\x32\x19.AccelerometerMeasurement\x12#\n\x07\x62umpers\x18\x05 \x03(\x0b\x32\x12.BumperMeasurement\x12#\n\x07\x63\x61meras\x18\x06 \x03(\x0b\x32\x12.CameraMeasurement\x12!\n\x06\x66orces\x18\x07 \x03(\x0b\x32\x11.ForceMeasurement\x12%\n\x08\x66orce3ds\x18\x08 \x03(\x0b\x32\x13.Force3DMeasurement\x12%\n\x08\x66orce6ds\x18\t \x03(\x0b\x32\x13.Force6DMeasurement\x12\x1f\n\x05gyros\x18\n \x03(\x0b\x32\x10.GyroMeasurement\x12\x34\n\x10position_sensors\x18\x0b \x03(\x0b\x32\x1a.PositionSensorMeasurement\x12\x1c\n\x03gps\x18\x0c \x03(\x0b\x32\x0f.GPSMeasurement\x12*\n\x0bobjects_old\x18\r \x03(\x0b\x32\x15.DetectionMeasurement\x12\"\n\x03imu\x18\x0e \x03(\x0b\x32\x15.IMUSensorMeasurement\x12 \n\x07objects\x18\x0f \x03(\x0b\x32\x0f.GPSMeasurement\"/\n\rMotorPosition\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08position\x18\x02 \x01(\x01\"/\n\rMotorVelocity\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08velocity\x18\x02 \x01(\x01\")\n\nMotorForce\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05\x66orce\x18\x02 \x01(\x01\"+\n\x0bMotorTorque\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0e\n\x06torque\x18\x02 \x01(\x01\"/\n\x08MotorPID\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x15\n\x03PID\x18\x02 \x01(\x0b\x32\x08.Vector3\"0\n\x0eSensorTimeStep\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08timeStep\x18\x02 \x01(\r\".\n\rCameraQuality\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07quality\x18\x02 \x01(\x11\"0\n\x0e\x43\x61meraExposure\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x10\n\x08\x65xposure\x18\x02 \x01(\x01\"\xcd\x02\n\x10\x41\x63tuatorRequests\x12\'\n\x0fmotor_positions\x18\x01 \x03(\x0b\x32\x0e.MotorPosition\x12(\n\x10motor_velocities\x18\x02 \x03(\x0b\x32\x0e.MotorVelocity\x12!\n\x0cmotor_forces\x18\x03 \x03(\x0b\x32\x0b.MotorForce\x12#\n\rmotor_torques\x18\x04 \x03(\x0b\x32\x0c.MotorTorque\x12\x1d\n\nmotor_pids\x18\x05 \x03(\x0b\x32\t.MotorPID\x12*\n\x11sensor_time_steps\x18\x06 \x03(\x0b\x32\x0f.SensorTimeStep\x12(\n\x10\x63\x61mera_qualities\x18\x07 \x03(\x0b\x32\x0e.CameraQuality\x12)\n\x10\x63\x61mera_exposures\x18\x08 \x03(\x0b\x32\x0f.CameraExposureb\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -760,7 +760,7 @@ _SENSORMEASUREMENTS = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='objects', full_name='SensorMeasurements.objects', index=12,
+      name='objects_old', full_name='SensorMeasurements.objects_old', index=12,
       number=13, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -769,6 +769,13 @@ _SENSORMEASUREMENTS = _descriptor.Descriptor(
     _descriptor.FieldDescriptor(
       name='imu', full_name='SensorMeasurements.imu', index=13,
       number=14, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='objects', full_name='SensorMeasurements.objects', index=14,
+      number=15, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -786,7 +793,7 @@ _SENSORMEASUREMENTS = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=1001,
-  serialized_end=1513,
+  serialized_end=1551,
 )
 
 
@@ -823,8 +830,8 @@ _MOTORPOSITION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1515,
-  serialized_end=1562,
+  serialized_start=1553,
+  serialized_end=1600,
 )
 
 
@@ -861,8 +868,8 @@ _MOTORVELOCITY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1564,
-  serialized_end=1611,
+  serialized_start=1602,
+  serialized_end=1649,
 )
 
 
@@ -899,8 +906,8 @@ _MOTORFORCE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1613,
-  serialized_end=1654,
+  serialized_start=1651,
+  serialized_end=1692,
 )
 
 
@@ -937,8 +944,8 @@ _MOTORTORQUE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1656,
-  serialized_end=1699,
+  serialized_start=1694,
+  serialized_end=1737,
 )
 
 
@@ -975,8 +982,8 @@ _MOTORPID = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1701,
-  serialized_end=1748,
+  serialized_start=1739,
+  serialized_end=1786,
 )
 
 
@@ -1013,8 +1020,8 @@ _SENSORTIMESTEP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1750,
-  serialized_end=1798,
+  serialized_start=1788,
+  serialized_end=1836,
 )
 
 
@@ -1051,8 +1058,8 @@ _CAMERAQUALITY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1800,
-  serialized_end=1846,
+  serialized_start=1838,
+  serialized_end=1884,
 )
 
 
@@ -1089,8 +1096,8 @@ _CAMERAEXPOSURE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1848,
-  serialized_end=1896,
+  serialized_start=1886,
+  serialized_end=1934,
 )
 
 
@@ -1169,8 +1176,8 @@ _ACTUATORREQUESTS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1899,
-  serialized_end=2232,
+  serialized_start=1937,
+  serialized_end=2270,
 )
 
 _IMUSENSORMEASUREMENT.fields_by_name['angles'].message_type = _IMUVECTOR
@@ -1192,8 +1199,9 @@ _SENSORMEASUREMENTS.fields_by_name['force6ds'].message_type = _FORCE6DMEASUREMEN
 _SENSORMEASUREMENTS.fields_by_name['gyros'].message_type = _GYROMEASUREMENT
 _SENSORMEASUREMENTS.fields_by_name['position_sensors'].message_type = _POSITIONSENSORMEASUREMENT
 _SENSORMEASUREMENTS.fields_by_name['gps'].message_type = _GPSMEASUREMENT
-_SENSORMEASUREMENTS.fields_by_name['objects'].message_type = _DETECTIONMEASUREMENT
+_SENSORMEASUREMENTS.fields_by_name['objects_old'].message_type = _DETECTIONMEASUREMENT
 _SENSORMEASUREMENTS.fields_by_name['imu'].message_type = _IMUSENSORMEASUREMENT
+_SENSORMEASUREMENTS.fields_by_name['objects'].message_type = _GPSMEASUREMENT
 _MOTORPID.fields_by_name['PID'].message_type = _VECTOR3
 _ACTUATORREQUESTS.fields_by_name['motor_positions'].message_type = _MOTORPOSITION
 _ACTUATORREQUESTS.fields_by_name['motor_velocities'].message_type = _MOTORVELOCITY

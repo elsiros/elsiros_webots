@@ -100,8 +100,9 @@ message SensorMeasurements {
   repeated GyroMeasurement gyros = 10;
   repeated PositionSensorMeasurement position_sensors = 11;
   repeated GPSMeasurement gps = 12;
-  repeated DetectionMeasurement objects = 13;
+  repeated DetectionMeasurement objects_old = 13;
   repeated IMUSensorMeasurement imu = 14;
+  repeated GPSMeasurement objects = 15;
 }
 
 message MotorPosition {

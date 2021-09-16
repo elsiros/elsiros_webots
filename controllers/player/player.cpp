@@ -853,172 +853,189 @@ public:
       return;
     std::string active_sensor;
     std::chrono::time_point<sc> sensor_start;
+
     if (recognition_requested && (controller_time % recognition_timestep == 0))
     {
-      // recognition_requested = false;
-      const double *gps = new double[3];
-      const double *imu = new double[3];
-      double neckPan = 0;
-      double neckTilt = 0;
-
-      double checkZeroLegs = 0;
-
-      bool robotIsReady = false;
-
-
-      for (const auto &entry : sensors) 
-      {
-        webots::Device *dev = entry.first;
-        webots::GPS *gps_dev = dynamic_cast<webots::GPS *>(dev);
-        if (gps_dev) {
-          gps = gps_dev->getValues();
-          continue;
-        }
-        webots::InertialUnit *imu_dev = dynamic_cast<webots::InertialUnit *>(dev);
-        if (imu_dev) {
-          if (imu_dev->getName() == "imu_body")
-            imu = imu_dev->getRollPitchYaw();
-          continue;
-        }
-        webots::PositionSensor *position_sensor = dynamic_cast<webots::PositionSensor *>(dev);
-        if (position_sensor) {
-          // std::cout << "POsition sensor: " << position_sensor->getName() << std::endl;
-          if (position_sensor->getName() == "head_yaw_sensor")
-          {
-            neckPan = position_sensor->getValue();
-            continue;
-          }
-          if (position_sensor->getName() == "head_pitch_sensor")
-          {
-            neckTilt = position_sensor->getValue();
-            continue;
-          }
-          if (position_sensor->getName() == "left_knee_sensor")
-          {
-            checkZeroLegs += position_sensor->getValue();
-          }
-          
-          if (position_sensor->getName() == "right_knee_sensor")
-          {
-            checkZeroLegs += position_sensor->getValue();
-          }
-          
-          if (position_sensor->getName() == "left_ankle_pitch_sensor")
-          {
-            checkZeroLegs += position_sensor->getValue();
-          }
-
-          if (position_sensor->getName() == "right_ankle_pitch_sensor")
-          {
-            checkZeroLegs += position_sensor->getValue();
-          }
-
-          if (position_sensor->getName() == "right_hip_pitch_sensor")
-          {
-            checkZeroLegs += position_sensor->getValue();
-          }
-
-          if (position_sensor->getName() == "left_hip_pitch_sensor")
-          {
-            checkZeroLegs += position_sensor->getValue();
-          }
-
-          continue;
-        }
-      }
-
-      if (checkZeroLegs < 0.01)
-      {
-        robotIsReady = true;
-        blurrer.observation();
-      }
-      // sensor_start = sc::now();
       std::vector<std::string> protoNames = {"BALL", "RED_PLAYER_1", "RED_PLAYER_2", "BLUE_PLAYER_1", "BLUE_PLAYER_2"};
       for (std::string protoName : protoNames)
       {
         const double *values;
-        
         values = robot->getFromDef(protoName)->getPosition();
-
-        // std::cout << protoName << " x: " << values[0] << " y: " << values[1] << std::endl;
-
-        // move to rotation distance
-
-
-        // double neckPan = 0;
-        // double neck_tilt = -1.5;
-        // const double *gps = sensors["gps_body"]->getValues();
-        
-        double distance = std::sqrt((gps[0] - values[0]) * (gps[0] - values[0]) + (gps[1] - values[1]) * (gps[1] - values[1]));
-
-        // const double *imu = sensors["imu_body"]->getRollPitchYaw(); //yaw 2
-
-        double tmp_angle = std::atan(std::abs(gps[1] - values[1]) / std::abs(gps[0] - values[0]));;
-        if (values[0] < gps[0])
-          tmp_angle = 3.1415 - tmp_angle;
-        double angle = tmp_angle * (values[1] - gps[1]) / std::abs(gps[1] - values[1]) - imu[2];
-        // std::cout << "angle: " << blurrer.blur_angle(angle) << " distance: " << blurrer.blur_distance(distance) << " imu: " << imu[2] << std::endl;
-
-        double max_distance = 4.0;
-        double min_distance = 0.0;
-        
-        double right_yaw_visible_area = -neckPan - 60 * 3.14 / 360;
-        double left_yaw_visible_area = -neckPan + 60 * 3.14 / 360;
-
-        double top_distance_visible_area = 0;
-        double bottom_distance_visible_area = 0;
-
-        if (-neckTilt < 45 * 3.14 / 360 + 0.01)
-        {
-          top_distance_visible_area = max_distance;
-        }
-        else 
-        {
-          top_distance_visible_area = std::tan(3.1415/2 + neckTilt +
-                                        45 * 3.14 / 360) * 0.413;
-        }
-
-        if (-neckTilt > 3.14/2 - 45 * 3.14 / 360 - 0.01)
-        {
-          bottom_distance_visible_area = min_distance;
-        }
-        else 
-        {
-          bottom_distance_visible_area = std::tan(3.1415/2 + neckTilt -
-                                        45 * 3.14 / 360) * 0.413;
-        }             
-        // std::cout << "neckTilt: " << neckTilt << std::endl;
-        // std::cout << "neckPan: " << neckPan << std::endl;
-        // std::cout << "right_yaw_visible_area: " << right_yaw_visible_area << std::endl;
-        // std::cout << "left_yaw_visible_area: " << left_yaw_visible_area << std::endl;
-        // std::cout << "bottom_distance_visible_area: " << bottom_distance_visible_area << std::endl;
-        // std::cout << "top_distance_visible_area: " << top_distance_visible_area << std::endl;
-        bool objectInImage = false;
-        if ((distance > bottom_distance_visible_area) && (distance < top_distance_visible_area) && (angle < left_yaw_visible_area) && (angle > right_yaw_visible_area))
-          objectInImage = true;
-        
-        // if (objectInImage)
-        //   std::cout << "I'm in image" << std::endl;
-        // else
-        //   std::cout << "I'm not in image" << std::endl;
-
-        // std::cout << "checkZeroLegs: " << checkZeroLegs << std::endl;
-        // add to message
-
-        if (robotIsReady && objectInImage)
-        {
-          // std::cout << "Controller time: " << controller_time << std::endl;
-          DetectionMeasurement *measurement = sensor_measurements.add_objects();
-          measurement->set_name(protoName);
-          measurement->set_course(blurrer.blur_angle(angle));
-          measurement->set_distance(blurrer.blur_distance(distance));
-        }
-        
-        
+        GPSMeasurement* measurement = sensor_measurements.add_objects();
+        measurement->set_name(protoName);
+        Vector3 *vector3 = measurement->mutable_value();
+        vector3->set_x(values[0]);
+        vector3->set_y(values[1]);
+        vector3->set_z(0);
       }
-      // std::cout << "\t\t" << "recognition_objects" << " update time " << duration(sc::now() - sensor_start).count() << "ms"
-      //             << std::endl;
     }
+
+    // if (recognition_requested && (controller_time % recognition_timestep == 0))
+    // {
+    //   // recognition_requested = false;
+    //   const double *gps = new double[3];
+    //   const double *imu = new double[3];
+    //   double neckPan = 0;
+    //   double neckTilt = 0;
+
+    //   double checkZeroLegs = 0;
+
+    //   bool robotIsReady = false;
+
+
+    //   for (const auto &entry : sensors) 
+    //   {
+    //     webots::Device *dev = entry.first;
+    //     webots::GPS *gps_dev = dynamic_cast<webots::GPS *>(dev);
+    //     if (gps_dev) {
+    //       gps = gps_dev->getValues();
+    //       continue;
+    //     }
+    //     webots::InertialUnit *imu_dev = dynamic_cast<webots::InertialUnit *>(dev);
+    //     if (imu_dev) {
+    //       if (imu_dev->getName() == "imu_body")
+    //         imu = imu_dev->getRollPitchYaw();
+    //       continue;
+    //     }
+    //     webots::PositionSensor *position_sensor = dynamic_cast<webots::PositionSensor *>(dev);
+    //     if (position_sensor) {
+    //       // std::cout << "POsition sensor: " << position_sensor->getName() << std::endl;
+    //       if (position_sensor->getName() == "head_yaw_sensor")
+    //       {
+    //         neckPan = position_sensor->getValue();
+    //         continue;
+    //       }
+    //       if (position_sensor->getName() == "head_pitch_sensor")
+    //       {
+    //         neckTilt = position_sensor->getValue();
+    //         continue;
+    //       }
+    //       if (position_sensor->getName() == "left_knee_sensor")
+    //       {
+    //         checkZeroLegs += position_sensor->getValue();
+    //       }
+          
+    //       if (position_sensor->getName() == "right_knee_sensor")
+    //       {
+    //         checkZeroLegs += position_sensor->getValue();
+    //       }
+          
+    //       if (position_sensor->getName() == "left_ankle_pitch_sensor")
+    //       {
+    //         checkZeroLegs += position_sensor->getValue();
+    //       }
+
+    //       if (position_sensor->getName() == "right_ankle_pitch_sensor")
+    //       {
+    //         checkZeroLegs += position_sensor->getValue();
+    //       }
+
+    //       if (position_sensor->getName() == "right_hip_pitch_sensor")
+    //       {
+    //         checkZeroLegs += position_sensor->getValue();
+    //       }
+
+    //       if (position_sensor->getName() == "left_hip_pitch_sensor")
+    //       {
+    //         checkZeroLegs += position_sensor->getValue();
+    //       }
+
+    //       continue;
+    //     }
+    //   }
+
+    //   if (checkZeroLegs < 0.01)
+    //   {
+    //     robotIsReady = true;
+    //     blurrer.observation();
+    //   }
+    //   // sensor_start = sc::now();
+    //   std::vector<std::string> protoNames = {"BALL", "RED_PLAYER_1", "RED_PLAYER_2", "BLUE_PLAYER_1", "BLUE_PLAYER_2"};
+    //   for (std::string protoName : protoNames)
+    //   {
+    //     const double *values;
+        
+    //     values = robot->getFromDef(protoName)->getPosition();
+
+    //     // std::cout << protoName << " x: " << values[0] << " y: " << values[1] << std::endl;
+
+    //     // move to rotation distance
+
+
+    //     // double neckPan = 0;
+    //     // double neck_tilt = -1.5;
+    //     // const double *gps = sensors["gps_body"]->getValues();
+        
+    //     double distance = std::sqrt((gps[0] - values[0]) * (gps[0] - values[0]) + (gps[1] - values[1]) * (gps[1] - values[1]));
+
+    //     // const double *imu = sensors["imu_body"]->getRollPitchYaw(); //yaw 2
+
+    //     double tmp_angle = std::atan(std::abs(gps[1] - values[1]) / std::abs(gps[0] - values[0]));;
+    //     if (values[0] < gps[0])
+    //       tmp_angle = 3.1415 - tmp_angle;
+    //     double angle = tmp_angle * (values[1] - gps[1]) / std::abs(gps[1] - values[1]) - imu[2];
+    //     // std::cout << "angle: " << blurrer.blur_angle(angle) << " distance: " << blurrer.blur_distance(distance) << " imu: " << imu[2] << std::endl;
+
+    //     double max_distance = 4.0;
+    //     double min_distance = 0.0;
+        
+    //     double right_yaw_visible_area = -neckPan - 60 * 3.14 / 360;
+    //     double left_yaw_visible_area = -neckPan + 60 * 3.14 / 360;
+
+    //     double top_distance_visible_area = 0;
+    //     double bottom_distance_visible_area = 0;
+
+    //     if (-neckTilt < 45 * 3.14 / 360 + 0.01)
+    //     {
+    //       top_distance_visible_area = max_distance;
+    //     }
+    //     else 
+    //     {
+    //       top_distance_visible_area = std::tan(3.1415/2 + neckTilt +
+    //                                     45 * 3.14 / 360) * 0.413;
+    //     }
+
+    //     if (-neckTilt > 3.14/2 - 45 * 3.14 / 360 - 0.01)
+    //     {
+    //       bottom_distance_visible_area = min_distance;
+    //     }
+    //     else 
+    //     {
+    //       bottom_distance_visible_area = std::tan(3.1415/2 + neckTilt -
+    //                                     45 * 3.14 / 360) * 0.413;
+    //     }             
+    //     // std::cout << "neckTilt: " << neckTilt << std::endl;
+    //     // std::cout << "neckPan: " << neckPan << std::endl;
+    //     // std::cout << "right_yaw_visible_area: " << right_yaw_visible_area << std::endl;
+    //     // std::cout << "left_yaw_visible_area: " << left_yaw_visible_area << std::endl;
+    //     // std::cout << "bottom_distance_visible_area: " << bottom_distance_visible_area << std::endl;
+    //     // std::cout << "top_distance_visible_area: " << top_distance_visible_area << std::endl;
+    //     bool objectInImage = false;
+    //     if ((distance > bottom_distance_visible_area) && (distance < top_distance_visible_area) && (angle < left_yaw_visible_area) && (angle > right_yaw_visible_area))
+    //       objectInImage = true;
+        
+    //     // if (objectInImage)
+    //     //   std::cout << "I'm in image" << std::endl;
+    //     // else
+    //     //   std::cout << "I'm not in image" << std::endl;
+
+    //     // std::cout << "checkZeroLegs: " << checkZeroLegs << std::endl;
+    //     // add to message
+
+    //     if (robotIsReady && objectInImage)
+    //     {
+    //       // std::cout << "Controller time: " << controller_time << std::endl;
+    //       DetectionMeasurement *measurement = sensor_measurements.add_objects();
+    //       measurement->set_name(protoName);
+    //       measurement->set_course(blurrer.blur_angle(angle));
+    //       measurement->set_distance(blurrer.blur_distance(distance));
+    //     }
+        
+        
+    //   }
+    //   // std::cout << "\t\t" << "recognition_objects" << " update time " << duration(sc::now() - sensor_start).count() << "ms"
+    //   //             << std::endl;
+    // }
     // std::cerr << "BEfore sensors" << std::endl;
     for (const auto &entry : sensors) {
       if (benchmark_level >= 4 && active_sensor != "") {
@@ -1035,7 +1052,7 @@ public:
         if ((controller_time - start_sensoring_time[dev]) % gps->getSamplingPeriod())
           continue;
 
-                GPSMeasurement* measurement = sensor_measurements.add_gps();
+        GPSMeasurement* measurement = sensor_measurements.add_gps();
         measurement->set_name(gps->getName());
         const double *values = gps->getValues();
         Vector3 *vector3 = measurement->mutable_value();
