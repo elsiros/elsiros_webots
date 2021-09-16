@@ -109,5 +109,5 @@ class RobotClient():
         content_size = self.socket.recv(self.message_manager.get_size())
         buffer_size = self.message_manager.get_answer_size(content_size)
         data = self.socket.recv(buffer_size)
-
+        #print('content_size:', str(content_size), 'buffer_size:', str(buffer_size))
         return self.message_manager.parse_answer_message(data)

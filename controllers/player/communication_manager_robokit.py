@@ -136,7 +136,7 @@ class CommunicationManager():
 
     def send_servos(self, data = {}):
         #self.time_sleep(0)
-        self.add_to_queue(data, {})
+        self.add_to_queue((data, {}))
         return 0 
 
     def run(self):
@@ -165,7 +165,7 @@ class CommunicationManager():
 
 
 if __name__ == '__main__':
-    manager = CommunicationManager(1, '127.0.0.1', 10001, time_step = 20)
+    manager = CommunicationManager(1, '127.0.0.1', 7001, time_step = 20)
     # инициализация сенсоров
     
 
@@ -175,7 +175,10 @@ if __name__ == '__main__':
         # time.sleep(0.5)
         # print("IMU: ", manager.get_imu_body())
         print(manager.current_time)
-        print("get_localization: ", manager.get_localization())
+        #print("get_localization: ", manager.get_localization())
+        print("get_ball: ", manager.get_ball())
+        print("get_imu: ", manager.get_imu_body())
+        manager.send_servos({"head_yaw": 1, "head_pitch": 1})
         print(manager.current_time)
 
         # print("Time: ", manager.get_time())

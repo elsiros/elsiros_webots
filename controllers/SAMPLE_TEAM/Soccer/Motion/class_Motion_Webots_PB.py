@@ -99,7 +99,7 @@ class Motion_sim(Motion_real):
                         servo_data = {}
                         for key in self.WBservosList:
                             servo_data.update({key: 0})
-                        self.robot.add_to_queue(servo_data)
+                        self.robot.send_servos(servo_data)
             self.wait_for_step(self.timestep)
 
     def wait_for_step(self, step):
@@ -288,10 +288,11 @@ class Motion_sim(Motion_real):
                     key = self.WBservosList[j]
                     value = tempActivePose + self.trims[j]
                     servo_data.update({key:value})
-                self.robot.add_to_queue((servo_data, {}))
-                self.robot.send_message()
-                message = self.robot.client.receive()
-                self.robot.update_history(message)
+                #self.robot.add_to_queue((servo_data, {}))
+                #self.robot.send_message()
+                #message = self.robot.client.receive()
+                #self.robot.update_history(message)
+                self.robot.send_servos(servo_data)
                 self.sim_Trigger()
         return
 
