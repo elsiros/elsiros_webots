@@ -8,7 +8,7 @@ import logging
 from threading import Thread
 import logging
 
-logging.basicConfig(filename='cm_robokit.txt', encoding='utf-8', level=logging.DEBUG)
+# logging.basicConfig(filename='cm_robokit.txt', encoding="utf-8", level=logging.DEBUG)
 
 from robot_client import RobotClient
 
@@ -197,7 +197,7 @@ class CommunicationManager():
 
 
 if __name__ == '__main__':
-    manager = CommunicationManager(1, '127.0.0.1', 7001, time_step = 20)
+    manager = CommunicationManager(1, '127.0.0.1', 10001, time_step = 20)
     # инициализация сенсоров
     
 
