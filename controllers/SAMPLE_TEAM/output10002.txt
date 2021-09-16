@@ -1,0 +1,235 @@
+2021-09-15 16:20:49.730403
+2021-09-15 16:26:51,120 Socket timeout
+2021-09-15 16:26:51,635 Socket timeout
+2021-09-15 16:26:52,136 Socket timeout
+2021-09-15 16:26:52,650 Socket timeout
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.2032.0_x64__qbz5n2kfra8p0\lib\threading.py", line 973, in _bootstrap_inner
+    self.run()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.2032.0_x64__qbz5n2kfra8p0\lib\threading.py", line 910, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\main_pb.py", line 92, in main_procedure
+    player_super_cycle(falling, team_id, robot_color, robot_number, SIMULATION, current_work_directory, robot, pause)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\launcher_pb.py", line 218, in player_super_cycle
+    player.play_game()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\strategy.py", line 388, in play_game
+    if self.role == 'forward': self.forward_main_cycle(self.second_pressed_button)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\strategy.py", line 535, in forward_main_cycle
+    self.motion.far_distance_plan_approach(self.glob.ball_coord, self.f.direction_To_Guest, stop_Over = stop_Over)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_real.py", line 436, in far_distance_plan_approach
+    self.walk_Cycle(stepLength1, sideLength, rotation, cycle, number_Of_Cycles+1)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion.py", line 348, in walk_Cycle
+    self.send_angles_to_servos(angles)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 220, in send_angles_to_servos
+    self.sim_Trigger()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 101, in sim_Trigger
+    self.wait_for_step(self.timestep)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 105, in wait_for_step
+    time1 = self.game_time_ms()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 79, in game_time_ms
+    message = self.robot.client.receive()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\player\robot_client.py", line 109, in receive
+    content_size = self.socket.recv(self.message_manager.get_size())
+ConnectionResetError: [WinError 10054] Удаленный хост принудительно разорвал существующее подключение
+2021-09-15 16:26:53,151 Socket timeout
+2021-09-15 16:26:53,665 Socket timeout
+2021-09-15 16:26:54,175 Socket timeout
+2021-09-15 16:26:54,689 Socket timeout
+2021-09-15 16:26:55,202 Socket timeout
+2021-09-15 16:34:08.574161
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.2032.0_x64__qbz5n2kfra8p0\lib\threading.py", line 973, in _bootstrap_inner
+    self.run()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.2032.0_x64__qbz5n2kfra8p0\lib\threading.py", line 910, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\main_pb.py", line 92, in main_procedure
+    player_super_cycle(falling, team_id, robot_color, robot_number, SIMULATION, current_work_directory, robot, pause)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\launcher_pb.py", line 210, in player_super_cycle
+    motion.activation()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion.py", line 210, in activation
+    self.euler_angle = self.imu_activation()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 119, in imu_activation
+    self.wait_for_step(15)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 105, in wait_for_step
+    time1 = self.game_time_ms()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 79, in game_time_ms
+    message = self.robot.client.receive()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\player\robot_client.py", line 109, in receive
+    content_size = self.socket.recv(self.message_manager.get_size())
+ConnectionResetError: [WinError 10054] Удаленный хост принудительно разорвал существующее подключение
+2021-09-15 16:34:39,925 Socket timeout
+2021-09-15 16:34:40,426 Socket timeout
+2021-09-15 16:34:40,940 Socket timeout
+2021-09-15 16:34:41,455 Socket timeout
+2021-09-15 16:34:41,969 Socket timeout
+2021-09-15 16:34:42,469 Socket timeout
+2021-09-15 16:34:42,983 Socket timeout
+2021-09-15 16:34:43,484 Socket timeout
+2021-09-15 16:34:43,995 Socket timeout
+2021-09-15 16:34:44,508 Socket timeout
+2021-09-15 16:34:45,021 Socket timeout
+2021-09-15 16:34:45,535 Socket timeout
+2021-09-15 16:45:32.875528
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.2032.0_x64__qbz5n2kfra8p0\lib\threading.py", line 973, in _bootstrap_inner
+    self.run()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.2032.0_x64__qbz5n2kfra8p0\lib\threading.py", line 910, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\main_pb.py", line 92, in main_procedure
+    player_super_cycle(falling, team_id, robot_color, robot_number, SIMULATION, current_work_directory, robot, pause)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\launcher_pb.py", line 210, in player_super_cycle
+    motion.activation()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion.py", line 210, in activation
+    self.euler_angle = self.imu_activation()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 119, in imu_activation
+    self.wait_for_step(15)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 105, in wait_for_step
+    time1 = self.game_time_ms()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 79, in game_time_ms
+    message = self.robot.client.receive()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\player\robot_client.py", line 109, in receive
+    content_size = self.socket.recv(self.message_manager.get_size())
+ConnectionResetError: [WinError 10054] Удаленный хост принудительно разорвал существующее подключение
+2021-09-15 16:46:25,338 Socket timeout
+2021-09-15 16:46:25,850 Socket timeout
+2021-09-15 16:46:26,363 Socket timeout
+2021-09-15 16:46:26,878 Socket timeout
+2021-09-15 16:46:27,392 Socket timeout
+2021-09-15 16:46:27,893 Socket timeout
+2021-09-15 16:46:28,407 Socket timeout
+2021-09-15 16:46:28,921 Socket timeout
+2021-09-15 16:46:29,432 Socket timeout
+2021-09-15 16:48:18.035511
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.2032.0_x64__qbz5n2kfra8p0\lib\threading.py", line 973, in _bootstrap_inner
+    self.run()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.2032.0_x64__qbz5n2kfra8p0\lib\threading.py", line 910, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\main_pb.py", line 92, in main_procedure
+    player_super_cycle(falling, team_id, robot_color, robot_number, SIMULATION, current_work_directory, robot, pause)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\launcher_pb.py", line 218, in player_super_cycle
+    player.play_game()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\strategy.py", line 388, in play_game
+    if self.role == 'forward': self.forward_main_cycle(self.second_pressed_button)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\strategy.py", line 535, in forward_main_cycle
+    self.motion.far_distance_plan_approach(self.glob.ball_coord, self.f.direction_To_Guest, stop_Over = stop_Over)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_real.py", line 566, in far_distance_plan_approach
+    self.walk_Cycle(stepLength1, sideLength, rotation, cycle, number_Of_Cycles + 1)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion.py", line 238, in walk_Cycle
+    if not self.falling_Test() == 0:
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 210, in falling_Test
+    self.simulateMotion(name = 'Soccer_Get_UP_Face_Up')
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 283, in simulateMotion
+    message = self.robot.client.receive()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\player\robot_client.py", line 109, in receive
+    content_size = self.socket.recv(self.message_manager.get_size())
+ConnectionResetError: [WinError 10054] Удаленный хост принудительно разорвал существующее подключение
+2021-09-15 16:52:43,405 Socket timeout
+2021-09-15 16:52:43,917 Socket timeout
+2021-09-15 16:52:44,429 Socket timeout
+2021-09-15 16:52:44,942 Socket timeout
+2021-09-15 16:52:45,455 Socket timeout
+2021-09-15 16:56:21.055148
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.2032.0_x64__qbz5n2kfra8p0\lib\threading.py", line 973, in _bootstrap_inner
+    self.run()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.2032.0_x64__qbz5n2kfra8p0\lib\threading.py", line 910, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\main_pb.py", line 92, in main_procedure
+    player_super_cycle(falling, team_id, robot_color, robot_number, SIMULATION, current_work_directory, robot, pause)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\launcher_pb.py", line 210, in player_super_cycle
+    motion.activation()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion.py", line 210, in activation
+    self.euler_angle = self.imu_activation()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 119, in imu_activation
+    self.wait_for_step(15)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 105, in wait_for_step
+    time1 = self.game_time_ms()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 79, in game_time_ms
+    message = self.robot.client.receive()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\player\robot_client.py", line 109, in receive
+    content_size = self.socket.recv(self.message_manager.get_size())
+ConnectionResetError: [WinError 10054] Удаленный хост принудительно разорвал существующее подключение
+2021-09-15 16:56:53,711 Socket timeout
+2021-09-15 16:56:54,212 Socket timeout
+2021-09-15 16:56:54,713 Socket timeout
+2021-09-15 16:56:55,226 Socket timeout
+2021-09-15 16:56:55,738 Socket timeout
+2021-09-15 16:56:56,253 Socket timeout
+2021-09-15 16:56:56,767 Socket timeout
+2021-09-15 16:56:57,281 Socket timeout
+2021-09-15 16:56:57,796 Socket timeout
+2021-09-15 16:56:58,297 Socket timeout
+2021-09-15 17:00:23.662569
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.2032.0_x64__qbz5n2kfra8p0\lib\threading.py", line 973, in _bootstrap_inner
+    self.run()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.2032.0_x64__qbz5n2kfra8p0\lib\threading.py", line 910, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\main_pb.py", line 92, in main_procedure
+    player_super_cycle(falling, team_id, robot_color, robot_number, SIMULATION, current_work_directory, robot, pause)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\launcher_pb.py", line 218, in player_super_cycle
+    player.play_game()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\strategy.py", line 388, in play_game
+    if self.role == 'forward': self.forward_main_cycle(self.second_pressed_button)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\strategy.py", line 520, in forward_main_cycle
+    self.motion.turn_To_Course(self.glob.pf_coord[2]+ 2 * math.pi / 3)  # robot turns to 1/3 of round from current orientation
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_real.py", line 192, in turn_To_Course
+    self.walk_Cycle(stepLength, sideLength,rotation,cycle,cycleNumber)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion.py", line 238, in walk_Cycle
+    if not self.falling_Test() == 0:
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 216, in falling_Test
+    self.simulateMotion(name = 'Get_Up_Left')
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 285, in simulateMotion
+    self.sim_Trigger()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 101, in sim_Trigger
+    self.wait_for_step(self.timestep)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 105, in wait_for_step
+    time1 = self.game_time_ms()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\VIA_PB\Soccer\Motion\class_Motion_Webots_PB.py", line 79, in game_time_ms
+    message = self.robot.client.receive()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\player\robot_client.py", line 109, in receive
+    content_size = self.socket.recv(self.message_manager.get_size())
+ConnectionResetError: [WinError 10054] Удаленный хост принудительно разорвал существующее подключение
+2021-09-15 17:03:09,537 Socket timeout
+2021-09-15 17:03:10,048 Socket timeout
+2021-09-15 17:03:10,562 Socket timeout
+2021-09-15 17:03:11,076 Socket timeout
+2021-09-15 17:03:11,589 Socket timeout
+2021-09-15 17:03:12,103 Socket timeout
+2021-09-15 18:18:09.981778
+Exception in thread Thread-1:
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.2032.0_x64__qbz5n2kfra8p0\lib\threading.py", line 973, in _bootstrap_inner
+    self.run()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.9_3.9.2032.0_x64__qbz5n2kfra8p0\lib\threading.py", line 910, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\SAMPLE_TEAM\main_pb.py", line 109, in main_procedure
+    player.play_game()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\SAMPLE_TEAM\Soccer\strategy.py", line 388, in play_game
+    if self.role == 'forward': self.forward_main_cycle(self.second_pressed_button)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\SAMPLE_TEAM\Soccer\strategy.py", line 535, in forward_main_cycle
+    self.motion.far_distance_plan_approach(self.glob.ball_coord, self.f.direction_To_Guest, stop_Over = stop_Over)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\SAMPLE_TEAM\Soccer\Motion\class_Motion_real.py", line 456, in far_distance_plan_approach
+    self.walk_Cycle(stepLength1, sideLength, rotation, cycle + 1, number_Of_Cycles+2)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\SAMPLE_TEAM\Soccer\Motion\class_Motion.py", line 238, in walk_Cycle
+    if not self.falling_Test() == 0:
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\SAMPLE_TEAM\Soccer\Motion\class_Motion_Webots_PB.py", line 207, in falling_Test
+    self.simulateMotion(name = 'Soccer_Get_UP_Stomach_N')
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\SAMPLE_TEAM\Soccer\Motion\class_Motion_Webots_PB.py", line 285, in simulateMotion
+    self.sim_Trigger()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\SAMPLE_TEAM\Soccer\Motion\class_Motion_Webots_PB.py", line 101, in sim_Trigger
+    self.wait_for_step(self.timestep)
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\SAMPLE_TEAM\Soccer\Motion\class_Motion_Webots_PB.py", line 105, in wait_for_step
+    time1 = self.game_time_ms()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\SAMPLE_TEAM\Soccer\Motion\class_Motion_Webots_PB.py", line 79, in game_time_ms
+    message = self.robot.client.receive()
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\player\robot_client.py", line 109, in receive
+    content_size = self.socket.recv(self.message_manager.get_size())
+ConnectionResetError: [WinError 10054] Удаленный хост принудительно разорвал существующее подключение
