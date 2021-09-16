@@ -105,9 +105,39 @@ class RobotClient():
     def initial(self, sensor_name, sensor_time):
         self.message_manager.add_initial_request(sensor_name, sensor_time)
 
-    def receive(self):
-        content_size = self.socket.recv(self.message_manager.get_size())
-        buffer_size = self.message_manager.get_answer_size(content_size)
-        data = self.socket.recv(buffer_size)
+    def super_receive(self, buffer_size):
+        read_bytes = 0
+        data = b""
+        while (buffer_size > 0):
+            tmp = self.socket.recv(buffer_size)
+            data += tmp
+            read_bytes = len(tmp)
+            buffer_size -= read_bytes
+        return data
 
+    def receive(self):
+        content_size = self.super_receive(self.message_manager.get_size())
+        buffer_size = self.message_manager.get_answer_size(content_size)
+        data = self.super_receive(buffer_size)
+        # read_bytes = 0
+        # data = b""
+        # while (buffer_size > 0):
+        #     tmp = self.socket.recv(buffer_size)
+        #     data += tmp
+        #     read_bytes += len(tmp)
+        #     buffer_size -= read_bytes
+        with open("log.txt", 'a') as lg:
+            # lg.write(str(data))
+            # lg.write("\n")
+            lg.write("======"*10)
+            lg.write(str(data))
+            lg.write("\n")
+            lg.write("\n")
+            lg.write(str(buffer_size))
+            lg.write("\n")
+            # lg.write(str(content_size))
+            # lg.write("\n")
+            lg.write(str(len(data)))
+            lg.write("\n")
+        
         return self.message_manager.parse_answer_message(data)
