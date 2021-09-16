@@ -5,7 +5,7 @@ Returns:
 import queue
 import time
 import logging
-from threading import Thread
+from threading import Thread, Lock
 import logging
 
 # logging.basicConfig(filename='cm_robokit.txt', encoding="utf-8", level=logging.DEBUG)
@@ -21,16 +21,17 @@ class CommunicationManager():
         self.client = RobotClient(host, port, verbosity)
         self.client.connect_client()
         self.maxsize = maxsize
-        self.messages = queue.Queue(maxsize)
         self.sensors = {}
         self.robot_color = team_color
         self.robot_number = player_number
         self.time_step = time_step
+        self.tx_mutex = Lock()
+        self.tx_message = {}
 
         self.current_time = 0
 
         self.sensor_time_step = time_step * 4
-        #self.sensor_time_step = 5
+        #self.sensor_time_step = 15
 
         sensors = {"left_knee_sensor": self.sensor_time_step, "right_knee_sensor": self.sensor_time_step,
                     "left_ankle_pitch_sensor": self.sensor_time_step, "right_ankle_pitch_sensor": self.sensor_time_step,
@@ -40,8 +41,6 @@ class CommunicationManager():
         # sensors = {"gps_body": 5, "imu_head": 5, "imu_body": 5,  "camera": 20}#
         self.enable_sensors(sensors)
         self.thread = Thread(target = self.run)
-        # th2 = Thread(target=manager.test_run)
-        #manager.run()
         self.thread.start()
         
 
@@ -49,53 +48,25 @@ class CommunicationManager():
         for sensor in sensors:
             self.client.initial(sensor, sensors[sensor])
             if sensor == "recognition":
-                self.sensors.update({"BALL": queue.Queue(self.maxsize)})
-                self.sensors.update({"RED_PLAYER_1": queue.Queue(self.maxsize)})
-                self.sensors.update({"RED_PLAYER_2": queue.Queue(self.maxsize)})
-                self.sensors.update({"BLUE_PLAYER_1": queue.Queue(self.maxsize)})
-                self.sensors.update({"BLUE_PLAYER_2": queue.Queue(self.maxsize)})
+                self.sensors.update({"BALL": {} })
+                self.sensors.update({"RED_PLAYER_1": {} })
+                self.sensors.update({"RED_PLAYER_2": {} })
+                self.sensors.update({"BLUE_PLAYER_1": {} })
+                self.sensors.update({"BLUE_PLAYER_2": {} })
 
-            self.sensors.update({str(sensor): queue.Queue(self.maxsize)})
-        self.sensors.update({"time": queue.Queue(1)})
+            self.sensors.update({str(sensor): ""})
+        self.sensors.update({"time": ""})
         self.client.send_request("init")
 
     def get_sensor(self, name) -> dict:
-        """[summary]
-
-        Args:
-            name ([type]): [description]
-
-        Returns:
-            dict: [description]
-        """
-        
-        value_dict = {}
-        if not name in self.sensors:
-            logging.error("sensor is not enable")
-            #return "sensor is not enable"
-        elif not self.sensors[name].empty():
-            value_dict = self.sensors[name].get()
-            self.sensors[name].put(value_dict)
-            #logging.warn("nothing in queue")
-            #return False
-        #else:
-            #return self.sensors[name].get()
-        return value_dict
-
-    def add_to_queue(self, message):
-        if self.messages.full():
-            self.messages.get()
-            self.messages.put(message)
-        else:
-            self.messages.put(message)
+        return self.sensors[name]
 
     def send_message(self):
-        while(not self.messages.empty()):
-            positions = self.messages.get()
-            logging.debug("Sending...")
-            logging.debug(f"Time: {self.current_time}")
-            logging.debug(positions)
-            self.client.send_request("positions", positions)
+        self.tx_mutex.acquire()
+        if self.tx_message:
+            self.client.send_request("positions", self.tx_message)
+            self.tx_message = {}
+        self.tx_mutex.release()
 
     def update_history(self, message):
         for sensor in message:
@@ -104,13 +75,9 @@ class CommunicationManager():
                 if delta > 5:
                     print(f"WARNING! Large protobuf time rx delta = {delta}")                
                 self.current_time = message[sensor]['sim time']
-            if self.sensors[sensor].full():
-                self.sensors[sensor].get()
-                self.sensors[sensor].put(message[sensor])
-            else:
-                self.sensors[sensor].put(message[sensor])
+            self.sensors[sensor] = message[sensor]
 
-    def time_sleep(self, t = 0.001)->None:
+    def time_sleep(self, t = 0)->None:
         print(f"Emulating delay of {t*1000} ms")
         start_time = self.current_time
         while (self.current_time - start_time < t * 1000):
@@ -118,11 +85,11 @@ class CommunicationManager():
 
     def get_imu_body(self):
         # self.last_imu_body = self.get_sensor("imu_body")
-        self.time_sleep()
+        #self.time_sleep()
         return self.get_sensor("imu_body")
 
     def get_imu_head(self):
-        self.time_sleep()
+        #self.time_sleep()
         return self.get_sensor("imu_head")
 
     def get_localization(self):
@@ -152,8 +119,9 @@ class CommunicationManager():
         logging.debug(f"Time: {self.current_time}")
         logging.debug(data)
 
-        self.add_to_queue((data, {}))
-        return 0 
+        self.tx_mutex.acquire()
+        self.tx_message = data
+        self.tx_mutex.release()
 
         
     def run(self):
@@ -163,8 +131,7 @@ class CommunicationManager():
                 # Sending/receiving protobuf in non-blocking way 
                 # If we have any data to send - do sending
                 # If full packet data is ready in socket - receive it, otherwise switch to check if sending is needed
-                if not self.messages.empty():
-                    self.send_message()
+                self.send_message()
                 message = self.client.receive2()
                 if message:
                     self.update_history(message)
