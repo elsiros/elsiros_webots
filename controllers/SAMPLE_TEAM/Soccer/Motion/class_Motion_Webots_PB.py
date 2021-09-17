@@ -107,6 +107,8 @@ class Motion_sim(Motion_real):
         while True:
             time1 = self.game_time_ms()
             if time1 >= (self.former_step_time + step):
+                if (time1 % 1500 == 0):
+                    print (f"Simulation time:{time1}")
                 #print('simulation step time', time1 - self.former_step_time, 'real step time ', (time.time() - self.former_real_time)*1000)
                 self.former_step_time = time1
                 self.former_real_time = time.time()
@@ -227,7 +229,7 @@ class Motion_sim(Motion_real):
     def send_angles_to_servos(self, angles):
         self.sim_Trigger()
         time_ms = self.game_time_ms()
-        print('time_step:', time_ms - self.sim_step_counter)
+        #print('time_step:', time_ms - self.sim_step_counter)
         self.sim_step_counter = time_ms
         servo_data = {}
         for i in range(len(angles)):

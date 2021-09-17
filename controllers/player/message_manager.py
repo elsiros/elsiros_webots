@@ -136,6 +136,8 @@ class MessageManager():
         """
         parse_message = {}
         parse_message.update({"time": {"unix time": message.real_time, "sim time": message.time}})
+        if message.time % 100 == 0:
+            print(f"message time={message.time}")
         for sensor in message.accelerometers:
             parse_message.update({sensor.name: {"position": [
                 sensor.value.X, sensor.value.Y, sensor.value.Z], "time": message.time}})

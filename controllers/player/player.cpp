@@ -452,6 +452,7 @@ public:
   }
 
   void step() {
+    //fprintf(stdout, "client_fd=%d", client_fd);
     controller_time += basic_time_step;
     if (client_fd == -1) {
       client_fd = accept_client(server_fd);
@@ -837,6 +838,7 @@ public:
 
   void prepareSensorMessage() {
     sensor_measurements.set_time(controller_time);
+    fprintf(stdout, "prepareSensorMessage time = %d\r\n", controller_time);
 #ifdef _WIN32
     struct timeval2 tp;
     struct timezone2 tz;
@@ -1239,7 +1241,7 @@ public:
         for (const auto& entry : message_size_history)
       history_size += entry.second;
     double robot_quota = team_network_quota / nb_robots_in_team;
-    if (size + history_size > robot_quota * window_duration * std::pow(2, 20)) {
+    /*if (size + history_size > robot_quota * window_duration * std::pow(2, 20)) {
       sensor_measurements.Clear();
       sensor_measurements.set_time(controller_time);
       sensor_measurements.set_real_time(new_msg_real_time);
@@ -1248,6 +1250,7 @@ public:
       message->set_text(std::to_string(robot_quota) + " MB/s quota exceeded.");
       size = sensor_measurements.ByteSizeLong();
     }
+    */
         message_size_history.push_front({ new_msg_real_time, size });
         char* output = new char[sizeof(uint32_t) + size];
         uint32_t* output_size = (uint32_t*)output;
@@ -1284,6 +1287,7 @@ public:
     return camera->getWidth() * camera->getHeight() * 3 * 1000.0 / camera_time_step / std::pow(2, 20);
   }
 
+
 private:
   std::vector<std::string> allowed_hosts;
   int port;
@@ -1300,7 +1304,6 @@ private:
   // It's required to store them to avoid sending values of unitialized sensors
     std::map<webots::Device*, int> new_sensors;
     std::vector<MotorCommand*> motor_commands;
-  uint32_t controller_time;
     std::map<webots::Device*, uint32_t> start_sensoring_time;
     char* recv_buffer;
   int recv_index;
@@ -1339,6 +1342,8 @@ private:
 
 public:
   static int nb_robots_in_team;
+  uint32_t controller_time;
+
 };
 
 int PlayerServer::benchmark_level = 0;
@@ -1363,6 +1368,7 @@ int main(int argc, char* argv[]) {
 
     webots::Supervisor* robot = new webots::Supervisor();
   const int basic_time_step = robot->getBasicTimeStep();
+  fprintf(stdout, "Controller basic_time_step = %d\r\n", basic_time_step);
   const std::string name = robot->getName();
   const int player_id = std::stoi(name.substr(name.find_last_of(' ') + 1));
   const int player_team = name[0] == 'r' ? RED : BLUE;
@@ -1371,8 +1377,12 @@ int main(int argc, char* argv[]) {
   PlayerServer server(allowed_hosts, port, player_id, player_team, robot);
     //fprintf(stderr, "PlayerServer instance created OK\r\n");
 
-  while (robot->step(basic_time_step) != -1)
-    server.step();
+  while (robot->step(basic_time_step) != -1) {
+   server.step();
+   const double t = robot->getTime();
+   //fprintf(stdout, "Controller time = %d, simulation time = %f\r\n", server.controller_time, t );
+
+  }
 
   delete robot;
   return 0;

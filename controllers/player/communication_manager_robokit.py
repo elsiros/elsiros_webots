@@ -8,7 +8,6 @@ import logging
 from threading import Thread, Lock
 import logging
 
-# logging.basicConfig(filename='cm_robokit.txt', encoding="utf-8", level=logging.DEBUG)
 
 from robot_client import RobotClient
 
@@ -17,6 +16,7 @@ class CommunicationManager():
     """[summary]
     """
     def __init__(self, maxsize=1, host='127.0.0.1', port=10001, team_color="RED", player_number = 1, time_step = 15):
+        logging.basicConfig(filename=f'cm_robokit{port}.txt', encoding="utf-8", level=logging.DEBUG)
         verbosity = 4
         self.client = RobotClient(host, port, verbosity)
         self.client.connect_client()
@@ -75,6 +75,9 @@ class CommunicationManager():
                 if delta > 5:
                     print(f"WARNING! Large protobuf time rx delta = {delta}")                
                 self.current_time = message[sensor]['sim time']
+                #logging.debug("Getting servo commands:")
+                logging.debug(f"New simulation time: {self.current_time}")
+                #logging.debug(data)                
             self.sensors[sensor] = message[sensor]
 
     def time_sleep(self, t = 0)->None:
@@ -115,9 +118,9 @@ class CommunicationManager():
 
     def send_servos(self, data = {}):
         #self.time_sleep(0)
-        logging.debug("Getting servo commands:")
-        logging.debug(f"Time: {self.current_time}")
-        logging.debug(data)
+        #logging.debug("Getting servo commands:")
+        #logging.debug(f"Time: {self.current_time}")
+        #logging.debug(data)
 
         self.tx_mutex.acquire()
         self.tx_message = data
