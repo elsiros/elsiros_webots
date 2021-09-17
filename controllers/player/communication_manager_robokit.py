@@ -66,15 +66,16 @@ class Model():
                                         self.robot.last_head_pitch - \
                                         self.fov_x)
 
-        # print(f"right_yaw_visible_area: {right_yaw_visible_area}, left_yaw_visible_area: {left_yaw_visible_area}, \
-        #         top_distance_visible_area: {top_distance_visible_area}, bottom_distance_visible_area: {bottom_distance_visible_area} \
-        #         distance: {distance}, course: {course}, self.fov_y: {self.fov_y}, self.fov_x: {self.fov_x},\
-        #         self.robot_yaw: {self.robot.last_head_yaw} self.robot_pitch: {self.robot.last_head_pitch}")
+        print(f"right_yaw_visible_area: {right_yaw_visible_area}, left_yaw_visible_area: {left_yaw_visible_area}, \
+                top_distance_visible_area: {top_distance_visible_area}, bottom_distance_visible_area: {bottom_distance_visible_area} \
+                distance: {distance}, course: {course}, self.fov_y: {self.fov_y}, self.fov_x: {self.fov_x},\
+                self.robot_yaw: {self.robot.last_head_yaw} self.robot_pitch: {self.robot.last_head_pitch}")
         if ((bottom_distance_visible_area < distance < top_distance_visible_area) and 
             (right_yaw_visible_area < course < left_yaw_visible_area)):
             return True
         else:
             return False
+
     @staticmethod
     def dist(p1, p2):
         return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
@@ -94,7 +95,7 @@ class Model():
 
         robot_orientation = robot_imu["position"]
 
-        angle = math.atan2(robot_pos[1] - y, robot_pos[0] - x) - robot_orientation[2]
+        angle = math.atan2(robot_pos[1] - y, -(robot_pos[0] - x)) - robot_orientation[2]
         # if (x < robot_pos[0]):
         #     angle = math.pi - angle
         # angle = angle * (robot_pos[1] - y)/abs(robot_pos[1] - y) - robot_orientation[2]
@@ -103,17 +104,17 @@ class Model():
 
     def proccess_data(self, x, y):
         if not self.check_robot_stand():
-            # print("WARNING: Robot in not standing")
+            print("WARNING: Robot in not standing")
             return []
         res = self.get_distance_course(x, y)
         if not res:
-            # print("WARNING: Imu or gps not available")
+            print("WARNING: Imu or gps not available")
             return []
         distance, angle = res
         if self.check_object_in_frame(distance, angle):
             return [-angle, distance]
         else:
-            # print("WARNING: Ball is not in the frame")
+            print("WARNING: Ball is not in the frame")
             return []
 
 class CommunicationManager():
@@ -141,11 +142,7 @@ class CommunicationManager():
         self.sensor_time_step = time_step * 4
         #self.sensor_time_step = 15
 
-        sensors = {"camera" : 50, "left_knee_sensor": self.sensor_time_step, "right_knee_sensor": self.sensor_time_step,
-                    "left_ankle_pitch_sensor": self.sensor_time_step, "right_ankle_pitch_sensor": self.sensor_time_step,
-                    "right_hip_pitch_sensor": self.sensor_time_step, "left_hip_pitch_sensor": self.sensor_time_step,
-                    "head_pitch_sensor": self.sensor_time_step, "head_yaw_sensor": self.sensor_time_step,
-                    "imu_body": self.time_step, "recognition": self.sensor_time_step, "gps_body": self.sensor_time_step}
+        sensors = {"imu_body": self.time_step, "recognition": self.sensor_time_step, "gps_body": self.sensor_time_step}
         # sensors = {"gps_body": 5, "imu_head": 5, "imu_body": 5,  "camera": 20}#
         self.enable_sensors(sensors)
         self.thread = Thread(target = self.run)
