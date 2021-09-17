@@ -94,10 +94,10 @@ class Model():
 
         robot_orientation = robot_imu["position"]
 
-        angle = math.atan(abs(robot_pos[1] - y)/abs(robot_pos[0] - x))
-        if (x < robot_pos[0]):
-            angle = math.pi - angle
-        angle = angle * (robot_pos[1] - y)/abs(robot_pos[1] - y) - robot_orientation[2]
+        angle = math.atan2(robot_pos[1] - y, robot_pos[0] - x) - robot_orientation[2]
+        # if (x < robot_pos[0]):
+        #     angle = math.pi - angle
+        # angle = angle * (robot_pos[1] - y)/abs(robot_pos[1] - y) - robot_orientation[2]
 
         return (distance, angle)
 
