@@ -26,6 +26,24 @@ class Blurrer():
             params = json.load(f)
         return params
 
+    def course(self, angle):
+        return angle * (1 + (1 - 2))
+    
+    def distance():
+        return
+
+    def objects():
+        return
+    
+    def loc():
+        return
+    def step():
+        return
+
+    def observation():
+        return
+    
+
 class Model():
     def __init__(self, robot):
         self.robot = robot
@@ -79,6 +97,13 @@ class Model():
     @staticmethod
     def dist(p1, p2):
         return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
+
+    @staticmethod
+    def norm_yaw(yaw):
+        yaw %= 2 * math.pi
+        if yaw > math.pi:  yaw -= 2* math.pi
+        if yaw < -math.pi: yaw += 2* math.pi
+        return yaw
         
     def get_distance_course(self, x, y):
         robot_gps = self.robot.get_sensor("gps_body")
@@ -96,7 +121,7 @@ class Model():
         robot_orientation = robot_imu["position"]
 
         angle = -math.atan2(robot_pos[1] - y, -(robot_pos[0] - x)) - robot_orientation[2]
-        print('robot_orientation:', robot_orientation)
+        angle = self.norm_yaw(angle)
         # if (x < robot_pos[0]):
         #     angle = math.pi - angle
         # angle = angle * (robot_pos[1] - y)/abs(robot_pos[1] - y) - robot_orientation[2]
@@ -299,8 +324,9 @@ if __name__ == '__main__':
     # инициализация сенсоров
     
 
-    
+    i = 0
     while (True):
+        i+=1
         # pass
         time.sleep(0.5)
         # print("IMU: ", manager.get_imu_body())
@@ -308,7 +334,10 @@ if __name__ == '__main__':
         #print("get_localization: ", manager.get_localization())
         print("get_ball: ", manager.get_ball())
         # print("get_imu: ", manager.get_imu_body())
-        manager.send_servos({"head_yaw": -0.5, "head_pitch": 0})
+        # manager.send_servos({"head_yaw": math.sin(i)/2, "head_pitch": -abs(math.sin(i)/2)})
+        # 0.88
+        manager.send_servos({"head_yaw": math.sin(i)/2, "head_pitch": -0.88})
+
         # print(manager.current_time)
     # manager = CommunicationManager(1, '127.0.0.1', 10001, time_step = 20)
     # # инициализация сенсоров
