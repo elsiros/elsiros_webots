@@ -32,8 +32,8 @@ class Model():
         self.robot = robot
         self.max_visible_area = 4
         self.min_visible_area = 0
-        self.fov_x = math.radians(45)
-        self.fov_y = math.radians(60)
+        self.fov_x = math.radians(45) / 2
+        self.fov_y = math.radians(60) / 2
         self.robot_height = 0.413
 
     def check_robot_stand(self):
@@ -59,13 +59,18 @@ class Model():
                                         self.robot.last_head_pitch + \
                                         self.fov_x)
 
-        if -self.robot.last_head_pitch > self.fov_x:
+        if -self.robot.last_head_pitch > math.pi/2 - self.fov_x:
             bottom_distance_visible_area = self.min_visible_area
         else:
             bottom_distance_visible_area = self.robot_height * \
                                         math.tan(math.pi/2 + \
                                         self.robot.last_head_pitch - \
                                         self.fov_x)
+
+        print(f"right_yaw_visible_area: {right_yaw_visible_area}, left_yaw_visible_area: {left_yaw_visible_area}, \
+                top_distance_visible_area: {top_distance_visible_area}, bottom_distance_visible_area: {bottom_distance_visible_area} \
+                distance: {distance}, course: {course}, self.fov_y: {self.fov_y}, self.fov_x: {self.fov_x},\
+                self.robot_yaw: {self.robot.last_head_yaw} self.robot_pitch: {self.robot.last_head_pitch}")
         if ((bottom_distance_visible_area < distance < top_distance_visible_area) and 
             (right_yaw_visible_area < course < left_yaw_visible_area)):
             return True
@@ -116,7 +121,7 @@ class CommunicationManager():
     """[summary]
     """
     def __init__(self, maxsize=1, host='127.0.0.1', port=10001, team_color="RED", player_number = 1, time_step = 15):
-        logging.basicConfig(filename=f'cm_robokit{port}.txt', encoding="utf-8", level=logging.DEBUG)
+        # logging.basicConfig(filename=f'cm_robokit{port}.txt', encoding="utf-8", level=logging.DEBUG)
         verbosity = 4
         self.client = RobotClient(host, port, verbosity)
         self.client.connect_client()
@@ -300,13 +305,13 @@ if __name__ == '__main__':
     while (True):
         # pass
         time.sleep(0.5)
-        print("IMU: ", manager.get_imu_body())
-        print(manager.current_time)
+        # print("IMU: ", manager.get_imu_body())
+        # print(manager.current_time)
         #print("get_localization: ", manager.get_localization())
         print("get_ball: ", manager.get_ball())
         # print("get_imu: ", manager.get_imu_body())
-        manager.send_servos({"head_yaw": 0, "head_pitch": 0})
-        print(manager.current_time)
+        # manager.send_servos({"head_yaw": 0, "head_pitch": 0})
+        # print(manager.current_time)
     # manager = CommunicationManager(1, '127.0.0.1', 10001, time_step = 20)
     # # инициализация сенсоров
     # while (True):

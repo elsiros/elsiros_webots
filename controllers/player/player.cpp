@@ -838,7 +838,7 @@ public:
 
   void prepareSensorMessage() {
     sensor_measurements.set_time(controller_time);
-    fprintf(stdout, "prepareSensorMessage time = %d\r\n", controller_time);
+    // fprintf(stdout, "prepareSensorMessage time = %d\r\n", controller_time);
 #ifdef _WIN32
     struct timeval2 tp;
     struct timezone2 tz;
@@ -1379,7 +1379,7 @@ int main(int argc, char* argv[]) {
 
   while (robot->step(basic_time_step) != -1) {
    server.step();
-   const double t = robot->getTime();
+  //  const double t = robot->getTime();
    //fprintf(stdout, "Controller time = %d, simulation time = %f\r\n", server.controller_time, t );
 
   }
