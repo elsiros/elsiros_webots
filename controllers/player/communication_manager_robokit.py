@@ -95,7 +95,7 @@ class Model():
 
         robot_orientation = robot_imu["position"]
 
-        angle = math.atan2(robot_pos[1] - y, -(robot_pos[0] - x)) - robot_orientation[2]
+        angle = -math.atan2(robot_pos[1] - y, -(robot_pos[0] - x)) - robot_orientation[2]
         # if (x < robot_pos[0]):
         #     angle = math.pi - angle
         # angle = angle * (robot_pos[1] - y)/abs(robot_pos[1] - y) - robot_orientation[2]
@@ -112,7 +112,7 @@ class Model():
             return []
         distance, angle = res
         if self.check_object_in_frame(distance, angle):
-            return [-angle, distance]
+            return [angle, distance]
         else:
             # print("WARNING: Ball is not in the frame")
             return []
@@ -307,7 +307,7 @@ if __name__ == '__main__':
         #print("get_localization: ", manager.get_localization())
         print("get_ball: ", manager.get_ball())
         # print("get_imu: ", manager.get_imu_body())
-        # manager.send_servos({"head_yaw": 0, "head_pitch": 0})
+        manager.send_servos({"head_yaw": -0.5, "head_pitch": 0})
         # print(manager.current_time)
     # manager = CommunicationManager(1, '127.0.0.1', 10001, time_step = 20)
     # # инициализация сенсоров
