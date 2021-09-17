@@ -81,18 +81,10 @@ class Motion_sim(Motion_real):
             self.wait_for_step(self.timestep)
 
     def wait_for_step(self, step):
-        #print('real step time ', (time.time() - self.former_real_time)*1000)
-        #self.former_real_time = time.time()
-        #return
-        #self.robot.time_sleep(step/1000.)
         while True:
             time1 = self.game_time_ms()
-            delta = time1 - self.former_step_time 
             if time1 >= (self.former_step_time + step):
-                #print('simulation step time', time1 - self.former_step_time, 'real step time ', (time.time() - self.former_real_time)*1000)
                 self.former_step_time = time1
-                #self.former_real_time = time.time()
-                if delta > 15: print('step_time: ', delta)
                 break
 
 
@@ -123,29 +115,12 @@ class Motion_sim(Motion_real):
         return body_euler[2]
 
     def falling_Test(self):
-        #if self.gcreceiver != None:
-        #    if self.gcreceiver.team_state != None:
-        #        if self.gcreceiver.state.game_state != 'STATE_PLAYING' or self.gcreceiver.player_state.penalty != 0:
-        #            self.falling_Flag = 3
-        #            self.simulateMotion(name = 'Initial_Pose')
-        #            return self.falling_Flag
-        #while True:
-        #    #self.wait_for_step(5)
-        #    self.robot.add_to_queue(({},{}))
-        #    self.robot.send_message()
-        #    message = self.robot.client.receive()
-        #    self.robot.update_history(message)
-        #    body_euler = self.robot.get_sensor("imu_body")
-        #    if body_euler:
-        #        body_euler = body_euler['position']
-        #        #print('body_euler :', body_euler)
-        #        break
-        #    else:
-        #        print("falling_Test: imu does't answer")
-        #self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = body_euler
-        #print('self.body_euler_angle[pitch] =', self.body_euler_angle['pitch'])
-        #print('self.body_euler_angle[roll] =', self.body_euler_angle['roll'])
-        #print('self.body_euler_angle[yaw] =', self.body_euler_angle['yaw'])
+        if self.gcreceiver != None:
+            if self.gcreceiver.team_state != None:
+                if self.gcreceiver.state.game_state != 'STATE_PLAYING' or self.gcreceiver.player_state.penalty != 0:
+                    self.falling_Flag = 3
+                    self.simulateMotion(name = 'Initial_Pose')
+                    return self.falling_Flag
         if (self.body_euler_angle['pitch']) > 0.785:
             self.falling_Flag = 1                   # on stomach
             self.simulateMotion(name = 'Soccer_Get_UP_Stomach_N')
@@ -161,14 +136,7 @@ class Motion_sim(Motion_real):
         return self.falling_Flag
 
     def send_angles_to_servos(self, angles):
-        #print('before_trigger: ', self.game_time_ms()-self.sim_step_counter)
         self.sim_Trigger()
-        #print('after_trigger: ', self.game_time_ms()-self.sim_step_counter)
-        #time_ms = self.game_time_ms()
-        #delta = time_ms- self.sim_step_counter
-        #if delta > 15: 
-        #    print('time_step:', delta )
-        #self.sim_step_counter = time_ms
         servo_data = {}
         for i in range(len(angles)):
             key = self.WBservosList[i]
@@ -176,18 +144,12 @@ class Motion_sim(Motion_real):
             servo_data.update({key:value})
         self.robot.send_servos(servo_data)
 
-        
-
     def move_head(self, pan, tilt):
         servo_data = {}
         pan_key = self.WBservosList[21]
         pan_value = pan * self.TIK2RAD + self.trims[21]
         tilt_key = self.WBservosList[22]
         tilt_value = tilt * self.TIK2RAD + self.trims[22]
-        #self.robot.add_to_queue(({pan_key: pan_value, tilt_key: tilt_value}, {}))
-        #self.robot.send_message()
-        #message = self.robot.client.receive()
-        #self.robot.update_history(message)
         servo_data = {pan_key: pan_value, tilt_key: tilt_value}
         self.robot.send_servos(servo_data)
         for i in range(16):
@@ -223,24 +185,11 @@ class Motion_sim(Motion_real):
                     key = self.WBservosList[j]
                     value = tempActivePose + self.trims[j]
                     servo_data.update({key:value})
-                #self.robot.add_to_queue((servo_data, {}))
-                #self.robot.send_message()
-                #message = self.robot.client.receive()
-                #self.robot.update_history(message)
                 self.robot.send_servos(servo_data)
                 self.sim_Trigger()
         return
 
     def sim_Get_Ball_Position(self):
-        #self.robot.add_to_queue(({},{"recognition": 5}))
-        #self.robot.send_message()
-        #message = self.robot.client.receive()
-        #self.robot.update_history(message)
-        #ball_pos = self.robot.get_sensor("BALL")
-        #if ball_pos: 
-        #    ball_position = ball_pos['position']
-        #    print('ball_position =', ball_position)
-        #    return ball_position
         ball_position = self.robot.get_ball()
         print('ball_position', ball_position)
         if ball_position:
@@ -265,11 +214,6 @@ class Motion_sim(Motion_real):
 
     def sim_Get_Robot_Position(self):
         self.sim_Trigger()
-        #self.robot.add_to_queue(({},{}))
-        #self.robot.send_message()
-        #message = self.robot.client.receive()
-        #self.robot.update_history(message)
-        #Position = self.robot.get_sensor("gps_body")['position']
         Position = self.robot.get_localization()
         x, y  = Position['position']
         #self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.get_sensor("imu_body")['position']
