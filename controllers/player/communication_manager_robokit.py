@@ -102,7 +102,8 @@ class CommunicationManager():
             if (sensor == "time"):
                 delta = message[sensor]['sim time'] - self.current_time
                 if delta > 5:
-                    print(f"WARNING! Large protobuf time rx delta = {delta}")                
+                    pass
+                    #print(f"WARNING! Large protobuf time rx delta = {delta}")                
                 self.current_time = message[sensor]['sim time']
             if self.sensors[sensor].full():
                 self.sensors[sensor].get()
@@ -132,6 +133,7 @@ class CommunicationManager():
     def get_ball(self):
         self.time_sleep(0.1)
         return self.get_sensor("BALL")
+
 
     def get_opponents(self):
         self.time_sleep(0.1)

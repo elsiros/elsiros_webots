@@ -25,6 +25,7 @@ class Local():
         else: self.side_factor = -1
         from .class_Visualisation import Visualisation
         self.visualisation = Visualisation()
+        self.robot_moved = False
 
     def coordinate_fall_reset(self):
         #self.call_Par_Filter.pf.fall_reset()
@@ -57,6 +58,7 @@ class Local():
                 self.glob.pf_coord[0] += self.coord_shift[0]
                 self.glob.pf_coord[1] += self.coord_shift[1]
                 self.glob.pf_coord[2] += self.coord_shift[2]
+            self.robot_moved = True
         else:
             x,y,yaw = self.motion.sim_Get_Robot_Position()
             self.glob.pf_coord = [x * self.side_factor, y * self.side_factor, yaw]
@@ -110,9 +112,64 @@ class Local():
         self.glob.pf_coord = [x * self.side_factor, y * self.side_factor, yaw]
         #self.glob.pf_coord = [x * self.side_factor, y * self.side_factor, yaw + math.pi * (1 - self.side_factor)/2]
         self.glob.pf_coord[2] = self.normalize_yaw(self.glob.pf_coord[2])
-        #if self.glob.obstacleAvoidanceIsOn: self.group_obstacles()
+        if self.glob.obstacleAvoidanceIsOn: self.group_obstacles()
         self.coordinate_record()
         return True
+
+    def group_obstacles(self):
+        grouped_obstacles = []
+        #uprint('obstacles(raw): ', self.glob.obstacles)
+        while(len(self.glob.obstacles) > 0):
+            obstacle0 = self.glob.obstacles.pop(0)
+            group_number = 1
+            k = 0
+            for i in range(len(self.glob.obstacles)):
+                united_obstacles = math.sqrt((obstacle0[0]-self.glob.obstacles[i-k][0])**2 + (obstacle0[1]-self.glob.obstacles[i-k][1])**2)\
+                                               < (obstacle0[2] + self.glob.obstacles[i-k][2])/2
+                if united_obstacles:
+                    group_number += 1
+                    new_size = math.sqrt((obstacle0[0]-self.glob.obstacles[i-k][0])**2 + (obstacle0[1]-self.glob.obstacles[i-k][1])**2)\
+                                               + (obstacle0[2] + self.glob.obstacles[i-k][2])/2
+                    obstacle0 = [(obstacle0[0]*(group_number-1) + self.glob.obstacles[i-k][0])/group_number,
+                                 (obstacle0[1]*(group_number-1) + self.glob.obstacles[i-k][1])/group_number,
+                                 (obstacle0[2]*(group_number-1) + new_size)/group_number,]
+                    self.glob.obstacles.pop(i-k)
+                    k += 1
+            if obstacle0[2] > 0.1:
+                grouped_obstacles.append(obstacle0)
+        self.glob.obstacles = []
+        for obstacle in grouped_obstacles:
+            global_x = self.glob.pf_coord[0] + obstacle[0] * math.cos(self.glob.pf_coord[2]) - obstacle[1] * math.sin(self.glob.pf_coord[2])
+            global_y = self.glob.pf_coord[1] + obstacle[1] * math.cos(self.glob.pf_coord[2]) + obstacle[0] * math.sin(self.glob.pf_coord[2])
+            if abs(global_y) <= self.glob.landmarks['FIELD_WIDTH']/2 and abs(global_x) <= self.glob.landmarks['FIELD_LENGTH']/2:
+                obstacle[0] = global_x
+                obstacle[1] = global_y
+                self.glob.obstacles.append(obstacle)
+
+    def read_Localization_marks(self, img):
+        #self.quality = 0
+        #post_list1 = self.detect_Post_In_image(img, "blue posts")
+        #for post in post_list1:
+        #    self.post_data_in_pose[self.post_data_in_pose_number][0] = int(post[0] * 2000)
+        #    self.post_data_in_pose[self.post_data_in_pose_number][1] = int(post[1] * 2000)
+        #    self.post_data_in_pose_number += 1
+        ##if len(post_list1) != 0:
+        ##    self.post_data_in_pose.extend(post_list1)
+        #post_list2 = self.detect_Post_In_image(img, "yellow posts")
+        #for post in post_list2:
+        #    self.post_data_in_pose[self.post_data_in_pose_number][0] = int(post[0] * 2000)
+        #    self.post_data_in_pose[self.post_data_in_pose_number][1] = int(post[1] * 2000)
+        #    self.post_data_in_pose_number += 1
+        ##if len(post_list2) != 0:
+        ##    self.post_data_in_pose.extend(post_list2)
+        #if self.USE_LANDMARKS_FOR_LOCALISATION == True:
+        #    if self.USE_PENALTY_MARKS_FOR_LOCALISATION ==True: self.detect_penalty_marks(img)
+        #    if self.USE_LINES_FOR_LOCALISATION == True : self.detect_line_in_image(img)
+        if self.robot_moved == True:
+            self.robot_moved = False
+            self.glob.obstacles.clear()
+        if self.glob.obstacleAvoidanceIsOn:
+            self.detect_obstacles(img)
 
 
 if __name__=="__main__":
