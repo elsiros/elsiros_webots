@@ -236,7 +236,7 @@ class CommunicationManager():
     def get_ball(self):
         # self.time_sleep(0.1)
         ball = self.get_sensor("BALL").copy()
-        print("Abs ball: ", ball)
+        # print("Abs ball: ", ball)
         if ball:
             ball_pos = ball["position"]
             if not ball_pos:
@@ -297,7 +297,7 @@ class CommunicationManager():
                     message = self.client.receive2()
                 self.update_history(message)
             
-            print("get_ball: ", self.get_ball())
+            # print("get_ball: ", self.get_ball())
 
     def test_run(self):
         # пример отправки данных серв
@@ -324,13 +324,13 @@ if __name__ == '__main__':
     while (True):
         # pass
         time.sleep(0.5)
-        # print("IMU: ", manager.get_imu_body())
-        # print(manager.current_time)
-        # #print("get_localization: ", manager.get_localization())
-        # print("get_ball: ", manager.get_ball())
-        # # print("get_imu: ", manager.get_imu_body())
-        # manager.send_servos({"head_yaw": 0, "head_pitch": 0})
-        # print(manager.current_time)
+        print("IMU: ", manager.get_imu_body())
+        print(manager.current_time)
+        #print("get_localization: ", manager.get_localization())
+        print("get_ball: ", manager.get_ball())
+        # print("get_imu: ", manager.get_imu_body())
+        manager.send_servos({"head_yaw": 0, "head_pitch": 0})
+        print(manager.current_time)
     # manager = CommunicationManager(1, '127.0.0.1', 10001, time_step = 20)
     # # инициализация сенсоров
     # while (True):
