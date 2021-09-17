@@ -108,10 +108,10 @@ class Motion_sim(Motion_real):
         self.euler_angle['yaw'] = head_euler[2]
 
     def read_imu_body_yaw(self):
-        timer1 = time.perf_counter()
+        #timer1 = time.perf_counter()
         body_euler = self.robot.get_imu_body()['position']
         self.body_euler_angle = {'roll': body_euler[0], 'pitch': body_euler[1], 'yaw': body_euler[2]}
-        print('imu_body_measurement_time:', time.perf_counter() - timer1, 'self.body_euler_angle:', self.body_euler_angle)
+        print('imu_body: ', self.body_euler_angle)
         return body_euler[2]
 
     def falling_Test(self):
