@@ -65,14 +65,14 @@ class MessageManager():
         """
        
         request = messages_pb2.ActuatorRequests()
-        for sen in positions[1]:
-            sensor = request.sensor_time_steps.add()
-            sensor.name = sen
-            sensor.timeStep = positions[1][sen]
-        for pos in positions[0]:
+        #for sen in positions[1]:
+        #    sensor = request.sensor_time_steps.add()
+        #    sensor.name = sen
+        #    sensor.timeStep = positions[1][sen]
+        for pos in positions:
             motor = request.motor_positions.add()
             motor.name = pos
-            motor.position = positions[0][pos]
+            motor.position = positions[pos]
         return self.generate_message(request)
 
     def generate_message(self, message):
@@ -136,6 +136,8 @@ class MessageManager():
         """
         parse_message = {}
         parse_message.update({"time": {"unix time": message.real_time, "sim time": message.time}})
+        #if message.time % 100 == 0:
+        #    print(f"message time={message.time}")
         for sensor in message.accelerometers:
             parse_message.update({sensor.name: {"position": [
                 sensor.value.X, sensor.value.Y, sensor.value.Z], "time": message.time}})
