@@ -118,6 +118,7 @@ class RobotClient():
     def receive2(self):
         chunk = self.socket.recv(1024)
         self.rx_buf.extend(chunk)
+        # print(chunk)
         if self.rx_wait_for_data == False:
             header_size = self.message_manager.get_size()
             if len(self.rx_buf) >= header_size:
@@ -125,7 +126,7 @@ class RobotClient():
                 header = self.rx_buf[:header_size]     
                 self.rx_buf = self.rx_buf[header_size:]
                 self.rx_expected_data_size = self.message_manager.get_answer_size(header)
-        else:
+        if self.rx_wait_for_data == True:
             if len(self.rx_buf) >= self.rx_expected_data_size:
                 self.rx_wait_for_data = False
                 data = self.rx_buf[:self.rx_expected_data_size]     
