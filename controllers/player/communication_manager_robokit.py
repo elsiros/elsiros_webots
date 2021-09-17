@@ -20,13 +20,18 @@ class Blurrer():
 
         Args:
             object_angle_noize (float, optional): Noize for angle in radians. 
-            Blurrer will and uniformly random value from -object_angle_noize to 
-            object_angle_noize to ground truth course. Defaults to 0.
-            object_distance_noize (float, optional): [description]. Defaults to 0..
-            observation_bonus (float, optional): [description]. Defaults to 0..
-            step_cost (float, optional): [description]. Defaults to 0..
-            constant_loc_noize (float, optional): [description]. Defaults to 0..
-            loc_noize_meters (float, optional): [description]. Defaults to 0..
+            Blurrer will uniformly random value from -object_angle_noize to 
+            object_angle_noize and add it to the ground truth course. Defaults to 0.
+            object_distance_noize (float, optional): Noize for 
+            distance in percents divided by 100. Blurrer will uniformly random 
+            value from -object_distance_noize to object_distance_noize and
+            multiply difference of 1 and this value with ground truth distance. Defaults to 0..
+            observation_bonus (float, optional): Blurrer will increase the consistency
+            for every good observation (successfuly processed image). Defaults to 0..
+            step_cost (float, optional): Blurrer will decrease the consistency
+            for every simulation step. Defaults to 0..
+            constant_loc_noize (float, optional): Constant localization noize. Defaults to 0..
+            loc_noize_meters (float, optional): Multiplier for consistency, in meters. Defaults to 0. Defaults to 0..
         """           
         self.object_angle_noize = object_angle_noize
         self.object_distance_noize = object_distance_noize
@@ -365,9 +370,7 @@ class CommunicationManager():
 
 
 if __name__ == '__main__':
-    manager = CommunicationManager(1, '127.0.0.1', 10001, time_step = 20)
-    # инициализация сенсоров
-    
+    manager = CommunicationManager(1, '127.0.0.1', 10001, time_step = 20)    
 
     i = 0
     while (True):
