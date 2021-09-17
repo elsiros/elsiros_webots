@@ -66,10 +66,10 @@ class Model():
                                         self.robot.last_head_pitch - \
                                         self.fov_x)
 
-        print(f"right_yaw_visible_area: {right_yaw_visible_area}, left_yaw_visible_area: {left_yaw_visible_area}, \
-                top_distance_visible_area: {top_distance_visible_area}, bottom_distance_visible_area: {bottom_distance_visible_area} \
-                distance: {distance}, course: {course}, self.fov_y: {self.fov_y}, self.fov_x: {self.fov_x},\
-                self.robot_yaw: {self.robot.last_head_yaw} self.robot_pitch: {self.robot.last_head_pitch}")
+        # print(f"right_yaw_visible_area: {right_yaw_visible_area}, left_yaw_visible_area: {left_yaw_visible_area}, \
+        #         top_distance_visible_area: {top_distance_visible_area}, bottom_distance_visible_area: {bottom_distance_visible_area} \
+        #         distance: {distance}, course: {course}, self.fov_y: {self.fov_y}, self.fov_x: {self.fov_x},\
+        #         self.robot_yaw: {self.robot.last_head_yaw} self.robot_pitch: {self.robot.last_head_pitch}")
         if ((bottom_distance_visible_area < distance < top_distance_visible_area) and 
             (right_yaw_visible_area < course < left_yaw_visible_area)):
             return True
@@ -95,7 +95,7 @@ class Model():
 
         robot_orientation = robot_imu["position"]
 
-        angle = math.atan2(robot_pos[1] - y, -(robot_pos[0] - x)) - robot_orientation[2]
+        angle = -math.atan2(robot_pos[1] - y, -(robot_pos[0] - x)) - robot_orientation[2]
         # if (x < robot_pos[0]):
         #     angle = math.pi - angle
         # angle = angle * (robot_pos[1] - y)/abs(robot_pos[1] - y) - robot_orientation[2]
@@ -104,17 +104,17 @@ class Model():
 
     def proccess_data(self, x, y):
         if not self.check_robot_stand():
-            print("WARNING: Robot in not standing")
+            # print("WARNING: Robot in not standing")
             return []
         res = self.get_distance_course(x, y)
         if not res:
-            print("WARNING: Imu or gps not available")
+            # print("WARNING: Imu or gps not available")
             return []
         distance, angle = res
         if self.check_object_in_frame(distance, angle):
-            return [-angle, distance]
+            return [angle, distance]
         else:
-            print("WARNING: Ball is not in the frame")
+            # print("WARNING: Ball is not in the frame")
             return []
 
 class CommunicationManager():
@@ -307,7 +307,7 @@ if __name__ == '__main__':
         #print("get_localization: ", manager.get_localization())
         print("get_ball: ", manager.get_ball())
         # print("get_imu: ", manager.get_imu_body())
-        # manager.send_servos({"head_yaw": 0, "head_pitch": 0})
+        manager.send_servos({"head_yaw": -0.5, "head_pitch": 0})
         # print(manager.current_time)
     # manager = CommunicationManager(1, '127.0.0.1', 10001, time_step = 20)
     # # инициализация сенсоров
