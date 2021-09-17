@@ -8,50 +8,86 @@ import logging
 from threading import Thread, Lock
 import json
 import math
-
+import random
 
 from robot_client import RobotClient
 
 class Blurrer():    
-    def __init__(self):
+    def __init__(self, object_angle_noize = 0., object_distance_noize = 0.,
+                observation_bonus = 0., step_cost = 0., 
+                constant_loc_noize = 0., loc_noize_meters = 0.):
+        """[summary]
+
+        Args:
+            object_angle_noize (float, optional): Noize for angle in radians. 
+            Blurrer will and uniformly random value from -object_angle_noize to 
+            object_angle_noize to ground truth course. Defaults to 0.
+            object_distance_noize (float, optional): [description]. Defaults to 0..
+            observation_bonus (float, optional): [description]. Defaults to 0..
+            step_cost (float, optional): [description]. Defaults to 0..
+            constant_loc_noize (float, optional): [description]. Defaults to 0..
+            loc_noize_meters (float, optional): [description]. Defaults to 0..
+        """           
+        self.object_angle_noize = object_angle_noize
+        self.object_distance_noize = object_distance_noize
+        self.observation_bonus = observation_bonus
+        self.step_cost = step_cost
+        self.constant_loc_noize = constant_loc_noize
+        self.loc_noize_meters = loc_noize_meters
+
         params = self.load_json("blurrer.json")
-        self.object_angle_noize = params["object_angle_noize"]
-        self.object_distance_noize = params["object_distance_noize"]
-        self.observation_bonus = params["observation_bonus"]
-        self.step_loss = params["step_loss"]
-        self.constant_loc_noize = params["constant_loc_noize"]
-    
+        self.consistency = 1
+        self.receiver = None
+        #penalty = self.receiver.player_state.penalty 
+
     def load_json(self, filename):
         with open(filename) as f:
             params = json.load(f)
-        return params
+
+        self.object_angle_noize = params["object_angle_noize"]
+        self.object_distance_noize = params["object_distance_noize"]
+        self.observation_bonus = params["observation_bonus"]
+        self.step_cost = params["step_cost"]
+        self.constant_loc_noize = params["constant_loc_noize"]
+        self.loc_noize_meters = params["loc_noize_meters"]
 
     def course(self, angle):
-        return angle * (1 + (1 - 2))
+        return angle + random.uniform(-self.object_angle_noize, self.object_angle_noize)
     
-    def distance():
-        return
+    def distance(self, distance):
+        return distance * (1 + random.uniform(-self.object_distance_noize, self.object_distance_noize))
 
-    def objects():
-        return
+    def objects(self, course = course, distance = distance):
+        return (self.course(course), self.distance(distance))
     
-    def loc():
-        return
-    def step():
-        return
+    def loc(self, x, y):
+        return (self.coord(x), self.coord(y))
 
-    def observation():
-        return
+    def coord(self, p):
+        random_factor = 1 - self.consistency
+        return p + self.loc_noize_meters * random.uniform(-random_factor, random_factor)
+
+    def step(self):
+        self.update_consistency(-self.step_cost)
+
+    def observation(self):
+        self.update_consistency(self.observation_bonus)
+    
+    def update_consistency(self, value):
+        tmp = self.consistency + value
+        self.consistency = max(0, min(tmp, 1))
+
     
 
 class Model():
-    def __init__(self, robot):
+    def __init__(self, robot, blurrer):
         self.robot = robot
         self.max_visible_area = 4
         self.min_visible_area = 0
         self.fov_x = math.radians(45) / 2
         self.fov_y = math.radians(60) / 2
         self.robot_height = 0.413
+        self.blurrer = blurrer
 
     def check_robot_stand(self):
         servos_sum = 0
@@ -129,18 +165,21 @@ class Model():
         return (distance, angle)
 
     def proccess_data(self, x, y):
+        self.blurrer.step()
         if not self.check_robot_stand():
-            print("WARNING: Robot in not standing")
+            # print("WARNING: Robot in not standing")
             return []
         res = self.get_distance_course(x, y)
         if not res:
-            print("WARNING: Imu or gps not available")
+            # print("WARNING: Imu or gps not available")
             return []
         distance, angle = res
+
+        self.blurrer.observation()
         if self.check_object_in_frame(distance, angle):
             return [angle, distance]
         else:
-            print("WARNING: Ball is not in the frame")
+            # print("WARNING: Ball is not in the frame")
             return []
 
 class CommunicationManager():
@@ -161,8 +200,8 @@ class CommunicationManager():
         self.last_message = {}
         self.last_head_yaw = 0
         self.last_head_pitch = 0
-
-        self.model = Model(self)
+        self.blurrer = Blurrer()
+        self.model = Model(self, self.blurrer)
         self.current_time = 0
 
         self.sensor_time_step = time_step * 4
@@ -229,7 +268,10 @@ class CommunicationManager():
 
     def get_localization(self):
         self.time_sleep(0.5)
-        return self.get_sensor("gps_body")
+        res = self.get_sensor("gps_body").copy()
+        pos = res["position"]
+        res["position"] = self.blurrer.loc(pos[0], pos[1])
+        return res
 
     def get_ball(self):
         self.time_sleep(0.1)
@@ -240,7 +282,10 @@ class CommunicationManager():
             if not ball_pos:
                 return []
             updated_ball_pos = self.model.proccess_data(ball_pos[0], ball_pos[1])
-            ball["position"] = updated_ball_pos
+            if not updated_ball_pos:
+                return {}
+            blurred_pos = self.blurrer.objects(course = updated_ball_pos[0], distance = updated_ball_pos[1])
+            ball["position"] = blurred_pos
             return ball
         else:
             return {}
@@ -333,6 +378,7 @@ if __name__ == '__main__':
         # print(manager.current_time)
         #print("get_localization: ", manager.get_localization())
         print("get_ball: ", manager.get_ball())
+        print("get_localization: ", manager.get_localization())
         # print("get_imu: ", manager.get_imu_body())
         # manager.send_servos({"head_yaw": math.sin(i)/2, "head_pitch": -abs(math.sin(i)/2)})
         # 0.88
