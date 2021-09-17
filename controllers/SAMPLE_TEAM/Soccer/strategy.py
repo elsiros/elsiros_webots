@@ -392,9 +392,9 @@ class Player():
         if self.role == 'rotation_test': self.rotation_test_main_cycle()
         if self.role == 'sidestep_test': self.sidestep_test_main_cycle()
         if self.role == 'dance': self.dance_main_cycle()
-        if self.glob.SIMULATION != 2:
-            self.motion.sim_Stop()
-            self.motion.sim_Disable()
+        #if self.glob.SIMULATION != 2:
+            #self.motion.sim_Stop()
+            #self.motion.sim_Disable()
 
     def rotation_test_main_cycle(self, pressed_button):
         number_Of_Cycles = 20

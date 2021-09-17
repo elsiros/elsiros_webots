@@ -71,7 +71,7 @@ class Motion1:
         self.rotation = 0           # -45 - +45 degrees Centigrade per step + CW, - CCW.
         self.first_Leg_Is_Right_Leg = True
         # Following paramenetrs Not recommended for change
-        self.amplitude = 50#32          # mm side amplitude (maximum distance between most right and most left position of Center of Mass) 53.4*2
+        self.amplitude = 32#50          # mm side amplitude (maximum distance between most right and most left position of Center of Mass) 53.4*2
         self.fr1 =8                  # frame number for 1-st phase of gait ( two legs on floor)
         self.fr2 = 12                # frame number for 2-nd phase of gait ( one leg in air)
         self.gaitHeight= 180         # Distance between Center of mass and floor in walk pose

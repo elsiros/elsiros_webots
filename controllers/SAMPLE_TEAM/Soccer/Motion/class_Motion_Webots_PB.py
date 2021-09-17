@@ -61,31 +61,9 @@ class Motion_sim(Motion_real):
 
     def game_time(self):
         return self.robot.current_time/1000
-        #while True:
-        #    self.robot.add_to_queue(({},{}))
-        #    self.robot.send_message()
-        #    message = self.robot.client.receive()
-        #    self.robot.update_history(message)
-        #    time_s = self.robot.get_sensor("time")
-        #    #time_s = self.robot.get_sensor("gps_body")
-        #    if time_s: break
-        #    #time.sleep(0.002)
-        #return time_s['sim time']/1000
-        ##return time_s['time']/1000
 
     def game_time_ms(self):
         return self.robot.current_time
-        #while True:
-        #    self.robot.add_to_queue(({},{}))
-        #    self.robot.send_message()
-        #    message = self.robot.client.receive()
-        #    self.robot.update_history(message)
-        #    time_ms = self.robot.get_sensor("time")
-        #    #time_ms = self.robot.get_sensor("gps_body")
-        #    if time_ms: break
-        #    #time.sleep(0.002)
-        #return time_ms['sim time']
-        ##return time_ms['time']
 
     def pause_in_ms(self, time_in_ms):
         self.sim_Progress(time_in_ms/1000)
@@ -103,44 +81,23 @@ class Motion_sim(Motion_real):
             self.wait_for_step(self.timestep)
 
     def wait_for_step(self, step):
+        #print('real step time ', (time.time() - self.former_real_time)*1000)
+        #self.former_real_time = time.time()
+        #return
         #self.robot.time_sleep(step/1000.)
         while True:
             time1 = self.game_time_ms()
-            #if (time1 % 1500 == 0):
-            #    print (f"Simulation time:{time1}")            
+            delta = time1 - self.former_step_time 
             if time1 >= (self.former_step_time + step):
                 #print('simulation step time', time1 - self.former_step_time, 'real step time ', (time.time() - self.former_real_time)*1000)
                 self.former_step_time = time1
-                self.former_real_time = time.time()
+                #self.former_real_time = time.time()
+                if delta > 15: print('step_time: ', delta)
                 break
-            else:
-                pass
-        #         #time.sleep(0.002)
 
 
     def imu_activation(self):
         print("imu_activation")
-        #while True:
-        #    self.wait_for_step(15)
-        #    print("imu_activation: imu request")
-        #    self.robot.add_to_queue(({},{}))
-        #    self.robot.send_message()
-        #    message = self.robot.client.receive()
-        #    self.robot.update_history(message)
-        #    #print('message:', message)
-        #    #head_euler = self.robot.get_sensor("imu_head")
-        #    #body_euler = self.robot.get_sensor("imu_body")
-        #    body_euler = robot.get_imu_body()
-        #    #if head_euler and body_euler:
-        #    if body_euler:
-        #        #head_euler = head_euler['position']
-        #        body_euler = body_euler['position']
-        #        break
-        #    else:
-        #        print("imu_activation: imu does't answer")
-        ##self.euler_angle['roll'] = head_euler[0]
-        ##self.euler_angle['pitch'] = head_euler[1]
-        ##self.euler_angle['yaw'] = head_euler[2]
         body_euler = self.robot.get_imu_body()['position']
         self.body_euler_angle['roll'] = body_euler[0]
         self.body_euler_angle['pitch'] = body_euler[1]
@@ -149,18 +106,6 @@ class Motion_sim(Motion_real):
         return self.body_euler_angle
 
     def read_head_imu_euler_angle(self):
-        #while True:
-        #    #self.wait_for_step(5)
-        #    self.robot.add_to_queue(({},{}))
-        #    self.robot.send_message()
-        #    message = self.robot.client.receive()
-        #    self.robot.update_history(message)
-        #    head_euler = self.robot.get_sensor("imu_head")
-        #    if head_euler:
-        #        head_euler = head_euler['position']
-        #        break
-        #    else:
-        #        print("read_head_imu_euler_angle: imu does't answer")
         head_euler = self.robot.get_imu_head()
         self.euler_angle['roll'] = head_euler[0]
         self.euler_angle['pitch'] = head_euler[1]
@@ -168,24 +113,9 @@ class Motion_sim(Motion_real):
 
     def read_imu_body_yaw(self):
         timer1 = time.perf_counter()
-        #while True:
-        #    #self.wait_for_step(5)
-        #    #self.robot.add_to_queue(({},{}))
-        #    #self.robot.send_message()
-        #    #message = self.robot.client.receive()
-        #    #self.robot.update_history(message)
-        #    #body_euler = self.robot.get_sensor("imu_body")
-        #    body_euler = self.robot.get_imu_body()
-        #    if body_euler:
-        #        #body_euler = body_euler['position']
-        #        break
-        #    else:
-        #        print("read_imu_body_yaw: imu does't answer")
-        #        #self.robot.add_to_queue(({},{}))
-        #        #self.robot.send_message()
-        body_euler = self.robot.get_imu_body()['position']
+        body_euler = [0,0,0]
         self.body_euler_angle = {'roll': body_euler[0], 'pitch': body_euler[1], 'yaw': body_euler[2]}
-        print('imu_body_measurement_time:', time.perf_counter() - timer1)
+        print('imu_body_measurement_time:', time.perf_counter() - timer1, 'self.body_euler_angle:', self.body_euler_angle)
         return body_euler[2]
 
     def falling_Test(self):
@@ -227,23 +157,21 @@ class Motion_sim(Motion_real):
         return self.falling_Flag
 
     def send_angles_to_servos(self, angles):
+        #print('before_trigger: ', self.game_time_ms()-self.sim_step_counter)
         self.sim_Trigger()
-        time_ms = self.game_time_ms()
-        #print('time_step:', time_ms - self.sim_step_counter)
-        self.sim_step_counter = time_ms
+        #print('after_trigger: ', self.game_time_ms()-self.sim_step_counter)
+        #time_ms = self.game_time_ms()
+        #delta = time_ms- self.sim_step_counter
+        #if delta > 15: 
+        #    print('time_step:', delta )
+        #self.sim_step_counter = time_ms
         servo_data = {}
         for i in range(len(angles)):
             key = self.WBservosList[i]
             value = angles[i] + self.trims[i]
             servo_data.update({key:value})
-        #self.robot.add_to_queue((servo_data,{}))
-        #self.robot.send_message()
         self.robot.send_servos(servo_data)
-        #message = self.robot.client.receive()
-        #self.robot.update_history(message)
 
-        #self.sim_Trigger()
-        #self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.get_sensor("imu_body")['position']
         
 
     def move_head(self, pan, tilt):
