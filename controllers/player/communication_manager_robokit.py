@@ -162,8 +162,8 @@ class CommunicationManager():
                 self.sensors.update({"BLUE_PLAYER_1": {} })
                 self.sensors.update({"BLUE_PLAYER_2": {} })
 
-            self.sensors.update({str(sensor): ""})
-        self.sensors.update({"time": ""})
+            self.sensors.update({str(sensor): {}})
+        self.sensors.update({"time": {}})
         self.client.send_request("init")
 
     def get_sensor(self, name) -> dict:
