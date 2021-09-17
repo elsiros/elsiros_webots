@@ -35,7 +35,7 @@ class Blurrer():
         self.constant_loc_noize = constant_loc_noize
         self.loc_noize_meters = loc_noize_meters
 
-        params = self.load_json("blurrer.json")
+        params = self.load_json("../player/blurrer.json")
         self.consistency = 1
         self.receiver = None
         #penalty = self.receiver.player_state.penalty 
@@ -77,25 +77,7 @@ class Blurrer():
         tmp = self.consistency + value
         self.consistency = max(0, min(tmp, 1))
 
-    
-
-    def course(self, angle):
-        return angle * (1 + (1 - 2))
-    
-    def distance():
-        return
-
-    def objects():
-        return
-    
-    def loc():
-        return
-    def step():
-        return
-
-    def observation():
-        return
-    
+   
 
 class Model():
     def __init__(self, robot, blurrer):
@@ -138,10 +120,10 @@ class Model():
                                         self.robot.last_head_pitch - \
                                         self.fov_x)
 
-        print(f"right_yaw_visible_area: {right_yaw_visible_area}, left_yaw_visible_area: {left_yaw_visible_area}, \
-                 top_distance_visible_area: {top_distance_visible_area}, bottom_distance_visible_area: {bottom_distance_visible_area} \
-                 distance: {distance}, course: {course}, self.fov_y: {self.fov_y}, self.fov_x: {self.fov_x},\
-                 self.robot_yaw: {self.robot.last_head_yaw} self.robot_pitch: {self.robot.last_head_pitch}")
+        #print(f"right_yaw_visible_area: {right_yaw_visible_area}, left_yaw_visible_area: {left_yaw_visible_area}, \
+        #         top_distance_visible_area: {top_distance_visible_area}, bottom_distance_visible_area: {bottom_distance_visible_area} \
+        #         distance: {distance}, course: {course}, self.fov_y: {self.fov_y}, self.fov_x: {self.fov_x},\
+        #         self.robot_yaw: {self.robot.last_head_yaw} self.robot_pitch: {self.robot.last_head_pitch}")
         if ((bottom_distance_visible_area < distance < top_distance_visible_area) and 
             (right_yaw_visible_area < course < left_yaw_visible_area)):
             return True
@@ -270,7 +252,7 @@ class CommunicationManager():
             self.sensors[sensor] = message[sensor]
 
     def time_sleep(self, t = 0)->None:
-        print(f"Emulating delay of {t*1000} ms")
+        #print(f"Emulating delay of {t*1000} ms")
         start_time = self.current_time
         while (self.current_time - start_time < t * 1000):
             time.sleep(0.001)
@@ -288,13 +270,14 @@ class CommunicationManager():
         self.time_sleep(0.5)
         res = self.get_sensor("gps_body").copy()
         pos = res["position"]
+        #print('pos:', pos)
         res["position"] = self.blurrer.loc(pos[0], pos[1])
         return res
 
     def get_ball(self):
         self.time_sleep(0.1)
         ball = self.get_sensor("BALL").copy()
-        print("Abs ball: ", ball)
+        #print("Abs ball: ", ball)
         if ball:
             ball_pos = ball["position"]
             if not ball_pos:
