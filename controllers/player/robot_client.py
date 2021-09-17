@@ -116,20 +116,28 @@ class RobotClient():
         return self.message_manager.parse_answer_message(data)
 
     def receive2(self):
+        messages_list = []
         chunk = self.socket.recv(1024)
         self.rx_buf.extend(chunk)
         # print(chunk)
-        if self.rx_wait_for_data == False:
-            header_size = self.message_manager.get_size()
-            if len(self.rx_buf) >= header_size:
-                self.rx_wait_for_data = True
-                header = self.rx_buf[:header_size]     
-                self.rx_buf = self.rx_buf[header_size:]
-                self.rx_expected_data_size = self.message_manager.get_answer_size(header)
-        if self.rx_wait_for_data == True:
-            if len(self.rx_buf) >= self.rx_expected_data_size:
-                self.rx_wait_for_data = False
-                data = self.rx_buf[:self.rx_expected_data_size]     
-                self.rx_buf = self.rx_buf[self.rx_expected_data_size:]  
-                return self.message_manager.parse_answer_message(data)
-        return []              
+        header_size = self.message_manager.get_size()
+        while True:
+            if self.rx_wait_for_data == False:
+                if len(self.rx_buf) >= header_size:
+                    self.rx_wait_for_data = True
+                    header = self.rx_buf[:header_size]     
+                    self.rx_buf = self.rx_buf[header_size:]
+                    self.rx_expected_data_size = self.message_manager.get_answer_size(header)
+                else: 
+                    # not enough data even for header
+                    break
+            if self.rx_wait_for_data == True:
+                if len(self.rx_buf) >= self.rx_expected_data_size:
+                    self.rx_wait_for_data = False
+                    data = self.rx_buf[:self.rx_expected_data_size]     
+                    self.rx_buf = self.rx_buf[self.rx_expected_data_size:]  
+                    messages_list.append(self.message_manager.parse_answer_message(data))
+                else: 
+                    # not enough data for message body
+                    break
+        return messages_list             

@@ -1,14 +1,3 @@
-2021-09-17 14:00:51.643390
-Exception in thread Thread-1:
-Traceback (most recent call last):
-  File "C:\Python39\lib\threading.py", line 973, in _bootstrap_inner
-    self.run()
-  File "C:\Python39\lib\threading.py", line 910, in run
-    self._target(*self._args, **self._kwargs)
-  File "C:\Egor\Starkitrobots\Webots\projects\samples\contests\elsiros_webots\controllers\SAMPLE_TEAM\main_pb.py", line 92, in main_procedure
-    player_super_cycle(falling, team_id, robot_color, robot_number, SIMULATION, current_work_directory, robot, pause)
-  File "C:\Egor\Starkitrobots\Webots\projects\samples\contests\elsiros_webots\controllers\SAMPLE_TEAM\launcher_pb.py", line 104, in player_super_cycle
-    print('.', end = '')
-  File "C:\Egor\Starkitrobots\Webots\projects\samples\contests\elsiros_webots\controllers\SAMPLE_TEAM\main_pb.py", line 118, in write
-    self.out.WriteText(string)
-wx._core.wxAssertionError: C++ assertion "m_count == -1 || m_count == -2" failed at ..\..\src\msw\textctrl.cpp(284) in UpdatesCountFilter::UpdatesCountFilter(): wrong initial m_updatesCount value
+2021-09-17 16:20:13.750575
+WARNING:root:Failed to connect to 127.0.0.1:7021 0 attempt  of 20.
+WARNING:root:Caught exception socket.error : [WinError 10061] Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение

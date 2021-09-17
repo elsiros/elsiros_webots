@@ -6,7 +6,6 @@ import queue
 import time
 import logging
 from threading import Thread, Lock
-import logging
 import json
 import math
 
@@ -185,7 +184,7 @@ class CommunicationManager():
                     print(f"WARNING! Large protobuf time rx delta = {delta}")                
                 self.current_time = message[sensor]['sim time']
                 #logging.debug("Getting servo commands:")
-                logging.debug(f"New simulation time: {self.current_time}")
+                #logging.debug(f"New simulation time: {self.current_time}")
                 #logging.debug(data)                
             self.sensors[sensor] = message[sensor]
 
@@ -254,8 +253,8 @@ class CommunicationManager():
             self.last_head_yaw = data["head_yaw"]
         if "head_pitch" in data.keys():
             self.last_head_pitch = data["head_pitch"]
-        self.add_to_queue((data, {}))
-        return 0 
+        #self.add_to_queue((data, {}))
+        #return 0 
 
     def run(self):
         while(True):
@@ -265,8 +264,8 @@ class CommunicationManager():
                 # If we have any data to send - do sending
                 # If full packet data is ready in socket - receive it, otherwise switch to check if sending is needed
                 self.send_message()
-                message = self.client.receive2()
-                if message:
+                messages_list = self.client.receive2()
+                for message in messages_list:
                     self.update_history(message)
             else:
                 # Sending/receiving protobuf in blocking way:
