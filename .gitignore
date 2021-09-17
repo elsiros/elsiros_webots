@@ -546,3 +546,7 @@ controllers/VIA_PB/output10001.txt
 worlds/.robocup_hsjl.wbproj
 *.mp4
 worlds/.robocup_v1.wbproj
+controllers/SAMPLE_TEAM/output10001.txt
+controllers/SAMPLE_TEAM/output10002.txt
+controllers/SAMPLE_TEAM/output10021.txt
+controllers/SAMPLE_TEAM/output10022.txt

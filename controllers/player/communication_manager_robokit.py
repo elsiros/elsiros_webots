@@ -6,7 +6,6 @@ import queue
 import time
 import logging
 from threading import Thread, Lock
-import logging
 import json
 import math
 
@@ -116,7 +115,7 @@ class CommunicationManager():
     """[summary]
     """
     def __init__(self, maxsize=1, host='127.0.0.1', port=10001, team_color="RED", player_number = 1, time_step = 15):
-        logging.basicConfig(filename=f'cm_robokit{port}.txt', encoding="utf-8", level=logging.DEBUG)
+        #logging.basicConfig(filename=f'cm_robokit{port}.txt', encoding="utf-8", level=logging.DEBUG)
         verbosity = 4
         self.client = RobotClient(host, port, verbosity)
         self.client.connect_client()
@@ -180,7 +179,7 @@ class CommunicationManager():
                     print(f"WARNING! Large protobuf time rx delta = {delta}")                
                 self.current_time = message[sensor]['sim time']
                 #logging.debug("Getting servo commands:")
-                logging.debug(f"New simulation time: {self.current_time}")
+                #logging.debug(f"New simulation time: {self.current_time}")
                 #logging.debug(data)                
             self.sensors[sensor] = message[sensor]
 
@@ -249,8 +248,8 @@ class CommunicationManager():
             self.last_head_yaw = data["head_yaw"]
         if "head_pitch" in data.keys():
             self.last_head_pitch = data["head_pitch"]
-        self.add_to_queue((data, {}))
-        return 0 
+        #self.add_to_queue((data, {}))
+        #return 0 
 
     def run(self):
         while(True):
@@ -260,8 +259,8 @@ class CommunicationManager():
                 # If we have any data to send - do sending
                 # If full packet data is ready in socket - receive it, otherwise switch to check if sending is needed
                 self.send_message()
-                message = self.client.receive2()
-                if message:
+                messages_list = self.client.receive2()
+                for message in messages_list:
                     self.update_history(message)
             else:
                 # Sending/receiving protobuf in blocking way:

@@ -106,9 +106,9 @@ class Motion_sim(Motion_real):
         #self.robot.time_sleep(step/1000.)
         while True:
             time1 = self.game_time_ms()
+            #if (time1 % 1500 == 0):
+            #    print (f"Simulation time:{time1}")            
             if time1 >= (self.former_step_time + step):
-                if (time1 % 1500 == 0):
-                    print (f"Simulation time:{time1}")
                 #print('simulation step time', time1 - self.former_step_time, 'real step time ', (time.time() - self.former_real_time)*1000)
                 self.former_step_time = time1
                 self.former_real_time = time.time()

@@ -838,7 +838,7 @@ public:
 
   void prepareSensorMessage() {
     sensor_measurements.set_time(controller_time);
-    fprintf(stdout, "prepareSensorMessage time = %d\r\n", controller_time);
+    //fprintf(stdout, "prepareSensorMessage time = %d\r\n", controller_time);
 #ifdef _WIN32
     struct timeval2 tp;
     struct timezone2 tz;
