@@ -70,6 +70,7 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
     if player_number == 1: is_goalkeeper = True
     else: is_goalkeeper = False
     receiver = init_gcreceiver(team_id, player_number, is_goalkeeper)
+    robot.receiver = receiver
     former_game_state = 'STATE_SET'
     former_player_penalty = 0
     print('waiting for game controller launch')

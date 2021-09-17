@@ -36,6 +36,9 @@ class Motion_sim(Motion_real):
         self.synchronization = False
         self.former_step_time = 0
         self.former_real_time = time.time()
+        self.initial_time_for_chain = 0
+        self.last_step_time = 0
+        self.chain_step_number = 0
         super().__init__(glob)
         with open(self.glob.current_work_directory / "Init_params" / "Sim_calibr.json", "r") as f:
             data1 = json.loads(f.read())
@@ -68,7 +71,7 @@ class Motion_sim(Motion_real):
     def pause_in_ms(self, time_in_ms):
         self.sim_Progress(time_in_ms/1000)
 
-    def sim_Trigger(self):
+    def sim_Trigger(self, time):
         if not self.pause.Flag:
             if self.gcreceiver != None:
                 if self.gcreceiver.team_state != None:
@@ -78,7 +81,7 @@ class Motion_sim(Motion_real):
                         for key in self.WBservosList:
                             servo_data.update({key: 0})
                         self.robot.send_servos(servo_data)
-            self.wait_for_step(self.timestep)
+            self.wait_for_step(time)
 
     def wait_for_step(self, step):
         while True:
@@ -135,8 +138,17 @@ class Motion_sim(Motion_real):
             self.simulateMotion(name = 'Get_Up_Left')
         return self.falling_Flag
 
-    def send_angles_to_servos(self, angles):
-        self.sim_Trigger()
+    def send_angles_to_servos(self, angles, use_step_correction = False):
+        if use_step_correction:
+            self.chain_step_number += 1
+            target_time_for_chain = self.initial_time_for_chain + self.chain_step_number * self.timestep
+            target_step_time = target_time_for_chain - self.robot.current_time
+            if target_step_time < 0: target_step_time = 0
+            self.sim_Trigger(target_step_time)
+        else: 
+            self.initial_time_for_chain = self.robot.current_time
+            self.chain_step_number = 0
+            self.sim_Trigger(self.timestep)
         servo_data = {}
         for i in range(len(angles)):
             key = self.WBservosList[i]
@@ -153,7 +165,7 @@ class Motion_sim(Motion_real):
         servo_data = {pan_key: pan_value, tilt_key: tilt_value}
         self.robot.send_servos(servo_data)
         for i in range(16):
-            self.sim_Trigger()
+            self.sim_Trigger(self.timestep)
 
     def simulateMotion(self, number = 0, name = ''):
         #mot = [(0,'Initial_Pose'),(1,0),(2,0),(3,0),(4,0),(5,'Get_Up_Left'),
@@ -186,7 +198,7 @@ class Motion_sim(Motion_real):
                     value = tempActivePose + self.trims[j]
                     servo_data.update({key:value})
                 self.robot.send_servos(servo_data)
-                self.sim_Trigger()
+                self.sim_Trigger(self.timestep)
         return
 
     def sim_Get_Ball_Position(self):
@@ -213,7 +225,7 @@ class Motion_sim(Motion_real):
         return
 
     def sim_Get_Robot_Position(self):
-        self.sim_Trigger()
+        self.sim_Trigger(self.timestep)
         Position = self.robot.get_localization()
         x, y  = Position['position']
         #self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.get_sensor("imu_body")['position']
