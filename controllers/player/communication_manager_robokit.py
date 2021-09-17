@@ -111,7 +111,7 @@ class Model():
             return []
         distance, angle = res
         if self.check_object_in_frame(distance, angle):
-            return [distance, angle]
+            return [-angle, distance]
         else:
             # print("WARNING: Ball is not in the frame")
             return []
@@ -181,7 +181,8 @@ class CommunicationManager():
             if (sensor == "time"):
                 delta = message[sensor]['sim time'] - self.current_time
                 if delta > 5:
-                    print(f"WARNING! Large protobuf time rx delta = {delta}")                
+                    pass
+                    #print(f"WARNING! Large protobuf time rx delta = {delta}")                
                 self.current_time = message[sensor]['sim time']
                 #logging.debug("Getting servo commands:")
                 #logging.debug(f"New simulation time: {self.current_time}")
