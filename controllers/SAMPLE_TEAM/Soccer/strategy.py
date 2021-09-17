@@ -381,7 +381,7 @@ class Player():
 
     def play_game(self):
         #success_Code, napravl, dist, speed = self.motion.seek_Ball_In_Pose(fast_Reaction_On = True)
-        self.motion.pause_in_ms(200)    # this is needed for camera renewal in simulation with streaming of camera data. pause have to be same langth as camera update time
+        #self.motion.pause_in_ms(200)    # this is needed for camera renewal in simulation with streaming of camera data. pause have to be same langth as camera update time
         if self.role == 'goalkeeper': self.goalkeeper_main_cycle()
         if self.role == 'goalkeeper_old_style': self.goalkeeper_old_style_main_cycle()
         if self.role == 'penalty_Goalkeeper': self.penalty_Goalkeeper_main_cycle()
@@ -392,9 +392,7 @@ class Player():
         if self.role == 'rotation_test': self.rotation_test_main_cycle()
         if self.role == 'sidestep_test': self.sidestep_test_main_cycle()
         if self.role == 'dance': self.dance_main_cycle()
-        #if self.glob.SIMULATION != 2:
-            #self.motion.sim_Stop()
-            #self.motion.sim_Disable()
+
 
     def rotation_test_main_cycle(self, pressed_button):
         number_Of_Cycles = 20

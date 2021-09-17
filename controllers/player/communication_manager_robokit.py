@@ -84,10 +84,10 @@ class Model():
                                         self.robot.last_head_pitch - \
                                         self.fov_x)
 
-        # print(f"right_yaw_visible_area: {right_yaw_visible_area}, left_yaw_visible_area: {left_yaw_visible_area}, \
-        #         top_distance_visible_area: {top_distance_visible_area}, bottom_distance_visible_area: {bottom_distance_visible_area} \
-        #         distance: {distance}, course: {course}, self.fov_y: {self.fov_y}, self.fov_x: {self.fov_x},\
-        #         self.robot_yaw: {self.robot.last_head_yaw} self.robot_pitch: {self.robot.last_head_pitch}")
+        print(f"right_yaw_visible_area: {right_yaw_visible_area}, left_yaw_visible_area: {left_yaw_visible_area}, \
+                 top_distance_visible_area: {top_distance_visible_area}, bottom_distance_visible_area: {bottom_distance_visible_area} \
+                 distance: {distance}, course: {course}, self.fov_y: {self.fov_y}, self.fov_x: {self.fov_x},\
+                 self.robot_yaw: {self.robot.last_head_yaw} self.robot_pitch: {self.robot.last_head_pitch}")
         if ((bottom_distance_visible_area < distance < top_distance_visible_area) and 
             (right_yaw_visible_area < course < left_yaw_visible_area)):
             return True
@@ -130,17 +130,17 @@ class Model():
 
     def proccess_data(self, x, y):
         if not self.check_robot_stand():
-            # print("WARNING: Robot in not standing")
+            print("WARNING: Robot in not standing")
             return []
         res = self.get_distance_course(x, y)
         if not res:
-            # print("WARNING: Imu or gps not available")
+            print("WARNING: Imu or gps not available")
             return []
         distance, angle = res
         if self.check_object_in_frame(distance, angle):
             return [angle, distance]
         else:
-            # print("WARNING: Ball is not in the frame")
+            print("WARNING: Ball is not in the frame")
             return []
 
 class CommunicationManager():
@@ -232,9 +232,9 @@ class CommunicationManager():
         return self.get_sensor("gps_body")
 
     def get_ball(self):
-        # self.time_sleep(0.1)
+        self.time_sleep(0.1)
         ball = self.get_sensor("BALL").copy()
-        # print("Abs ball: ", ball)
+        print("Abs ball: ", ball)
         if ball:
             ball_pos = ball["position"]
             if not ball_pos:
