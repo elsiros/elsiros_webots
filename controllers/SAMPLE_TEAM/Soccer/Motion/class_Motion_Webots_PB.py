@@ -98,7 +98,11 @@ class Motion_sim(Motion_real):
 
     def imu_activation(self):
         print("imu_activation")
-        body_euler = self.robot.get_imu_body()['position']
+        while True:
+            body_euler = self.robot.get_imu_body()
+            if body_euler: 
+                body_euler = body_euler['position']
+                break
         self.body_euler_angle['roll'] = body_euler[0]
         self.body_euler_angle['pitch'] = body_euler[1]
         self.body_euler_angle['yaw'] = body_euler[2]
@@ -113,7 +117,7 @@ class Motion_sim(Motion_real):
 
     def read_imu_body_yaw(self):
         timer1 = time.perf_counter()
-        body_euler = [0,0,0]
+        body_euler = self.robot.get_imu_body()['position']
         self.body_euler_angle = {'roll': body_euler[0], 'pitch': body_euler[1], 'yaw': body_euler[2]}
         print('imu_body_measurement_time:', time.perf_counter() - timer1, 'self.body_euler_angle:', self.body_euler_angle)
         return body_euler[2]
