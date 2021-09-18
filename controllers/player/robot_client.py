@@ -9,12 +9,6 @@ import logging
 from message_manager import MessageManager
 
 
-def usage(error_msg=""):
-    if (error_msg):
-        print("Invalid call: %s\n", error_msg)
-    print("Usage: client [-v verbosity_level] <host> <port>\n")
-
-
 class RobotClient():
     """[summary]
     """
