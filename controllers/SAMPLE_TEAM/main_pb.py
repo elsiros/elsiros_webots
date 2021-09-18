@@ -29,6 +29,7 @@ import json
 import time
 import wx
 import threading
+import logging
 from pathlib import Path
 
 current_work_directory = Path.cwd()
@@ -57,6 +58,33 @@ with open('../referee/' + game_data['blue']['config'], "r") as f:
     team_2_data = json.loads(f.read())
 
 
+class Log:
+    def __init__(self, filename):
+        self.filename = filename
+        self.log_format = f"%(asctime)s - [%(levelname)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s"
+        self.file_level = logging.DEBUG
+        self.stream_level = logging.INFO
+
+    def get_file_handler(self):
+        file_handler = logging.FileHandler(self.filename)
+        file_handler.setLevel(self.file_level)
+        file_handler.setFormatter(logging.Formatter(self.log_format))
+        return file_handler
+
+    def get_stream_handler(self):
+        stream_handler = logging.StreamHandler(sys.stdout)
+        stream_handler.setLevel(self.stream_level)
+        stream_handler.setFormatter(logging.Formatter(self.log_format))
+        return stream_handler
+
+    def get_logger(self, name):
+        logger = logging.getLogger(name)
+        logger.setLevel(logging.INFO)
+        logger.addHandler(self.get_file_handler())
+        logger.addHandler(self.get_stream_handler())
+        return logger
+
+
 
 class Falling:
     def __init__(self):
@@ -70,22 +98,16 @@ pause = Pause()
 
 def main_procedure():
     global pause
+    global log
     Port = sys.argv[1]
-    print('port =', Port)
-    robot = CommunicationManager(1, '127.0.0.1', int(Port), team_color=sys.argv[3].upper(), player_number = int(sys.argv[4]), time_step = 15)
-    #sensors = {"left_knee_sensor": 15, "right_knee_sensor": 15, "left_ankle_pitch_sensor": 15, "right_ankle_pitch_sensor": 15,
-    #          "right_hip_pitch_sensor": 15, "left_hip_pitch_sensor": 15,  "gps_body": 15,"head_pitch_sensor": 15,
-    #          "head_yaw_sensor": 15, "imu_body": 5, "recognition": 15}
-    #sensors = {"gps_body": 15,"imu_body": 5}#, "recognition": 5}
-    #robot.enable_sensors(sensors)
-    #th0 = threading.Thread(target=robot.run)
-    #th0.start()
-    #th0.join
+    logger.info('port = %s', Port)
+    robot = CommunicationManager(1, '127.0.0.1', int(Port), log, team_color=sys.argv[3].upper(), player_number = int(sys.argv[4]), time_step = 25)
+
     falling = Falling()
 
     team_id = int(sys.argv[2])
     role = sys.argv[5]
-    print('role =', role)
+    logger.info('role = %s', role)
     if team_id > 0:
         robot_color = sys.argv[3]
         robot_number = int(sys.argv[4])
@@ -93,8 +115,8 @@ def main_procedure():
 
     second_pressed_button = int(sys.argv[6])
     initial_coord = eval(sys.argv[7])
-    print(initial_coord)
-    print('Player is going to play without Game Controller')
+    logger.debug(initial_coord)
+    logger.info('Player is going to play without Game Controller')
     glob = Glob(SIMULATION, current_work_directory)
     glob.pf_coord = initial_coord
     motion = Motion_sim(glob, robot, None, pause)
@@ -104,13 +126,13 @@ def main_procedure():
     motion.activation()
     local = Local(motion, glob, coord_odometry = initial_coord)
     motion.local = local
-    local.coordinate_record(odometry = True)
+    local.coordinate_record()
     motion.falling_Flag = 0
     player = Player(role, second_pressed_button, glob, motion, local)
     timer1 = robot.current_time
-    print( 'start time:',timer1)
+    logger.debug( 'start time: %i',timer1)
     player.play_game()
-    print( 'total time:', robot.current_time - timer1)
+    logger.debug( 'total time: %i', robot.current_time - timer1)
     sys.exit(0)
 
 
@@ -120,9 +142,6 @@ class RedirectText(object):
 
     def write(self,string):
         self.out.WriteText(string)
-
-
-
 
 class Main_Panel(wx.Frame):
     def __init__(self, *args, **kwargs):
@@ -176,7 +195,7 @@ class Main_Panel(wx.Frame):
         #self.Centre()
 
     def ShowMessage1(self, event):
-        print('Exit button pressed')
+        logger.info('Exit button pressed')
         sys.stdout = sys.__stdout__
         sys.exit(0)
 
@@ -186,13 +205,18 @@ class Main_Panel(wx.Frame):
             pause.Flag = False
         else:
             pause.Flag = True
-        print('Pause button pressed')
+        logger.info('Pause button pressed')
 
 
 def main():
     app = wx.App()
     ex = Main_Panel(None)
     ex.Show()
+    filename = "output" + str(sys.argv[1]) + ".txt"
+    global log
+    log = Log(filename)
+    global logger
+    logger = log.get_logger(__name__)
     app.MainLoop()
 
 main()

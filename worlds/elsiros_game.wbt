@@ -4,7 +4,7 @@ WorldInfo {
     "Description: official soccer simulation for the 2021 Robocup Virtual Humanoid League (kid size)"
     "Version 0.2"
   ]
-  title "Robocup V-HL Kid"
+  title "Elsiros game"
   basicTimeStep 5
   physicsDisableTime 0.1
   physicsDisableLinearThreshold 0.1

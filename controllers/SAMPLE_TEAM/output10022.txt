@@ -1,3 +1,0 @@
-2021-09-17 16:20:13.754566
-WARNING:root:Failed to connect to 127.0.0.1:7022 0 attempt  of 20.
-WARNING:root:Caught exception socket.error : [WinError 10061] Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение

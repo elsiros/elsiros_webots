@@ -35,7 +35,7 @@ class Glob:
         self.side_step_left_yield = self.params['SIDE_STEP_LEFT_TEST_RESULT'] / 20
         self.landmarks = landmarks
         self.import_strategy_data(current_work_directory)
-        self.obstacleAvoidanceIsOn = False
+        self.obstacleAvoidanceIsOn =  self.params['ObstacleAvoidanceIsOn']
         #self.imu_drift_correction = 0
         #self.imu_drift_last_correction_time = 0
 

@@ -5,9 +5,8 @@ The module is designed to provide communication from motion controller to simula
 """
 import sys, os
 import math, time, json
-
+import logging
 import random
-
 from .class_Motion import *
 from .class_Motion_real import Motion_real
 from .compute_Alpha_v3 import Alpha
@@ -36,6 +35,9 @@ class Motion_sim(Motion_real):
         self.synchronization = False
         self.former_step_time = 0
         self.former_real_time = time.time()
+        self.initial_time_for_chain = 0
+        self.last_step_time = 0
+        self.chain_step_number = 0
         super().__init__(glob)
         with open(self.glob.current_work_directory / "Init_params" / "Sim_calibr.json", "r") as f:
             data1 = json.loads(f.read())
@@ -44,7 +46,7 @@ class Motion_sim(Motion_real):
         self.head_pitch_with_horizontal_camera = data1['head_pitch_with_horizontal_camera']
         self.neck_tilt = self.neck_calibr
         self.Vision_Sensor_Display_On = self.glob.params['Vision_Sensor_Display_On']
-        self.timestep = 15  
+        self.timestep = 25  
         self.ACTIVEJOINTS = ['Leg_right_10','Leg_right_9','Leg_right_8','Leg_right_7','Leg_right_6','Leg_right_5','hand_right_4',
             'hand_right_3','hand_right_2','hand_right_1','Tors1','Leg_left_10','Leg_left_9','Leg_left_8',
             'Leg_left_7','Leg_left_6','Leg_left_5','hand_left_4','hand_left_3','hand_left_2','hand_left_1','head0','head12']
@@ -68,7 +70,7 @@ class Motion_sim(Motion_real):
     def pause_in_ms(self, time_in_ms):
         self.sim_Progress(time_in_ms/1000)
 
-    def sim_Trigger(self):
+    def sim_Trigger(self, time):
         if not self.pause.Flag:
             if self.gcreceiver != None:
                 if self.gcreceiver.team_state != None:
@@ -78,7 +80,7 @@ class Motion_sim(Motion_real):
                         for key in self.WBservosList:
                             servo_data.update({key: 0})
                         self.robot.send_servos(servo_data)
-            self.wait_for_step(self.timestep)
+            self.wait_for_step(time)
 
     def wait_for_step(self, step):
         while True:
@@ -86,7 +88,6 @@ class Motion_sim(Motion_real):
             if time1 >= (self.former_step_time + step):
                 self.former_step_time = time1
                 break
-
 
     def imu_activation(self):
         print("imu_activation")
@@ -135,8 +136,17 @@ class Motion_sim(Motion_real):
             self.simulateMotion(name = 'Get_Up_Left')
         return self.falling_Flag
 
-    def send_angles_to_servos(self, angles):
-        self.sim_Trigger()
+    def send_angles_to_servos(self, angles, use_step_correction = False):
+        if use_step_correction:
+            self.chain_step_number += 1
+            target_time_for_chain = self.initial_time_for_chain + self.chain_step_number * self.timestep
+            target_step_time = target_time_for_chain - self.robot.current_time
+            if target_step_time < 0: target_step_time = 0
+            self.sim_Trigger(target_step_time)
+        else: 
+            self.initial_time_for_chain = self.robot.current_time
+            self.chain_step_number = 0
+            self.sim_Trigger(self.timestep)
         servo_data = {}
         for i in range(len(angles)):
             key = self.WBservosList[i]
@@ -152,8 +162,8 @@ class Motion_sim(Motion_real):
         tilt_value = tilt * self.TIK2RAD + self.trims[22]
         servo_data = {pan_key: pan_value, tilt_key: tilt_value}
         self.robot.send_servos(servo_data)
-        for i in range(16):
-            self.sim_Trigger()
+        for i in range(1):
+            self.sim_Trigger(self.timestep)
 
     def simulateMotion(self, number = 0, name = ''):
         #mot = [(0,'Initial_Pose'),(1,0),(2,0),(3,0),(4,0),(5,'Get_Up_Left'),
@@ -166,6 +176,9 @@ class Motion_sim(Motion_real):
         #   (35,'Get_Up_Right'), (36,'PenaltyDefenceR'), (37,'PenaltyDefenceL')]
         # start the simulation
         if number > 0 and name == '': name = self.MOTION_SLOT_DICT[number]
+        print('simulate motion slot:', name)
+        self.chain_step_number = 0
+        self.initial_time_for_chain = self.robot.current_time
         with open(self.glob.current_work_directory /"Soccer" / "Motion" / "motion_slots" / (name + ".json"), "r") as f:
             slots = json.loads(f.read())
         mot_list = slots[name]
@@ -180,13 +193,15 @@ class Motion_sim(Motion_real):
             pulseNum = int(mot_list[i][0]*self.FRAMELENGTH * 1000 / self.simThreadCycleInMs)
             for k in range (pulseNum):
                 servo_data = {}
+                angles = []
                 for j in range(len(self.ACTIVEJOINTS) - 2):
                     tempActivePose = activePoseOld[j]+(self.activePose[j]-activePoseOld[j])*k/pulseNum
                     key = self.WBservosList[j]
                     value = tempActivePose + self.trims[j]
+                    angles.append(value)
                     servo_data.update({key:value})
-                self.robot.send_servos(servo_data)
-                self.sim_Trigger()
+                self.send_angles_to_servos(angles, use_step_correction = True)
+                #self.sim_Trigger(self.timestep)
         return
 
     def sim_Get_Ball_Position(self):
@@ -197,23 +212,34 @@ class Motion_sim(Motion_real):
         else: return False
 
     def sim_Get_Obstacles(self):
-        robot_names = ['RED_PLAYER_1', 'RED_PLAYER_2', 'BLUE_PLAYER_1', 'BLUE_PLAYER_2']
-        my_name = self.robot.getSelf().getDef()
-        robot_names.pop(robot_names.index(my_name))
-        #print('my_name:', my_name)
-        factor = self.local.side_factor
-        new_obstacles = []
-        ball_position = self.robot.getFromDef("BALL").getPosition()
-        new_obstacles.append([factor*ball_position[0], factor*ball_position[1], 0.15] )
-        for name in robot_names:
-            obstacle = self.robot.getFromDef(name).getPosition()
-            new_obstacles.append([factor*obstacle[0], factor*obstacle[1], 0.20])
-        self.glob.obstacles = new_obstacles
-        print ('new_obstacles:', new_obstacles)
+        obstacle1 = self.robot.get_teammates()
+        #print('obstacle1:', obstacle1)
+        try:
+            obstacle1 = obstacle1['position']
+        except Exception:
+            obstacle1 = []
+        opponets = self.robot.get_opponents()
+        try:
+            obstacle2 = opponets[0]['position']
+        except Exception:
+            obstacle2 = []
+        try:
+            obstacle3 = opponets[1]['position']
+        except Exception:
+            obstacle3 = []
+        if obstacle1: 
+            obstacle1.append(0.2)
+            self.glob.obstacles.append(obstacle1)
+        if obstacle2: 
+            obstacle2.append(0.2)
+            self.glob.obstacles.append(obstacle2)
+        if obstacle3: 
+            obstacle3.append(0.2)
+            self.glob.obstacles.append(obstacle3)
         return
 
     def sim_Get_Robot_Position(self):
-        self.sim_Trigger()
+        self.sim_Trigger(self.timestep)
         Position = self.robot.get_localization()
         x, y  = Position['position']
         #self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.get_sensor("imu_body")['position']
