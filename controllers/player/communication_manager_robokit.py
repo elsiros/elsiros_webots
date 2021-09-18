@@ -1,6 +1,4 @@
-"""[summary]
-Returns:
-[type]: [description]
+""" Class that provides communication with simulator Webots.
 """
 import time
 from threading import Thread, Lock
@@ -24,7 +22,7 @@ class CommunicationManager():
         self.last_head_yaw = 0
         self.last_head_pitch = 0
         self.__blurrer = Blurrer()
-        self.__model = Model(self, self.__blurrer)
+        self.__model = Model(self.__blurrer)
         self.current_time = 0
         self.sensor_time_step = time_step * 4
 
@@ -59,32 +57,13 @@ class CommunicationManager():
 
     def __update_history(self, message):
         for sensor in message:
-            if (sensor == "time"):
+            if sensor == "time":
                 delta = message[sensor]['sim time'] - self.current_time
                 if delta > 5:
                     pass
                     #print(f"WARNING! Large protobuf time rx delta = {delta}")
                 self.current_time = message[sensor]['sim time']
             self.__sensors[sensor] = message[sensor]
-
-    def time_sleep(self, t=0) -> None:
-        # print(f"Emulating delay of {t*1000} ms")
-        start_time = self.current_time
-        while (self.current_time - start_time < t * 1000):
-            time.sleep(0.001)
-
-    def get_imu_body(self):
-        return self.__get_sensor("imu_body")
-
-    def get_imu_head(self):
-        return self.__get_sensor("imu_head")
-
-    def get_localization(self):
-        self.time_sleep(0.5)
-        res = self.__get_sensor("gps_body").copy()
-        pos = res["position"]
-        res["position"] = self.__blurrer.loc(pos[0], pos[1])
-        return res
 
     def __procces_object(self, name):
         blur_object = {}
@@ -101,11 +80,84 @@ class CommunicationManager():
                 blur_object = real_object
         return blur_object
 
-    def get_ball(self):
+    def time_sleep(self, t) -> None:
+        """Emulate sleep according to simulation time.
+
+        Args:
+            t (float): time
+        """
+
+        # print(f"Emulating delay of {t*1000} ms")
+        start_time = self.current_time
+        while (self.current_time - start_time < t * 1000):
+            time.sleep(0.001)
+
+    def get_imu_body(self) -> dict:
+        """Provide last measurement from imu located in body. 
+        Can be empty if 'imu body' sensor is not enabled or webots does not 
+        sent us any measurement. Also contains simulation time of measurement.
+
+        Returns:
+            dict: {"position": [roll, pitch, yaw]}
+        """
+        return self.__get_sensor("imu_body")
+
+    def get_imu_head(self) -> dict:
+        """Provide last measurement from imu located in head.
+        Can be empty if 'imu_head' sensor is not enabled or webots does not 
+        send us any measurement. Also contains simulation time of measurement.
+
+        Returns:
+            dict: {"position": [roll, pitch, yaw], "time": time} 
+        """
+        return self.__get_sensor("imu_head")
+
+    def get_localization(self) -> dict:
+        """Provide blurred position of the robot on the field and confidence in
+        this position ('consistency' - where 1 fully confident and 0 - have no confidence).
+        Can be empty if 'gps_body' sensor is not enabled or webots does not 
+        send us any measurement. Also contains simulation time of measurement.
+
+        Returns:
+            dict: {"position": [x, y, consistency], "time": time} 
+        """
+        res = {}
+        self.time_sleep(0.5)
+        res = self.__get_sensor("gps_body").copy()
+        if res:
+            pos = res["position"]
+            res["position"] = self.__blurrer.loc(pos[0], pos[1])
+        return res
+
+    def get_ball(self) -> dict:
+        """Provide blurred position of the ball relative to the robot.
+        Can be empty if:
+        1. 'recognition', 'gps_body' or 'imu_body' sensors are not enabled
+        2. webots did not send us any measurement.
+        3. robot does not stand upright position
+        4. ball is not in the camera field of view (fov)
+
+        Also contains simulation time of measurement.
+
+        Returns:
+            dict: {"position": [x, y], "time": time} 
+        """
         self.time_sleep(0.1)
         return self.__procces_object("BALL")
 
-    def get_opponents(self):
+    def get_opponents(self) -> list:
+        """Provide blurred positions of the opponents relative to the robot.
+        Can be empty if:
+            1. 'recognition', 'gps_body' or 'imu_body' sensors are not enabled
+            2. webots did not send us any measurement.
+            3. robot does not stand upright position
+            4. opponent is not in the camera field of view (fov)
+
+        Also contains simulation time of measurement.
+
+        Returns:
+            list: [{"position": [x1, y1], "time": time}, {"position": [x2, y2], "time": time}]
+        """
         self.time_sleep(0.1)
         players = (1,2)
         color = "BLUE" if self.robot_color == "RED" else "RED"
@@ -114,15 +166,44 @@ class CommunicationManager():
             opponents.append(self.__procces_object(f"{color}_PLAYER_{number}"))
         return opponents        
 
-    def get_mates(self):
+    def get_mates(self) -> dict:
+        """Provide blurred position of the mate relative to the robot.
+        Can be empty if:
+            1. 'recognition', 'gps_body' or 'imu_body' sensors are not enabled
+            2. webots did not send us any measurement.
+            3. robot does not stand upright position
+            4. mate is not in the camera field of view (fov)
+
+        Also contains simulation time of measurement.
+
+        Returns:
+            list: {"position": [x, y], "time": time}
+        """
         self.time_sleep(0.1)
         number = 1 if self.robot_number == 2 else 2
         return self.__procces_object(f"{self.robot_color}_PLAYER_{number}")
 
-    def get_time(self):
-        return self.__get_sensor("time")
+    def get_time(self) -> float:
+        """Provide latest observed simulation time.
 
-    def send_servos(self, data={}):
+        Returns:
+            float: simulation time
+        """
+        return self.current_time
+
+    def send_servos(self, data) -> None:
+        """Add to message queue dict with listed servo names and angles in radians.
+        List of posible servos:
+        ["right_ankle_roll", "right_ankle_pitch", "right_knee", "right_hip_pitch",
+        "right_hip_roll", "right_hip_yaw", "right_elbow_pitch", "right_shoulder_twirl",
+        "right_shoulder_roll", "right_shoulder_pitch", "pelvis_yaw", "left_ankle_roll",
+        "left_ankle_pitch", "left_knee", "left_hip_pitch", "left_hip_roll", "left_hip_yaw",
+        "left_elbow_pitch", "left_shoulder_twirl", "left_shoulder_roll",
+        "left_shoulder_pitch", "head_yaw", "head_pitch"]
+
+        Args:
+            data (dict): {servo_name: servo_angle, ...}
+        """
         self.tx_mutex.acquire()
         self.tx_message = data
         self.tx_mutex.release()
@@ -136,6 +217,10 @@ class CommunicationManager():
             self.last_head_pitch = data["head_pitch"]
 
     def run(self):
+        """Infinity cycle of sending and receiving messages. 
+        Should be launched in sepparet thread. Communication manager 
+        launch this func itself in constructor
+        """
         while(True):
             do_not_block = True
             if do_not_block:
