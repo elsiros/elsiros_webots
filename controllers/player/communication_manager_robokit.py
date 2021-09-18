@@ -6,9 +6,10 @@ from robot_client import RobotClient
 
 from blurrer import Blurrer
 from model_robokit import Model
+import logging
 
 class CommunicationManager():
-    def __init__(self, maxsize=1, host='127.0.0.1', port=10001, logger, team_color="RED", player_number=1, time_step=15):
+    def __init__(self, maxsize=1, host='127.0.0.1', port=10001, logger = logging, team_color="RED", player_number=1, time_step=15):
         verbosity = 4
         self.__client = RobotClient(host, port, verbosity)
         self.__client.connect_client()
