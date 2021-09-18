@@ -1,411 +1,259 @@
-"""[summary]
-Returns:
-[type]: [description]
+""" Class that provides communication with simulator Webots.
 """
-import queue
 import time
-import logging
 from threading import Thread, Lock
-import json
-import math
-import random
-
 from robot_client import RobotClient
 
-class Blurrer():    
-    def __init__(self, object_angle_noize = 0., object_distance_noize = 0.,
-                observation_bonus = 0., step_cost = 0., 
-                constant_loc_noize = 0., loc_noize_meters = 0.):
-        """[summary]
-
-        Args:
-            object_angle_noize (float, optional): Noize for angle in radians. 
-            Blurrer will and uniformly random value from -object_angle_noize to 
-            object_angle_noize to ground truth course. Defaults to 0.
-            object_distance_noize (float, optional): [description]. Defaults to 0..
-            observation_bonus (float, optional): [description]. Defaults to 0..
-            step_cost (float, optional): [description]. Defaults to 0..
-            constant_loc_noize (float, optional): [description]. Defaults to 0..
-            loc_noize_meters (float, optional): [description]. Defaults to 0..
-        """           
-        self.object_angle_noize = object_angle_noize
-        self.object_distance_noize = object_distance_noize
-        self.observation_bonus = observation_bonus
-        self.step_cost = step_cost
-        self.constant_loc_noize = constant_loc_noize
-        self.loc_noize_meters = loc_noize_meters
-
-        params = self.load_json("../player/blurrer.json")
-        self.consistency = 1
-        self.receiver = None
-        #penalty = self.receiver.player_state.penalty 
-
-    def load_json(self, filename):
-        with open(filename) as f:
-            params = json.load(f)
-
-        self.object_angle_noize = params["object_angle_noize"]
-        self.object_distance_noize = params["object_distance_noize"]
-        self.observation_bonus = params["observation_bonus"]
-        self.step_cost = params["step_cost"]
-        self.constant_loc_noize = params["constant_loc_noize"]
-        self.loc_noize_meters = params["loc_noize_meters"]
-
-    def course(self, angle):
-        return angle + random.uniform(-self.object_angle_noize, self.object_angle_noize)
-    
-    def distance(self, distance):
-        return distance * (1 + random.uniform(-self.object_distance_noize, self.object_distance_noize))
-
-    def objects(self, course = course, distance = distance):
-        return (self.course(course), self.distance(distance))
-    
-    def loc(self, x, y):
-        return (self.coord(x), self.coord(y))
-
-    def coord(self, p):
-        random_factor = 1 - self.consistency
-        return p + self.loc_noize_meters * random.uniform(-random_factor, random_factor)
-
-    def step(self):
-        self.update_consistency(-self.step_cost)
-
-    def observation(self):
-        self.update_consistency(self.observation_bonus)
-    
-    def update_consistency(self, value):
-        tmp = self.consistency + value
-        self.consistency = max(0, min(tmp, 1))
-
-   
-
-class Model():
-    def __init__(self, robot, blurrer):
-        self.robot = robot
-        self.max_visible_area = 4
-        self.min_visible_area = 0
-        self.fov_x = math.radians(45) / 2
-        self.fov_y = math.radians(60) / 2
-        self.robot_height = 0.413
-        self.blurrer = blurrer
-
-    def check_robot_stand(self):
-        servos_sum = 0
-        for angle in self.robot.last_message.values():
-            servos_sum += angle
-        
-        # print(f"Sum angle: {servos_sum}")
-        if servos_sum >= 0.01:
-            return False
-        else:
-            return True
-
-    def check_object_in_frame(self, distance, course):
-        right_yaw_visible_area = -self.robot.last_head_yaw - self.fov_y
-        left_yaw_visible_area = -self.robot.last_head_yaw + self.fov_y
-
-        if -self.robot.last_head_pitch < self.fov_x:
-            top_distance_visible_area = self.max_visible_area
-        else:
-            top_distance_visible_area = self.robot_height * \
-                                        math.tan(math.pi/2 + \
-                                        self.robot.last_head_pitch + \
-                                        self.fov_x)
-
-        if -self.robot.last_head_pitch > math.pi/2 - self.fov_x:
-            bottom_distance_visible_area = self.min_visible_area
-        else:
-            bottom_distance_visible_area = self.robot_height * \
-                                        math.tan(math.pi/2 + \
-                                        self.robot.last_head_pitch - \
-                                        self.fov_x)
-
-        #print(f"right_yaw_visible_area: {right_yaw_visible_area}, left_yaw_visible_area: {left_yaw_visible_area}, \
-        #         top_distance_visible_area: {top_distance_visible_area}, bottom_distance_visible_area: {bottom_distance_visible_area} \
-        #         distance: {distance}, course: {course}, self.fov_y: {self.fov_y}, self.fov_x: {self.fov_x},\
-        #         self.robot_yaw: {self.robot.last_head_yaw} self.robot_pitch: {self.robot.last_head_pitch}")
-        if ((bottom_distance_visible_area < distance < top_distance_visible_area) and 
-            (right_yaw_visible_area < course < left_yaw_visible_area)):
-            return True
-        else:
-            return False
-
-    @staticmethod
-    def dist(p1, p2):
-        return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
-
-    @staticmethod
-    def norm_yaw(yaw):
-        yaw %= 2 * math.pi
-        if yaw > math.pi:  yaw -= 2* math.pi
-        if yaw < -math.pi: yaw += 2* math.pi
-        return yaw
-        
-    def get_distance_course(self, x, y):
-        robot_gps = self.robot.get_sensor("gps_body")
-        if not robot_gps:
-            return []
-
-        robot_pos = robot_gps["position"]
-        distance = self.dist(robot_pos, (x, y))
-
-        robot_imu = self.robot.get_sensor("imu_body")
-
-        if not robot_imu:
-            return []
-
-        robot_orientation = robot_imu["position"]
-
-        angle = -math.atan2(robot_pos[1] - y, -(robot_pos[0] - x)) - robot_orientation[2]
-        angle = self.norm_yaw(angle)
-        # if (x < robot_pos[0]):
-        #     angle = math.pi - angle
-        # angle = angle * (robot_pos[1] - y)/abs(robot_pos[1] - y) - robot_orientation[2]
-
-        return (distance, angle)
-
-    def proccess_data(self, x, y):
-        self.blurrer.step()
-        if not self.check_robot_stand():
-            # print("WARNING: Robot in not standing")
-            return []
-        res = self.get_distance_course(x, y)
-        if not res:
-            # print("WARNING: Imu or gps not available")
-            return []
-        distance, angle = res
-
-        self.blurrer.observation()
-        if self.check_object_in_frame(distance, angle):
-            return [angle, distance]
-        else:
-            # print("WARNING: Ball is not in the frame")
-            return []
+from blurrer import Blurrer
+from model_robokit import Model
 
 class CommunicationManager():
-    """[summary]
-    """
-    def __init__(self, maxsize=1, host='127.0.0.1', port=10001, team_color="RED", player_number = 1, time_step = 15):
-        # logging.basicConfig(filename=f'cm_robokit{port}.txt', encoding="utf-8", level=logging.DEBUG)
+    def __init__(self, maxsize=1, host='127.0.0.1', port=10001, logger, team_color="RED", player_number=1, time_step=15):
         verbosity = 4
-        self.client = RobotClient(host, port, verbosity)
-        self.client.connect_client()
+        self.__client = RobotClient(host, port, verbosity)
+        self.__client.connect_client()
         self.maxsize = maxsize
-        self.sensors = {}
+        self.__sensors = {}
         self.robot_color = team_color
         self.robot_number = player_number
         self.time_step = time_step
         self.tx_mutex = Lock()
         self.tx_message = {}
-        self.last_message = {}
+        self.__last_message = {}
         self.last_head_yaw = 0
         self.last_head_pitch = 0
-        self.blurrer = Blurrer()
-        self.model = Model(self, self.blurrer)
+        self.__blurrer = Blurrer()
+        self.__model = Model(self.__blurrer)
         self.current_time = 0
-
         self.sensor_time_step = time_step * 4
-        #self.sensor_time_step = 15
-
+        self.logger = logger
         sensors = {"imu_body": self.time_step, "recognition": self.sensor_time_step, "gps_body": self.sensor_time_step}
-        # sensors = {"gps_body": 5, "imu_head": 5, "imu_body": 5,  "camera": 20}#
         self.enable_sensors(sensors)
-        self.thread = Thread(target = self.run)
+        self.thread = Thread(target=self.run)
         self.thread.start()
-        
 
     def enable_sensors(self, sensors) -> None:
         for sensor in sensors:
-            self.client.initial(sensor, sensors[sensor])
+            self.__client.initial(sensor, sensors[sensor])
             if sensor == "recognition":
-                self.sensors.update({"BALL": {} })
-                self.sensors.update({"RED_PLAYER_1": {} })
-                self.sensors.update({"RED_PLAYER_2": {} })
-                self.sensors.update({"BLUE_PLAYER_1": {} })
-                self.sensors.update({"BLUE_PLAYER_2": {} })
+                self.__sensors.update({"BALL": {}})
+                self.__sensors.update({"RED_PLAYER_1": {}})
+                self.__sensors.update({"RED_PLAYER_2": {}})
+                self.__sensors.update({"BLUE_PLAYER_1": {}})
+                self.__sensors.update({"BLUE_PLAYER_2": {}})
 
-            self.sensors.update({str(sensor): {}})
-        self.sensors.update({"time": {}})
-        self.client.send_request("init")
+            self.__sensors.update({str(sensor): {}})
+        self.__sensors.update({"time": {}})
+        self.__client.send_request("init")
 
-    def get_sensor(self, name) -> dict:
-        return self.sensors[name]
+    def __get_sensor(self, name) -> dict:
+        return self.__sensors[name]
 
-    def send_message(self):
+    def __send_message(self):
         self.tx_mutex.acquire()
         if self.tx_message:
-            self.client.send_request("positions", self.tx_message)
+            self.__client.send_request("positions", self.tx_message)
             self.tx_message = {}
         self.tx_mutex.release()
 
-    def update_history(self, message):
+    def __update_history(self, message):
         for sensor in message:
-            if (sensor == "time"):
+            if sensor == "time":
                 delta = message[sensor]['sim time'] - self.current_time
                 if delta > 5:
-                    pass
-                    #print(f"WARNING! Large protobuf time rx delta = {delta}")                
+                    self.logger.warning(f"WARNING! Large protobuf time rx delta = {delta}")
                 self.current_time = message[sensor]['sim time']
-                #logging.debug("Getting servo commands:")
-                #logging.debug(f"New simulation time: {self.current_time}")
-                #logging.debug(data)                
-            self.sensors[sensor] = message[sensor]
+            self.__sensors[sensor] = message[sensor]
 
-    def time_sleep(self, t = 0)->None:
-        #print(f"Emulating delay of {t*1000} ms")
+    def __procces_object(self, name):
+        blur_object = {}
+        imu_body = self.__get_sensor("imu_body")
+        gps_body = self.__get_sensor("gps_body")
+        last_message = self.__last_message
+        real_object = self.__get_sensor(name).copy()
+        if real_object and imu_body and gps_body:
+            position = real_object["position"]
+            if position:
+                self.__model.update_robot_state(gps_body, imu_body, last_message, self.last_head_pitch, self.last_head_yaw)
+                proccessed_object_pos = self.__model.proccess_data(position[0], position[1])
+                real_object["position"] = proccessed_object_pos
+                blur_object = real_object
+        return blur_object
+
+    def time_sleep(self, t) -> None:
+        """Emulate sleep according to simulation time.
+
+        Args:
+            t (float): time
+        """
+
+        self.logger.debug(f"Emulating delay of {t*1000} ms")
         start_time = self.current_time
         while (self.current_time - start_time < t * 1000):
             time.sleep(0.001)
 
-    def get_imu_body(self):
-        # self.last_imu_body = self.get_sensor("imu_body")
-        #self.time_sleep()
-        return self.get_sensor("imu_body")
+    def get_imu_body(self) -> dict:
+        """Provide last measurement from imu located in body. 
+        Can be empty if 'imu body' sensor is not enabled or webots does not 
+        sent us any measurement. Also contains simulation time of measurement.
 
-    def get_imu_head(self):
-        #self.time_sleep()
-        return self.get_sensor("imu_head")
+        Returns:
+            dict: {"position": [roll, pitch, yaw]}
+        """
 
-    def get_localization(self):
-        self.time_sleep(0.5)
-        res = self.get_sensor("gps_body").copy()
-        pos = res["position"]
-        #print('pos:', pos)
-        res["position"] = self.blurrer.loc(pos[0], pos[1])
+        res = self.__get_sensor("imu_body")
+        self.logger.debug(res)
         return res
 
-    def get_ball(self):
-        self.time_sleep(0.1)
-        ball = self.get_sensor("BALL").copy()
-        #print("Abs ball: ", ball)
-        if ball:
-            ball_pos = ball["position"]
-            if not ball_pos:
-                return []
-            updated_ball_pos = self.model.proccess_data(ball_pos[0], ball_pos[1])
-            if not updated_ball_pos:
-                return {}
-            blurred_pos = self.blurrer.objects(course = updated_ball_pos[0], distance = updated_ball_pos[1])
-            ball["position"] = blurred_pos
-            return ball
-        else:
-            return {}
+    def get_imu_head(self) -> dict:
+        """Provide last measurement from imu located in head.
+        Can be empty if 'imu_head' sensor is not enabled or webots does not 
+        send us any measurement. Also contains simulation time of measurement.
 
-    def get_opponents(self):
-        self.time_sleep(0.1)
-        color = "BLUE" if self.robot_color == "RED" else "RED"    
-        return [self.get_sensor(color+"_PLAYER_1"), self.get_sensor(color+"_PLAYER_2")]
+        Returns:
+            dict: {"position": [roll, pitch, yaw], "time": time} 
+        """
 
-    def get_teammates(self):
+        res = self.__get_sensor("imu_head")
+        self.logger.debug(res)
+        return res
+
+    def get_localization(self) -> dict:
+        """Provide blurred position of the robot on the field and confidence in
+        this position ('consistency' - where 1 fully confident and 0 - have no confidence).
+        Can be empty if 'gps_body' sensor is not enabled or webots does not 
+        send us any measurement. Also contains simulation time of measurement.
+
+        Returns:
+            dict: {"position": [x, y, consistency], "time": time} 
+        """
+        res = {}
+        self.time_sleep(0.5)
+        res = self.__get_sensor("gps_body").copy()
+        if res:
+            pos = res["position"]
+            res["position"] = self.__blurrer.loc(pos[0], pos[1])
+        self.logger.debug(res)
+        return res
+
+    def get_ball(self) -> dict:
+        """Provide blurred position of the ball relative to the robot.
+        Can be empty if:
+        1. 'recognition', 'gps_body' or 'imu_body' sensors are not enabled
+        2. webots did not send us any measurement.
+        3. robot does not stand upright position
+        4. ball is not in the camera field of view (fov)
+
+        Also contains simulation time of measurement.
+
+        Returns:
+            dict: {"position": [x, y], "time": time} 
+        """
+        self.time_sleep(0.1)
+        res = self.__procces_object("BALL")
+        self.logger.debug(res)
+        return res
+
+    def get_opponents(self) -> list:
+        """Provide blurred positions of the opponents relative to the robot.
+        Can be empty if:
+            1. 'recognition', 'gps_body' or 'imu_body' sensors are not enabled
+            2. webots did not send us any measurement.
+            3. robot does not stand upright position
+            4. opponent is not in the camera field of view (fov)
+
+        Also contains simulation time of measurement.
+
+        Returns:
+            list: [{"position": [x1, y1], "time": time}, {"position": [x2, y2], "time": time}]
+        """
+        self.time_sleep(0.1)
+        players = (1,2)
+        color = "BLUE" if self.robot_color == "RED" else "RED"
+        opponents = []
+        for number in players:
+            opponents.append(self.__procces_object(f"{color}_PLAYER_{number}"))
+
+        self.logger.debug(opponents)
+        return opponents        
+
+    def get_mates(self) -> dict:
+        """Provide blurred position of the mate relative to the robot.
+        Can be empty if:
+            1. 'recognition', 'gps_body' or 'imu_body' sensors are not enabled
+            2. webots did not send us any measurement.
+            3. robot does not stand upright position
+            4. mate is not in the camera field of view (fov)
+
+        Also contains simulation time of measurement.
+
+        Returns:
+            list: {"position": [x, y], "time": time}
+        """
         self.time_sleep(0.1)
         number = 1 if self.robot_number == 2 else 2
-        return self.get_sensor(f"{self.robot_color}_PLAYER_"+f"{number}")
-    
-    def get_time(self):
-        return self.get_sensor("time")
+        res = self.__procces_object(f"{self.robot_color}_PLAYER_{number}")
+        self.logger.debug(res)
+        return res
 
-    def send_servos(self, data = {}):
-        #self.time_sleep(0)
-        #logging.debug("Getting servo commands:")
-        #logging.debug(f"Time: {self.current_time}")
-        #logging.debug(data)
+    def get_time(self) -> float:
+        """Provide latest observed simulation time.
 
+        Returns:
+            float: simulation time
+        """
+        res = self.current_time
+        self.logger.debug(res)
+        return res
+
+    def send_servos(self, data) -> None:
+        """Add to message queue dict with listed servo names and angles in radians.
+        List of posible servos:
+        ["right_ankle_roll", "right_ankle_pitch", "right_knee", "right_hip_pitch",
+        "right_hip_roll", "right_hip_yaw", "right_elbow_pitch", "right_shoulder_twirl",
+        "right_shoulder_roll", "right_shoulder_pitch", "pelvis_yaw", "left_ankle_roll",
+        "left_ankle_pitch", "left_knee", "left_hip_pitch", "left_hip_roll", "left_hip_yaw",
+        "left_elbow_pitch", "left_shoulder_twirl", "left_shoulder_roll",
+        "left_shoulder_pitch", "head_yaw", "head_pitch"]
+
+        Args:
+            data (dict): {servo_name: servo_angle, ...}
+        """
         self.tx_mutex.acquire()
         self.tx_message = data
         self.tx_mutex.release()
-        # logging.debug("Getting servo commands:")
-        # logging.debug(f"Time: {self.current_time}")
-        # logging.debug(data)
+
+        self.logger.debug(data)
+
         if "right_hip_yaw" in data.keys():
-            self.last_message = data
+            self.__last_message = data
 
         if "head_yaw" in data.keys():
             self.last_head_yaw = data["head_yaw"]
         if "head_pitch" in data.keys():
             self.last_head_pitch = data["head_pitch"]
-        #self.add_to_queue((data, {}))
-        #return 0 
 
     def run(self):
+        """Infinity cycle of sending and receiving messages. 
+        Should be launched in sepparet thread. Communication manager 
+        launch this func itself in constructor
+        """
         while(True):
             do_not_block = True
             if do_not_block:
-                # Sending/receiving protobuf in non-blocking way 
+                # Sending/receiving protobuf in non-blocking way
                 # If we have any data to send - do sending
                 # If full packet data is ready in socket - receive it, otherwise switch to check if sending is needed
-                self.send_message()
-                messages_list = self.client.receive2()
+                self.__send_message()
+                messages_list = self.__client.receive2()
                 for message in messages_list:
-                    self.update_history(message)
+                    self.__update_history(message)
             else:
                 # Sending/receiving protobuf in blocking way:
                 # wait for a message ready to be sent, then send it
                 # Then wait for a message to be received, and receive it
-                self.send_message()
+                self.__send_message()
                 message = []
                 while not message:
-                    message = self.client.receive2()
-                self.update_history(message)
-            
-            # print("get_ball: ", self.get_ball())
-
-    def test_run(self):
-        # пример отправки данных серв
-        self.WBservosList = ["right_ankle_roll", "right_ankle_pitch", "right_knee", "right_hip_pitch",
-                             "right_hip_roll", "right_hip_yaw", "right_elbow_pitch", "right_shoulder_twirl",
-                             "right_shoulder_roll", "right_shoulder_pitch", "pelvis_yaw", "left_ankle_roll",
-                             "left_ankle_pitch", "left_knee", "left_hip_pitch", "left_hip_roll", "left_hip_yaw",
-                             "left_elbow_pitch", "left_shoulder_twirl", "left_shoulder_roll",
-                             "left_shoulder_pitch", "head_yaw", "head_pitch"]
-        while(True):
-            time.sleep(0.5)
-            # пример получения данных из включенного и существующего сенсора
-            # print("ball: ", self.get_sensor("BALL"))
-            #print("gps_body: ", self.get_sensor("gps_body"))
-            # print(self.get_ball())
-
-
-if __name__ == '__main__':
-    manager = CommunicationManager(1, '127.0.0.1', 7001, time_step = 20)
-    # инициализация сенсоров
-    
-
-    i = 0
-    while (True):
-        i+=1
-        # pass
-        time.sleep(0.5)
-        # print("IMU: ", manager.get_imu_body())
-        # print(manager.current_time)
-        #print("get_localization: ", manager.get_localization())
-        print("get_ball: ", manager.get_ball())
-        print("get_localization: ", manager.get_localization())
-        print("get_teammates: ", manager.get_teammates())
-        print("get_opponents: ", manager.get_opponents())
-        # print("get_imu: ", manager.get_imu_body())
-        # manager.send_servos({"head_yaw": math.sin(i)/2, "head_pitch": -abs(math.sin(i)/2)})
-        # 0.88
-        manager.send_servos({"head_yaw": math.sin(i)/2, "head_pitch": -0.88})
-
-        # print(manager.current_time)
-    # manager = CommunicationManager(1, '127.0.0.1', 10001, time_step = 20)
-    # # инициализация сенсоров
-    # while (True):
-    #     # pass
-    #     # time.sleep(0.5)
-    #     print("IMU: ", manager.get_imu_body())
-    #     print(manager.current_time)
-    #     print("get_localization: ", manager.get_localization())
-    #     print("ball: ", manager.get_ball())
-    #     print("opp: ", manager.get_opponents())
-    #     print("mates: ", manager.get_teammates())
-
-    #     manager.send_servos({"head_pitch": -0.3})
-    #     print(manager.current_time)
-        
-
-        # print("Time: ", manager.get_time())
-        
-    # th2.start()
-    manager.thread.join()
-    # th2.join
+                    message = self.__client.receive2()
+                self.__update_history(message)
