@@ -86,32 +86,38 @@ class CommunicationManager():
         res["position"] = self.__blurrer.loc(pos[0], pos[1])
         return res
 
-    def get_ball(self):
-        self.time_sleep(0.1)
-        ball = self.__get_sensor("BALL").copy()
+    def __procces_object(self, name):
+        blur_object = {}
         imu_body = self.__get_sensor("imu_body")
         gps_body = self.__get_sensor("gps_body")
-        if ball and imu_body and gps_body:
-            ball_pos = ball["position"]
-            if ball_pos:
-                return {}
-            updated_ball_pos = self.__model.proccess_data(ball_pos[0], ball_pos[1], gps_body, imu_body)
-            if not updated_ball_pos:
-                return {}
-            blurred_pos = self.__blurrer.objects(course=updated_ball_pos[0], distance=updated_ball_pos[1])
-            ball["position"] = blurred_pos
-            return ball
-        return {}
+        real_object = self.__get_sensor(name).copy()
+        if real_object and imu_body and gps_body:
+            position = real_object["position"]
+            if position:
+                updated_object_pos = self.__model.proccess_data(position[0], position[1], gps_body, imu_body)
+            if updated_object_pos:
+                blurred_pos = self.__blurrer.objects(course=updated_object_pos[0], distance=updated_object_pos[1])
+                real_object["position"] = blurred_pos
+                blur_object = real_object
+        return blur_object
+
+    def get_ball(self):
+        self.time_sleep(0.1)
+        return self.__procces_object(self, "BALL")
 
     def get_opponents(self):
         self.time_sleep(0.1)
+        players = (1,2)
         color = "BLUE" if self.robot_color == "RED" else "RED"
-        return [self.__get_sensor(color+"_PLAYER_1"), self.__get_sensor(color+"_PLAYER_2")]
+        opponents = []
+        for number in players:
+            opponents.append(self.__procces_object(f"{color}_PLAYER_+{number}"))
+        return opponents        
 
     def get_teammates(self):
         self.time_sleep(0.1)
         number = 1 if self.robot_number == 2 else 1
-        return self.__get_sensor(f"{self.robot_color}_PLAYER_+{number}")
+        return self.__procces_object(f"{self.robot_color}_PLAYER_+{number}")
 
     def get_time(self):
         return self.__get_sensor("time")
