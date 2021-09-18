@@ -8,6 +8,7 @@ This module contains walking engine
 import sys, os
 import math, time, json
 import starkit
+import logging
 
 #from ball_Approach_Steps_Seq import *
 from .compute_Alpha_v3 import Alpha
@@ -71,7 +72,7 @@ class Motion1:
         self.rotation = 0           # -45 - +45 degrees Centigrade per step + CW, - CCW.
         self.first_Leg_Is_Right_Leg = True
         # Following paramenetrs Not recommended for change
-        self.amplitude = 32#50          # mm side amplitude (maximum distance between most right and most left position of Center of Mass) 53.4*2
+        self.amplitude = 50#32#50          # mm side amplitude (maximum distance between most right and most left position of Center of Mass) 53.4*2
         self.fr1 =8                  # frame number for 1-st phase of gait ( two legs on floor)
         self.fr2 = 12                # frame number for 2-nd phase of gait ( one leg in air)
         self.gaitHeight= 180         # Distance between Center of mass and floor in walk pose
@@ -345,13 +346,14 @@ class Motion1:
             if len(angles)==0:
                 self.exitFlag = self.exitFlag +1
             else:
-                self.send_angles_to_servos(angles)
+                self.send_angles_to_servos(angles, use_step_correction = True)
         # returning xr, xl, yr, yl to initial value
         self.xr, self.xl, self.yr, self.yl = xr_old, xl_old, yr_old, yl_old
         self.local.coord_shift[0] = self.cycle_step_yield*stepLength/64/1000
         if self.first_Leg_Is_Right_Leg:
             self.local.coord_shift[1] = -self.side_step_right_yield * abs(sideLength)/20/1000
         else: self.local.coord_shift[1] = self.side_step_left_yield * abs(sideLength)/20/1000
+        self.local.robot_moved = True
         #self.local.coordinate_record(odometry = True, shift = True)
         #self.first_Leg_Is_Right_Leg = tmp1
 

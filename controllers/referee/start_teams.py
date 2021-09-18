@@ -11,9 +11,10 @@ from pathlib import Path
 import json
 
 # following 3 lines provide minimizing of console in Windows
-#import win32gui, win32con
-#t = win32gui.GetForegroundWindow()
-#win32gui.ShowWindow(t, win32con.SW_MINIMIZE)
+# you can comment them if you need console window.
+import win32gui, win32con
+t = win32gui.GetForegroundWindow()
+win32gui.ShowWindow(t, win32con.SW_MINIMIZE)
 
 with open('game.json', "r") as f:
     game_data = json.loads(f.read())
@@ -32,33 +33,42 @@ red_team_controller_subdirectory = Path(red_team_data['robotStartCmd']).parents[
 red_team_controller_filename = Path(red_team_data['robotStartCmd']).name
 blue_team_controller_subdirectory = Path(blue_team_data['robotStartCmd']).parents[0]
 blue_team_controller_filename = Path(blue_team_data['robotStartCmd']).name
+
 os.chdir(current_working_directory.parent/red_team_controller_subdirectory)
 
 role = red_team_data['players']['1']['role']
 
-with open('output10001.txt', "w") as f1001:
-    print(datetime.datetime.now(), file = f1001)
-    p10001 = subprocess.Popen(['python', red_team_controller_filename, str(game_data['red']['ports'][0]), str(game_data['red']['id']),
-                              'red', '1', red_team_data['players']['1']['role']], stderr=f1001)
+port01 = str(game_data['red']['ports'][0])
+filename01 = "output" + f"{port01}"+ ".txt" 
+with open(filename01, "w") as f01:
+    print(datetime.datetime.now(), file = f01)
+    p01 = subprocess.Popen(['python', red_team_controller_filename, port01, str(game_data['red']['id']),
+                              'red', '1', red_team_data['players']['1']['role']], stderr=f01)
 
-with open('output10002.txt', "w") as f1002:
-    print(datetime.datetime.now(), file = f1002)
-    p10002 = subprocess.Popen(['python', red_team_controller_filename, str(game_data['red']['ports'][1]), str(game_data['red']['id']),
-                              'red', '2', red_team_data['players']['2']['role']], stderr=f1002)
+port02 = str(game_data['red']['ports'][1])
+filename02 = "output" + f"{port02}"+ ".txt"
+with open(filename02, "w") as f02:
+    print(datetime.datetime.now(), file = f02)
+    p02 = subprocess.Popen(['python', red_team_controller_filename, port02, str(game_data['red']['id']),
+                              'red', '2', red_team_data['players']['2']['role']], stderr=f02)
 
 os.chdir(current_working_directory.parent/blue_team_controller_subdirectory)
 
-with open('output10021.txt', "w") as f1021:
-    print(datetime.datetime.now(), file = f1021)
-    p10021 = subprocess.Popen(['python', blue_team_controller_filename, str(game_data['blue']['ports'][0]) , str(game_data['blue']['id']),
-                              'blue', '1', blue_team_data['players']['1']['role']],  stderr=f1021)
+port21 = str(game_data['blue']['ports'][0])
+filename21 = "output" + f"{port21}"+ ".txt"
+with open(filename21, "w") as f21:
+    print(datetime.datetime.now(), file = f21)
+    p21 = subprocess.Popen(['python', blue_team_controller_filename, port21 , str(game_data['blue']['id']),
+                              'blue', '1', blue_team_data['players']['1']['role']],  stderr=f21)
 
-with open('output10022.txt', "w") as f1022:
-    print(datetime.datetime.now(), file = f1022)
-    p10022 = subprocess.Popen(['python', blue_team_controller_filename, str(game_data['blue']['ports'][1]), str(game_data['blue']['id']),
-                              'blue', '2', blue_team_data['players']['2']['role']], stderr=f1022)
+port22 = str(game_data['blue']['ports'][1])
+filename22 = "output" + f"{port22}"+ ".txt"
+with open(filename22, "w") as f22:
+    print(datetime.datetime.now(), file = f22)
+    p22 = subprocess.Popen(['python', blue_team_controller_filename, port22, str(game_data['blue']['id']),
+                              'blue', '2', blue_team_data['players']['2']['role']], stderr=f22)
 
-p10001.wait()
-p10002.wait()
-p10021.wait()
-p10022.wait()
+p01.wait()
+p02.wait()
+p21.wait()
+p22.wait()

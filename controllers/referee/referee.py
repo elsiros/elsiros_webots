@@ -1063,7 +1063,7 @@ else:
         error('JAVA_HOME environment variable not set, unable to launch GameController.', fatal=True)
 
 #launching teams start script
-game.external_controllers_process = subprocess.Popen(['python', 'start_teams.py'])
+game.external_controllers_process = subprocess.Popen(['python', 'start_teams.py'], creationflags=subprocess.CREATE_NEW_CONSOLE)
 
 game.state = None
 
