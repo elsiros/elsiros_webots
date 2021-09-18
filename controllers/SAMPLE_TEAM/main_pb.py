@@ -99,6 +99,7 @@ pause = Pause()
 def main_procedure():
     global pause
     global log
+    global logger
     Port = sys.argv[1]
     logger.info('port = %s', Port)
     robot = CommunicationManager(1, '127.0.0.1', int(Port), log, team_color=sys.argv[3].upper(), player_number = int(sys.argv[4]), time_step = 25)
@@ -111,7 +112,7 @@ def main_procedure():
     if team_id > 0:
         robot_color = sys.argv[3]
         robot_number = int(sys.argv[4])
-        player_super_cycle(falling, team_id, robot_color, robot_number, SIMULATION, current_work_directory, robot, pause)
+        player_super_cycle(falling, team_id, robot_color, robot_number, SIMULATION, current_work_directory, robot, pause, logger)
 
     second_pressed_button = int(sys.argv[6])
     initial_coord = eval(sys.argv[7])
@@ -195,11 +196,13 @@ class Main_Panel(wx.Frame):
         #self.Centre()
 
     def ShowMessage1(self, event):
+        global logger
         logger.info('Exit button pressed')
         sys.stdout = sys.__stdout__
         sys.exit(0)
 
     def ShowMessage2(self, event):
+        global logger
         global pause
         if pause.Flag:
             pause.Flag = False
