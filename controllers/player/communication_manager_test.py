@@ -1,5 +1,8 @@
 from communication_manager_robokit import CommunicationManager
 from threading import Thread
+import logging 
+
+logging.basicConfig(level=logging.DEBUG)
 
 ports = [10001]
 

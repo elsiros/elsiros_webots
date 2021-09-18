@@ -2,6 +2,7 @@
 Сlass operates with protobuff messages. used to create and parse messages.
 
 """
+import logging
 from google.protobuf import text_format
 
 import messages_pb2
@@ -113,6 +114,7 @@ class MessageManager():
             int: Size of answer message.
         """
         size = int.from_bytes(content_size, byteorder='big', signed=False)
+        logging.debug("Byte size of received messages: %d", size)
         return size
 
     def add_initial_request(self, sensor_name, sensor_time):
