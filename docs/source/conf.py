@@ -91,7 +91,7 @@ html_static_path = ['_static']
 
 # Document Python Code with autoAPI
 autoapi_type = 'python'
-autoapi_dirs = ['../../controllers/VIA_PB']
+autoapi_dirs = ['../../controllers/SAMPLE_TEAM', '../../controllers/player']
 autoapi_add_toctree_entry = False
 
 # Translations

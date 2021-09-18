@@ -34,10 +34,8 @@ message GPSMeasurement {
 
 message DetectionMeasurement {
   string name = 1;
-  Vector2Int position_on_image = 2;
-  Vector2Int size_on_image = 3;
-  double X = 4;
-  double Y = 5;
+  double course = 2;
+  double distance = 3;
 }
 
 
@@ -90,7 +88,7 @@ message Message {
 }
 
 message SensorMeasurements {
-  uint32 time = 1;  // time stamp at which the measurements were performed expressed in [ms]
+  uint64 time = 1;  // time stamp at which the measurements were performed expressed in [ms]
   uint64 real_time = 2; // real unix time stamp at which the measurements were performed in [ms]
   repeated Message messages = 3;
   repeated AccelerometerMeasurement accelerometers = 4;
@@ -102,8 +100,9 @@ message SensorMeasurements {
   repeated GyroMeasurement gyros = 10;
   repeated PositionSensorMeasurement position_sensors = 11;
   repeated GPSMeasurement gps = 12;
-  repeated DetectionMeasurement objects = 13;
+  repeated DetectionMeasurement objects_old = 13;
   repeated IMUSensorMeasurement imu = 14;
+  repeated GPSMeasurement objects = 15;
 }
 
 message MotorPosition {

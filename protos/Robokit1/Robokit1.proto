@@ -11,7 +11,7 @@ PROTO Robokit1 [
   field  MFString    controllerArgs  []          # Is `Robot.controllerArgs`.
   field  SFString    customData      ""          # Is `Robot.customData`.
   field  SFBool      supervisor      TRUE       # Is `Robot.supervisor`.
-  field  SFBool      synchronization FALSE        # Is `Robot.synchronization`.
+  field  SFBool      synchronization TRUE        # Is `Robot.synchronization`.
   field  SFBool      selfCollision   TRUE       # Is `Robot.selfCollision`.
   field SFString{"", "red", "blue"}      teamColor ""
   field SFString{"", "1", "2", "3", "4", "5"}      playerNumber ""
@@ -251,7 +251,7 @@ PROTO Robokit1 [
                                                   }
                                                   physics Physics {
                                                     density -1
-                                                    mass 0.06
+                                                    mass 0.100
                                                     centerOfMass [ -0.021140 -0.000636 -0.020359 ]
                                                     inertiaMatrix [
                                                       2.898973e-05 1.505792e-05 4.316037e-05
@@ -543,7 +543,7 @@ PROTO Robokit1 [
                                                   }
                                                   physics Physics {
                                                     density -1
-                                                    mass 0.06
+                                                    mass 0.100
                                                     centerOfMass [ -0.021140 -0.000636 -0.020359 ]
                                                     inertiaMatrix [
                                                       2.898973e-05 1.505792e-05 4.316037e-05
@@ -1262,7 +1262,7 @@ PROTO Robokit1 [
             translation -0.001141 -0.025000 0.005069
             rotation 1.000000 0.000000 0.000000 1.570800
             children [
-              Kondo007_num_01Mesh {
+              Robokit1_num_01Mesh {
               }
             ]
             name "num_01"
@@ -1273,7 +1273,7 @@ PROTO Robokit1 [
             translation -0.000115 -0.025000 0.005069
             rotation 1.000000 0.000000 0.000000 1.570800
             children [
-              Kondo007_num_02Mesh {
+              Robokit1_num_02Mesh {
               }
             ]
             name "num_02"
@@ -1284,7 +1284,7 @@ PROTO Robokit1 [
             translation -0.001371 -0.025000 0.005069
             rotation 1.000000 0.000000 0.000000 1.570796
             children [
-              Kondo007_num_03Mesh {
+              Robokit1_num_03Mesh {
               }
             ]
             name "num_03"
@@ -1295,7 +1295,7 @@ PROTO Robokit1 [
             translation -0.000756 -0.025000 0.005069
             rotation 1.000000 0.000000 0.000000 1.570800
             children [
-              Kondo007_num_04Mesh {
+              Robokit1_num_04Mesh {
               }
             ]
             name "num_04"
@@ -1306,7 +1306,7 @@ PROTO Robokit1 [
             translation 0.001808 -0.025000 0.005069
             rotation 1.000000 0.000000 0.000000 1.570796
             children [
-              Kondo007_num_05Mesh {
+              Robokit1_num_05Mesh {
               }
             ]
             name "num_05"
@@ -1317,7 +1317,7 @@ PROTO Robokit1 [
             translation 0.005641 0.094000 0.003817
             rotation -0.000003 0.707108 0.707105 3.141598
             children [
-              Kondo007_number_01Mesh {
+              Robokit1_number_01Mesh {
               }
             ]
             name "number_01"
@@ -1328,7 +1328,7 @@ PROTO Robokit1 [
             translation 0.004615 0.094000 0.003817
             rotation 0.000000 -0.707107 -0.707107 3.141593
             children [
-              Kondo007_number_02Mesh {
+              Robokit1_number_02Mesh {
               }
             ]
             name "number_02"
@@ -1339,7 +1339,7 @@ PROTO Robokit1 [
             translation 0.005871 0.094000 0.004562
             rotation -0.000003 -0.707108 -0.707105 3.141598
             children [
-              Kondo007_number_03Mesh {
+              Robokit1_number_03Mesh {
               }
             ]
             name "number_03"
@@ -1350,7 +1350,7 @@ PROTO Robokit1 [
             translation 0.005256 0.094000 0.003817
             rotation 0.000000 -0.707107 -0.707107 3.141593
             children [
-              Kondo007_number_04Mesh {
+              Robokit1_number_04Mesh {
               }
             ]
             name "number_04"
@@ -1361,7 +1361,7 @@ PROTO Robokit1 [
             translation 0.004692 0.094000 0.004562
             rotation -0.000003 -0.707108 -0.707105 3.141598
             children [
-              Kondo007_number_05Mesh {
+              Robokit1_number_05Mesh {
               }
             ]
             name "number_05"
