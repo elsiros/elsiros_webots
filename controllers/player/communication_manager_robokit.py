@@ -11,8 +11,8 @@ from model_robokit import Model
 class CommunicationManager():
     def __init__(self, maxsize=1, host='127.0.0.1', port=10001, team_color="RED", player_number=1, time_step=15):
         verbosity = 4
-        self.client = RobotClient(host, port, verbosity)
-        self.client.connect_client()
+        self.__client = RobotClient(host, port, verbosity)
+        self.__client.connect_client()
         self.maxsize = maxsize
         self.sensors = {}
         self.robot_color = team_color
@@ -33,31 +33,17 @@ class CommunicationManager():
         self.thread = Thread(target=self.run)
         self.thread.start()
 
-    def enable_sensors(self, sensors) -> None:
-        for sensor in sensors:
-            self.client.initial(sensor, sensors[sensor])
-            if sensor == "recognition":
-                self.sensors.update({"BALL": {}})
-                self.sensors.update({"RED_PLAYER_1": {}})
-                self.sensors.update({"RED_PLAYER_2": {}})
-                self.sensors.update({"BLUE_PLAYER_1": {}})
-                self.sensors.update({"BLUE_PLAYER_2": {}})
-
-            self.sensors.update({str(sensor): {}})
-        self.sensors.update({"time": {}})
-        self.client.send_request("init")
-
     def __get_sensor(self, name) -> dict:
         return self.sensors[name]
 
-    def send_message(self):
+    def __send_message(self):
         self.tx_mutex.acquire()
         if self.tx_message:
-            self.client.send_request("positions", self.tx_message)
+            self.__client.send_request("positions", self.tx_message)
             self.tx_message = {}
         self.tx_mutex.release()
 
-    def update_history(self, message):
+    def __update_history(self, message):
         for sensor in message:
             if (sensor == "time"):
                 delta = message[sensor]['sim time'] - self.current_time
@@ -136,16 +122,16 @@ class CommunicationManager():
                 # Sending/receiving protobuf in non-blocking way
                 # If we have any data to send - do sending
                 # If full packet data is ready in socket - receive it, otherwise switch to check if sending is needed
-                self.send_message()
-                messages_list = self.client.receive2()
+                self.__send_message()
+                messages_list = self.__client.receive2()
                 for message in messages_list:
-                    self.update_history(message)
+                    self.__update_history(message)
             else:
                 # Sending/receiving protobuf in blocking way:
                 # wait for a message ready to be sent, then send it
                 # Then wait for a message to be received, and receive it
-                self.send_message()
+                self.__send_message()
                 message = []
                 while not message:
-                    message = self.client.receive2()
-                self.update_history(message)
+                    message = self.__client.receive2()
+                self.__update_history(message)
