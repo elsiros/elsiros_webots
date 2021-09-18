@@ -42,10 +42,9 @@ class RobotClient():
         try:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         except socket.error as msg:
-            if self.verbosity > 0:
-                logging.warning("Cannot create socket. \
+            logging.warning("Cannot create socket. \
                                  Caught exception socket.error %s\n", msg)
-                return False
+            return False
         attempt = 1
         connected = False
         for attempt in range(self.max_attempts):
@@ -61,28 +60,24 @@ class RobotClient():
                 time.sleep(self.wait_time)
 
         if not connected:
-            if self.verbosity > 0:
-                logging.warning("Failed to connect after \
+            logging.warning("Failed to connect after \
                     %s attempts. Giving up on connection", attempt)
             self.disconnect_client()
             return False
 
         # Receiving the 'welcome message'
         welcome_message = self.socket.recv(8)
-        if self.verbosity >= 4:
-            print("Welcome message: ", welcome_message.decode("utf-8"))
+        logging.info("Welcome message: ", welcome_message.decode("utf-8"))
         if welcome_message != b'Welcome\x00':
-            if self.verbosity > 0:
-                if welcome_message == b'Refused\x00':
-                    logging.warning("Connection refused")
-                else:
-                    logging.warning("Received unknown answer from server: %s",
-                                    welcome_message.decode("utf-8"))
+            logging.warning("Incorrect welcom message")
+            if welcome_message == b'Refused\x00':
+                logging.warning("Connection refused")
+            else:
+                logging.warning("Received unknown answer from server: %s",
+                                welcome_message.decode("utf-8"))
             self.disconnect_client()
             return False
-
-        if self.verbosity >= 2:
-            print("Connected to ", self.host, self.port)
+        logging.info("Connected to ", self.host, self.port)
         return True
 
     @staticmethod
@@ -107,10 +102,10 @@ class RobotClient():
             message = self.message_manager.build_request_positions(positions)
         elif message_type == "init":
             message = self.message_manager.build_initial_request()
-        # try:
-        self.socket.send(message)
-       # except:
-        #    print("Can't send request")
+        try:
+            self.socket.send(message)
+        except socket.error as msg:
+            logging.error("Can't send request with error: %s", msg)
 
     def initial(self, sensor_name, sensor_time):
         self.message_manager.add_initial_request(sensor_name, sensor_time)
