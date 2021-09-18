@@ -298,108 +298,108 @@ public:
 };
 
 
-class Blurrer {
-  public:
-    Blurrer() :
-      object_angle_noize(0.03), 
-      object_distance_noize(0.1), 
-      observation_bonus(0.1),
-      step_loss(0.01),
-      constant_loc_noize(0.01)
-      {
-        loadJson();
-      };
+// class Blurrer {
+//   public:
+//     Blurrer() :
+//       object_angle_noize(0.03), 
+//       object_distance_noize(0.1), 
+//       observation_bonus(0.1),
+//       step_loss(0.01),
+//       constant_loc_noize(0.01)
+//       {
+//         loadJson();
+//       };
 
-    void loadJson()
-    {
-      std::cout << "Loading json..." << std::endl;
-      std::ifstream inFile("blurrer.txt");
-      if (!inFile) {
-          std::cout << "Unable to open file";
-          exit(1); // terminate with error
-      }
-      std::string line;
-      while(std::getline(inFile,line))
-      {
-        // std::cout << "Line(" << line << ")\n";
+//     void loadJson()
+//     {
+//       std::cout << "Loading json..." << std::endl;
+//       std::ifstream inFile("blurrer.txt");
+//       if (!inFile) {
+//           std::cout << "Unable to open file";
+//           exit(1); // terminate with error
+//       }
+//       std::string line;
+//       while(std::getline(inFile,line))
+//       {
+//         // std::cout << "Line(" << line << ")\n";
 
-        int pos = line.find(":", 0);
-        double value = std::stod(line.substr(pos+1, line.length()));
-        std::string type = line.substr(0, pos);
+//         int pos = line.find(":", 0);
+//         double value = std::stod(line.substr(pos+1, line.length()));
+//         std::string type = line.substr(0, pos);
 
-        if (type == "object_angle_noize")
-        {
-          object_angle_noize = value;
-        }
-        else if (type == "object_distance_noize")
-        {
-          object_distance_noize = value;
-        }
-        else if (type == "observation_bonus")
-        {
-          observation_bonus = value;
-        }
-        else if (type == "step_loss")
-        {
-          step_loss = value;
-        }
-        else if (type == "constant_loc_noize")
-        {
-          constant_loc_noize = value;
-        }
-        else
-        {
-          std::cerr << "Incorrect type [" << type << "] in blurrer json. " << std::endl;
-        }
-      }
+//         if (type == "object_angle_noize")
+//         {
+//           object_angle_noize = value;
+//         }
+//         else if (type == "object_distance_noize")
+//         {
+//           object_distance_noize = value;
+//         }
+//         else if (type == "observation_bonus")
+//         {
+//           observation_bonus = value;
+//         }
+//         else if (type == "step_loss")
+//         {
+//           step_loss = value;
+//         }
+//         else if (type == "constant_loc_noize")
+//         {
+//           constant_loc_noize = value;
+//         }
+//         else
+//         {
+//           std::cerr << "Incorrect type [" << type << "] in blurrer json. " << std::endl;
+//         }
+//       }
 
 
-      inFile.close();
-    }
+//       inFile.close();
+//     }
 
-    void update_consistency(double value)
-    {
-      double tmp = consistency + value;
-      consistency = std::max(0.0, std::min(tmp, 1.0));
-    }
+//     void update_consistency(double value)
+//     {
+//       double tmp = consistency + value;
+//       consistency = std::max(0.0, std::min(tmp, 1.0));
+//     }
 
-    void step()
-    {
-      update_consistency(-step_loss);
-    }
+//     void step()
+//     {
+//       update_consistency(-step_loss);
+//     }
 
-    void observation()
-    {
-      update_consistency(observation_bonus);
-    }
+//     void observation()
+//     {
+//       update_consistency(observation_bonus);
+//     }
 
-    void reset()
-    {
-      consistency = 1;
-    }
+//     void reset()
+//     {
+//       consistency = 1;
+//     }
 
-    double blur_coord(double coord)
-    {
-      double position_coords_noize = 1 - consistency + constant_loc_noize;
-      return coord * (1 + (position_coords_noize - (float) std::rand() / RAND_MAX * position_coords_noize * 2));
-    }
+//     double blur_coord(double coord)
+//     {
+//       double position_coords_noize = 1 - consistency + constant_loc_noize;
+//       return coord * (1 + (position_coords_noize - (float) std::rand() / RAND_MAX * position_coords_noize * 2));
+//     }
 
-    double blur_angle(double angle)
-    {
-      return angle * (1 + (object_angle_noize - (float) std::rand() / RAND_MAX * object_angle_noize * 2));
-    }
+//     double blur_angle(double angle)
+//     {
+//       return angle * (1 + (object_angle_noize - (float) std::rand() / RAND_MAX * object_angle_noize * 2));
+//     }
 
-    double blur_distance(double distance)
-    {
-      return distance * (1 + (object_distance_noize - (float) std::rand() / RAND_MAX * object_distance_noize * 2));
-    }
-    double object_angle_noize;
-    double object_distance_noize;
-    double observation_bonus;
-    double step_loss;
-    double consistency = 1;
-    double constant_loc_noize;
-};
+//     double blur_distance(double distance)
+//     {
+//       return distance * (1 + (object_distance_noize - (float) std::rand() / RAND_MAX * object_distance_noize * 2));
+//     }
+//     double object_angle_noize;
+//     double object_distance_noize;
+//     double observation_bonus;
+//     double step_loss;
+//     double consistency = 1;
+//     double constant_loc_noize;
+// };
 
 class PlayerServer {
 public:
@@ -476,7 +476,7 @@ public:
       if (customData == "" && actuators_enabled == false) {
         resumeMotors();
         actuators_enabled = true;
-        blurrer.reset();
+        // blurrer.reset();
       } else if (customData == "penalized" && actuators_enabled) {
         // penalized robots gets only their actuators disabled so that they become asleep
         stopMotors();
@@ -826,7 +826,8 @@ public:
       }
       else if (sensorTimeStep.name() == "recognition")
       {
-        std::cout << "Recognition requested" << std::endl;
+        if (benchmark_level >= 1)
+          std::cout << "Recognition requested" << std::endl;
         recognition_requested = true;
         recognition_timestep = sensorTimeStep.timestep();
 
@@ -862,13 +863,21 @@ public:
       for (std::string protoName : protoNames)
       {
         const double *values;
-        values = robot->getFromDef(protoName)->getPosition();
-        GPSMeasurement* measurement = sensor_measurements.add_objects();
-        measurement->set_name(protoName);
-        Vector3 *vector3 = measurement->mutable_value();
-        vector3->set_x(values[0]);
-        vector3->set_y(values[1]);
-        vector3->set_z(0);
+        auto def = robot->getFromDef(protoName);
+        if (def)
+        {
+          values = def->getPosition();
+          GPSMeasurement* measurement = sensor_measurements.add_objects();
+          measurement->set_name(protoName);
+          Vector3 *vector3 = measurement->mutable_value();
+          vector3->set_x(values[0]);
+          vector3->set_y(values[1]);
+          vector3->set_z(0);
+        }
+        else if (benchmark_level >= 1)
+        {   
+            std::cout << "Warning: [" << protoName << "] is not presented in the world." << std::endl;
+        }
       }
     }
 
@@ -1058,9 +1067,9 @@ public:
         measurement->set_name(gps->getName());
         const double *values = gps->getValues();
         Vector3 *vector3 = measurement->mutable_value();
-        vector3->set_x(blurrer.blur_coord(values[0]));
-        vector3->set_y(blurrer.blur_coord(values[1]));
-        vector3->set_z(blurrer.consistency);
+        vector3->set_x(values[0]);
+        vector3->set_y(values[1]);
+        vector3->set_z(0);
 
         // std::cout << "Position sensors: " << values[0] << values[1] << values[3] << std::endl;
         continue;
@@ -1217,7 +1226,7 @@ public:
       std::cout << "\t\t" << active_sensor << " update time " << duration(sc::now() - sensor_start).count() << "ms"
                 << std::endl;
     }
-    blurrer.step();
+    // blurrer.step();
 
   }
 
@@ -1335,7 +1344,7 @@ private:
   /// The rendering bandwidth allowed for a team [MB/s] (per simulated second)
   static double team_rendering_quota;
 
-  Blurrer blurrer;
+  // Blurrer blurrer;
   bool recognition_requested = false;
   int recognition_timestep;
 
