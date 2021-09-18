@@ -27,7 +27,7 @@ class RobotClient():
         self.port = port
         self.max_attempts = max_attempts
         self.wait_time = wait_time
-        self.message_manager = MessageManager(self.logger)
+        self.message_manager = MessageManager(self.logger.)
         self.socket = None
         self.rx_buf = bytearray()
         self.rx_wait_for_data = False
@@ -42,7 +42,7 @@ class RobotClient():
         try:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         except socket.error as msg:
-            self.loggerwarning("Cannot create socket. \
+            self.logger.warning("Cannot create socket. \
                                  Caught exception socket.error %s\n", msg)
             return False
         attempt = 1
@@ -53,31 +53,31 @@ class RobotClient():
                 connected = True
                 break
             except socket.error as msg:
-                self.loggerwarning("Failed to connect to %s:%s %s \
+                self.logger.warning("Failed to connect to %s:%s %s \
                                 attempt  of %s.", self.host, self.port,
                                 attempt, self.max_attempts)
-                self.loggerwarning("Caught exception socket.error : %s", msg)
+                self.logger.warning("Caught exception socket.error : %s", msg)
                 time.sleep(self.wait_time)
 
         if not connected:
-            self.loggerwarning("Failed to connect after \
+            self.logger.warning("Failed to connect after \
                     %s attempts. Giving up on connection", attempt)
             self.disconnect_client()
             return False
 
         # Receiving the 'welcome message'
         welcome_message = self.socket.recv(8)
-        self.loggerinfo("Welcome message: ", welcome_message.decode("utf-8"))
+        self.logger.info("Welcome message: ", welcome_message.decode("utf-8"))
         if welcome_message != b'Welcome\x00':
-            self.loggerwarning("Incorrect welcom message")
+            self.logger.warning("Incorrect welcom message")
             if welcome_message == b'Refused\x00':
-                self.loggerwarning("Connection refused")
+                self.logger.warning("Connection refused")
             else:
-                self.loggerwarning("Received unknown answer from server: %s",
+                self.logger.warning("Received unknown answer from server: %s",
                                 welcome_message.decode("utf-8"))
             self.disconnect_client()
             return False
-        self.loggerinfo("Connected to ", self.host, self.port)
+        self.logger.info("Connected to ", self.host, self.port)
         return True
 
     @staticmethod
@@ -90,7 +90,7 @@ class RobotClient():
         """
         Сloses the client-side connection
         """
-        self.loggerinfo("Disconnect client")
+        self.logger.info("Disconnect client")
         self.socket.close()
 
     def send_request(self, message_type="default", positions={}):
@@ -103,11 +103,11 @@ class RobotClient():
             message = self.message_manager.build_request_positions(positions)
         elif message_type == "init":
             message = self.message_manager.build_initial_request()
-        self.loggerdebug("Sending byte message: %s", message)
+        self.logger.debug("Sending byte message: %s", message)
         try:
             self.socket.send(message)
         except socket.error as msg:
-            self.loggererror("Can't send request with error: %s", msg)
+            self.logger.error("Can't send request with error: %s", msg)
 
     def initial(self, sensor_name, sensor_time):
         self.message_manager.add_initial_request(sensor_name, sensor_time)
@@ -118,18 +118,18 @@ class RobotClient():
         """
         content_size = self.socket.recv(self.message_manager.get_size())
         buffer_size = self.message_manager.get_answer_size(content_size)
-        self.loggerdebug("Recrive %s bytes size", buffer_size)
+        self.logger.debug("Recrive %s bytes size", buffer_size)
         data = self.socket.recv(buffer_size)
-        self.loggerdebug("Receive %s bytes message", data)
+        self.logger.debug("Receive %s bytes message", data)
         return self.message_manager.parse_answer_message(data)
 
     def receive2(self):
         messages_list = []
         chunk = self.socket.recv(1024)
         self.rx_buf.extend(chunk)
-        self.loggerdebug("Receive %s chunk", chunk)
+        self.logger.debug("Receive %s chunk", chunk)
         header_size = self.message_manager.get_size()
-        self.loggerdebug("Receive %s header size", header_size)
+        self.logger.debug("Receive %s header size", header_size)
         while True:
             if self.rx_wait_for_data == False:
                 if len(self.rx_buf) >= header_size:
@@ -150,5 +150,5 @@ class RobotClient():
                 else:
                     # not enough data for message body
                     break
-        self.loggerdebug("Receive %s bytes message", messages_list)
+        self.logger.debug("Receive %s bytes message", messages_list)
         return messages_list
