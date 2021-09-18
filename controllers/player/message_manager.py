@@ -1,7 +1,6 @@
-"""[summary]
+"""
+Сlass operates with protobuff messages. used to create and parse messages.
 
-    Returns:
-        [type]: [description]
 """
 from google.protobuf import text_format
 
@@ -9,99 +8,123 @@ import messages_pb2
 
 
 class MessageManager():
-    """[summary]
-    """
-    def __init__(self, init_buffer_size=4):
-        self.size = init_buffer_size
+    def __init__(self, head_buffer_size=4):
+        """
+        Args:
+            head_buffer_size (int): Value of heder byte buffer. Defaults to 4.
+        """
+        self.size = head_buffer_size
         self.init_request = None
 
     def get_size(self):
-        """[summary]
+        """
         Returns:
-            [type]: [description]
+            int: Value of heder byte buffer.
         """
         return self.size
 
     @staticmethod
     def create_requests_message():
-        """[summary]
+        """Create Empty protobuf class instance for request message.
 
         Returns:
-            [type]: [description]
+            messages_pb2: Empty protobuf class instance.
         """
         return messages_pb2.ActuatorRequests()
 
     @staticmethod
     def create_answer_message():
-        """[summary]
+        """Create Empty protobuf class instance for answer message.
 
         Returns:
-            [type]: [description]
+            messages_pb2: Empty protobuf class instance.
         """
         return messages_pb2.SensorMeasurements()
 
-    def build_request_from_file(self, path):
-        """[summary]
+    @staticmethod
+    def build_request_from_file(path):
+        """Parsing data from message file to protobuf message instance.
 
         Args:
-            path ([type]): [description]
+            path (string): path to filename.txt with message.
 
         Returns:
-            [type]: [description]
+            messages_pb2: protobuf class instance of filled
+            message from file.
         """
         request = messages_pb2.ActuatorRequests()
-        with open(path, 'r') as actuator_requests:
+        with open(path, 'r',  encoding="utf-8") as actuator_requests:
             text_format.Parse(actuator_requests.read(), request)
         return request
 
     def build_request_positions(self, positions):
-        """[summary]
+        """Сreating an instance of the protobuff class
+        and fills it with the values ​​of the actuators
 
         Args:
-            positions ([type]): [description]
-
+            positions (dict): key - servo name and values ​​- position.
         Returns:
-            [type]: [description]
+            messages_pb2: protobuf class instance of filled
+            message with servos.
         """
-       
         request = messages_pb2.ActuatorRequests()
-        #for sen in positions[1]:
-        #    sensor = request.sensor_time_steps.add()
-        #    sensor.name = sen
-        #    sensor.timeStep = positions[1][sen]
         for pos in positions:
             motor = request.motor_positions.add()
             motor.name = pos
             motor.position = positions[pos]
         return self.generate_message(request)
 
-    def generate_message(self, message):
-        """[summary]
+    @staticmethod
+    def generate_message(message):
+        """Generate bytes string for sending message.
 
         Args:
-            message ([type]): [description]
+            message (messages_pb2): protobuf class instance of filled
+            message.
 
         Returns:
-            [type]: [description]
+            bytes: bytes string of message.
         """
-        return message.ByteSize().to_bytes(4, byteorder='big', signed=False)+message.SerializeToString()
+        return message.ByteSize().to_bytes(4, byteorder='big', signed=False) \
+            + message.SerializeToString()
 
     def message_from_file(self, path):
-        """[summary]
-
+        """
+        Function process the protobuff message. Measurement values
+        of sensors, messages from player.exe and webots.
+        Received messages are placed in the dictionary
         Args:
-            path ([type]): [description]
+            path ([string]): path to filename.txt with default message.
 
         Returns:
-            [type]: [description]
+            messages_pb2: protobuf class instance, with values ​​from file.
         """
         return self.generate_message(self.build_request_from_file(path))
 
-    def get_answer_size(self, content_size):
+    @staticmethod
+    def get_answer_size(content_size):
+        """
+        Сalculating message size from header bytes
+
+        Args:
+            content_size (bytes): Byte size of answer message.
+
+        Returns:
+            int: Size of answer message.
+        """
         size = int.from_bytes(content_size, byteorder='big', signed=False)
         return size
 
     def add_initial_request(self, sensor_name, sensor_time):
+        """Generate bytes string for sending message.
+
+        Args:
+            sensor_name (string): protobuf class instance of filled
+            message.
+
+        Returns:
+            bytes: bytes string of message.
+        """
         if self.init_request is None:
             self.init_request = messages_pb2.ActuatorRequests()
         sensor = self.init_request.sensor_time_steps.add()
@@ -109,10 +132,15 @@ class MessageManager():
         sensor.timeStep = sensor_time
 
     def build_initial_request(self):
+        """Generate bytes string for initialization message.
+
+        Returns:
+            bytes: bytes string of message.
+        """
         return self.generate_message(self.init_request)
 
     def parse_answer_message(self, data):
-        """[summary]
+        """Parsing answer message from byte array to dict with measurements
 
         Args:
             data ([type]): [description]
@@ -126,55 +154,117 @@ class MessageManager():
 
     @staticmethod
     def parse_message(message) -> dict:
-        """[summary]
-
+        """
+        Function process the protobuff message. Measurement values
+        of sensors, messages from player.exe and webots.
+        Received messages are placed in the dictionary
         Args:
-            message ([type]): [description]
+            message (messages_pb2): protobuf class instance
+            of new message with filled or unfilled.
 
         Returns:
             dict: dict with keys of names sensors
         """
         parse_message = {}
-        parse_message.update({"time": {"unix time": message.real_time, "sim time": message.time}})
-        #if message.time % 100 == 0:
-        #    print(f"message time={message.time}")
+        parse_message.update(
+            {
+                "time":
+                {
+                    "unix time": message.real_time,
+                    "sim time": message.time
+                }
+            })
         for sensor in message.accelerometers:
-            parse_message.update({sensor.name: {"position": [
-                sensor.value.X, sensor.value.Y, sensor.value.Z], "time": message.time}})
+            parse_message.update(
+                {
+                    sensor.name:
+                    {
+                        "position":
+                        [
+                            sensor.value.X,
+                            sensor.value.Y,
+                            sensor.value.Z
+                        ],
+                        "time": message.time
+                    }
+                })
         for sensor in message.cameras:
-            parse_message.update({sensor.name: {"width": sensor.width, "height": sensor.height,
-                                                "quality": sensor.quality, "image": sensor.image, 
-                                                "time": message.time}})
+            parse_message.update(
+                {
+                    sensor.name:
+                        {
+                            "width": sensor.width,
+                            "height": sensor.height,
+                            "quality": sensor.quality,
+                            "image": sensor.image,
+                            "time": message.time
+                        }
+                })
         for sensor in message.position_sensors:
             parse_message.update(
-                {sensor.name: {"position": sensor.value, "time": message.time}})
+                {
+                    sensor.name:
+                    {
+                        "position": sensor.value,
+                        "time": message.time
+                    }
+                })
         for sensor in message.gyros:
-            parse_message.update({sensor.name: {"position": [
-                                 sensor.value.X, sensor.value.Y, sensor.value.Z], "time": message.time}})
+            parse_message.update(
+                {
+                    sensor.name:
+                    {
+                        "position":
+                        [
+                            sensor.value.X,
+                            sensor.value.Y,
+                            sensor.value.Z
+                        ],
+                        "time": message.time
+                    }
+                })
         for sensor in message.gps:
             parse_message.update(
-                {sensor.name: {"position": [sensor.value.X, sensor.value.Y], "time": message.time}})
+                {
+                    sensor.name:
+                    {
+                        "position": [sensor.value.X, sensor.value.Y],
+                        "time": message.time
+                    }
+                })
         if hasattr(message, "objects"):
             for sensor in message.objects:
                 parse_message.update(
                     {
-                        sensor.name: 
+                        sensor.name:
                             {
                                 "position": [sensor.value.X, sensor.value.Y],
                                 "time": message.time
                             }
                     })
-                # if sensor.name == "BALL":
-                #     parse_message.update(
-                #         {sensor.name: {"position": [sensor.course, sensor.distance], "time": message.time}})
-                # else:
-                #     parse_message.update(
-                #     {sensor.name: {"position": [sensor.course, sensor.distance], "time": message.time}})
         for sensor in message.imu:
             parse_message.update(
-                {sensor.name: {"position": [sensor.angles.roll, sensor.angles.pitch,
-                sensor.angles.yaw], "time": message.time}})
+                {
+                    sensor.name:
+                    {
+                        "position":
+                        [
+                            sensor.angles.roll,
+                            sensor.angles.pitch,
+                            sensor.angles.yaw
+                        ],
+                        "time":
+                            message.time
+                    }
+                })
         for sensor in message.messages:
             parse_message.update(
-                {sensor.name: {"message_type": sensor.message_type, "text": sensor.text, "time": message.time}})
+                {
+                    sensor.name:
+                    {
+                        "message_type": sensor.message_type,
+                        "text": sensor.text,
+                        "time": message.time
+                    }
+                })
         return parse_message
