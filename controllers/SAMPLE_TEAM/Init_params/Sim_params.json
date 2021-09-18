@@ -27,5 +27,5 @@
 	"USE_SINGLE_POST_MEASUREMENT": true,
 	"IMU_DRIFT_SPEED_IN_DEGREES_PER_SECOND": 0.0,
 	"Vision_Sensor_Display_On": false,
-	"ObstacleAvoidanceIsOn":  false
+	"ObstacleAvoidanceIsOn":  true
 }

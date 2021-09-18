@@ -102,7 +102,8 @@ def main_procedure():
     global logger
     Port = sys.argv[1]
     logger.info('port = %s', Port)
-    robot = CommunicationManager(1, '127.0.0.1', int(Port), log, team_color=sys.argv[3].upper(), player_number = int(sys.argv[4]), time_step = 25)
+    logarg =  log.get_logger('communication_manager')
+    robot = CommunicationManager(1, '127.0.0.1', int(Port), logarg, team_color=sys.argv[3].upper(), player_number = int(sys.argv[4]), time_step = 25)
 
     falling = Falling()
 

@@ -212,19 +212,19 @@ class Motion_sim(Motion_real):
         else: return False
 
     def sim_Get_Obstacles(self):
-        obstacle1 = self.robot.get_teammates()
+        obstacle1 = self.robot.get_mates()
         #print('obstacle1:', obstacle1)
         try:
-            obstacle1 = obstacle1['position']
+            obstacle1 = list(obstacle1['position'])
         except Exception:
             obstacle1 = []
         opponets = self.robot.get_opponents()
         try:
-            obstacle2 = opponets[0]['position']
+            obstacle2 = list(opponets[0]['position'])
         except Exception:
             obstacle2 = []
         try:
-            obstacle3 = opponets[1]['position']
+            obstacle3 = list(opponets[1]['position'])
         except Exception:
             obstacle3 = []
         if obstacle1: 

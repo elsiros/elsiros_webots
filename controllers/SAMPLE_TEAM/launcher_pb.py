@@ -200,8 +200,8 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
                         playing_allowed = True
                         logger.info('playing allowed')
             if playing_allowed:
-                logger.info ('current_game_state =' + current_game_state + ' current_player_penalty =' + current_player_penalty)
-                logger.info ('former_game_state ='+ former_game_state + ' former_player_penalty =' + former_player_penalty)
+                logger.info ('current_game_state =' + str(current_game_state) + ' current_player_penalty =' + str(current_player_penalty))
+                logger.info ('former_game_state ='+ str(former_game_state) + ' former_player_penalty =' + str(former_player_penalty))
                 glob = Glob(SIMULATION, current_work_directory)
                 glob.pf_coord = initial_coord
                 motion = Motion_sim(glob, robot, receiver, pause)
