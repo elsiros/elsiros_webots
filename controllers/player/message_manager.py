@@ -132,10 +132,15 @@ class MessageManager():
         sensor.timeStep = sensor_time
 
     def build_initial_request(self):
+        """Generate bytes string for default message.
+
+        Returns:
+            bytes: bytes string of message.
+        """
         return self.generate_message(self.init_request)
 
     def parse_answer_message(self, data):
-        """[summary]
+        """Parsing answer message from byte array to 
 
         Args:
             data ([type]): [description]
