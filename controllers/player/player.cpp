@@ -862,13 +862,21 @@ public:
       for (std::string protoName : protoNames)
       {
         const double *values;
-        values = robot->getFromDef(protoName)->getPosition();
-        GPSMeasurement* measurement = sensor_measurements.add_objects();
-        measurement->set_name(protoName);
-        Vector3 *vector3 = measurement->mutable_value();
-        vector3->set_x(values[0]);
-        vector3->set_y(values[1]);
-        vector3->set_z(0);
+        auto def = robot->getFromDef(protoName);
+        if (def)
+        {
+          values = def->getPosition();
+          GPSMeasurement* measurement = sensor_measurements.add_objects();
+          measurement->set_name(protoName);
+          Vector3 *vector3 = measurement->mutable_value();
+          vector3->set_x(values[0]);
+          vector3->set_y(values[1]);
+          vector3->set_z(0);
+        }
+        else if (benchmark_level >= 1)
+        {   
+            std::cout << "Warning: [" << protoName << "] is not presented in the world." << std::endl;
+        }
       }
     }
 
