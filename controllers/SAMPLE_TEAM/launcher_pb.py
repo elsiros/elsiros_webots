@@ -204,15 +204,15 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
                 logger.info ('former_game_state ='+ str(former_game_state) + ' former_player_penalty =' + str(former_player_penalty))
                 glob = Glob(SIMULATION, current_work_directory)
                 glob.pf_coord = initial_coord
-                motion = Motion_sim(glob, robot, receiver, pause)
+                motion = Motion_sim(glob, robot, receiver, pause, logger)
                 motion.sim_Start()
                 motion.direction_To_Attack = -initial_coord[2]
                 motion.activation()
-                local = Local(motion, glob, coord_odometry = initial_coord)
+                local = Local(logger, motion, glob, coord_odometry = initial_coord)
                 motion.local = local
                 local.coordinate_record()
                 motion.falling_Flag = 0
-                player = Player(role, second_pressed_button, glob, motion, local)
+                player = Player(logger, role, second_pressed_button, glob, motion, local)
                 player.play_game()
                 playing_allowed = False
             former_game_state = receiver.state.game_state

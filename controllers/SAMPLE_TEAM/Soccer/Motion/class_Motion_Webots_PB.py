@@ -12,7 +12,8 @@ from .class_Motion_real import Motion_real
 from .compute_Alpha_v3 import Alpha
 
 class Motion_sim(Motion_real):
-    def __init__(self, glob, robot, gcreceiver, pause):
+    def __init__(self, glob, robot, gcreceiver, pause, logger):
+        self.logger = logger
         self.pause = pause
         self.FRAMELENGTH = 0.02
         import random as random
@@ -90,7 +91,7 @@ class Motion_sim(Motion_real):
                 break
 
     def imu_activation(self):
-        print("imu_activation")
+        self.logger.info("imu_activation")
         while True:
             body_euler = self.robot.get_imu_body()
             if body_euler: 
@@ -112,7 +113,7 @@ class Motion_sim(Motion_real):
         #timer1 = time.perf_counter()
         body_euler = self.robot.get_imu_body()['position']
         self.body_euler_angle = {'roll': body_euler[0], 'pitch': body_euler[1], 'yaw': body_euler[2]}
-        print('imu_body: ', self.body_euler_angle)
+        self.logger.debug('imu_body: '+ str(self.body_euler_angle))
         return body_euler[2]
 
     def falling_Test(self):
@@ -121,6 +122,7 @@ class Motion_sim(Motion_real):
                 if self.gcreceiver.state.game_state != 'STATE_PLAYING' or self.gcreceiver.player_state.penalty != 0:
                     self.falling_Flag = 3
                     self.simulateMotion(name = 'Initial_Pose')
+                    self.logger.info('STOP!')
                     return self.falling_Flag
         if (self.body_euler_angle['pitch']) > 0.785:
             self.falling_Flag = 1                   # on stomach
@@ -134,6 +136,7 @@ class Motion_sim(Motion_real):
         if -135< (self.body_euler_angle['roll']) < -0.785:
             self.falling_Flag = 2                   # on left side
             self.simulateMotion(name = 'Get_Up_Left')
+        if self.falling_Flag != 0: self.logger.info('FALLING!!!'+ str(self.falling_Flag))
         return self.falling_Flag
 
     def send_angles_to_servos(self, angles, use_step_correction = False):
@@ -176,7 +179,7 @@ class Motion_sim(Motion_real):
         #   (35,'Get_Up_Right'), (36,'PenaltyDefenceR'), (37,'PenaltyDefenceL')]
         # start the simulation
         if number > 0 and name == '': name = self.MOTION_SLOT_DICT[number]
-        print('simulate motion slot:', name)
+        self.logger.info('simulate motion slot:'+ str(name))
         self.chain_step_number = 0
         self.initial_time_for_chain = self.robot.current_time
         with open(self.glob.current_work_directory /"Soccer" / "Motion" / "motion_slots" / (name + ".json"), "r") as f:
@@ -206,14 +209,13 @@ class Motion_sim(Motion_real):
 
     def sim_Get_Ball_Position(self):
         ball_position = self.robot.get_ball()
-        print('ball_position', ball_position)
+        self.logger.debug('ball_position'+ str(ball_position))
         if ball_position:
             return ball_position["position"]
         else: return False
 
     def sim_Get_Obstacles(self):
         obstacle1 = self.robot.get_mates()
-        #print('obstacle1:', obstacle1)
         try:
             obstacle1 = list(obstacle1['position'])
         except Exception:
@@ -227,15 +229,19 @@ class Motion_sim(Motion_real):
             obstacle3 = list(opponets[1]['position'])
         except Exception:
             obstacle3 = []
-        if obstacle1: 
-            obstacle1.append(0.2)
-            self.glob.obstacles.append(obstacle1)
+        self.logger.debug('measurements: obstacle1:'+ str(obstacle1) + ' obstacle2:'+ str(obstacle2) + ' obstacle3:'+ str(obstacle3))
+        if obstacle1:
+            x = obstacle1[1]* math.cos(obstacle1[0])
+            y = obstacle1[1]* math.sin(obstacle1[0])
+            self.glob.obstacles.append([x, y, 0.2])
         if obstacle2: 
-            obstacle2.append(0.2)
-            self.glob.obstacles.append(obstacle2)
+            x = obstacle2[1]* math.cos(obstacle2[0])
+            y = obstacle2[1]* math.sin(obstacle2[0])
+            self.glob.obstacles.append([x, y, 0.2])
         if obstacle3: 
-            obstacle3.append(0.2)
-            self.glob.obstacles.append(obstacle3)
+            x = obstacle3[1]* math.cos(obstacle3[0])
+            y = obstacle3[1]* math.sin(obstacle3[0])
+            self.glob.obstacles.append([x, y, 0.2])
         return
 
     def sim_Get_Robot_Position(self):
@@ -244,7 +250,7 @@ class Motion_sim(Motion_real):
         x, y  = Position['position']
         #self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.get_sensor("imu_body")['position']
         self.body_euler_angle['roll'], self.body_euler_angle['pitch'], self.body_euler_angle['yaw'] = self.robot.get_imu_body()['position']
-        print('Position: ', Position, 'yaw :', self.body_euler_angle['yaw'])
+        self.logger.debug('Position: '+ str(Position) + ' yaw :' + str(self.body_euler_angle['yaw']))
         self.body_euler_angle['yaw'] -= self.direction_To_Attack
         return x, y, self.body_euler_angle['yaw']
 

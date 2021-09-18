@@ -61,25 +61,26 @@ with open('../referee/' + game_data['blue']['config'], "r") as f:
 class Log:
     def __init__(self, filename):
         self.filename = filename
-        self.log_format = f"%(asctime)s - [%(levelname)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s"
+        self.log_format_file = f"%(asctime)s - [%(levelname)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s"
+        self.log_format_console = f"%(message)s"
         self.file_level = logging.DEBUG
         self.stream_level = logging.INFO
 
     def get_file_handler(self):
         file_handler = logging.FileHandler(self.filename)
         file_handler.setLevel(self.file_level)
-        file_handler.setFormatter(logging.Formatter(self.log_format))
+        file_handler.setFormatter(logging.Formatter(self.log_format_file))
         return file_handler
 
     def get_stream_handler(self):
         stream_handler = logging.StreamHandler(sys.stdout)
         stream_handler.setLevel(self.stream_level)
-        stream_handler.setFormatter(logging.Formatter(self.log_format))
+        stream_handler.setFormatter(logging.Formatter(self.log_format_console))
         return stream_handler
 
     def get_logger(self, name):
         logger = logging.getLogger(name)
-        logger.setLevel(logging.INFO)
+        logger.setLevel(logging.DEBUG)
         logger.addHandler(self.get_file_handler())
         logger.addHandler(self.get_stream_handler())
         return logger
@@ -121,7 +122,7 @@ def main_procedure():
     logger.info('Player is going to play without Game Controller')
     glob = Glob(SIMULATION, current_work_directory)
     glob.pf_coord = initial_coord
-    motion = Motion_sim(glob, robot, None, pause)
+    motion = Motion_sim(glob, robot, None, pause, logger)
     motion.sim_Start()
     motion.direction_To_Attack = -initial_coord[2]
     time.sleep(1)
