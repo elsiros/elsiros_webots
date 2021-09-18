@@ -65,26 +65,11 @@ class Model():
         return yaw
 
     def get_distance_course(self, x, y, robot_gps, robot_imu):
-        # robot_gps = self.robot.get_sensor("gps_body")
-        # if not robot_gps:
-        #     return []
-
         robot_pos = robot_gps["position"]
         distance = self.dist(robot_pos, (x, y))
-
-        # robot_imu = self.robot.get_sensor("imu_body")
-
-        # if not robot_imu:
-        #     return []
-
         robot_orientation = robot_imu["position"]
-
         angle = -math.atan2(robot_pos[1] - y, -(robot_pos[0] - x)) - robot_orientation[2]
         angle = self.norm_yaw(angle)
-        # if (x < robot_pos[0]):
-        #     angle = math.pi - angle
-        # angle = angle * (robot_pos[1] - y)/abs(robot_pos[1] - y) - robot_orientation[2]
-
         return (distance, angle)
 
     def proccess_data(self, x, y, robot_gps, robot_imu):

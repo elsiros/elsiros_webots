@@ -23,8 +23,8 @@ class CommunicationManager():
         self.last_message = {}
         self.last_head_yaw = 0
         self.last_head_pitch = 0
-        self.blurrer = Blurrer()
-        self.model = Model(self, self.blurrer)
+        self.__blurrer = Blurrer()
+        self.__model = Model(self, self.__blurrer)
         self.current_time = 0
         self.sensor_time_step = time_step * 4
 
@@ -83,30 +83,25 @@ class CommunicationManager():
         self.time_sleep(0.5)
         res = self.__get_sensor("gps_body").copy()
         pos = res["position"]
-        res["position"] = self.blurrer.loc(pos[0], pos[1])
+        res["position"] = self.__blurrer.loc(pos[0], pos[1])
         return res
 
     def get_ball(self):
         self.time_sleep(0.1)
         ball = self.__get_sensor("BALL").copy()
-        print("Abs ball: ", ball)
-        if ball:
+        imu_body = self.__get_sensor("imu_body")
+        gps_body = self.__get_sensor("gps_body")
+        if ball and imu_body and gps_body:
             ball_pos = ball["position"]
-            if not ball_pos:
-                return []
-            imu_body = self.__get_sensor("imu_body")
-            gps_body = self.__get_sensor("gps_body")
-            if not imu_body or not gps_body:
+            if ball_pos:
                 return {}
-            # print("GPS body: ", gps_body, " imu: ", imu_body)
-            updated_ball_pos = self.model.proccess_data(ball_pos[0], ball_pos[1], gps_body, imu_body)
+            updated_ball_pos = self.__model.proccess_data(ball_pos[0], ball_pos[1], gps_body, imu_body)
             if not updated_ball_pos:
                 return {}
-            blurred_pos = self.blurrer.objects(course=updated_ball_pos[0], distance=updated_ball_pos[1])
+            blurred_pos = self.__blurrer.objects(course=updated_ball_pos[0], distance=updated_ball_pos[1])
             ball["position"] = blurred_pos
             return ball
-        else:
-            return {}
+        return {}
 
     def get_opponents(self):
         self.time_sleep(0.1)

@@ -10,19 +10,12 @@ for port in ports:
     print(f"Port: {port}")
     manager = CommunicationManager(1, '127.0.0.1', port)
     managers.append(manager)
-    print("aAAAAAAAAAAAA")
-    # manager.__get_sensor("BALL")
 
-
-print("AAAAAASA")
 while True:
-    print("ADAD")
     for port, manager in zip(ports, managers):
         print(f"[PORT: {port}] Ball pos: {manager.get_ball()}")
         print(f"[PORT: {port}] Localisation: {manager.get_localization()}")
         print(f"[PORT: {port}] Ball pos: {manager.get_opponents()}")
- 
-
 
 for manager in managers:
     manager.thread.join()
