@@ -89,7 +89,7 @@ class Model():
 
         self.blurrer.observation()
         if self.check_object_in_frame(distance, angle):
-            return [angle, distance]
+            return self.blurrer.objects(course=angle, distance=distance)
         else:
             # print("WARNING: Ball is not in the frame")
             return []

@@ -16,6 +16,7 @@ while True:
         print(f"[PORT: {port}] Ball pos: {manager.get_ball()}")
         print(f"[PORT: {port}] Localisation: {manager.get_localization()}")
         print(f"[PORT: {port}] Opponents pos: {manager.get_opponents()}")
+        print(f"[PORT: {port}] Mates pos: {manager.get_mates()}")
 
 for manager in managers:
     manager.thread.join()

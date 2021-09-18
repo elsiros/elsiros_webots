@@ -68,7 +68,7 @@ class CommunicationManager():
             self.__sensors[sensor] = message[sensor]
 
     def time_sleep(self, t=0) -> None:
-        print(f"Emulating delay of {t*1000} ms")
+        # print(f"Emulating delay of {t*1000} ms")
         start_time = self.current_time
         while (self.current_time - start_time < t * 1000):
             time.sleep(0.001)
@@ -86,34 +86,38 @@ class CommunicationManager():
         res["position"] = self.__blurrer.loc(pos[0], pos[1])
         return res
 
-    def get_ball(self):
-        self.time_sleep(0.1)
-        ball = self.__get_sensor("BALL").copy()
+    def __procces_object(self, name):
+        blur_object = {}
         imu_body = self.__get_sensor("imu_body")
         gps_body = self.__get_sensor("gps_body")
         last_message = self.__last_message
-        if ball and imu_body and gps_body and last_message:
-            ball_pos = ball["position"]
-            if not ball_pos:
-                return {}
-            self._model.update_robot_state(gps_body, imu_body, last_message, self.last_head_pitch, self.last_head_yaw)
-            updated_ball_pos = self.__model.proccess_data(ball_pos[0], ball_pos[1])
-            if not updated_ball_pos:
-                return {}
-            blurred_pos = self.__blurrer.objects(course=updated_ball_pos[0], distance=updated_ball_pos[1])
-            ball["position"] = blurred_pos
-            return ball
-        return {}
+        real_object = self.__get_sensor(name).copy()
+        if real_object and imu_body and gps_body:
+            position = real_object["position"]
+            if position:
+                self.__model.update_robot_state(gps_body, imu_body, last_message, self.last_head_pitch, self.last_head_yaw)
+                proccessed_object_pos = self.__model.proccess_data(position[0], position[1])
+                real_object["position"] = proccessed_object_pos
+                blur_object = real_object
+        return blur_object
+
+    def get_ball(self):
+        self.time_sleep(0.1)
+        return self.__procces_object("BALL")
 
     def get_opponents(self):
         self.time_sleep(0.1)
+        players = (1,2)
         color = "BLUE" if self.robot_color == "RED" else "RED"
-        return [self.__get_sensor(color+"_PLAYER_1"), self.__get_sensor(color+"_PLAYER_2")]
+        opponents = []
+        for number in players:
+            opponents.append(self.__procces_object(f"{color}_PLAYER_{number}"))
+        return opponents        
 
-    def get_teammates(self):
+    def get_mates(self):
         self.time_sleep(0.1)
-        number = 1 if self.robot_number == 2 else 1
-        return self.__get_sensor(f"{self.robot_color}_PLAYER_+{number}")
+        number = 1 if self.robot_number == 2 else 2
+        return self.__procces_object(f"{self.robot_color}_PLAYER_{number}")
 
     def get_time(self):
         return self.__get_sensor("time")
