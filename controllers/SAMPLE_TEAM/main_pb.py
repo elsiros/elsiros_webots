@@ -29,6 +29,7 @@ import json
 import time
 import wx
 import threading
+import logging
 from pathlib import Path
 
 current_work_directory = Path.cwd()

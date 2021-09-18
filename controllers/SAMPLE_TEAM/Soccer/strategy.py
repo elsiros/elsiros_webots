@@ -8,6 +8,7 @@ import os
 import math
 import json
 import time
+import logging
 from . import utility
 
 
@@ -817,8 +818,8 @@ class Player():
                     self.motion.play_Soft_Motion_Slot( name = 'Dance_4')
                     self.motion.kondo.setUserParameter(10,0)
         else:
-            for i in range(10):
-                self.motion.play_Soft_Motion_Slot( name = 'Dance_6_1')
+            #for i in range(10):
+            #    self.motion.play_Soft_Motion_Slot( name = 'Dance_6_1')
             self.motion.play_Soft_Motion_Slot( name = 'Dance_7')
             self.motion.play_Soft_Motion_Slot( name = 'Dance_2')
             self.motion.play_Soft_Motion_Slot( name = 'Dance_4')

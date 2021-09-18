@@ -5,15 +5,9 @@ of MIPT under mentorship of A. Babaev.
 This module is assisting localization
 
 """
-
-
-
 import sys, os
 import math, time, json, array
-
-LOCALISATION_VISUALISATION_IS_ON = False
-OBSTACLE_VISUALISATION_IS_ON = False
-
+import logging
 
 class Local():
     def __init__ (self, motion, glob, coord_odometry = [0.0,0.0,0.0]):
@@ -23,8 +17,8 @@ class Local():
         self.timer0 = time.perf_counter()
         if abs(motion.direction_To_Attack) < 1: self.side_factor = 1
         else: self.side_factor = -1
-        from .class_Visualisation import Visualisation
-        self.visualisation = Visualisation()
+        #from .class_Visualisation import Visualisation
+        #self.visualisation = Visualisation()
         self.robot_moved = False
 
     def coordinate_fall_reset(self):
@@ -94,24 +88,6 @@ class Local():
         print('obstacles(processed): ', self.glob.obstacles)
 
     def read_Localization_marks(self):
-        #self.quality = 0
-        #post_list1 = self.detect_Post_In_image(img, "blue posts")
-        #for post in post_list1:
-        #    self.post_data_in_pose[self.post_data_in_pose_number][0] = int(post[0] * 2000)
-        #    self.post_data_in_pose[self.post_data_in_pose_number][1] = int(post[1] * 2000)
-        #    self.post_data_in_pose_number += 1
-        ##if len(post_list1) != 0:
-        ##    self.post_data_in_pose.extend(post_list1)
-        #post_list2 = self.detect_Post_In_image(img, "yellow posts")
-        #for post in post_list2:
-        #    self.post_data_in_pose[self.post_data_in_pose_number][0] = int(post[0] * 2000)
-        #    self.post_data_in_pose[self.post_data_in_pose_number][1] = int(post[1] * 2000)
-        #    self.post_data_in_pose_number += 1
-        ##if len(post_list2) != 0:
-        ##    self.post_data_in_pose.extend(post_list2)
-        #if self.USE_LANDMARKS_FOR_LOCALISATION == True:
-        #    if self.USE_PENALTY_MARKS_FOR_LOCALISATION ==True: self.detect_penalty_marks(img)
-        #    if self.USE_LINES_FOR_LOCALISATION == True : self.detect_line_in_image(img)
         if self.robot_moved == True:
             self.robot_moved = False
             self.glob.obstacles.clear()

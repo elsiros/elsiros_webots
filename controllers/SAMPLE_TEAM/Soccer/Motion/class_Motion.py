@@ -8,6 +8,7 @@ This module contains walking engine
 import sys, os
 import math, time, json
 import starkit
+import logging
 
 #from ball_Approach_Steps_Seq import *
 from .compute_Alpha_v3 import Alpha

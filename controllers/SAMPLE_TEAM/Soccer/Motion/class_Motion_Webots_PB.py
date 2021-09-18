@@ -5,9 +5,8 @@ The module is designed to provide communication from motion controller to simula
 """
 import sys, os
 import math, time, json
-
+import logging
 import random
-
 from .class_Motion import *
 from .class_Motion_real import Motion_real
 from .compute_Alpha_v3 import Alpha
@@ -163,7 +162,7 @@ class Motion_sim(Motion_real):
         tilt_value = tilt * self.TIK2RAD + self.trims[22]
         servo_data = {pan_key: pan_value, tilt_key: tilt_value}
         self.robot.send_servos(servo_data)
-        for i in range(16):
+        for i in range(1):
             self.sim_Trigger(self.timestep)
 
     def simulateMotion(self, number = 0, name = ''):
@@ -177,6 +176,9 @@ class Motion_sim(Motion_real):
         #   (35,'Get_Up_Right'), (36,'PenaltyDefenceR'), (37,'PenaltyDefenceL')]
         # start the simulation
         if number > 0 and name == '': name = self.MOTION_SLOT_DICT[number]
+        print('simulate motion slot:', name)
+        self.chain_step_number = 0
+        self.initial_time_for_chain = self.robot.current_time
         with open(self.glob.current_work_directory /"Soccer" / "Motion" / "motion_slots" / (name + ".json"), "r") as f:
             slots = json.loads(f.read())
         mot_list = slots[name]
