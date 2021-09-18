@@ -10,8 +10,8 @@ import logging
 
 class CommunicationManager():
     def __init__(self, maxsize=1, host='127.0.0.1', port=10001, logger = logging, team_color="RED", player_number=1, time_step=15):
-        verbosity = 4
-        self.__client = RobotClient(host, port, verbosity)
+        self.logger = logger
+        self.__client = RobotClient(host, port, self.logger)
         self.__client.connect_client()
         self.maxsize = maxsize
         self.__sensors = {}
@@ -27,7 +27,6 @@ class CommunicationManager():
         self.__model = Model(self.__blurrer)
         self.current_time = 0
         self.sensor_time_step = time_step * 4
-        self.logger = logger
         sensors = {"imu_body": self.time_step, "recognition": self.sensor_time_step, "gps_body": self.sensor_time_step}
         self.enable_sensors(sensors)
         self.thread = Thread(target=self.run)
