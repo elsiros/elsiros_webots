@@ -29,7 +29,7 @@ def init_gcreceiver(team, player, is_goalkeeper):
     receiver.start() # Strat receiving and answering
     return receiver
 
-def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION, current_work_directory, robot, pause):
+def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION, current_work_directory, robot, pause, logger):
     """
     The function is called player_super_cycle because during game player can change several roles. Each role
     appointed to player put it into cycle connected to playing it's role. Cycles of roles are defined in strategy.py
@@ -74,7 +74,7 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
     robot.receiver = receiver
     former_game_state = 'STATE_SET'
     former_player_penalty = 0
-    print('waiting for game controller launch')
+    logger.info('waiting for game controller launch')
     playing_allowed = False
     current_secondary_state = None
     while True:                                 # this is main cycle of supercycle
@@ -87,7 +87,7 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
             if receiver.team_state == None:
                 if seconds == 0:
                     message = '\n Game Controller is not launched. Waiting..'
-                    print(message, end = '')
+                    logger.info(message)
                 else:
                     print('.', end = '')
                 seconds += 1
@@ -101,7 +101,7 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
                     former_game_state = 'STATE_INITIAL'
                     if seconds == 0:
                         message = '\n Game Controller STATE_INITIAL. Waiting for READY..'
-                        print(message, end = '')
+                        logger.info(message)
                     else:
                         print('.', end = '')
                     seconds += 1
@@ -116,7 +116,7 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
                     former_game_state = 'STATE_READY'
                     if seconds == 0:
                         message = '\n Game Controller STATE_READY. Waiting for SET..'
-                        print(message, end = '')
+                        logger.info(message)
                     else:
                         print('.', end = '')
                     seconds += 1
@@ -131,7 +131,7 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
                     former_game_state = 'STATE_SET'
                     if seconds == 0:
                         message = '\n Game Controller STATE_SET. Waiting for PLAYING..'
-                        print(message, end = '')
+                        logger.info(message)
                     else:
                         print('.', end = '')
                     seconds += 1
@@ -145,11 +145,11 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
             current_player_penalty = receiver.player_state.penalty
             if current_game_state == 'STATE_PLAYING' and current_secondary_state != 'STATE_PENALTYSHOOT' and current_player_penalty== 0:
                 second_pressed_button = 1
-                print('start playing')
+                logger.info('start playing')
                 if former_game_state == 'STATE_SET':
                     if receiver.state.kick_of_team != receiver.team_state.team_number:
                         second_pressed_button = 4
-                    print('former_game_state == "STATE_SET"')
+                    logger.info('former_game_state == "STATE_SET"')
                     if player_number == 1:
                         initial_coord = initial_coord_goalkeeper
                         if receiver.team_state.team_color == 'BLUE':
@@ -157,7 +157,7 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
                         else:
                             role = 'goalkeeper'
                         playing_allowed = True
-                        print('playing allowed')
+                        logger.info('playing allowed')
                     else: 
                         initial_coord = initial_coord_forward
                         if receiver.team_state.team_color == 'BLUE':
@@ -165,7 +165,7 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
                         else:
                             role = 'forward'
                         playing_allowed = True
-                        print('playing allowed')
+                        logger.info('playing allowed')
                 if former_player_penalty !=0:
                     statement1 = 2* (player_number == 1) - 1
                     statement2 = 2* (receiver.state.first_half) - 1
@@ -177,12 +177,12 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
                         initial_coord = [-0.9, -1.3, math.pi/2]
                     playing_allowed = True
                     second_pressed_button = 1
-                    print('playing allowed')
+                    logger.info('playing allowed')
             elif current_game_state == 'STATE_PLAYING' and current_secondary_state == 'STATE_PENALTYSHOOT' and current_player_penalty== 0:
                 second_pressed_button = 1
                 #print('start playing')
                 if former_game_state == 'STATE_SET':
-                    print('former_game_state == "STATE_SET"')
+                    logger.info('former_game_state == "STATE_SET"')
                     if player_number == 1:
                         initial_coord = initial_coord_goalkeeper_at_penalty
                         #if receiver.team_state.team_color == 'BLUE':
@@ -190,7 +190,7 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
                         #else:
                         role = 'penalty_Goalkeeper'
                         playing_allowed = True
-                        print('playing allowed')
+                        logger.info('playing allowed')
                     else: 
                         initial_coord = initial_coord_forward_at_penalty
                         #if receiver.team_state.team_color == 'BLUE':
@@ -198,10 +198,10 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
                         #else:
                         role = 'penalty_Shooter'
                         playing_allowed = True
-                        print('playing allowed')
+                        logger.info('playing allowed')
             if playing_allowed:
-                print ('current_game_state =', current_game_state, 'current_player_penalty =', current_player_penalty)
-                print ('former_game_state =', former_game_state, 'former_player_penalty =', former_player_penalty)
+                logger.info ('current_game_state =' + current_game_state + ' current_player_penalty =' + current_player_penalty)
+                logger.info ('former_game_state ='+ former_game_state + ' former_player_penalty =' + former_player_penalty)
                 glob = Glob(SIMULATION, current_work_directory)
                 glob.pf_coord = initial_coord
                 motion = Motion_sim(glob, robot, receiver, pause)
