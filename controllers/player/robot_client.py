@@ -90,6 +90,7 @@ class RobotClient():
         """
         Сloses the client-side connection
         """
+        logging.info("Disconnect client")
         self.socket.close()
 
     def send_request(self, message_type="default", positions={}):
@@ -102,6 +103,7 @@ class RobotClient():
             message = self.message_manager.build_request_positions(positions)
         elif message_type == "init":
             message = self.message_manager.build_initial_request()
+        logging.debug("Sending byte message: %s", message)
         try:
             self.socket.send(message)
         except socket.error as msg:
@@ -116,15 +118,18 @@ class RobotClient():
         """
         content_size = self.socket.recv(self.message_manager.get_size())
         buffer_size = self.message_manager.get_answer_size(content_size)
+        logging.debug("Recrive %s bytes size", buffer_size)
         data = self.socket.recv(buffer_size)
+        logging.debug("Receive %s bytes message", data)
         return self.message_manager.parse_answer_message(data)
 
     def receive2(self):
         messages_list = []
         chunk = self.socket.recv(1024)
         self.rx_buf.extend(chunk)
-        # print(chunk)
+        logging.debug("Receive %s chunk", chunk)
         header_size = self.message_manager.get_size()
+        logging.debug("Receive %s header size", header_size)
         while True:
             if self.rx_wait_for_data == False:
                 if len(self.rx_buf) >= header_size:
@@ -132,7 +137,7 @@ class RobotClient():
                     header = self.rx_buf[:header_size]
                     self.rx_buf = self.rx_buf[header_size:]
                     self.rx_expected_data_size = self.message_manager.get_answer_size(header)
-                else: 
+                else:
                     # not enough data even for header
                     break
             if self.rx_wait_for_data == True:
@@ -145,4 +150,5 @@ class RobotClient():
                 else:
                     # not enough data for message body
                     break
+        logging.debug("Receive %s bytes message", messages_list)
         return messages_list
