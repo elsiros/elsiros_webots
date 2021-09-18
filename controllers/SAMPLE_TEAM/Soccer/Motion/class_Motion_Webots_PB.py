@@ -47,7 +47,7 @@ class Motion_sim(Motion_real):
         self.head_pitch_with_horizontal_camera = data1['head_pitch_with_horizontal_camera']
         self.neck_tilt = self.neck_calibr
         self.Vision_Sensor_Display_On = self.glob.params['Vision_Sensor_Display_On']
-        self.timestep = 15  
+        self.timestep = 25  
         self.ACTIVEJOINTS = ['Leg_right_10','Leg_right_9','Leg_right_8','Leg_right_7','Leg_right_6','Leg_right_5','hand_right_4',
             'hand_right_3','hand_right_2','hand_right_1','Tors1','Leg_left_10','Leg_left_9','Leg_left_8',
             'Leg_left_7','Leg_left_6','Leg_left_5','hand_left_4','hand_left_3','hand_left_2','hand_left_1','head0','head12']
@@ -89,7 +89,6 @@ class Motion_sim(Motion_real):
             if time1 >= (self.former_step_time + step):
                 self.former_step_time = time1
                 break
-
 
     def imu_activation(self):
         print("imu_activation")
@@ -192,13 +191,15 @@ class Motion_sim(Motion_real):
             pulseNum = int(mot_list[i][0]*self.FRAMELENGTH * 1000 / self.simThreadCycleInMs)
             for k in range (pulseNum):
                 servo_data = {}
+                angles = []
                 for j in range(len(self.ACTIVEJOINTS) - 2):
                     tempActivePose = activePoseOld[j]+(self.activePose[j]-activePoseOld[j])*k/pulseNum
                     key = self.WBservosList[j]
                     value = tempActivePose + self.trims[j]
+                    angles.append(value)
                     servo_data.update({key:value})
-                self.robot.send_servos(servo_data)
-                self.sim_Trigger(self.timestep)
+                self.send_angles_to_servos(angles, use_step_correction = True)
+                #self.sim_Trigger(self.timestep)
         return
 
     def sim_Get_Ball_Position(self):
@@ -209,19 +210,30 @@ class Motion_sim(Motion_real):
         else: return False
 
     def sim_Get_Obstacles(self):
-        robot_names = ['RED_PLAYER_1', 'RED_PLAYER_2', 'BLUE_PLAYER_1', 'BLUE_PLAYER_2']
-        my_name = self.robot.getSelf().getDef()
-        robot_names.pop(robot_names.index(my_name))
-        #print('my_name:', my_name)
-        factor = self.local.side_factor
-        new_obstacles = []
-        ball_position = self.robot.getFromDef("BALL").getPosition()
-        new_obstacles.append([factor*ball_position[0], factor*ball_position[1], 0.15] )
-        for name in robot_names:
-            obstacle = self.robot.getFromDef(name).getPosition()
-            new_obstacles.append([factor*obstacle[0], factor*obstacle[1], 0.20])
-        self.glob.obstacles = new_obstacles
-        print ('new_obstacles:', new_obstacles)
+        obstacle1 = self.robot.get_teammates()
+        #print('obstacle1:', obstacle1)
+        try:
+            obstacle1 = obstacle1['position']
+        except Exception:
+            obstacle1 = []
+        opponets = self.robot.get_opponents()
+        try:
+            obstacle2 = opponets[0]['position']
+        except Exception:
+            obstacle2 = []
+        try:
+            obstacle3 = opponets[1]['position']
+        except Exception:
+            obstacle3 = []
+        if obstacle1: 
+            obstacle1.append(0.2)
+            self.glob.obstacles.append(obstacle1)
+        if obstacle2: 
+            obstacle2.append(0.2)
+            self.glob.obstacles.append(obstacle2)
+        if obstacle3: 
+            obstacle3.append(0.2)
+            self.glob.obstacles.append(obstacle3)
         return
 
     def sim_Get_Robot_Position(self):

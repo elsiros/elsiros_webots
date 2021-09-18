@@ -298,8 +298,8 @@ class CommunicationManager():
 
     def get_teammates(self):
         self.time_sleep(0.1)
-        number = 1 if self.robot_number == 2 else 1
-        return self.get_sensor(f"{self.robot_color}_PLAYER_+{number}")
+        number = 1 if self.robot_number == 2 else 2
+        return self.get_sensor(f"{self.robot_color}_PLAYER_"+f"{number}")
     
     def get_time(self):
         return self.get_sensor("time")
@@ -366,7 +366,7 @@ class CommunicationManager():
 
 
 if __name__ == '__main__':
-    manager = CommunicationManager(1, '127.0.0.1', 10001, time_step = 20)
+    manager = CommunicationManager(1, '127.0.0.1', 7001, time_step = 20)
     # инициализация сенсоров
     
 
@@ -380,6 +380,8 @@ if __name__ == '__main__':
         #print("get_localization: ", manager.get_localization())
         print("get_ball: ", manager.get_ball())
         print("get_localization: ", manager.get_localization())
+        print("get_teammates: ", manager.get_teammates())
+        print("get_opponents: ", manager.get_opponents())
         # print("get_imu: ", manager.get_imu_body())
         # manager.send_servos({"head_yaw": math.sin(i)/2, "head_pitch": -abs(math.sin(i)/2)})
         # 0.88

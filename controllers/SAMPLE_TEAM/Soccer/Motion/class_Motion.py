@@ -352,6 +352,7 @@ class Motion1:
         if self.first_Leg_Is_Right_Leg:
             self.local.coord_shift[1] = -self.side_step_right_yield * abs(sideLength)/20/1000
         else: self.local.coord_shift[1] = self.side_step_left_yield * abs(sideLength)/20/1000
+        self.local.robot_moved = True
         #self.local.coordinate_record(odometry = True, shift = True)
         #self.first_Leg_Is_Right_Leg = tmp1
 

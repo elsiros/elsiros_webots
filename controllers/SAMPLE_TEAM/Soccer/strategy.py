@@ -768,16 +768,21 @@ class Player():
             while(dist < 0):
                 a, napravl, dist, speed = self.motion.watch_Ball_In_Pose(penalty_Goalkeeper = True)
                 #print('speed = ', speed, 'dist  =', dist , 'napravl =', napravl)
-                if abs(speed[0]) > 0.002 and dist < 1 :                         # if dangerous tangential speed
+                if abs(speed[0]) > 0.004 and dist < 1 :                         # if dangerous tangential speed
                     if speed[0] > 0:
                         self.motion.play_Soft_Motion_Slot(name ='PenaltyDefenceL')
+                        self.motion.pause_in_ms(2000)
+                        self.motion.play_Soft_Motion_Slot(name = 'Get_Up_Left')
                     else:
                         self.motion.play_Soft_Motion_Slot(name ='PenaltyDefenceR')
+                        self.motion.pause_in_ms(2000)
+                        self.motion.play_Soft_Motion_Slot(name = 'Get_Up_Right')
+                    
                     continue
-                if speed[1] < - 0.01 and dist < 1.5 :                          # if dangerous front speed
+                if speed[1] < - 0.03 and dist < 1.5 :                          # if dangerous front speed
                     self.motion.play_Soft_Motion_Slot(name = 'PanaltyDefenceReady_Fast')
                     self.motion.play_Soft_Motion_Slot(name = 'PenaltyDefenceF')
-                    self.motion.pause_in_ms(5000)
+                    self.motion.pause_in_ms(2000)
                     self.motion.play_Soft_Motion_Slot(name = 'Get_Up_From_Defence')
 
                 if (dist == 0 and napravl == 0) or dist > 2.5:

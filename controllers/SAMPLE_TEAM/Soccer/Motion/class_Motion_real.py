@@ -65,7 +65,7 @@ class Motion_real(Motion1):
             #print('self.neck_pan =', self.neck_pan, 'self.neck_tilt =', self.neck_tilt)
             self.move_head(self.neck_pan, self.neck_tilt)
             self.refresh_Orientation()
-            a, course, dist, speed = self.detect_Ball_Speed()
+            a, course, dist, speed = self.detect_Ball_Speed(with_Localization)
             if with_Localization: self.local.localisation_Complete()
             #self.local.pf_update()
             if a == True:
@@ -76,7 +76,8 @@ class Motion_real(Motion1):
                                          dist*math.sin(course_global_rad)+ self.glob.pf_coord[1]]
                 #if len(self.glob.obstacles) == 0: self.glob.obstacles = [[0,0,0]]
                 #self.glob.obstacles[0] = [self.glob.ball_coord[0], self.glob.ball_coord[1], 0.15]
-                if self.glob.obstacleAvoidanceIsOn: self.sim_Get_Obstacles()
+                if with_Localization: self.local.localisation_Complete()
+                #if self.glob.obstacleAvoidanceIsOn: self.sim_Get_Obstacles()
                 return(a, course, dist, speed)
             else:
                 if distance1 !=0:
@@ -115,15 +116,15 @@ class Motion_real(Motion1):
                 return False, 0, 0, [0, 0]
             self.move_head(self.neck_pan, self.neck_tilt)
             self.refresh_Orientation()
-            a, course, dist, speed = self.detect_Ball_Speed()
+            a, course, dist, speed = self.detect_Ball_Speed(with_Localization = False)
             if a == True or (a== False and dist !=0): break
         if a == True or (a== False and dist !=0):
             course_global_rad = course + self.glob.pf_coord[2]
             self.glob.ball_coord = [dist*math.cos(course_global_rad)+ self.glob.pf_coord[0],
                                         dist*math.sin(course_global_rad)+ self.glob.pf_coord[1]]
-            if len(self.glob.obstacles) == 0: self.glob.obstacles = [[0,0,0]]
-            self.glob.obstacles[0] = [self.glob.ball_coord[0], self.glob.ball_coord[1], 0.15]
-            if self.glob.obstacleAvoidanceIsOn: self.sim_Get_Obstacles()
+            #if len(self.glob.obstacles) == 0: self.glob.obstacles = [[0,0,0]]
+            #self.glob.obstacles[0] = [self.glob.ball_coord[0], self.glob.ball_coord[1], 0.15]
+            #if self.glob.obstacleAvoidanceIsOn: self.sim_Get_Obstacles()
             distance = dist *1000
             self.neck_pan =int( - course/ self.TIK2RAD)
             D = self.params['HEIGHT_OF_CAMERA'] - self.params['HEIGHT_OF_NECK']- self.params['DIAMETER_OF_BALL']/2
@@ -137,14 +138,16 @@ class Motion_real(Motion1):
     def seek_Ball_In_Frame(self, with_Localization = True):
         #self.pause_in_ms(100)
         Ballposition = self.sim_Get_Ball_Position()
+        if with_Localization: self.local.read_Localization_marks()
         #print('Ballposition: ', Ballposition)
         if Ballposition:
             course, distance = Ballposition
             return True, course, distance
         else: return False, 0, 0
 
-    def detect_Ball_Speed(self):
+    def detect_Ball_Speed(self, with_Localization = False):
         position = []
+        if with_Localization : self.local.read_Localization_marks()
         for number in range (2):
             #self.pause_in_ms(100)
             Ballposition = self.sim_Get_Ball_Position()
@@ -193,7 +196,7 @@ class Motion_real(Motion1):
             self.walk_Final_Pose()
         self.refresh_Orientation()
         self.local.coord_shift = [0,0,0]
-        self.local.coordinate_record(odometry = True, shift = True)
+        self.local.coordinate_record()
         self.head_Return(old_neck_pan, old_neck_tilt)
 
     def head_Up(self):

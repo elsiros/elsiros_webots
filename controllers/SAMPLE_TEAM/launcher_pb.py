@@ -212,7 +212,7 @@ def player_super_cycle(falling, team_id, robot_color, player_number, SIMULATION,
                 print('point3')
                 local = Local(motion, glob, coord_odometry = initial_coord)
                 motion.local = local
-                local.coordinate_record(odometry = True)
+                local.coordinate_record()
                 motion.falling_Flag = 0
                 player = Player(role, second_pressed_button, glob, motion, local)
                 print('point4')

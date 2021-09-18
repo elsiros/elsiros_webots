@@ -72,7 +72,7 @@ def main_procedure():
     global pause
     Port = sys.argv[1]
     print('port =', Port)
-    robot = CommunicationManager(1, '127.0.0.1', int(Port), team_color=sys.argv[3].upper(), player_number = int(sys.argv[4]), time_step = 15)
+    robot = CommunicationManager(1, '127.0.0.1', int(Port), team_color=sys.argv[3].upper(), player_number = int(sys.argv[4]), time_step = 25)
     #sensors = {"left_knee_sensor": 15, "right_knee_sensor": 15, "left_ankle_pitch_sensor": 15, "right_ankle_pitch_sensor": 15,
     #          "right_hip_pitch_sensor": 15, "left_hip_pitch_sensor": 15,  "gps_body": 15,"head_pitch_sensor": 15,
     #          "head_yaw_sensor": 15, "imu_body": 5, "recognition": 15}
@@ -104,7 +104,7 @@ def main_procedure():
     motion.activation()
     local = Local(motion, glob, coord_odometry = initial_coord)
     motion.local = local
-    local.coordinate_record(odometry = True)
+    local.coordinate_record()
     motion.falling_Flag = 0
     player = Player(role, second_pressed_button, glob, motion, local)
     timer1 = robot.current_time
@@ -120,9 +120,6 @@ class RedirectText(object):
 
     def write(self,string):
         self.out.WriteText(string)
-
-
-
 
 class Main_Panel(wx.Frame):
     def __init__(self, *args, **kwargs):
