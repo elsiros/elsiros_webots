@@ -61,7 +61,7 @@ class CommunicationManager():
             if sensor == "time":
                 delta = message[sensor]['sim time'] - self.current_time
                 if delta > 5:
-                    self.logger.warning(f"WARNING! Large protobuf time rx delta = {delta}")
+                    self.logger.debug(f"Large protobuf time rx delta = {delta}")
                 self.current_time = message[sensor]['sim time']
             self.__sensors[sensor] = message[sensor]
 
