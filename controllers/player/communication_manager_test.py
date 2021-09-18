@@ -1,22 +1,22 @@
-from communication_manager import CommunicationManager
+from communication_manager_robokit import CommunicationManager
 from threading import Thread
 
-ports = [10001, 10002, 10021]
-sensors = {"left_knee_sensor": 5, "right_knee_sensor": 5,
-            "left_ankle_pitch_sensor": 5, "right_ankle_pitch_sensor": 5,
-            "right_hip_pitch_sensor": 5, "left_hip_pitch_sensor": 5,  
-            "gps_body": 5,"head_pitch_sensor": 5, "head_yaw_sensor": 5, 
-            "imu_body": 5, "recognition": 5}
+ports = [10001]
 
 # managers = []
 threads = []
+managers = []
 for port in ports:
     print(f"Port: {port}")
     manager = CommunicationManager(1, '127.0.0.1', port)
-    manager.enable_sensors(sensors)
-    th = Thread(target=manager.run)
-    th.start()
-    threads.append(th)
-    
-for el in threads:
-    el.join
+    managers.append(manager)
+
+while True:
+    for port, manager in zip(ports, managers):
+        print(f"[PORT: {port}] Ball pos: {manager.get_ball()}")
+        print(f"[PORT: {port}] Localisation: {manager.get_localization()}")
+        print(f"[PORT: {port}] Opponents pos: {manager.get_opponents()}")
+        print(f"[PORT: {port}] Mates pos: {manager.get_mates()}")
+
+for manager in managers:
+    manager.thread.join()
