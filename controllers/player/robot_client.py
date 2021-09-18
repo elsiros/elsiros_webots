@@ -27,7 +27,7 @@ class RobotClient():
         self.port = port
         self.max_attempts = max_attempts
         self.wait_time = wait_time
-        self.message_manager = MessageManager(self.logger.)
+        self.message_manager = MessageManager(self.logger)
         self.socket = None
         self.rx_buf = bytearray()
         self.rx_wait_for_data = False
