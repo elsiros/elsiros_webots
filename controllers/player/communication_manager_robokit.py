@@ -14,13 +14,13 @@ class CommunicationManager():
         self.__client = RobotClient(host, port, verbosity)
         self.__client.connect_client()
         self.maxsize = maxsize
-        self.sensors = {}
+        self.__sensors = {}
         self.robot_color = team_color
         self.robot_number = player_number
         self.time_step = time_step
         self.tx_mutex = Lock()
         self.tx_message = {}
-        self.last_message = {}
+        self.__last_message = {}
         self.last_head_yaw = 0
         self.last_head_pitch = 0
         self.__blurrer = Blurrer()
@@ -33,8 +33,22 @@ class CommunicationManager():
         self.thread = Thread(target=self.run)
         self.thread.start()
 
+    def enable_sensors(self, sensors) -> None:
+        for sensor in sensors:
+            self.__client.initial(sensor, sensors[sensor])
+            if sensor == "recognition":
+                self.__sensors.update({"BALL": {}})
+                self.__sensors.update({"RED_PLAYER_1": {}})
+                self.__sensors.update({"RED_PLAYER_2": {}})
+                self.__sensors.update({"BLUE_PLAYER_1": {}})
+                self.__sensors.update({"BLUE_PLAYER_2": {}})
+
+            self.__sensors.update({str(sensor): {}})
+        self.__sensors.update({"time": {}})
+        self.__client.send_request("init")
+
     def __get_sensor(self, name) -> dict:
-        return self.sensors[name]
+        return self.__sensors[name]
 
     def __send_message(self):
         self.tx_mutex.acquire()
@@ -51,7 +65,7 @@ class CommunicationManager():
                     pass
                     #print(f"WARNING! Large protobuf time rx delta = {delta}")
                 self.current_time = message[sensor]['sim time']
-            self.sensors[sensor] = message[sensor]
+            self.__sensors[sensor] = message[sensor]
 
     def time_sleep(self, t=0) -> None:
         print(f"Emulating delay of {t*1000} ms")
@@ -77,11 +91,13 @@ class CommunicationManager():
         ball = self.__get_sensor("BALL").copy()
         imu_body = self.__get_sensor("imu_body")
         gps_body = self.__get_sensor("gps_body")
-        if ball and imu_body and gps_body:
+        last_message = self.__last_message
+        if ball and imu_body and gps_body and last_message:
             ball_pos = ball["position"]
-            if ball_pos:
+            if not ball_pos:
                 return {}
-            updated_ball_pos = self.__model.proccess_data(ball_pos[0], ball_pos[1], gps_body, imu_body)
+            self._model.update_robot_state(gps_body, imu_body, last_message, self.last_head_pitch, self.last_head_yaw)
+            updated_ball_pos = self.__model.proccess_data(ball_pos[0], ball_pos[1])
             if not updated_ball_pos:
                 return {}
             blurred_pos = self.__blurrer.objects(course=updated_ball_pos[0], distance=updated_ball_pos[1])
@@ -108,7 +124,7 @@ class CommunicationManager():
         self.tx_mutex.release()
 
         if "right_hip_yaw" in data.keys():
-            self.last_message = data
+            self.__last_message = data
 
         if "head_yaw" in data.keys():
             self.last_head_yaw = data["head_yaw"]

@@ -15,7 +15,7 @@ while True:
     for port, manager in zip(ports, managers):
         print(f"[PORT: {port}] Ball pos: {manager.get_ball()}")
         print(f"[PORT: {port}] Localisation: {manager.get_localization()}")
-        print(f"[PORT: {port}] Ball pos: {manager.get_opponents()}")
+        print(f"[PORT: {port}] Opponents pos: {manager.get_opponents()}")
 
 for manager in managers:
     manager.thread.join()
