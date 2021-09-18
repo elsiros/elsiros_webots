@@ -826,7 +826,8 @@ public:
       }
       else if (sensorTimeStep.name() == "recognition")
       {
-        std::cout << "Recognition requested" << std::endl;
+        if (benchmark_level >= 1)
+          std::cout << "Recognition requested" << std::endl;
         recognition_requested = true;
         recognition_timestep = sensorTimeStep.timestep();
 
