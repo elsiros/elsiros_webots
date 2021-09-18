@@ -7,7 +7,7 @@ from blurrer import Blurrer
 from model_robokit import Model
 
 class CommunicationManager():
-    def __init__(self, maxsize=1, host='127.0.0.1', port=10001, team_color="RED", player_number=1, time_step=15):
+    def __init__(self, maxsize=1, host='127.0.0.1', port=10001, logger, team_color="RED", player_number=1, time_step=15):
         verbosity = 4
         self.__client = RobotClient(host, port, verbosity)
         self.__client.connect_client()
@@ -25,7 +25,7 @@ class CommunicationManager():
         self.__model = Model(self.__blurrer)
         self.current_time = 0
         self.sensor_time_step = time_step * 4
-
+        self.logger = logger
         sensors = {"imu_body": self.time_step, "recognition": self.sensor_time_step, "gps_body": self.sensor_time_step}
         self.enable_sensors(sensors)
         self.thread = Thread(target=self.run)
@@ -60,8 +60,7 @@ class CommunicationManager():
             if sensor == "time":
                 delta = message[sensor]['sim time'] - self.current_time
                 if delta > 5:
-                    pass
-                    #print(f"WARNING! Large protobuf time rx delta = {delta}")
+                    self.logger.warning(f"WARNING! Large protobuf time rx delta = {delta}")
                 self.current_time = message[sensor]['sim time']
             self.__sensors[sensor] = message[sensor]
 
@@ -87,7 +86,7 @@ class CommunicationManager():
             t (float): time
         """
 
-        # print(f"Emulating delay of {t*1000} ms")
+        self.logger.debug(f"Emulating delay of {t*1000} ms")
         start_time = self.current_time
         while (self.current_time - start_time < t * 1000):
             time.sleep(0.001)
@@ -100,7 +99,10 @@ class CommunicationManager():
         Returns:
             dict: {"position": [roll, pitch, yaw]}
         """
-        return self.__get_sensor("imu_body")
+
+        res = self.__get_sensor("imu_body")
+        self.logger.debug(res)
+        return res
 
     def get_imu_head(self) -> dict:
         """Provide last measurement from imu located in head.
@@ -110,7 +112,10 @@ class CommunicationManager():
         Returns:
             dict: {"position": [roll, pitch, yaw], "time": time} 
         """
-        return self.__get_sensor("imu_head")
+
+        res = self.__get_sensor("imu_head")
+        self.logger.debug(res)
+        return res
 
     def get_localization(self) -> dict:
         """Provide blurred position of the robot on the field and confidence in
@@ -127,6 +132,7 @@ class CommunicationManager():
         if res:
             pos = res["position"]
             res["position"] = self.__blurrer.loc(pos[0], pos[1])
+        self.logger.debug(res)
         return res
 
     def get_ball(self) -> dict:
@@ -143,7 +149,9 @@ class CommunicationManager():
             dict: {"position": [x, y], "time": time} 
         """
         self.time_sleep(0.1)
-        return self.__procces_object("BALL")
+        res = self.__procces_object("BALL")
+        self.logger.debug(res)
+        return res
 
     def get_opponents(self) -> list:
         """Provide blurred positions of the opponents relative to the robot.
@@ -164,6 +172,8 @@ class CommunicationManager():
         opponents = []
         for number in players:
             opponents.append(self.__procces_object(f"{color}_PLAYER_{number}"))
+
+        self.logger.debug(opponents)
         return opponents        
 
     def get_mates(self) -> dict:
@@ -181,7 +191,9 @@ class CommunicationManager():
         """
         self.time_sleep(0.1)
         number = 1 if self.robot_number == 2 else 2
-        return self.__procces_object(f"{self.robot_color}_PLAYER_{number}")
+        res = self.__procces_object(f"{self.robot_color}_PLAYER_{number}")
+        self.logger.debug(res)
+        return res
 
     def get_time(self) -> float:
         """Provide latest observed simulation time.
@@ -189,7 +201,9 @@ class CommunicationManager():
         Returns:
             float: simulation time
         """
-        return self.current_time
+        res = self.current_time
+        self.logger.debug(res)
+        return res
 
     def send_servos(self, data) -> None:
         """Add to message queue dict with listed servo names and angles in radians.
@@ -207,6 +221,8 @@ class CommunicationManager():
         self.tx_mutex.acquire()
         self.tx_message = data
         self.tx_mutex.release()
+
+        self.logger.debug(data)
 
         if "right_hip_yaw" in data.keys():
             self.__last_message = data

@@ -1,4 +1,5 @@
 import math
+import logging
 
 class Model():
     def __init__(self, blurrer):
@@ -45,10 +46,6 @@ class Model():
                          self.last_head_pitch -
                          self.fov_x)
 
-        # print(f"right_yaw_visible_area: {right_yaw_visible_area}, left_yaw_visible_area: {left_yaw_visible_area}, \
-        #          top_distance_visible_area: {top_distance_visible_area}, bottom_distance_visible_area: {bottom_distance_visible_area} \
-        #          distance: {distance}, course: {course}, self.fov_y: {self.fov_y}, self.fov_x: {self.fov_x},\
-        #          self.robot_yaw: {self.last_head_yaw} self.robot_pitch: {self.last_head_pitch}")
         ball_in_dist = (bottom_distance_visible_area < distance < top_distance_visible_area)
         ball_in_yaw = (right_yaw_visible_area < course < left_yaw_visible_area)
         return ball_in_dist and ball_in_yaw
@@ -78,11 +75,11 @@ class Model():
     def proccess_data(self, x, y):
         self.blurrer.step()
         if not self.check_robot_stand():
-            # print("WARNING: Robot in not standing")
+            logging.info("Robot in not standing")
             return []
         res = self.get_distance_course(x, y)
         if not res:
-            # print("WARNING: Imu or gps not available")
+            logging.info("Imu or gps not available")
             return []
         distance, angle = res
 
@@ -90,7 +87,7 @@ class Model():
         if self.check_object_in_frame(distance, angle):
             return self.blurrer.objects(course=angle, distance=distance)
         else:
-            # print("WARNING: Ball is not in the frame")
+            logging.info("Ball is not in the frame")
             return []
 
     def update_robot_state(self, gps, imu, last_message, last_head_pitch, last_head_yaw):
