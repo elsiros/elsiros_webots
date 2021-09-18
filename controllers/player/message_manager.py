@@ -8,19 +8,16 @@ import messages_pb2
 
 
 class MessageManager():
-    """
-
-    Args:
-        head_buffer_size (int): Value of heder byte buffer. Defaults to 4.
-
-    """
     def __init__(self, head_buffer_size=4):
+        """
+        Args:
+            head_buffer_size (int): Value of heder byte buffer. Defaults to 4.
+        """
         self.size = head_buffer_size
         self.init_request = None
 
     def get_size(self):
         """
-
         Returns:
             int: Value of heder byte buffer.
         """
@@ -44,18 +41,19 @@ class MessageManager():
         """
         return messages_pb2.SensorMeasurements()
 
-    def build_request_from_file(self, path):
+    @staticmethod
+    def build_request_from_file(path):
         """Parsing data from message file to protobuf message instance.
 
         Args:
-            path ([string]): path to filename.txt with message.
+            path (string): path to filename.txt with message.
 
         Returns:
             messages_pb2: protobuf class instance of filled
             message from file.
         """
         request = messages_pb2.ActuatorRequests()
-        with open(path, 'r') as actuator_requests:
+        with open(path, 'r',  encoding="utf-8") as actuator_requests:
             text_format.Parse(actuator_requests.read(), request)
         return request
 
@@ -76,7 +74,8 @@ class MessageManager():
             motor.position = positions[pos]
         return self.generate_message(request)
 
-    def generate_message(self, message):
+    @staticmethod
+    def generate_message(message):
         """Generate bytes string for sending message.
 
         Args:
@@ -102,7 +101,8 @@ class MessageManager():
         """
         return self.generate_message(self.build_request_from_file(path))
 
-    def get_answer_size(self, content_size):
+    @staticmethod
+    def get_answer_size(content_size):
         """
         Сalculating message size from header bytes
 
@@ -132,7 +132,7 @@ class MessageManager():
         sensor.timeStep = sensor_time
 
     def build_initial_request(self):
-        """Generate bytes string for default message.
+        """Generate bytes string for initialization message.
 
         Returns:
             bytes: bytes string of message.
@@ -140,7 +140,7 @@ class MessageManager():
         return self.generate_message(self.init_request)
 
     def parse_answer_message(self, data):
-        """Parsing answer message from byte array to 
+        """Parsing answer message from byte array to dict with measurements
 
         Args:
             data ([type]): [description]
@@ -166,13 +166,28 @@ class MessageManager():
             dict: dict with keys of names sensors
         """
         parse_message = {}
-        parse_message.update({"time":
-                             {"unix time": message.real_time,
-                              "sim time": message.time}})
+        parse_message.update(
+            {
+                "time":
+                {
+                    "unix time": message.real_time,
+                    "sim time": message.time
+                }
+            })
         for sensor in message.accelerometers:
-            parse_message.update({sensor.name: {"position": [
-                sensor.value.X, sensor.value.Y,
-                sensor.value.Z], "time": message.time}})
+            parse_message.update(
+                {
+                    sensor.name:
+                    {
+                        "position":
+                        [
+                            sensor.value.X,
+                            sensor.value.Y,
+                            sensor.value.Z
+                        ],
+                        "time": message.time
+                    }
+                })
         for sensor in message.cameras:
             parse_message.update(
                 {
@@ -187,15 +202,24 @@ class MessageManager():
                 })
         for sensor in message.position_sensors:
             parse_message.update(
-                {sensor.name: {"position": sensor.value,
-                               "time": message.time}})
+                {
+                    sensor.name:
+                    {
+                        "position": sensor.value,
+                        "time": message.time
+                    }
+                })
         for sensor in message.gyros:
             parse_message.update(
                 {
                     sensor.name:
                     {
                         "position":
-                        [sensor.value.X, sensor.value.Y, sensor.value.Z],
+                        [
+                            sensor.value.X,
+                            sensor.value.Y,
+                            sensor.value.Z
+                        ],
                         "time": message.time
                     }
                 })
