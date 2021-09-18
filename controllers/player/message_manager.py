@@ -1,7 +1,6 @@
-"""[summary]
+"""
+Сlass operates with protobuff messages. used to create and parse messages.
 
-    Returns:
-        [type]: [description]
 """
 from google.protobuf import text_format
 
@@ -9,45 +8,51 @@ import messages_pb2
 
 
 class MessageManager():
-    """[summary]
     """
-    def __init__(self, init_buffer_size=4):
-        self.size = init_buffer_size
+
+    Args:
+        head_buffer_size (int): Value of heder byte buffer. Defaults to 4.
+
+    """
+    def __init__(self, head_buffer_size=4):
+        self.size = head_buffer_size
         self.init_request = None
 
     def get_size(self):
-        """[summary]
+        """
+
         Returns:
-            [type]: [description]
+            int: Value of heder byte buffer.
         """
         return self.size
 
     @staticmethod
     def create_requests_message():
-        """[summary]
+        """Create Empty protobuf class instance for request message.
 
         Returns:
-            [type]: [description]
+            messages_pb2: Empty protobuf class instance.
         """
         return messages_pb2.ActuatorRequests()
 
     @staticmethod
     def create_answer_message():
-        """[summary]
+        """Create Empty protobuf class instance for answer message.
 
         Returns:
-            [type]: [description]
+            messages_pb2: Empty protobuf class instance.
         """
         return messages_pb2.SensorMeasurements()
 
     def build_request_from_file(self, path):
-        """[summary]
+        """Parsing data from message file to protobuf message instance.
 
         Args:
-            path ([type]): [description]
+            path ([string]): path to filename.txt with message.
 
         Returns:
-            [type]: [description]
+            messages_pb2: protobuf class instance of filled
+            message from file.
         """
         request = messages_pb2.ActuatorRequests()
         with open(path, 'r') as actuator_requests:
@@ -55,13 +60,14 @@ class MessageManager():
         return request
 
     def build_request_positions(self, positions):
-        """[summary]
+        """Сreating an instance of the protobuff class
+        and fills it with the values ​​of the actuators
 
         Args:
-            positions ([type]): [description]
-
+            positions (dict): key - servo name and values ​​- position.
         Returns:
-            [type]: [description]
+            messages_pb2: protobuf class instance of filled
+            message with servos.
         """
         request = messages_pb2.ActuatorRequests()
         for pos in positions:
@@ -71,33 +77,54 @@ class MessageManager():
         return self.generate_message(request)
 
     def generate_message(self, message):
-        """[summary]
+        """Generate bytes string for sending message.
 
         Args:
-            message ([type]): [description]
+            message (messages_pb2): protobuf class instance of filled
+            message.
 
         Returns:
-            [type]: [description]
+            bytes: bytes string of message.
         """
         return message.ByteSize().to_bytes(4, byteorder='big', signed=False) \
             + message.SerializeToString()
 
     def message_from_file(self, path):
-        """[summary]
-
+        """
+        Function process the protobuff message. Measurement values
+        of sensors, messages from player.exe and webots.
+        Received messages are placed in the dictionary
         Args:
-            path ([type]): [description]
+            path ([string]): path to filename.txt with default message.
 
         Returns:
-            [type]: [description]
+            messages_pb2: protobuf class instance, with values ​​from file.
         """
         return self.generate_message(self.build_request_from_file(path))
 
     def get_answer_size(self, content_size):
+        """
+        Сalculating message size from header bytes
+
+        Args:
+            content_size (bytes): Byte size of answer message.
+
+        Returns:
+            int: Size of answer message.
+        """
         size = int.from_bytes(content_size, byteorder='big', signed=False)
         return size
 
     def add_initial_request(self, sensor_name, sensor_time):
+        """Generate bytes string for sending message.
+
+        Args:
+            sensor_name (string): protobuf class instance of filled
+            message.
+
+        Returns:
+            bytes: bytes string of message.
+        """
         if self.init_request is None:
             self.init_request = messages_pb2.ActuatorRequests()
         sensor = self.init_request.sensor_time_steps.add()
@@ -122,10 +149,13 @@ class MessageManager():
 
     @staticmethod
     def parse_message(message) -> dict:
-        """[summary]
-
+        """
+        Function process the protobuff message. Measurement values
+        of sensors, messages from player.exe and webots.
+        Received messages are placed in the dictionary
         Args:
-            message ([type]): [description]
+            message (messages_pb2): protobuf class instance
+            of new message with filled or unfilled.
 
         Returns:
             dict: dict with keys of names sensors
