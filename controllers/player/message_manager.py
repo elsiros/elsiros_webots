@@ -63,12 +63,7 @@ class MessageManager():
         Returns:
             [type]: [description]
         """
-       
         request = messages_pb2.ActuatorRequests()
-        #for sen in positions[1]:
-        #    sensor = request.sensor_time_steps.add()
-        #    sensor.name = sen
-        #    sensor.timeStep = positions[1][sen]
         for pos in positions:
             motor = request.motor_positions.add()
             motor.name = pos
@@ -84,7 +79,8 @@ class MessageManager():
         Returns:
             [type]: [description]
         """
-        return message.ByteSize().to_bytes(4, byteorder='big', signed=False)+message.SerializeToString()
+        return message.ByteSize().to_bytes(4, byteorder='big', signed=False) \
+            + message.SerializeToString()
 
     def message_from_file(self, path):
         """[summary]
@@ -135,46 +131,81 @@ class MessageManager():
             dict: dict with keys of names sensors
         """
         parse_message = {}
-        parse_message.update({"time": {"unix time": message.real_time, "sim time": message.time}})
-        #if message.time % 100 == 0:
-        #    print(f"message time={message.time}")
+        parse_message.update({"time":
+                             {"unix time": message.real_time,
+                              "sim time": message.time}})
         for sensor in message.accelerometers:
             parse_message.update({sensor.name: {"position": [
-                sensor.value.X, sensor.value.Y, sensor.value.Z], "time": message.time}})
+                sensor.value.X, sensor.value.Y,
+                sensor.value.Z], "time": message.time}})
         for sensor in message.cameras:
-            parse_message.update({sensor.name: {"width": sensor.width, "height": sensor.height,
-                                                "quality": sensor.quality, "image": sensor.image, 
-                                                "time": message.time}})
+            parse_message.update(
+                {
+                    sensor.name:
+                        {
+                            "width": sensor.width,
+                            "height": sensor.height,
+                            "quality": sensor.quality,
+                            "image": sensor.image,
+                            "time": message.time
+                        }
+                })
         for sensor in message.position_sensors:
             parse_message.update(
-                {sensor.name: {"position": sensor.value, "time": message.time}})
+                {sensor.name: {"position": sensor.value,
+                               "time": message.time}})
         for sensor in message.gyros:
-            parse_message.update({sensor.name: {"position": [
-                                 sensor.value.X, sensor.value.Y, sensor.value.Z], "time": message.time}})
+            parse_message.update(
+                {
+                    sensor.name:
+                    {
+                        "position":
+                        [sensor.value.X, sensor.value.Y, sensor.value.Z],
+                        "time": message.time
+                    }
+                })
         for sensor in message.gps:
             parse_message.update(
-                {sensor.name: {"position": [sensor.value.X, sensor.value.Y], "time": message.time}})
+                {
+                    sensor.name:
+                    {
+                        "position": [sensor.value.X, sensor.value.Y],
+                        "time": message.time
+                    }
+                })
         if hasattr(message, "objects"):
             for sensor in message.objects:
                 parse_message.update(
                     {
-                        sensor.name: 
+                        sensor.name:
                             {
                                 "position": [sensor.value.X, sensor.value.Y],
                                 "time": message.time
                             }
                     })
-                # if sensor.name == "BALL":
-                #     parse_message.update(
-                #         {sensor.name: {"position": [sensor.course, sensor.distance], "time": message.time}})
-                # else:
-                #     parse_message.update(
-                #     {sensor.name: {"position": [sensor.course, sensor.distance], "time": message.time}})
         for sensor in message.imu:
             parse_message.update(
-                {sensor.name: {"position": [sensor.angles.roll, sensor.angles.pitch,
-                sensor.angles.yaw], "time": message.time}})
+                {
+                    sensor.name:
+                    {
+                        "position":
+                        [
+                            sensor.angles.roll,
+                            sensor.angles.pitch,
+                            sensor.angles.yaw
+                        ],
+                        "time":
+                            message.time
+                    }
+                })
         for sensor in message.messages:
             parse_message.update(
-                {sensor.name: {"message_type": sensor.message_type, "text": sensor.text, "time": message.time}})
+                {
+                    sensor.name:
+                    {
+                        "message_type": sensor.message_type,
+                        "text": sensor.text,
+                        "time": message.time
+                    }
+                })
         return parse_message
