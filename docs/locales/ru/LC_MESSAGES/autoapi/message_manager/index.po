@@ -1,0 +1,159 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021, Starkit Team
+# This file is distributed under the same license as the ELSIROS package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ELSIROS \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-18 14:55+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/autoapi/message_manager/index.rst:2
+msgid ":py:mod:`message_manager`"
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:8
+msgid "Сlass operates with protobuff messages. used to create and parse messages."
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:13
+msgid "Module Contents"
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:16
+msgid "Classes"
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:24:<autosummary>:1
+msgid ":obj:`MessageManager <message_manager.MessageManager>`\\"
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst
+msgid "Returns"
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:29
+msgid "Value of heder byte buffer."
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst
+msgid "Return type"
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:36
+msgid "Create Empty protobuf class instance for request message."
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:38
+#: ../../source/autoapi/message_manager/index.rst:47
+msgid "Empty protobuf class instance."
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:45
+msgid "Create Empty protobuf class instance for answer message."
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:54
+msgid "Parsing data from message file to protobuf message instance."
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst
+msgid "Parameters"
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:56
+msgid "path to filename.txt with message."
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:59
+msgid "protobuf class instance of filled message from file."
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:66
+msgid ""
+"Сreating an instance of the protobuff class and fills it with the values "
+"​​of the actuators"
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:69
+msgid "key - servo name and values ​​- position."
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:72
+msgid "protobuf class instance of filled message with servos."
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:80
+#: ../../source/autoapi/message_manager/index.rst:116
+msgid "Generate bytes string for sending message."
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:82
+#: ../../source/autoapi/message_manager/index.rst:118
+msgid "protobuf class instance of filled"
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:86
+#: ../../source/autoapi/message_manager/index.rst:122
+#: ../../source/autoapi/message_manager/index.rst:130
+msgid "bytes string of message."
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:92
+msgid ""
+"Function process the protobuff message. Measurement values of sensors, "
+"messages from player.exe and webots. Received messages are placed in the "
+"dictionary :param path: path to filename.txt with default message. :type "
+"path: [string]"
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:98
+msgid "protobuf class instance, with values ​​from file."
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:105
+msgid "Сalculating message size from header bytes"
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:107
+msgid "Byte size of answer message."
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:110
+msgid "Size of answer message."
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:128
+msgid "Generate bytes string for initialization message."
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:136
+msgid "Parsing answer message from byte array to dict with measurements"
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:138
+#: ../../source/autoapi/message_manager/index.rst:141
+msgid "[description]"
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:148
+msgid ""
+"Function process the protobuff message. Measurement values of sensors, "
+"messages from player.exe and webots. Received messages are placed in the "
+"dictionary :param message: protobuf class instance :type message: "
+"messages_pb2 :param of new message with filled or unfilled.:"
+msgstr ""
+
+#: ../../source/autoapi/message_manager/index.rst:155
+msgid "dict with keys of names sensors"
+msgstr ""
+

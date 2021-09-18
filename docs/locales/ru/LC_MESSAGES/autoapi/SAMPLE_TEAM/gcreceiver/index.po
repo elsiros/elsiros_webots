@@ -1,0 +1,154 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021, Starkit Team
+# This file is distributed under the same license as the ELSIROS package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ELSIROS \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-18 14:55+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:2
+msgid ":py:mod:`SAMPLE_TEAM.gcreceiver`"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:8
+msgid ""
+"This module shows how the GameController Communication protocol can be "
+"used in python and also allows to be changed such that every team using "
+"python to interface with the GC can utilize the new protocol."
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:15
+msgid "Modded by Egor Davydenko egordv@gmail.com for elsiros league"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:20
+msgid "Module Contents"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:23
+msgid "Classes"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:33:<autosummary>:1
+msgid ":obj:`GameStateReceiver <SAMPLE_TEAM.gcreceiver.GameStateReceiver>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:33:<autosummary>:1
+msgid "This class puts up a simple UDP Server which receives the"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:33:<autosummary>:1
+msgid ""
+":obj:`SampleGameStateReceiver "
+"<SAMPLE_TEAM.gcreceiver.SampleGameStateReceiver>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:33:<autosummary>:1
+msgid ""
+":obj:`ThreadedGameStateReceiver "
+"<SAMPLE_TEAM.gcreceiver.ThreadedGameStateReceiver>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:35
+msgid "Attributes"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:46:<autosummary>:1
+msgid ":obj:`logger <SAMPLE_TEAM.gcreceiver.logger>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:46:<autosummary>:1
+msgid ":obj:`console_handler <SAMPLE_TEAM.gcreceiver.console_handler>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:46:<autosummary>:1
+msgid ""
+":obj:`DEFAULT_LISTENING_HOST "
+"<SAMPLE_TEAM.gcreceiver.DEFAULT_LISTENING_HOST>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:46:<autosummary>:1
+msgid ""
+":obj:`GAME_CONTROLLER_LISTEN_PORT "
+"<SAMPLE_TEAM.gcreceiver.GAME_CONTROLLER_LISTEN_PORT>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:46:<autosummary>:1
+msgid ""
+":obj:`GAME_CONTROLLER_ANSWER_PORT "
+"<SAMPLE_TEAM.gcreceiver.GAME_CONTROLLER_ANSWER_PORT>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:46:<autosummary>:1
+msgid ":obj:`parser <SAMPLE_TEAM.gcreceiver.parser>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:79
+msgid "Bases: :py:obj:`object`"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:81
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:136
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:156
+msgid ""
+"This class puts up a simple UDP Server which receives the *addr* "
+"parameter to listen to the packages from the game_controller."
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:84
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:139
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:159
+msgid ""
+"If it receives a package it will be interpreted with the construct data "
+"structure and the :func:`on_new_gamestate` will be called with the "
+"content."
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:87
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:142
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:162
+msgid "After this we send a package back to the GC"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:91
+msgid "Erzeugt das Socket"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:96
+msgid "Waits in a loop that is terminated by setting self.running = False"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:101
+msgid ""
+"Receives a package and interprets it. Calls :func:`on_new_gamestate` "
+"Sends an answer to the GC"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:108
+msgid "Sends a life sign to the game controller"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:114
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:146
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:169
+msgid ""
+"Is called with the new game state after receiving a package Needs to be "
+"implemented or set :param state: Game State"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:134
+#: ../../source/autoapi/SAMPLE_TEAM/gcreceiver/index.rst:154
+msgid "Bases: :py:obj:`GameStateReceiver`"
+msgstr ""
+

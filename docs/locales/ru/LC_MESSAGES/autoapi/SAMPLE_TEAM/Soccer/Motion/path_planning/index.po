@@ -1,0 +1,183 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021, Starkit Team
+# This file is distributed under the same license as the ELSIROS package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ELSIROS \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-18 14:55+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:2
+msgid ":py:mod:`SAMPLE_TEAM.Soccer.Motion.path_planning`"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:8
+msgid ""
+"The module is designed by team Robokit of Phystech Lyceum and team "
+"Starkit of MIPT under mentorship of A. Babaev. module can be used for "
+"optimized path planing of Robokit-1 robot. usage: create class PathPlan "
+"type object instance and call method path_calc_optimum. Optionally module"
+" can be launched stand alone for purpose of tuning and observing result "
+"of path planing. Being launched stand alone module draws soccer field "
+"with player (white circle), ball (orange circle), obstacles (black "
+"circles). Circles are movable by mouse dragging. After each stop of mouse"
+" new path is drawing."
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:20
+msgid "Module Contents"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:23
+msgid "Classes"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:32:<autosummary>:1
+msgid ":obj:`PathPlan <SAMPLE_TEAM.Soccer.Motion.path_planning.PathPlan>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:32:<autosummary>:1
+msgid ""
+"Plans optimized path of humanoid robot from start coordinate to target "
+"coordinate."
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:32:<autosummary>:1
+msgid ":obj:`Glob <SAMPLE_TEAM.Soccer.Motion.path_planning.Glob>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:34
+msgid "Attributes"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:43:<autosummary>:1
+msgid ""
+":obj:`goalPostRadius "
+"<SAMPLE_TEAM.Soccer.Motion.path_planning.goalPostRadius>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:43:<autosummary>:1
+msgid ":obj:`ballRadius <SAMPLE_TEAM.Soccer.Motion.path_planning.ballRadius>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:43:<autosummary>:1
+msgid ""
+":obj:`uprightRobotRadius "
+"<SAMPLE_TEAM.Soccer.Motion.path_planning.uprightRobotRadius>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:43:<autosummary>:1
+msgid ""
+":obj:`roundAboutRadiusIncrement "
+"<SAMPLE_TEAM.Soccer.Motion.path_planning.roundAboutRadiusIncrement>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:66
+msgid ""
+"Plans optimized path of humanoid robot from start coordinate to target "
+"coordinate. Coordinates are taken together with orientation. Path is "
+"composed from initial arc, final arc and connecting line. Connecting line"
+" must be tangent to arcs. In case of obstacles on path line additional "
+"arc is added in order to go around obstacle. Only one obstacle can be "
+"avoided reliably. Avoiding of second obstacle is not guaranteed. "
+"Therefore there are used evaluations of prices of variants of path. The "
+"Path with cheaper price is returned. Collision with obstacle in far "
+"distance is cheaper than collision with obstacle in near distance. During"
+" Path heuristic various radiuses of arcs are considered. Arc with zero "
+"radius means turning without changing coordinate."
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:84
+msgid ""
+"Checks if 2 line segments have common point. :returns: True - if there is"
+" common point"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:86
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:108
+msgid "False - if not."
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:88
+msgid ""
+"x = x1 + (x2 - x1) * t1    t1 - paramentric coordinate y = y1 + (y2 - y1)"
+" * t1 x = x3 + (x4 - x3) * t2    t2 - paramentric coordinate y = y3 + (y4"
+" - y3) * t2 x1 + (x2 - x1) * t1 = x3 + (x4 - x3) * t2 y1 + (y2 - y1) * t1"
+" = y3 + (y4 - y3) * t2 t1 = (x3 + (x4 - x3) * t2 - x1) / (x2 - x1) t1 = "
+"(y3 + (y4 - y3) * t2 - y1) / (y2 - y1) y1 + (y2 - y1) * (x3 + (x4 - x3) *"
+" t2 - x1) / (x2 - x1) = y3 + (y4 - y3) * t2 (y2 - y1) * (x4 - x3)/ (x2 - "
+"x1) * t2 - (y4 - y3) * t2 = y3 - y1 - (y2 - y1) * (x3 - x1) / (x2 - x1) "
+"t2 = (y3 - y1 - (y2 - y1) * (x3 - x1) / (x2 - x1)) /((y2 - y1) * (x4 - "
+"x3)/ (x2 - x1) - (y4 - y3)) if t1 == 0:"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:100
+msgid "t2 = (y1 - y3)/ (y4 - y3) t2 = (x1 - x3)/ (x4 - x3)"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:106
+msgid ""
+"Checks if line segment and circle have common points. :returns: True - if"
+" there is common point"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:110
+msgid ""
+"x = x1 + (x2 - x1) * t    t - paramentric coordinate y = y1 + (y2 - y1) *"
+" t R**2 = (x - xc)**2 + (y - yc)**2 (x1 + (x2 - x1) * t - xc)**2 + (y1 + "
+"(y2 - y1) * t - yc)**2 - R**2 = 0 ((x2 - x1) * t)**2 + (x1 - xc)**2 + 2 *"
+" (x2 - x1) * (x1 - xc) * t + ((y2 - y1) * t)**2 + (y1 - yc)**2 + 2 * (y2 "
+"- y1) * (y1 - yc) * t - R**2 = 0 ((x2 - x1)**2 + (y2 - y1)**2) * t**2 + "
+"(2 * (x2 - x1) * (x1 - xc) + 2 * (y2 - y1) * (y1 - yc)) * t + (x1 - "
+"xc)**2 + (y1 - yc)**2 - R**2 = 0 a * t**2 + b * t + c = 0 a = (x2 - "
+"x1)**2 + (y2 - y1)**2 b = 2 * (x2 - x1) * (x1 - xc) + 2 * (y2 - y1) * (y1"
+" - yc) c = (x1 - xc)**2 + (y1 - yc)**2 - R**2"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:135
+msgid "Returns optimized humanoid robot path. usage:"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:137
+msgid ""
+"list:             dest, list: centers, int: number_Of_Cycles = "
+"self.path_calc_optimum(list: start_coord, list: target_coord) dest:"
+"             list of destination point coordinates. Each coordinate is "
+"list or tuple of floats [x,y]."
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:139
+msgid ""
+"Each coordinate is starting or end point of path segment. Path comprises "
+"of following segments: circle segment, line segment, n*(circle segment, "
+"line segment), circle segment. Where n - iterable."
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:141
+msgid ""
+"centers:          list of coordinates of circle centers of circle "
+"segments of path. Each coordinate is list or tuple of floats [x,y]. "
+"number_Of_Cycles: integer which represents price of path. In case if "
+"value is >100 then collision with second obstacle on path"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:143
+msgid "is not verified."
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/path_planning/index.rst:144
+msgid ""
+"start_coord:      list or tuple of floats [x, y, yaw] target_coord:     "
+"list or tuple of floats [x, y, yaw]"
+msgstr ""
+

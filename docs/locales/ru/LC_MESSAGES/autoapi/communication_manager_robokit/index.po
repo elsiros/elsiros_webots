@@ -1,0 +1,188 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021, Starkit Team
+# This file is distributed under the same license as the ELSIROS package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ELSIROS \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-18 14:55+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:2
+msgid ":py:mod:`communication_manager_robokit`"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:8
+msgid "Class that provides communication with simulator Webots."
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:13
+msgid "Module Contents"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:16
+msgid "Classes"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:24:<autosummary>:1
+msgid ""
+":obj:`CommunicationManager "
+"<communication_manager_robokit.CommunicationManager>`\\"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:44
+msgid "Emulate sleep according to simulation time."
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst
+msgid "Parameters"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:46
+msgid "time"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:52
+msgid ""
+"Provide last measurement from imu located in body. Can be empty if 'imu "
+"body' sensor is not enabled or webots does not sent us any measurement. "
+"Also contains simulation time of measurement."
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst
+msgid "Returns"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:56
+msgid "{\"position\": [roll, pitch, yaw]}"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst
+msgid "Return type"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:62
+msgid ""
+"Provide last measurement from imu located in head. Can be empty if "
+"'imu_head' sensor is not enabled or webots does not send us any "
+"measurement. Also contains simulation time of measurement."
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:66
+msgid "{\"position\": [roll, pitch, yaw], \"time\": time}"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:72
+msgid ""
+"Provide blurred position of the robot on the field and confidence in this"
+" position ('consistency' - where 1 fully confident and 0 - have no "
+"confidence). Can be empty if 'gps_body' sensor is not enabled or webots "
+"does not send us any measurement. Also contains simulation time of "
+"measurement."
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:77
+msgid "{\"position\": [x, y, consistency], \"time\": time}"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:83
+msgid ""
+"Provide blurred position of the ball relative to the robot. Can be empty "
+"if: 1. 'recognition', 'gps_body' or 'imu_body' sensors are not enabled 2."
+" webots did not send us any measurement. 3. robot does not stand upright "
+"position 4. ball is not in the camera field of view (fov)"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:90
+#: ../../source/autoapi/communication_manager_robokit/index.rst:105
+#: ../../source/autoapi/communication_manager_robokit/index.rst:120
+msgid "Also contains simulation time of measurement."
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:92
+#: ../../source/autoapi/communication_manager_robokit/index.rst:122
+msgid "{\"position\": [x, y], \"time\": time}"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:98
+msgid ""
+"Provide blurred positions of the opponents relative to the robot. Can be "
+"empty if:"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:100
+#: ../../source/autoapi/communication_manager_robokit/index.rst:115
+msgid "'recognition', 'gps_body' or 'imu_body' sensors are not enabled"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:101
+#: ../../source/autoapi/communication_manager_robokit/index.rst:116
+msgid "webots did not send us any measurement."
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:102
+#: ../../source/autoapi/communication_manager_robokit/index.rst:117
+msgid "robot does not stand upright position"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:103
+msgid "opponent is not in the camera field of view (fov)"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:107
+msgid ""
+"[{\"position\": [x1, y1], \"time\": time}, {\"position\": [x2, y2], "
+"\"time\": time}]"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:113
+msgid ""
+"Provide blurred position of the mate relative to the robot. Can be empty "
+"if:"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:118
+msgid "mate is not in the camera field of view (fov)"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:128
+msgid "Provide latest observed simulation time."
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:130
+msgid "simulation time"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:136
+msgid ""
+"Add to message queue dict with listed servo names and angles in radians. "
+"List of posible servos: [\"right_ankle_roll\", \"right_ankle_pitch\", "
+"\"right_knee\", \"right_hip_pitch\", \"right_hip_roll\", "
+"\"right_hip_yaw\", \"right_elbow_pitch\", \"right_shoulder_twirl\", "
+"\"right_shoulder_roll\", \"right_shoulder_pitch\", \"pelvis_yaw\", "
+"\"left_ankle_roll\", \"left_ankle_pitch\", \"left_knee\", "
+"\"left_hip_pitch\", \"left_hip_roll\", \"left_hip_yaw\", "
+"\"left_elbow_pitch\", \"left_shoulder_twirl\", \"left_shoulder_roll\", "
+"\"left_shoulder_pitch\", \"head_yaw\", \"head_pitch\"]"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:145
+msgid "{servo_name: servo_angle, ...}"
+msgstr ""
+
+#: ../../source/autoapi/communication_manager_robokit/index.rst:151
+msgid ""
+"Infinity cycle of sending and receiving messages. Should be launched in "
+"sepparet thread. Communication manager launch this func itself in "
+"constructor"
+msgstr ""
+

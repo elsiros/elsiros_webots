@@ -1,0 +1,85 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021, Starkit Team
+# This file is distributed under the same license as the ELSIROS package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ELSIROS \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-18 14:55+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/utility/index.rst:2
+msgid ":py:mod:`SAMPLE_TEAM.Soccer.utility`"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/utility/index.rst:8
+msgid ""
+"Module provides some utilities which can run with same result and same "
+"synatx both in Micropython of OpenMV and in standard CPython"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/utility/index.rst:14
+msgid "Module Contents"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/utility/index.rst:18
+msgid "Functions"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/utility/index.rst:28:<autosummary>:1
+msgid ""
+":obj:`randrange <SAMPLE_TEAM.Soccer.utility.randrange>`\\ \\(start\\, "
+"stop\\=None\\)"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/utility/index.rst:44
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/utility/index.rst:28:<autosummary>:1
+msgid "helper function for working with random bit sequence"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/utility/index.rst:28:<autosummary>:1
+msgid ":obj:`random <SAMPLE_TEAM.Soccer.utility.random>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/utility/index.rst:49
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/utility/index.rst:28:<autosummary>:1
+msgid "getting a random number from 0 to 1"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/utility/index.rst:28:<autosummary>:1
+msgid ":obj:`gauss <SAMPLE_TEAM.Soccer.utility.gauss>`\\ \\(mu\\, sigma\\)"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/utility/index.rst:54
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/utility/index.rst:28:<autosummary>:1
+msgid "#getting a random number from Gaussian distribution"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/utility/index.rst:28:<autosummary>:1
+msgid ":obj:`gaussian <SAMPLE_TEAM.Soccer.utility.gaussian>`\\ \\(x\\, sigma\\)"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/utility/index.rst:59
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/utility/index.rst:28:<autosummary>:1
+msgid ""
+"# calculates the probability of x for 1-dim Gaussian with mean mu and "
+"var. sigma"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/utility/index.rst:30
+msgid "Attributes"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/utility/index.rst:36:<autosummary>:1
+msgid ":obj:`used_with_OpenMV <SAMPLE_TEAM.Soccer.utility.used_with_OpenMV>`\\"
+msgstr ""
+

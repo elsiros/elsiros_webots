@@ -1,0 +1,163 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021, Starkit Team
+# This file is distributed under the same license as the ELSIROS package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ELSIROS \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-18 14:55+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:2
+msgid ":py:mod:`SAMPLE_TEAM.launcher_pb`"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:8
+msgid ""
+"The module is designed by team Robokit of Phystech Lyceum and team "
+"Starkit of MIPT under mentorship of Azer Babaev. The module is designed "
+"for strategy of soccer game by forward and goalkeeper."
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:15
+msgid "Module Contents"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:19
+msgid "Functions"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:27:<autosummary>:1
+msgid ""
+":obj:`init_gcreceiver <SAMPLE_TEAM.launcher_pb.init_gcreceiver>`\\ "
+"\\(team\\, player\\, is\\_goalkeeper\\)"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:27:<autosummary>:1
+msgid ""
+"The function creates and object receiver of Game Controller messages. "
+"Game Controller messages are broadcasted to"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:27:<autosummary>:1
+msgid ""
+":obj:`player_super_cycle <SAMPLE_TEAM.launcher_pb.player_super_cycle>`\\ "
+"\\(falling\\, team\\_id\\, robot\\_color\\, player\\_number\\, "
+"SIMULATION\\, current\\_work\\_directory\\, robot\\, pause\\)"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:27:<autosummary>:1
+msgid ""
+"The function is called player_super_cycle because during game player can "
+"change several roles. Each role"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:30
+msgid ""
+"The function creates and object receiver of Game Controller messages. "
+"Game Controller messages are broadcasted to teams and to referee. Format "
+"of messages can be seen in module gamestate.py. Messages from Game "
+"Controller contains Robot info, Team info and Game state info. usage of "
+"function:"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:37
+msgid ""
+"object: receiver = init_gcreceiver(int: team, int: player, bool: "
+"is_goalkeeper)"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:35
+msgid ""
+"team - number of team id. For junior competitions it is recommended to "
+"use unique id"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:36
+msgid "for team in range 60 - 127"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:37
+msgid ""
+"player - number of player displayed at his trunk is_goalkeeper - True if "
+"player is appointed to play role of goalkeeper"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:43
+msgid ""
+"The function is called player_super_cycle because during game player can "
+"change several roles. Each role appointed to player put it into cycle "
+"connected to playing it's role. Cycles of roles are defined in "
+"strategy.py module. player_super_cycle is cycle of cycles. For example "
+"player playing role of 'forward' can change role to 'penalty_shooter' "
+"after main times and extra times of game finished. In some situations you"
+" may decide to switch roles between forward player and goalkeeper. Usage:"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:49
+msgid ""
+"player_super_cycle(object: falling, int: team_id, str: robot_color, int: "
+"player_number, int: SIMULATION,"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:50
+msgid "Path_object: current_work_directory, object: robot, object: pause)"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:53
+msgid ""
+"falling - class object which contains int: falling.Flag which is used to "
+"deliver information about falling from"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:52
+msgid ""
+"low level logic to high level logic. falling.Flag can take 0 - nothing "
+"happend, 1 -falling on stomach, -1 - falling face up, 2 - falling to "
+"left, -2 - falling to right, 3 - exit from playing fase"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:55
+msgid ""
+"team_id - can take value from 60 to 127 robot_color - can be 'red' or "
+"'blue' player_number - can be from 1 to 5, with 1 to be assigned to "
+"goalkeeper SIMULATION    - used for definition of simulation enviroment. "
+"value 4 is used for Webots simulation,"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:59
+msgid "value 2 is used for playing in real robot"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:60
+msgid ""
+"current_work_directory - is Path type object robot       - object of "
+"class which is used for communication between robot model in simulation "
+"and controller"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:62
+msgid ""
+"program. In case of external controller program 'ProtoBuf' communication "
+"manager is used. 'ProtoBuf' - is protocol developed by Google."
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:64
+msgid ""
+"pause       - object of class Pause which contains pause.Flag boolean "
+"variable. It is used to transfer pressing"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/launcher_pb/index.rst:65
+msgid "pause button on player's dashboard event to player's high level logic."
+msgstr ""
+
