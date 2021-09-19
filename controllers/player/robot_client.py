@@ -67,7 +67,7 @@ class RobotClient():
 
         # Receiving the 'welcome message'
         welcome_message = self.socket.recv(8)
-        self.logger.info("Welcome message: ", welcome_message.decode("utf-8"))
+        # self.logger.info("Welcome message: ", welcome_message.decode("utf-8"))
         if welcome_message != b'Welcome\x00':
             self.logger.warning("Incorrect welcom message")
             if welcome_message == b'Refused\x00':
@@ -77,7 +77,7 @@ class RobotClient():
                                 welcome_message.decode("utf-8"))
             self.disconnect_client()
             return False
-        self.logger.info("Connected to ", self.host, self.port)
+        # self.logger.info("Connected to ", self.host, self.port)
         return True
 
     @staticmethod
@@ -103,7 +103,7 @@ class RobotClient():
             message = self.message_manager.build_request_positions(positions)
         elif message_type == "init":
             message = self.message_manager.build_initial_request()
-        self.logger.debug("Sending byte message: %s", message)
+        # self.logger.debug("Sending byte message: %s", message)
         try:
             self.socket.send(message)
         except socket.error as msg:
@@ -118,18 +118,18 @@ class RobotClient():
         """
         content_size = self.socket.recv(self.message_manager.get_size())
         buffer_size = self.message_manager.get_answer_size(content_size)
-        self.logger.debug("Recrive %s bytes size", buffer_size)
+        # self.logger.debug("Recrive %s bytes size", buffer_size)
         data = self.socket.recv(buffer_size)
-        self.logger.debug("Receive %s bytes message", data)
+        # self.logger.debug("Receive %s bytes message", data)
         return self.message_manager.parse_answer_message(data)
 
     def receive2(self):
         messages_list = []
         chunk = self.socket.recv(1024)
         self.rx_buf.extend(chunk)
-        self.logger.debug("Receive %s chunk", chunk)
+        # self.logger.debug("Receive %s chunk", chunk)
         header_size = self.message_manager.get_size()
-        self.logger.debug("Receive %s header size", header_size)
+        # self.logger.debug("Receive %s header size", header_size)
         while True:
             if self.rx_wait_for_data == False:
                 if len(self.rx_buf) >= header_size:
@@ -150,5 +150,5 @@ class RobotClient():
                 else:
                     # not enough data for message body
                     break
-        self.logger.debug("Receive %s bytes message", messages_list)
+        # self.logger.debug("Receive %s bytes message", messages_list)
         return messages_list

@@ -114,7 +114,7 @@ class MessageManager():
             int: Size of answer message.
         """
         size = int.from_bytes(content_size, byteorder='big', signed=False)
-        self.logger.debug("Byte size of received messages: %d", size)
+        # self.logger.debug("Byte size of received messages: %d", size)
         return size
 
     def add_initial_request(self, sensor_name, sensor_time):
