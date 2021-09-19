@@ -3,8 +3,8 @@
 
 """
 import logging
-import google.protobuf
-from google.protobuf import text_format
+# TODO: Can't add google.protobuf to exe
+# from google.protobuf import text_format
 
 import messages_pb2
 
@@ -56,8 +56,9 @@ class MessageManager():
             message from file.
         """
         request = messages_pb2.ActuatorRequests()
-        with open(path, 'r',  encoding="utf-8") as actuator_requests:
-            text_format.Parse(actuator_requests.read(), request)
+        # TODO: Can't add google.protobuf to exe
+        # with open(path, 'r',  encoding="utf-8") as actuator_requests:
+        #     text_format.Parse(actuator_requests.read(), request)
         return request
 
     def build_request_positions(self, positions):
