@@ -4,21 +4,26 @@ import random
 
 class Blurrer():
     """Simulate localization and vision noize. 
-
+    Params is placed in the blurrer.json file.
     Args:
-        object_angle_noize (float, optional): Noize for angle in radians. 
-        Blurrer will uniformly random value from -object_angle_noize to 
-        object_angle_noize and add it to the ground truth course. Defaults to 0.
-        object_distance_noize (float, optional): Noize for 
-        distance in percents divided by 100. Blurrer will uniformly random 
-        value from -object_distance_noize to object_distance_noize and
-        multiply difference of 1 and this value with ground truth distance. Defaults to 0..
-        observation_bonus (float, optional): Blurrer will increase the consistency
-        for every good observation (successfuly processed image). Defaults to 0..
+        object_angle_noize (float, optional): Noize for angle in radians.
+            Blurrer will uniformly random value from -object_angle_noize 
+            to object_angle_noize and add it to the ground truth course. 
+            Defaults to 0.
+        object_distance_noize (float, optional): Noize for distance in 
+            percents divided by 100. Blurrer will uniformly random value 
+            from -object_distance_noize to object_distance_noize and multiply 
+            difference of 1 and this value with ground truth distance. 
+            Defaults to 0..
+        observation_bonus (float, optional): Blurrer will increase the 
+            consistency for every good observation (successfuly processed 
+            image). Defaults to 0..
         step_cost (float, optional): Blurrer will decrease the consistency
-        for every simulation step. Defaults to 0..
-        constant_loc_noize (float, optional): Constant localization noize. Defaults to 0..
-        loc_noize_meters (float, optional): Multiplier for consistency, in meters. Defaults to 0. Defaults to 0..
+            for every simulation step. Defaults to 0..
+        constant_loc_noize (float, optional): Constant localization noize. 
+            Defaults to 0..
+        loc_noize_meters (float, optional): Multiplier for consistency, in 
+            meters. Defaults to 0. Defaults to 0..
     """
 
     def __init__(self, object_angle_noize=0., object_distance_noize=0.,
