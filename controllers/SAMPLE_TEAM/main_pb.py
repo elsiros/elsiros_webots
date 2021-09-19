@@ -36,8 +36,8 @@ from pathlib import Path
 
 #LOGGING_LEVEL = logging.ERROR              # logging will be with fewest number of messages
 #LOGGING_LEVEL = logging.WARNING            # logging with low number of messages
-#LOGGING_LEVEL = logging.INFO               # logging with moderate messaging level
-LOGGING_LEVEL = logging.DEBUG              # logging with large number of messages. Simulation will be slow.
+LOGGING_LEVEL = logging.INFO               # logging with moderate messaging level
+#LOGGING_LEVEL = logging.DEBUG              # logging with large number of messages. Simulation will be slow.
 
 
 SIMULATION = 4                       # 0 - Simulation without physics in Coppelia, 

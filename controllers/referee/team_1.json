@@ -1,6 +1,6 @@
 {
   "name": "Red Team",
-  "robotStartCmd": "Team1/Team1.exe",
+  "robotStartCmd": "SAMPLE_TEAM/main_pb.py",
   "players": {
     "1": {
       "proto": "Robokit1",
