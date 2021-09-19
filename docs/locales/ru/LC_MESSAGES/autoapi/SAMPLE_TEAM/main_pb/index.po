@@ -1,0 +1,113 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021, Starkit Team
+# This file is distributed under the same license as the ELSIROS package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ELSIROS \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-19 14:14+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:2
+msgid ":py:mod:`SAMPLE_TEAM.main_pb`"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:8
+msgid ""
+"The module is designed by team Robokit of Phystech Lyceum and team "
+"Starkit of MIPT under mentorship of Azer Babaev. The module is designed "
+"for creating players' dashboard and alternating between team game with "
+"Game Controller or individual play without Game Controller."
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:16
+msgid "Module Contents"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:19
+msgid "Classes"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:30:<autosummary>:1
+msgid ":obj:`Log <SAMPLE_TEAM.main_pb.Log>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:30:<autosummary>:1
+msgid ":obj:`Falling <SAMPLE_TEAM.main_pb.Falling>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:30:<autosummary>:1
+msgid ":obj:`Pause <SAMPLE_TEAM.main_pb.Pause>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:30:<autosummary>:1
+msgid ":obj:`RedirectText <SAMPLE_TEAM.main_pb.RedirectText>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:30:<autosummary>:1
+msgid ":obj:`Main_Panel <SAMPLE_TEAM.main_pb.Main_Panel>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:32
+msgid "Functions"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:40:<autosummary>:1
+msgid ":obj:`main_procedure <SAMPLE_TEAM.main_pb.main_procedure>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:40:<autosummary>:1
+msgid ":obj:`main <SAMPLE_TEAM.main_pb.main>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:42
+msgid "Attributes"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:54:<autosummary>:1
+msgid ":obj:`LOGGING_LEVEL <SAMPLE_TEAM.main_pb.LOGGING_LEVEL>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:54:<autosummary>:1
+msgid ":obj:`SIMULATION <SAMPLE_TEAM.main_pb.SIMULATION>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:54:<autosummary>:1
+msgid ""
+":obj:`current_work_directory "
+"<SAMPLE_TEAM.main_pb.current_work_directory>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:54:<autosummary>:1
+msgid ":obj:`game_data <SAMPLE_TEAM.main_pb.game_data>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:54:<autosummary>:1
+msgid ":obj:`team_1_data <SAMPLE_TEAM.main_pb.team_1_data>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:54:<autosummary>:1
+msgid ":obj:`team_2_data <SAMPLE_TEAM.main_pb.team_2_data>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:54:<autosummary>:1
+msgid ":obj:`pause <SAMPLE_TEAM.main_pb.pause>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:113
+msgid "Bases: :py:obj:`object`"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/main_pb/index.rst:121
+msgid "Bases: :py:obj:`wx.Frame`"
+msgstr ""
+

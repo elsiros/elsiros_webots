@@ -1,0 +1,108 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021, Starkit Team
+# This file is distributed under the same license as the ELSIROS package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ELSIROS \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-19 14:14+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/compute_Alpha_v3/index.rst:2
+msgid ":py:mod:`SAMPLE_TEAM.Soccer.Motion.compute_Alpha_v3`"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/compute_Alpha_v3/index.rst:8
+msgid ""
+"The module is designed by team Robokit of Phystech Lyceum and team "
+"Starkit of MIPT under mentorship of Azer Babaev. Module can be used for "
+"Inverted Kinematics for legs of Robokit-1 robot. Advantage of module "
+"against other IK implementations is fast and repeatable calculation "
+"benchmark. Result is achieved due to mixed analytic/numerical calculation"
+" method. Module is designed for 6 DOF robot leg. From 6 angles one angle "
+"is calculated using numerical iterations, other 5 angles are obtained "
+"through polynom roots formula calculation. This way prowides fast "
+"benchmark and repeatability. Algorithm being implemented in C language "
+"with integration into firnware of OpenMV is capable to calculated angles "
+"for robot legs within time less than 1ms. Multiple IK solutions are "
+"filtered through applying of angle limits within calculation. This yields"
+" less time for calculation. usage: create class Alpha instance and call "
+"method compute_Alpha_v3 with arguments. Returns list of 0, 1 or 2 lists "
+"of servo angles. List of 0 elements means that IK was not solved. List of"
+" 1 list means 1 possible solition is detected. List of 2 lists means that"
+" plurality of solutions was not filtered by provided arguments."
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/compute_Alpha_v3/index.rst:30
+msgid "Module Contents"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/compute_Alpha_v3/index.rst:33
+msgid "Classes"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/compute_Alpha_v3/index.rst:41:<autosummary>:1
+msgid ":obj:`Alpha <SAMPLE_TEAM.Soccer.Motion.compute_Alpha_v3.Alpha>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/compute_Alpha_v3/index.rst:43
+msgid "Attributes"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/compute_Alpha_v3/index.rst:49:<autosummary>:1
+msgid ":obj:`a5 <SAMPLE_TEAM.Soccer.Motion.compute_Alpha_v3.a5>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/compute_Alpha_v3/index.rst:55
+msgid ""
+"usage: list: angles = self.compute_Alpha_v3(float: xt, float: yt, float: "
+"zt,"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/compute_Alpha_v3/index.rst:55
+msgid "float: x, float: y, float: z, float: w, list: sizes, list: limAlpha)"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/compute_Alpha_v3/index.rst:57
+msgid ""
+"angles: list of floats angles in radians of servos which provide target "
+"positioning and"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/compute_Alpha_v3/index.rst:58
+msgid "orientation of robots' foot"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/compute_Alpha_v3/index.rst:59
+msgid ""
+"xt:     target x coordinate of foots' center point yt:     target y "
+"coordinate of foots' center point zt:     target z coordinate of foots' "
+"center point x:      x coordinate of vector of orientation of foot y:"
+"      y coordinate of vector of orientation of foot z:      z coordinate "
+"of vector of orientation of foot w:      rotation in radians of foot "
+"around vector of orientation sizes:  list of sizes defining distances "
+"between servo axles in biped implementation limAlpha: list of limits "
+"[minimum, maximum] of servomotors measured in number of encoder ticks"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/compute_Alpha_v3/index.rst:68
+msgid "of Kondo series 2500 servomotors."
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/Soccer/Motion/compute_Alpha_v3/index.rst:69
+msgid ""
+"Target coordinates are measured in local robot coordinate system XYZ with"
+" ENU orientation. [0,0,0] point of coordinate system is linked to pelvis "
+"of robot. Foot orientation vector has length 1. Base of vector is at "
+"bottom of foot and tip of vector is directed down when foot is on floor."
+msgstr ""
+

@@ -1,0 +1,67 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021, Starkit Team
+# This file is distributed under the same license as the ELSIROS package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ELSIROS \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-19 14:14+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/autoapi/robot_client/index.rst:2
+msgid ":py:mod:`robot_client`"
+msgstr ""
+
+#: ../../source/autoapi/robot_client/index.rst:8
+msgid "[summary] Returns: [type]: [description]"
+msgstr ""
+
+#: ../../source/autoapi/robot_client/index.rst:15
+msgid "Module Contents"
+msgstr ""
+
+#: ../../source/autoapi/robot_client/index.rst:18
+msgid "Classes"
+msgstr ""
+
+#: ../../source/autoapi/robot_client/index.rst:26:<autosummary>:1
+msgid ":obj:`RobotClient <robot_client.RobotClient>`\\"
+msgstr ""
+
+#: ../../source/autoapi/robot_client/index.rst:29
+#: ../../source/autoapi/robot_client/index.rst:34
+#: ../../source/autoapi/robot_client/index.rst:43
+#: ../../source/autoapi/robot_client/index.rst:54
+#: ../../source/autoapi/robot_client/index.rst:26:<autosummary>:1
+msgid "[summary]"
+msgstr ""
+
+#: ../../source/autoapi/robot_client/index.rst
+msgid "Returns"
+msgstr ""
+
+#: ../../source/autoapi/robot_client/index.rst:36
+msgid "[description]"
+msgstr ""
+
+#: ../../source/autoapi/robot_client/index.rst
+msgid "Return type"
+msgstr ""
+
+#: ../../source/autoapi/robot_client/index.rst:49
+msgid "Сloses the client-side connection"
+msgstr ""
+
+#: ../../source/autoapi/robot_client/index.rst:63
+msgid "!NOT RECOMENDENT TO USE!"
+msgstr ""
+
