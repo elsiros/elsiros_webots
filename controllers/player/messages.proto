@@ -88,7 +88,7 @@ message Message {
 }
 
 message SensorMeasurements {
-  uint32 time = 1;  // time stamp at which the measurements were performed expressed in [ms]
+  uint64 time = 1;  // time stamp at which the measurements were performed expressed in [ms]
   uint64 real_time = 2; // real unix time stamp at which the measurements were performed in [ms]
   repeated Message messages = 3;
   repeated AccelerometerMeasurement accelerometers = 4;
@@ -100,8 +100,9 @@ message SensorMeasurements {
   repeated GyroMeasurement gyros = 10;
   repeated PositionSensorMeasurement position_sensors = 11;
   repeated GPSMeasurement gps = 12;
-  repeated DetectionMeasurement objects = 13;
+  repeated DetectionMeasurement objects_old = 13;
   repeated IMUSensorMeasurement imu = 14;
+  repeated GPSMeasurement objects = 15;
 }
 
 message MotorPosition {

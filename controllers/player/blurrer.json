@@ -1,0 +1,8 @@
+{
+    "object_angle_noize": 0.003,
+    "object_distance_noize": 0.025,
+    "observation_bonus": 0.2,
+    "step_cost": 0.002,
+    "constant_loc_noize": 0.01,
+    "loc_noize_meters": 1
+}

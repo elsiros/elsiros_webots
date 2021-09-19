@@ -26,6 +26,7 @@ GOAL_WIDTH = 1.0
 GOAL_HALF_WIDTH = GOAL_WIDTH / 2
 RESTART_MARKER_WIDTH = 0.65
 REAL_TIME_SET_TO_PLAYING = 5
+REAL_TIME_BEFORE_FIRST_READY_STATE = 5
 
 # game interruptions requiring a free kick procedure
 GAME_INTERRUPTIONS = {
@@ -128,21 +129,10 @@ if not isinstance(game.blue.id, int):
     game.blue.id = int(game.blue.id)
 
 # finalize the game object
-if not hasattr(game, 'minimum_real_time_factor'):
-    game.minimum_real_time_factor = 3  # we garantee that each time step lasts at least 3x simulated time
-if game.minimum_real_time_factor == 0:  # speed up non-real time tests
-    REAL_TIME_BEFORE_FIRST_READY_STATE = 10
-    HALF_TIME_BREAK_REAL_TIME_DURATION = 2
-if not hasattr(game, 'press_a_key_to_terminate'):
-    game.press_a_key_to_terminate = False
 if game.type not in ['NORMAL', 'KNOCKOUT', 'PENALTY']:
     error(f'Unsupported game type: {game.type}.', fatal=True)
 game.penalty_shootout = game.type == 'PENALTY'
-info(f'Minimum real time factor is set to {game.minimum_real_time_factor}.')
-if game.minimum_real_time_factor == 0:
-    info('Simulation will run as fast as possible, real time waiting times will be minimal.')
-else:
-    info(f'Simulation will guarantee a maximum {1 / game.minimum_real_time_factor:.2f}x speed for each time step.')
+
 field_size = getattr(game, 'class').lower()
 game.field = Field(field_size)    
 
@@ -1036,7 +1026,11 @@ else:
                 with open(path, 'w') as file:
                     file.write((red_line + blue_line) if game.red.id < game.blue.id else (blue_line + red_line))
                 command_line = [os.path.join(JAVA_HOME, 'bin', 'java'), '-jar', 'GameControllerSimulator.jar']
-                if game.minimum_real_time_factor < 1:
+                fast_mode = True
+                if hasattr(game, 'limit_speed_to_realtime'):
+                    if game.limit_speed_to_realtime:
+                        fast_mode = False
+                if fast_mode:
                     command_line.append('--fast')
                 #command_line.append('--minimized')
                 command_line.append('--useloopback') # Use a robokit GC fork with supprot for single PC non-networking mode via --useloopback
@@ -1063,7 +1057,7 @@ else:
         error('JAVA_HOME environment variable not set, unable to launch GameController.', fatal=True)
 
 #launching teams start script
-game.external_controllers_process = subprocess.Popen(['python', 'start_teams.py'])
+game.external_controllers_process = subprocess.Popen(['python', 'start_teams.py'], creationflags=subprocess.CREATE_NEW_CONSOLE)
 
 game.state = None
 
@@ -1083,7 +1077,6 @@ game.ball_first_touch_time = 0
 game.ball_last_touch_time_for_display = 0
 game.ball_position = [0, 0, 0]
 game.ball_last_move = 0
-game.real_time_multiplier = 1000 / (game.minimum_real_time_factor * time_step) if game.minimum_real_time_factor > 0 else 10
 game.interruption = None
 game.interruption_countdown = 0
 game.interruption_step = None
@@ -1212,8 +1205,15 @@ finish_just_sended = False
 
 game.ball.enableContactPointsTracking(time_step)
 
+if hasattr(game, 'limit_speed_to_realtime'):
+    if game.limit_speed_to_realtime:
+        supervisor.simulationSetMode(supervisor.SIMULATION_MODE_REAL_TIME)
+    else:
+        supervisor.simulationSetMode(supervisor.SIMULATION_MODE_FAST)
+
+
 info(f'simulationGetMode={supervisor.simulationGetMode()}')
-supervisor.simulationSetMode(supervisor.SIMULATION_MODE_FAST)
+
 
 while supervisor.step(time_step) != -1 and not game.over:    
     perform_status_update() # To show realtime simulation factor if needed
