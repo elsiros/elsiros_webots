@@ -127,11 +127,11 @@ def main_procedure():
     motion.direction_To_Attack = -initial_coord[2]
     time.sleep(1)
     motion.activation()
-    local = Local(motion, glob, coord_odometry = initial_coord)
+    local = Local(logger, motion, glob, coord_odometry = initial_coord)
     motion.local = local
     local.coordinate_record()
     motion.falling_Flag = 0
-    player = Player(role, second_pressed_button, glob, motion, local)
+    player = Player(logger, role, second_pressed_button, glob, motion, local)
     timer1 = robot.current_time
     logger.debug( 'start time: %i',timer1)
     player.play_game()
