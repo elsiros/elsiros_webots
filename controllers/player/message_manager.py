@@ -262,7 +262,7 @@ class MessageManager():
         for sensor in message.messages:
             parse_message.update(
                 {
-                    sensor.name:
+                    "warnings":
                     {
                         "message_type": sensor.message_type,
                         "text": sensor.text,

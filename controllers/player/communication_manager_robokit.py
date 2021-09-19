@@ -58,6 +58,8 @@ class CommunicationManager():
 
     def __update_history(self, message):
         for sensor in message:
+            if sensor == "warnings":
+                self.logger.warning(message[sensor])
             if sensor == "time":
                 delta = message[sensor]['sim time'] - self.current_time
                 if delta > 5:
