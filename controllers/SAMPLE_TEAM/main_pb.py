@@ -80,8 +80,8 @@ class Log:
 
     def get_logger(self, name):
         logger = logging.getLogger(name)
-        logger.setLevel(logging.DEBUG)
-        logger.addHandler(self.get_file_handler())
+        logger.setLevel(logging.ERROR)
+        #logger.addHandler(self.get_file_handler())
         logger.addHandler(self.get_stream_handler())
         return logger
 
