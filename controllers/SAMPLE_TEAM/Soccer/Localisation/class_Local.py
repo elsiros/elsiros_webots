@@ -10,7 +10,8 @@ import math, time, json, array
 import logging
 
 class Local():
-    def __init__ (self, motion, glob, coord_odometry = [0.0,0.0,0.0]):
+    def __init__ (self, logger, motion, glob, coord_odometry = [0.0,0.0,0.0]):
+        self.logger = logger
         self.motion = motion
         self.glob = glob
         self.coord_shift = [0.0, 0.0, 0.0]
@@ -58,7 +59,7 @@ class Local():
 
     def group_obstacles(self):
         grouped_obstacles = []
-        print('obstacles(raw): ', self.glob.obstacles)
+        self.logger.debug('obstacles(raw): ' + str(self.glob.obstacles))
         while(len(self.glob.obstacles) > 0):
             obstacle0 = self.glob.obstacles.pop(0)
             group_number = 1
@@ -85,7 +86,7 @@ class Local():
                 obstacle[0] = global_x
                 obstacle[1] = global_y
                 self.glob.obstacles.append(obstacle)
-        print('obstacles(processed): ', self.glob.obstacles)
+        self.logger.debug('obstacles(processed): ' + str(self.glob.obstacles))
 
     def read_Localization_marks(self):
         if self.robot_moved == True:

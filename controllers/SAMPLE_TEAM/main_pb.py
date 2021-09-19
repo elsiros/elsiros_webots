@@ -61,26 +61,27 @@ with open('../referee/' + game_data['blue']['config'], "r") as f:
 class Log:
     def __init__(self, filename):
         self.filename = filename
-        self.log_format = f"%(asctime)s - [%(levelname)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s"
+        self.log_format_file = f"%(asctime)s - [%(levelname)s] - %(name)s - (%(filename)s).%(funcName)s(%(lineno)d) - %(message)s"
+        self.log_format_console = f"%(message)s"
         self.file_level = logging.DEBUG
         self.stream_level = logging.INFO
 
     def get_file_handler(self):
         file_handler = logging.FileHandler(self.filename)
         file_handler.setLevel(self.file_level)
-        file_handler.setFormatter(logging.Formatter(self.log_format))
+        file_handler.setFormatter(logging.Formatter(self.log_format_file))
         return file_handler
 
     def get_stream_handler(self):
         stream_handler = logging.StreamHandler(sys.stdout)
         stream_handler.setLevel(self.stream_level)
-        stream_handler.setFormatter(logging.Formatter(self.log_format))
+        stream_handler.setFormatter(logging.Formatter(self.log_format_console))
         return stream_handler
 
     def get_logger(self, name):
         logger = logging.getLogger(name)
-        logger.setLevel(logging.INFO)
-        logger.addHandler(self.get_file_handler())
+        logger.setLevel(logging.ERROR)
+        #logger.addHandler(self.get_file_handler())
         logger.addHandler(self.get_stream_handler())
         return logger
 
@@ -99,9 +100,11 @@ pause = Pause()
 def main_procedure():
     global pause
     global log
+    global logger
     Port = sys.argv[1]
     logger.info('port = %s', Port)
-    robot = CommunicationManager(1, '127.0.0.1', int(Port), log, team_color=sys.argv[3].upper(), player_number = int(sys.argv[4]), time_step = 25)
+    logarg =  log.get_logger('communication_manager')
+    robot = CommunicationManager(1, '127.0.0.1', int(Port), logarg, team_color=sys.argv[3].upper(), player_number = int(sys.argv[4]), time_step = 25)
 
     falling = Falling()
 
@@ -111,7 +114,7 @@ def main_procedure():
     if team_id > 0:
         robot_color = sys.argv[3]
         robot_number = int(sys.argv[4])
-        player_super_cycle(falling, team_id, robot_color, robot_number, SIMULATION, current_work_directory, robot, pause)
+        player_super_cycle(falling, team_id, robot_color, robot_number, SIMULATION, current_work_directory, robot, pause, logger)
 
     second_pressed_button = int(sys.argv[6])
     initial_coord = eval(sys.argv[7])
@@ -119,16 +122,16 @@ def main_procedure():
     logger.info('Player is going to play without Game Controller')
     glob = Glob(SIMULATION, current_work_directory)
     glob.pf_coord = initial_coord
-    motion = Motion_sim(glob, robot, None, pause)
+    motion = Motion_sim(glob, robot, None, pause, logger)
     motion.sim_Start()
     motion.direction_To_Attack = -initial_coord[2]
     time.sleep(1)
     motion.activation()
-    local = Local(motion, glob, coord_odometry = initial_coord)
+    local = Local(logger, motion, glob, coord_odometry = initial_coord)
     motion.local = local
     local.coordinate_record()
     motion.falling_Flag = 0
-    player = Player(role, second_pressed_button, glob, motion, local)
+    player = Player(logger, role, second_pressed_button, glob, motion, local)
     timer1 = robot.current_time
     logger.debug( 'start time: %i',timer1)
     player.play_game()
@@ -195,11 +198,13 @@ class Main_Panel(wx.Frame):
         #self.Centre()
 
     def ShowMessage1(self, event):
+        global logger
         logger.info('Exit button pressed')
         sys.stdout = sys.__stdout__
         sys.exit(0)
 
     def ShowMessage2(self, event):
+        global logger
         global pause
         if pause.Flag:
             pause.Flag = False

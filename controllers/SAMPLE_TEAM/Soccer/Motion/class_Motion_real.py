@@ -39,8 +39,8 @@ class Motion_real(Motion1):
                 self.neck_tilt = x[1]
             if not self.falling_Test() == 0:
                 self.local.quality =0
-                if self.falling_Flag == 3: print('STOP!')
-                else: print('FALLING!!!', self.falling_Flag)
+                if self.falling_Flag == 3: self.logger.debug('STOP!')
+                else: self.logger.debug('FALLING!!!' + str(self.falling_Flag))
                 return False, 0, 0, [0, 0]
             self.move_head(self.neck_pan, self.neck_tilt)
             self.refresh_Orientation()
@@ -62,7 +62,7 @@ class Motion_real(Motion1):
             alpha = math.atan(E)
             alpha_d = math.pi/2 - alpha
             self.neck_tilt = int((-alpha_d)/self.TIK2RAD + self.neck_calibr)
-            #print('self.neck_pan =', self.neck_pan, 'self.neck_tilt =', self.neck_tilt)
+            #self.logger.debug('self.neck_pan =' + str(self.neck_pan) + 'self.neck_tilt =' + str(self.neck_tilt))
             self.move_head(self.neck_pan, self.neck_tilt)
             self.refresh_Orientation()
             a, course, dist, speed = self.detect_Ball_Speed(with_Localization)
@@ -111,8 +111,8 @@ class Motion_real(Motion1):
                 self.neck_tilt = x[1]
             if not self.falling_Test() == 0:
                 self.local.quality =0
-                if self.falling_Flag == 3: print('STOP!')
-                else: print('FALLING!!!', self.falling_Flag)
+                if self.falling_Flag == 3: self.logger.debug('STOP!')
+                else: self.logger.debug('FALLING!!!' + str(self.falling_Flag))
                 return False, 0, 0, [0, 0]
             self.move_head(self.neck_pan, self.neck_tilt)
             self.refresh_Orientation()
@@ -139,7 +139,7 @@ class Motion_real(Motion1):
         #self.pause_in_ms(100)
         Ballposition = self.sim_Get_Ball_Position()
         if with_Localization: self.local.read_Localization_marks()
-        #print('Ballposition: ', Ballposition)
+        self.logger.debug('Ballposition: ' + str(Ballposition))
         if Ballposition:
             course, distance = Ballposition
             return True, course, distance
@@ -215,8 +215,8 @@ class Motion_real(Motion1):
     def localisation_Motion(self):
         if not self.falling_Test() == 0:
             self.local.quality =0
-            if self.falling_Flag == 3: print('STOP!')
-            else: print('FALLING!!!', self.falling_Flag)
+            if self.falling_Flag == 3: self.logger.debug('STOP!')
+            else: self.logger.debug('FALLING!!!' + str(self.falling_Flag))
             return[]
         if self.robot_In_0_Pose == False:
             self.simulateMotion(name = 'Initial_Pose')
@@ -259,7 +259,7 @@ class Motion_real(Motion1):
         dist = dist_mm/1000
         #self.refresh_Orientation()
         initial_direction = self.imu_body_yaw()
-        print('initial_direction', initial_direction)
+        self.logger.debug('initial_direction' + str(initial_direction))
         n = int(math.floor((dist_mm*math.cos(napravl)-self.first_step_yield)/self.cycle_step_yield)+1)+1         #calculating the number of potential full steps forward
         displacement = dist_mm*math.sin(napravl)
         if displacement > 0:
@@ -349,16 +349,12 @@ class Motion_real(Motion1):
                 rotation = self.normalize_rotation(rotation)
                 stepLength1 = stepLength
                 sideLength1 = sideLength
-                #print('kick_direction =', kick_direction,'self.imu_body_yaw() = ', self.imu_body_yaw(), 'rotation = ', rotation )
+                self.logger.debug('kick_direction =' + str(kick_direction) + ' self.imu_body_yaw() = ' + str(self.imu_body_yaw()) + ' rotation = ' + str(rotation) )
                 if cycle == 0: stepLength1 = stepLength / 3
                 if cycle == 1: stepLength1 = stepLength * 2 / 3
                 stepLength1 += stepLengthResidue
                 sideLength1 += sideLengthResidue
-                #print('sideLength = ', sideLength)
-                #if abs(sideLength) > 20:
-                #    sideLength = sideLength / abs(sideLength) * 20
                 self.walk_Cycle(stepLength1, sideLength1, invert*rotation,cycle,number_Of_Cycles)
-                #self.refresh_Orientation()
                 delta_yaw = self.norm_yaw(self.imu_body_yaw() - init_yaw)
                 stepLengthResidue = stepLength1 * (1 - math.cos(delta_yaw)) - sideLength1 * math.sin(delta_yaw) * invert
                 sideLengthResidue = sideLength1 * (1 - math.cos(delta_yaw)) + stepLength1 * math.sin(delta_yaw) * invert
@@ -417,11 +413,11 @@ class Motion_real(Motion1):
         dest_yaw = self.p.coord2yaw(dest[1][0] - dest[0][0], dest[1][1] - dest[0][1] )
         x1, y1, x2, y2, cx, cy, R, CW = centers[0]
         delta_yaw = self.p.delta_yaw(start_yaw, dest_yaw, CW)
-        #print('delta_yaw:', delta_yaw, 'CW:', CW)
+        #self.logger.debug('delta_yaw:' + str(delta_yaw) + ' CW:' + str(CW))
         number_Of_Cycles = math.ceil(abs(delta_yaw / 0.2))
         while True:
             delta_yaw_step = delta_yaw / number_Of_Cycles
-            #print('R =', R, 'delta_yaw_step =', delta_yaw_step )
+            #self.logger.debug('R =' + str(R) + ' delta_yaw_step =' + str(delta_yaw_step) )
             stepLength = R * abs(delta_yaw_step) * 1000 * 64 / self.cycle_step_yield * 1.1
             if stepLength <= 64: break
             else: number_Of_Cycles += 1
@@ -437,7 +433,7 @@ class Motion_real(Motion1):
             rotation = start_yaw + delta_yaw_step * (cycle + 1) - self.imu_body_yaw()
             rotation = self.normalize_rotation(rotation)
             self.walk_Cycle(stepLength1, sideLength, rotation, cycle, number_Of_Cycles+1)
-            #print('stepLength1 =', stepLength1, 'rotation =', rotation, 'cycle =', cycle, 'number_Of_Cycles =', number_Of_Cycles)
+            #self.logger.debug('stepLength1 =' + str(stepLength1) + 'rotation =' + str(rotation ) + 'cycle =' + str(cycle)  + 'number_Of_Cycles =' + str(number_Of_Cycles))
         stepLength_old = stepLength
         acceleration = False
 # 1-st straight segment 
@@ -457,7 +453,6 @@ class Motion_real(Motion1):
                 rotation = dest_yaw - self.imu_body_yaw()
                 rotation = self.normalize_rotation(rotation)
                 self.walk_Cycle(stepLength1, sideLength, rotation, cycle + 1, number_Of_Cycles+2)
-                #print('stepLength1 =', stepLength1, 'rotation =', rotation, 'cycle =', cycle, 'number_Of_Cycles =', number_Of_Cycles)
             stepLength_old = stepLength
             acceleration = False
             for i in range(len(centers)-2):
@@ -465,11 +460,9 @@ class Motion_real(Motion1):
                 dest_yaw = self.p.coord2yaw(dest[2*i+3][0] - dest[2*i+2][0], dest[2*i+3][1] - dest[2*i+2][1])
                 x1, y1, x2, y2, cx, cy, R, CW = centers[i+1]
                 delta_yaw = self.p.delta_yaw(start_yaw, dest_yaw, CW)
-                #print('delta_yaw:', delta_yaw, 'CW:', CW)
                 number_Of_Cycles = math.ceil(abs(delta_yaw / 0.2))
                 while True:
                     delta_yaw_step = delta_yaw / number_Of_Cycles
-                    #print('R =', R, 'delta_yaw_step =', delta_yaw_step )
                     stepLength = R * abs(delta_yaw_step) * 1000 * 64 / self.cycle_step_yield * 1.1
                     if stepLength <= 64: break
                     else: number_Of_Cycles += 1
@@ -486,10 +479,8 @@ class Motion_real(Motion1):
                     rotation = self.normalize_rotation(rotation)
                     if price < 100:
                         self.walk_Cycle(stepLength1, sideLength, rotation, cycle+1, number_Of_Cycles+2)
-                        #print('stepLength1 =', stepLength1, 'rotation =', rotation, 'cycle =', cycle, 'number_Of_Cycles =', number_Of_Cycles)
                     else:
                         self.walk_Cycle(stepLength1, sideLength, rotation, cycle+1, number_Of_Cycles+1)
-                        #print('stepLength1 =', stepLength1, 'rotation =', rotation, 'cycle =', cycle, 'number_Of_Cycles =', number_Of_Cycles)
                 stepLength_old = stepLength
                 acceleration = False
                 if price >= 100: break
@@ -515,11 +506,9 @@ class Motion_real(Motion1):
                 dest_yaw = target_yaw
                 x1, y1, x2, y2, cx, cy, R, CW = centers[len(centers)-1]
                 delta_yaw = self.p.delta_yaw(start_yaw, dest_yaw, CW)
-                #print('delta_yaw:', delta_yaw, 'CW:', CW)
                 number_Of_Cycles = math.ceil(abs(delta_yaw / 0.2))
                 while True:
                     delta_yaw_step = delta_yaw / number_Of_Cycles
-                    #print('R =', R, 'delta_yaw_step =', delta_yaw_step )
                     stepLength = R * abs(delta_yaw_step) * 1000 * 64 / self.cycle_step_yield * 1.1
                     if stepLength <= 64: break
                     else: number_Of_Cycles += 1

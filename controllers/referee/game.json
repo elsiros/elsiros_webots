@@ -4,7 +4,7 @@
   "kickoff": 61,
   "class": "JUNIOR",
   "host": "127.0.0.1",
-  "minimum_real_time_factor": 0,
+  "limit_speed_to_realtime": true,
   "side_left": 62,
   "press_a_key_to_terminate": true,
   "use_bouncing_server": false,

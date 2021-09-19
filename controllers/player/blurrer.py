@@ -37,7 +37,8 @@ class Blurrer():
         self.constant_loc_noize = constant_loc_noize
         self.loc_noize_meters = loc_noize_meters
 
-        self.load_json("blurrer.json")
+        params = self.load_json("../player/blurrer.json")
+
         self.consistency = 1
         self.receiver = None
         #penalty = self.receiver.player_state.penalty

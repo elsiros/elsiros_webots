@@ -31,13 +31,21 @@ possible_values_for_role = {
 
 """
 second_pressed_button can take following values:
-if role is 'run_test' then: 1 - for RUN_TEST_10_STEPS, 2 - SIDE_STEP_RIGHT_TEST, 3 - SIDE_STEP_LEFT_TEST, 4 - for RUN_TEST_20_STEPS
-5 - Rotation Right Test, 6 - Rotation Left Test, 9 - Spot Walk Test
+if role is 'run_test' then: 
+1 - for RUN_TEST_10_STEPS, 
+2 - SIDE_STEP_RIGHT_TEST, 
+3 - SIDE_STEP_LEFT_TEST, 
+4 - for RUN_TEST_20_STEPS
+5 - Rotation Right Test, 
+6 - Rotation Left Test, 
+9 - Spot Walk Test
 if role is 'forward' or 'goalkeeper', or 'forward_old_style' or 'goalkeeper_old_style', or 'penalty_Shooter', or 'penalty_Goalkeeper'
-then 1 - start game, 4 - start game with 10 sec pause.
+then 
+1 - start game, 
+4 - start game with 10 sec pause.
 """
 
-role01 = possible_values_for_role['8']
+role01 = possible_values_for_role['1']
 second_pressed_button = '4'
 initial_coord = '[0.0, 0, 0]'
 robot_color = 'red'
@@ -49,6 +57,11 @@ with open(filename01, "w") as f01:
     print(datetime.datetime.now(), file = f01)
     p01 = subprocess.Popen(['python', 'main_pb.py', port01, team_id, robot_color, robot_number, role01, second_pressed_button, initial_coord], stderr=f01)
 
+"""
+depending of how many players you have at training scene you can uncomment following sections of module
+Pay attention to communication port number in robot model controllerArgs 1-st argument something like "7001".
+Port number of robot model and in external controller must be equal
+"""
 
 #role02 = possible_values_for_role['1']
 #second_pressed_button = '1'
