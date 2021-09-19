@@ -42,15 +42,23 @@ port01 = str(game_data['red']['ports'][0])
 filename01 = "output" + f"{port01}"+ ".txt" 
 with open(filename01, "w") as f01:
     print(datetime.datetime.now(), file = f01)
-    p01 = subprocess.Popen(['python', red_team_controller_filename, port01, str(game_data['red']['id']),
+    if Path(red_team_data['robotStartCmd']).suffix == '.py':
+        p01 = subprocess.Popen(['python', red_team_controller_filename, port01, str(game_data['red']['id']),
                               'red', '1', red_team_data['players']['1']['role']], stderr=f01)
+    else:
+        p01 = subprocess.Popen([red_team_controller_filename, port01, str(game_data['red']['id']), 'red', '1',
+                               red_team_data['players']['1']['role']], stderr=f01)
 
 port02 = str(game_data['red']['ports'][1])
 filename02 = "output" + f"{port02}"+ ".txt"
 with open(filename02, "w") as f02:
     print(datetime.datetime.now(), file = f02)
-    p02 = subprocess.Popen(['python', red_team_controller_filename, port02, str(game_data['red']['id']),
-                              'red', '2', red_team_data['players']['2']['role']], stderr=f02)
+    if Path(red_team_data['robotStartCmd']).suffix == '.py':
+        p02 = subprocess.Popen(['python', red_team_controller_filename, port02, str(game_data['red']['id']),
+                                  'red', '2', red_team_data['players']['2']['role']], stderr=f02)
+    else:
+        p02 = subprocess.Popen([red_team_controller_filename, port02, str(game_data['red']['id']),
+                                  'red', '2', red_team_data['players']['2']['role']], stderr=f02)
 
 os.chdir(current_working_directory.parent/blue_team_controller_subdirectory)
 
@@ -58,15 +66,23 @@ port21 = str(game_data['blue']['ports'][0])
 filename21 = "output" + f"{port21}"+ ".txt"
 with open(filename21, "w") as f21:
     print(datetime.datetime.now(), file = f21)
-    p21 = subprocess.Popen(['python', blue_team_controller_filename, port21 , str(game_data['blue']['id']),
-                              'blue', '1', blue_team_data['players']['1']['role']],  stderr=f21)
+    if Path(blue_team_data['robotStartCmd']).suffix == '.py':
+        p21 = subprocess.Popen(['python', blue_team_controller_filename, port21 , str(game_data['blue']['id']),
+                                  'blue', '1', blue_team_data['players']['1']['role']],  stderr=f21)
+    else:
+        p21 = subprocess.Popen([blue_team_controller_filename, port21 , str(game_data['blue']['id']),
+                            'blue', '1', blue_team_data['players']['1']['role']],  stderr=f21)
 
 port22 = str(game_data['blue']['ports'][1])
 filename22 = "output" + f"{port22}"+ ".txt"
 with open(filename22, "w") as f22:
     print(datetime.datetime.now(), file = f22)
-    p22 = subprocess.Popen(['python', blue_team_controller_filename, port22, str(game_data['blue']['id']),
-                              'blue', '2', blue_team_data['players']['2']['role']], stderr=f22)
+    if Path(blue_team_data['robotStartCmd']).suffix == '.py':
+        p22 = subprocess.Popen(['python', blue_team_controller_filename, port22, str(game_data['blue']['id']),
+                                  'blue', '2', blue_team_data['players']['2']['role']], stderr=f22)
+    else:
+        p22 = subprocess.Popen([blue_team_controller_filename, port22, str(game_data['blue']['id']),
+                                  'blue', '2', blue_team_data['players']['2']['role']], stderr=f22)
 
 p01.wait()
 p02.wait()

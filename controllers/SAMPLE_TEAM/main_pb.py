@@ -32,7 +32,13 @@ import threading
 import logging
 from pathlib import Path
 
-current_work_directory = Path.cwd()
+# Uncomment one of 4 following lines to set proper logging level
+
+#LOGGING_LEVEL = logging.ERROR              # logging will be with fewest number of messages
+#LOGGING_LEVEL = logging.WARNING            # logging with low number of messages
+#LOGGING_LEVEL = logging.INFO               # logging with moderate messaging level
+LOGGING_LEVEL = logging.DEBUG              # logging with large number of messages. Simulation will be slow.
+
 
 SIMULATION = 4                       # 0 - Simulation without physics in Coppelia, 
                                      # 1 - Simulation synchronous with physics in Coppelia, 
@@ -40,6 +46,7 @@ SIMULATION = 4                       # 0 - Simulation without physics in Coppeli
                                      # 3 - Simulation streaming with physics in Coppelia
                                      # 4 - Simulation in Webots
 
+current_work_directory = Path.cwd()
 from Soccer.Localisation.class_Glob import Glob
 from Soccer.Localisation.class_Local import *
 from Soccer.strategy import Player
@@ -80,8 +87,8 @@ class Log:
 
     def get_logger(self, name):
         logger = logging.getLogger(name)
-        logger.setLevel(logging.ERROR)
-        #logger.addHandler(self.get_file_handler())
+        logger.setLevel(LOGGING_LEVEL)
+        logger.addHandler(self.get_file_handler())
         logger.addHandler(self.get_stream_handler())
         return logger
 

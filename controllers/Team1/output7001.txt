@@ -1,0 +1,11 @@
+2021-09-19 13:55:57.769123
+Traceback (most recent call last):
+  File "main_pb.py", line 56, in <module>
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\player\communication_manager_robokit.py", line 5, in <module>
+    from robot_client import RobotClient
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\player\robot_client.py", line 9, in <module>
+    from message_manager import MessageManager
+  File "C:\Users\ab\Documents\GitHub\elsiros_webots\controllers\player\message_manager.py", line 6, in <module>
+    import google.protobuf
+ModuleNotFoundError: No module named 'google'
+[14708] Failed to execute script 'main_pb' due to unhandled exception!

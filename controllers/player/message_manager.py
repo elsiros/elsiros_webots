@@ -3,6 +3,7 @@
 
 """
 import logging
+import google.protobuf
 from google.protobuf import text_format
 
 import messages_pb2
