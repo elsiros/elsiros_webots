@@ -59,6 +59,8 @@ class CommunicationManager():
 
     def __update_history(self, message):
         for sensor in message:
+            if sensor == "warnings":
+                self.logger.warning(message[sensor])
             if sensor == "time":
                 delta = message[sensor]['sim time'] - self.current_time
                 if delta > 5:
@@ -224,7 +226,7 @@ class CommunicationManager():
         self.tx_message = data
         self.tx_mutex.release()
 
-        self.logger.debug(data)
+        # self.logger.debug(data)
 
         if "right_hip_yaw" in data.keys():
             self.__last_message = data
@@ -235,8 +237,8 @@ class CommunicationManager():
             self.last_head_pitch = data["head_pitch"]
 
     def run(self):
-        """Infinity cycle of sending and receiving messages. 
-        Should be launched in sepparet thread. Communication manager 
+        """Infinity cycle of sending and receiving messages.
+        Should be launched in sepparet thread. Communication manager
         launch this func itself in constructor
         """
         while(True):

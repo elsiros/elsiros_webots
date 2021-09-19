@@ -9,11 +9,12 @@ import messages_pb2
 
 
 class MessageManager():
-    def __init__(self, head_buffer_size=4):
+    def __init__(self, logger = logging,  head_buffer_size=4):
         """
         Args:
             head_buffer_size (int): Value of heder byte buffer. Defaults to 4.
         """
+        self.logger = logger
         self.size = head_buffer_size
         self.init_request = None
 
@@ -102,8 +103,7 @@ class MessageManager():
         """
         return self.generate_message(self.build_request_from_file(path))
 
-    @staticmethod
-    def get_answer_size(content_size):
+    def get_answer_size(self, content_size):
         """
         Сalculating message size from header bytes
 
@@ -114,7 +114,7 @@ class MessageManager():
             int: Size of answer message.
         """
         size = int.from_bytes(content_size, byteorder='big', signed=False)
-        logging.debug("Byte size of received messages: %d", size)
+        # self.logger.debug("Byte size of received messages: %d", size)
         return size
 
     def add_initial_request(self, sensor_name, sensor_time):
@@ -262,7 +262,7 @@ class MessageManager():
         for sensor in message.messages:
             parse_message.update(
                 {
-                    sensor.name:
+                    "warnings":
                     {
                         "message_type": sensor.message_type,
                         "text": sensor.text,
