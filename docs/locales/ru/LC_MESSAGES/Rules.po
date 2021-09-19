@@ -1,0 +1,150 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021, Starkit Team
+# This file is distributed under the same license as the ELSIROS package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ELSIROS \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-13 11:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/Rules.md:1
+msgid "Rules"
+msgstr "Правила"
+
+#: ../../source/Rules.md:2
+msgid ""
+"![RCJ Humanoid Soccer Rules2021 Simulation-0](https://user-"
+"images.githubusercontent.com/57300002/132963531-32f1135e-702b-4bfb-"
+"b3a0-214e4c4750ee.jpg) ![RCJ Humanoid Soccer Rules2021 "
+"Simulation-1](https://user-"
+"images.githubusercontent.com/57300002/132963534-c66cd7b3-b987-4f04-80f1-0cbd8d4fb32a.jpg)"
+" ![RCJ Humanoid Soccer Rules2021 Simulation-2](https://user-"
+"images.githubusercontent.com/57300002/132963538-e6ed7a78-e2da-"
+"48a2-a6e5-bc1a42bfcdde.jpg) ![RCJ Humanoid Soccer Rules2021 "
+"Simulation-3](https://user-"
+"images.githubusercontent.com/57300002/132963557-ce633d1a-22c6-4646-8eef-"
+"d4eae5f34a76.jpg) ![RCJ Humanoid Soccer Rules2021 Simulation-4](https"
+"://user-images.githubusercontent.com/57300002/132963562-a29c5d0f-ec4c-"
+"424b-aee4-c09126567a16.jpg) ![RCJ Humanoid Soccer Rules2021 "
+"Simulation-5](https://user-"
+"images.githubusercontent.com/57300002/132963570-a55344e8-28dc-"
+"431f-9011-2c5ac9afedf8.jpg) ![RCJ Humanoid Soccer Rules2021 "
+"Simulation-6](https://user-"
+"images.githubusercontent.com/57300002/132963575-659660c3-bc6d-468f-"
+"9f94-ad5f407d5b76.jpg) ![RCJ Humanoid Soccer Rules2021 "
+"Simulation-7](https://user-"
+"images.githubusercontent.com/57300002/132963578-86a51ef6-cbbb-"
+"4ee6-9fd7-2167be913d38.jpg) ![RCJ Humanoid Soccer Rules2021 "
+"Simulation-8](https://user-"
+"images.githubusercontent.com/57300002/132963584-3a9a0a92-8f21-48dd-af7f-"
+"c1885f3e57f8.jpg) ![RCJ Humanoid Soccer Rules2021 Simulation-9](https"
+"://user-images.githubusercontent.com/57300002/132963590-54c9544f-"
+"0f13-4545-a9ca-0781de26ba3d.jpg) ![RCJ Humanoid Soccer Rules2021 "
+"Simulation-10](https://user-"
+"images.githubusercontent.com/57300002/132963595-3227230d-"
+"94a8-4a55-9024-6e3a112955bd.jpg) ![RCJ Humanoid Soccer Rules2021 "
+"Simulation-11](https://user-"
+"images.githubusercontent.com/57300002/132963598-e65a7477-b589-4f3f-8577-3d0f34607fd0.jpg)"
+" ![RCJ Humanoid Soccer Rules2021 Simulation-12](https://user-"
+"images.githubusercontent.com/57300002/132963603-c5b30b34-97db-"
+"4a17-be52-e77bdc3e6bc8.jpg) ![RCJ Humanoid Soccer Rules2021 "
+"Simulation-13](https://user-"
+"images.githubusercontent.com/57300002/132963608-abfe4807-be8d-4dbe-"
+"aa08-7cd59d7f08b8.jpg) ![RCJ Humanoid Soccer Rules2021 "
+"Simulation-14](https://user-"
+"images.githubusercontent.com/57300002/132963611-dce8879d-18e4-4270-8c5f-"
+"a9725c8f3b38.jpg)"
+msgstr ""
+"![image](https://user-images.githubusercontent.com/26925610/133496433-d81ecee4-8200-447d-8515-2a44c0e16a08.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133496841-b8b0a091-31ca-4d82-9ce5-39d9c155a8d8.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133496898-f1164a2f-9df1-4768-b70e-89d85f971659.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133496955-2030c1ff-a19f-4e74-b7ef-1756a92349ee.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133497013-d4537ef5-3a69-445a-ab9e-084405fc3f75.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133497045-ab993e08-6815-4942-bdca-d08efadae5da.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133497077-451c9da9-1dcb-489b-b8f0-f7dc32691b29.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133497114-e7ca4660-b387-4865-ac06-82d1c65f04a1.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133497143-0c7232db-35c1-4a95-8d4a-602c70bcb287.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133497171-f903ba38-1e3b-4274-a42f-8a07aeb7683f.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133497220-aa95857a-6ec9-4ae6-86c7-b527543bfbbd.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133497256-2a5a0605-1399-486e-bb4d-fb3fa5b29559.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133497315-c76cc0a4-8d8d-46a4-b3c1-7fdfbfff34a7.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133497371-4e4dd3f4-e77d-49ed-a17d-fc26ac01649c.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133497416-fa80b804-070e-43ef-9312-00dd8a9854be.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133497450-f2b7deff-09a3-435d-ad51-3b7e1b5b3881.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133497497-167edcf1-1064-49f1-a0e7-d8392776b7f3.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133497536-fb09b87c-49ef-4d1b-9fdc-3dbce45bcd2f.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133497576-bd300f70-c823-41a8-a343-60b648b52b55.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133497609-d0d4f9a4-933c-4938-aecb-a1d30143a7c1.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133497636-f89884c7-82bd-4f32-82b9-a11683d8be26.png)"
+"![image](https://user-images.githubusercontent.com/26925610/133497657-ff5becb9-cbce-4568-87df-ecbf88f8a46b.png)"
+
+#: ../../source/Rules.md:2
+msgid "RCJ Humanoid Soccer Rules2021 Simulation-0"
+msgstr ""
+
+#: ../../source/Rules.md:2
+msgid "RCJ Humanoid Soccer Rules2021 Simulation-1"
+msgstr ""
+
+#: ../../source/Rules.md:2
+msgid "RCJ Humanoid Soccer Rules2021 Simulation-2"
+msgstr ""
+
+#: ../../source/Rules.md:2
+msgid "RCJ Humanoid Soccer Rules2021 Simulation-3"
+msgstr ""
+
+#: ../../source/Rules.md:2
+msgid "RCJ Humanoid Soccer Rules2021 Simulation-4"
+msgstr ""
+
+#: ../../source/Rules.md:2
+msgid "RCJ Humanoid Soccer Rules2021 Simulation-5"
+msgstr ""
+
+#: ../../source/Rules.md:2
+msgid "RCJ Humanoid Soccer Rules2021 Simulation-6"
+msgstr ""
+
+#: ../../source/Rules.md:2
+msgid "RCJ Humanoid Soccer Rules2021 Simulation-7"
+msgstr ""
+
+#: ../../source/Rules.md:2
+msgid "RCJ Humanoid Soccer Rules2021 Simulation-8"
+msgstr ""
+
+#: ../../source/Rules.md:2
+msgid "RCJ Humanoid Soccer Rules2021 Simulation-9"
+msgstr ""
+
+#: ../../source/Rules.md:2
+msgid "RCJ Humanoid Soccer Rules2021 Simulation-10"
+msgstr ""
+
+#: ../../source/Rules.md:2
+msgid "RCJ Humanoid Soccer Rules2021 Simulation-11"
+msgstr ""
+
+#: ../../source/Rules.md:2
+msgid "RCJ Humanoid Soccer Rules2021 Simulation-12"
+msgstr ""
+
+#: ../../source/Rules.md:2
+msgid "RCJ Humanoid Soccer Rules2021 Simulation-13"
+msgstr ""
+
+#: ../../source/Rules.md:2
+msgid "RCJ Humanoid Soccer Rules2021 Simulation-14"
+msgstr ""
+

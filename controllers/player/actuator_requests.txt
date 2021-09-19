@@ -1,0 +1,9 @@
+sensor_time_steps {
+  name: "camera"
+  timeStep: 20
+}
+
+sensor_time_steps {
+  name: "gps_body"
+  timeStep: 5
+}

@@ -1,0 +1,52 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021, Starkit Team
+# This file is distributed under the same license as the ELSIROS package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ELSIROS \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-19 14:14+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/autoapi/SAMPLE_TEAM/training/index.rst:2
+msgid ":py:mod:`SAMPLE_TEAM.training`"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/training/index.rst:8
+msgid ""
+"The module is designed by team Robokit of Phystech Lyceum and team "
+"Starkit of MIPT under mentorship of A. Babaev."
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/training/index.rst:11
+msgid "This module is used for tuning of robot"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/training/index.rst:12
+msgid "must be used with training world"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/training/index.rst:19
+msgid "Module Contents"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/training/index.rst:24
+msgid ""
+"second_pressed_button can take following values: if role is 'run_test' "
+"then: 1 - for RUN_TEST_10_STEPS, 2 - SIDE_STEP_RIGHT_TEST, 3 - "
+"SIDE_STEP_LEFT_TEST, 4 - for RUN_TEST_20_STEPS 5 - Rotation Right Test, 6"
+" - Rotation Left Test, 9 - Spot Walk Test if role is 'forward' or "
+"'goalkeeper', or 'forward_old_style' or 'goalkeeper_old_style', or "
+"'penalty_Shooter', or 'penalty_Goalkeeper' then 1 - start game, 4 - start"
+" game with 10 sec pause."
+msgstr ""
+

@@ -22,7 +22,7 @@ print(os.getcwd())
 
 # -- Project information -----------------------------------------------------
 
-project = 'Robot Control API'
+project = 'ELSIROS'
 copyright = '2021, Starkit Team'
 author = 'Azer Babaev, Egor Davydenko, Ilya Ryakin, Vladimir Litvinenko, Aleksandr Matsun and Ivan Khokhlov'
 
@@ -36,7 +36,7 @@ release = '0.0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 
-master_doc = 'modules'
+master_doc = 'index'
 extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
@@ -46,14 +46,16 @@ extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-    'sphinx.ext.napoleon',]
+    'sphinx.ext.napoleon',
+    'myst_parser',
+    'autoapi.extension']
 
 # Napoleon settings
 napoleon_google_docstring = True
 napoleon_numpy_docstring = True
-napoleon_include_init_with_doc = True
-napoleon_include_private_with_doc = True
-napoleon_include_special_with_doc = True
+napoleon_include_init_with_doc = False
+napoleon_include_private_with_doc = False
+napoleon_include_special_with_doc = False
 napoleon_use_admonition_for_examples = False
 napoleon_use_admonition_for_notes = False
 napoleon_use_admonition_for_references = False
@@ -61,9 +63,9 @@ napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
 
-autodoc_default_options = {
-    'special-members': '__init__'
-}
+# autodoc_default_options = {
+#     'special-members': '__init__'
+# }
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -85,3 +87,26 @@ html_theme = 'sphinx_rtd_theme'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+html_theme_options = {
+    'display_version': True,
+    'prev_next_buttons_location': 'bottom',
+    'style_external_links': False,
+    'style_nav_header_background': '#18245c',
+    # Toc options
+    'collapse_navigation': True,
+    'sticky_navigation': True,
+    'navigation_depth': 4,
+    'includehidden': True,
+    'titles_only': False
+}
+
+
+# Document Python Code with autoAPI
+autoapi_type = 'python'
+autoapi_dirs = ['../../controllers/SAMPLE_TEAM', '../../controllers/player']
+autoapi_add_toctree_entry = False
+
+# Translations
+locale_dirs = ['../locales/']   # path is example but recommended.
+gettext_compact = False
