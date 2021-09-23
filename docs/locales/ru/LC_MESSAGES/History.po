@@ -26,6 +26,8 @@ msgid ""
 "Known early examples of humanoid robot soccer built and programmed by "
 "junior students for Robocup refers to year 2016."
 msgstr ""
+"Известные ранние примеры футбола гуманоидных роботов, построенных и "
+"запрограммированных юниорами для Robocup относятся к 2016 году. "
 
 #: ../../source/History.md:4
 msgid ""
@@ -43,6 +45,8 @@ msgid ""
 "Some attepmts to play soccer by humanoid robot built by team from Israel "
 "were made at 2016 - 2018"
 msgstr ""
+"Попытки играть в футбол гуманоидным роботом командой из Израиля были сделаны "
+"в 2016 - 2018 годах"
 
 #: ../../source/History.md:8
 msgid ""
@@ -56,6 +60,8 @@ msgid ""
 "Teams from Israel and Italy have played first International match as demo"
 " game at Robocup-2018 in Montreal"
 msgstr ""
+"Команды из Израиля и Италии сыграли первый Международный матч в качестве "
+"демонстрационной игры на Robocup - 2018 в Монреале" 
 
 #: ../../source/History.md:12
 msgid ""
@@ -83,6 +89,8 @@ msgid ""
 "In parallel 2 teams from Tomsk and from Moscow have played first game at "
 "Robofinist tournament in St.Petersburg at 2018"
 msgstr ""
+"Параллельно 2 команды из Томска и Москвы сыграли первую игру на соревнованиях "
+"Робофинист в Санкт-Петербурге 2018"
 
 #: ../../source/History.md:18
 msgid ""
@@ -97,6 +105,7 @@ msgstr ""
 #: ../../source/History.md:20
 msgid "Same 2 teams have repeated demo game in Moscow at 2019"
 msgstr ""
+"Те же команды сыграли еще раз в Москве в 2019 году"
 
 #: ../../source/History.md:22
 msgid ""
@@ -113,6 +122,8 @@ msgid ""
 "First full function tournament was held in Tomsk-2019 with 3 teams "
 "participating in Russian Nathinonal Robocup"
 msgstr ""
+"Первый полноценный турнир состоялся в Томске в 2019 году с участием "
+"3-х команд - участников Российского этапа Robocup"
 
 #: ../../source/History.md:26
 msgid ""
@@ -128,6 +139,7 @@ msgstr ""
 #: ../../source/History.md:28
 msgid "Since 2019 the game was included into program of Robocup Asia - Pacific."
 msgstr ""
+"С 2019 года игра была включена в официальную программу Robocup Asia - Pacific. "
 
 #: ../../source/History.md:30
 msgid ""
@@ -142,11 +154,11 @@ msgstr ""
 
 #: ../../source/History.md:32
 msgid "The field"
-msgstr ""
+msgstr "Игровое поле"
 
 #: ../../source/History.md:33
 msgid "The field is made from 3mm carpet with total size of 3 x 4 m,"
-msgstr ""
+msgstr "Игровое поле сделано из ковролина 3мм размером 3 Х 4 м"
 
 #: ../../source/History.md:35
 msgid ""
@@ -175,11 +187,11 @@ msgstr ""
 
 #: ../../source/History.md:41
 msgid "The ball"
-msgstr ""
+msgstr "Мяч"
 
 #: ../../source/History.md:42
 msgid "The ball is orange color sponge ball with 80mm diameter."
-msgstr ""
+msgstr "Мяч оранжевого цвета из поролона диаметром 80 мм"
 
 #: ../../source/History.md:44
 msgid ""
@@ -193,15 +205,15 @@ msgstr ""
 
 #: ../../source/History.md:46
 msgid "The Robots"
-msgstr ""
+msgstr "Роботы"
 
 #: ../../source/History.md:48
 msgid "Currently 2 types of robots mostly used by teams:"
-msgstr ""
+msgstr "Сейчас 2 типа роботов используются командами"
 
 #: ../../source/History.md:50
 msgid "Bioloid type with added camera head and computer"
-msgstr ""
+msgstr "Модели Bioloid с надстроенной камерой и компьютером"
 
 #: ../../source/History.md:52
 msgid ""
@@ -216,7 +228,7 @@ msgstr ""
 
 #: ../../source/History.md:54
 msgid "Robokit - a robot designed in MIPT with using Kondo servomotors from Japan"
-msgstr ""
+msgstr "Robokit - робот спроектированный в МФТИ с использованием японских сервомоторов KONDO"
 
 #: ../../source/History.md:56
 msgid ""
@@ -234,4 +246,7 @@ msgid ""
 "Asia-Pacific games of 2019 and 2020 is used as prototype for virtual "
 "model of standart robot in ELSIROS platform."
 msgstr ""
+"Последний робот, который показал наилучшие результаты став чемпионом "
+"Азиатско-Тихоокеанских игр в 2019 и 2020 годах был использован в качестве прототипа "
+"для виртуальной модели стандартного робота в платформе ELSIROS"
 
