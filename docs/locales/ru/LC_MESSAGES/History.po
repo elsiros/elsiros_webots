@@ -172,7 +172,7 @@ msgstr ""
 
 #: ../../source/History.md:37
 msgid "with goals made from plumbing tubes, colored to yellow ant blue color."
-msgstr ""
+msgstr "С воротами изготовленными из сантехнических труб и обклееных голубым и желтым скотчем"
 
 #: ../../source/History.md:39
 msgid ""
