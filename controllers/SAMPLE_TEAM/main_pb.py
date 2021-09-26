@@ -53,6 +53,9 @@ from Soccer.strategy import Player
 from Soccer.Motion.class_Motion_Webots_PB import Motion_sim
 from launcher_pb import *
 sys.path.append(str(current_work_directory.parent/'player'))
+import google
+import google.protobuf
+from google.protobuf import descriptor
 from communication_manager_robokit import CommunicationManager
 
 with open('../referee/game.json', "r") as f:
