@@ -18,8 +18,6 @@ class Motion_sim(Motion_real):
         self.FRAMELENGTH = 0.02
         import random as random
         self.random = random
-        import numpy as np
-        self.np = np
         self.Dummy_HData =[]
         self.BallData =[]
         self.timeElapsed = 0
