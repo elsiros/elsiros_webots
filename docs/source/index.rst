@@ -10,4 +10,5 @@ Entry_Level_SImulation_of_RObot_Soccer
    programming_hints
    Rules
    Robot Design
+   ubuntu
    API
