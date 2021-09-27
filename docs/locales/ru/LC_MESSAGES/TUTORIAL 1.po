@@ -22,7 +22,6 @@ msgid "TUTORIAL 1"
 msgstr "TUTORIAL 1"
 
 #: ../../source/TUTORIAL 1.md:2
-#, fuzzy
 msgid ""
 "Let’s try to change strategy of “forward” role using matrix stored "
 "strategy_data.json. If you launch first game which was supplied in "
@@ -83,7 +82,6 @@ msgid "image"
 msgstr ""
 
 #: ../../source/TUTORIAL 1.md:16
-#, fuzzy
 msgid ""
 "Soccer field is divided to sections. In each section located short line "
 "segment with small circle  representing direction and power of kick.  5)"
