@@ -95,8 +95,9 @@ msgid ""
 "“C:\\Elsiros\\controllers\\SAMPLE_TEAM\\Init_params\\ "
 "strategy_data.json”. Following window will appear:"
 msgstr ""
-"Футбольное поле разделено на сектора. В каждом секторе короткий отрезок с"
-" кружочком, который отображает направление и силу удара."
+"Нажмите кнопку “Load File” и загрузите следующий файл:"
+" "C:\\Elsiros\\контроллеры\\SAMPLE_TEAM\\Init_params\\ "
+"strategy_data.json". Появится следующее окно:"
 
 #: ../../source/TUTORIAL 1.md:22
 msgid ""
