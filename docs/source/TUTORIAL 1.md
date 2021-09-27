@@ -15,6 +15,7 @@ consider how to change it using strategy matrix.
 
 Soccer field is divided to sections. In each section located short line segment with small circle 
 representing direction and power of kick. 
+
 5)	Click on “Load File” button and load following file: “C:\Elsiros\controllers\SAMPLE_TEAM\Init_params\ strategy_data.json”.
 Following window will appear:
 
