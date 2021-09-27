@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ELSIROS \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-27 19:05+0000\n"
+"POT-Creation-Date: 2021-09-27 20:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,44 +77,52 @@ msgid ""
 "4d429c653ff3.png)"
 msgstr ""
 
-#: ../../source/TUTORIAL 1.md:14 1.md:21 1.md:25 1.md:31 1.md:36
+#: ../../source/TUTORIAL 1.md:14 1.md:22 1.md:26 1.md:32 1.md:37
 msgid "image"
 msgstr ""
 
 #: ../../source/TUTORIAL 1.md:16
+#, fuzzy
 msgid ""
 "Soccer field is divided to sections. In each section located short line "
-"segment with small circle  representing direction and power of kick.  5)"
-"\tClick on “Load File” button and load following file: "
+"segment with small circle  representing direction and power of kick."
+msgstr ""
+"Футбольное поле разделено на сектора. В каждом секторе короткий отрезок с"
+" кружочком, который отображает направление и силу удара."
+
+#: ../../source/TUTORIAL 1.md:19
+#, fuzzy
+msgid ""
+"Click on “Load File” button and load following file: "
 "“C:\\Elsiros\\controllers\\SAMPLE_TEAM\\Init_params\\ "
 "strategy_data.json”. Following window will appear:"
 msgstr ""
 "Футбольное поле разделено на сектора. В каждом секторе короткий отрезок с"
 " кружочком, который отображает направление и силу удара."
 
-#: ../../source/TUTORIAL 1.md:21
+#: ../../source/TUTORIAL 1.md:22
 msgid ""
 "![image](https://user-"
 "images.githubusercontent.com/57300002/134931964-3037e817-4d31-4e54-b70d-"
 "d6227b852018.png)"
 msgstr ""
 
-#: ../../source/TUTORIAL 1.md:23
+#: ../../source/TUTORIAL 1.md:24
 msgid "Click on field section which is 7-th from top and 9-th from left."
 msgstr "Кликните по сектору поля, которое 7-е сверху и 9-е слева."
 
-#: ../../source/TUTORIAL 1.md:25
+#: ../../source/TUTORIAL 1.md:26
 msgid ""
 "![image](https://user-"
 "images.githubusercontent.com/57300002/134932056-f8774921-5648-425a-904b-"
 "685c534d308e.png)"
 msgstr ""
 
-#: ../../source/TUTORIAL 1.md:27
+#: ../../source/TUTORIAL 1.md:28
 msgid "Yellow line represents supposed distance of kick."
 msgstr "Желтая линия отображает предполагаемую дистанцию удара. "
 
-#: ../../source/TUTORIAL 1.md:28
+#: ../../source/TUTORIAL 1.md:29
 msgid ""
 "Drag “YAW” slider to right or type in input window 45 in order to select "
 "new kick direction to be 45 degrees of Centigrade. Drag “POWER” slider to"
@@ -126,13 +134,13 @@ msgstr ""
 "введите в окно рядом с ним цифру 3 для назначения степени ослабления "
 "удара."
 
-#: ../../source/TUTORIAL 1.md:31
+#: ../../source/TUTORIAL 1.md:32
 msgid ""
 "![image](https://user-images.githubusercontent.com/57300002/134932186"
 "-3538252b-b48e-4234-90ea-e66fe6b79c54.png)"
 msgstr ""
 
-#: ../../source/TUTORIAL 1.md:33
+#: ../../source/TUTORIAL 1.md:34
 msgid ""
 "After selecting new values new data of section have to be recorded to "
 "matrix prior to undertaking similar modifications to other section. For "
@@ -141,20 +149,20 @@ msgstr ""
 "Прежде чем переходить к другой клетке сохраните текущие значения в "
 "матрице. Для этого надо нажать на кнопку “Record”. "
 
-#: ../../source/TUTORIAL 1.md:34
+#: ../../source/TUTORIAL 1.md:35
 msgid ""
 "Click on section which is next to current and located 7-th from top and "
 "10-th from left."
 msgstr "Кликните на соседнюю клетку, расположенную 7-й сверху и 10-й слева"
 
-#: ../../source/TUTORIAL 1.md:36
+#: ../../source/TUTORIAL 1.md:37
 msgid ""
 "![image](https://user-"
 "images.githubusercontent.com/57300002/134932274-2b53660f-3469-48e4-aaae-"
 "b87b64969a79.png)"
 msgstr ""
 
-#: ../../source/TUTORIAL 1.md:38
+#: ../../source/TUTORIAL 1.md:39
 msgid ""
 "Click on “Record” button one more time in order to use same direction and"
 " power for this section."
@@ -162,7 +170,7 @@ msgstr ""
 "Кликните на кнопку “Record” ещё раз для записи такого же значения "
 "направления и силы удара в эту клетку. "
 
-#: ../../source/TUTORIAL 1.md:39
+#: ../../source/TUTORIAL 1.md:40
 msgid ""
 "In order store changes into strategy_data.json file click on button "
 "“SaveExit”"
@@ -170,7 +178,7 @@ msgstr ""
 "Для сохранения изменений в файле strategy_data.json кликните на "
 "кнопку“SaveExit”"
 
-#: ../../source/TUTORIAL 1.md:40
+#: ../../source/TUTORIAL 1.md:41
 msgid "Launch game and observe result of changes made into strategy."
 msgstr "Запустите игру и посмотрите результат корректировки стратегии."
 
