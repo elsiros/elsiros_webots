@@ -82,7 +82,6 @@ msgid "image"
 msgstr ""
 
 #: ../../source/TUTORIAL 1.md:16
-#, fuzzy
 msgid ""
 "Soccer field is divided to sections. In each section located short line "
 "segment with small circle  representing direction and power of kick."
@@ -91,7 +90,6 @@ msgstr ""
 " кружочком, который отображает направление и силу удара."
 
 #: ../../source/TUTORIAL 1.md:19
-#, fuzzy
 msgid ""
 "Click on “Load File” button and load following file: "
 "“C:\\Elsiros\\controllers\\SAMPLE_TEAM\\Init_params\\ "
