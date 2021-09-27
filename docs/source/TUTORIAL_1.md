@@ -1,4 +1,4 @@
- # TUTORIAL 1
+# TUTORIAL 1
 Let’s try to change strategy of “forward” role using matrix stored strategy_data.json.
 If you launch first game which was supplied in installation package you may notice that red player 2 
 is granted first kick off. According to rule player which is not granted kick off is not allowed to enter 
