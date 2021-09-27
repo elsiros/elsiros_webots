@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ELSIROS \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-27 11:55+0000\n"
+"POT-Creation-Date: 2021-09-27 12:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,11 +26,15 @@ msgid "Installing dependencies"
 msgstr ""
 
 #: ../../source/ubuntu.md:5
-msgid "Install GameController - https://github.com/elsiros/GameController"
+msgid ""
+"Install GameController - "
+"[https://github.com/elsiros/GameController](https://github.com/elsiros/GameController)"
 msgstr ""
 
 #: ../../source/ubuntu.md:6
-msgid "Install Webots R2021b - https://cyberbotics.com/"
+msgid ""
+"Install Webots R2021b - "
+"[https://cyberbotics.com/](https://cyberbotics.com/)"
 msgstr ""
 
 #: ../../source/ubuntu.md:8
@@ -56,4 +60,10 @@ msgstr ""
 #: ../../source/ubuntu.md:36
 msgid "Test player controller"
 msgstr ""
+
+#~ msgid "Install GameController - https://github.com/elsiros/GameController"
+#~ msgstr ""
+
+#~ msgid "Install Webots R2021b - https://cyberbotics.com/"
+#~ msgstr ""
 
