@@ -13,17 +13,19 @@
 git clone https://github.com/elsiros/elsiros_webots
 ```
 
+### Install dependencies
+
+```bash
+sudo apt-get install libprotobuf-dev protobuf-compiler
+sudo apt-get install libgtk-3-dev
+
+```
+
 ### Install libs from requirements.txt
 
 ```bash
 cd /path/to/elsiros_webots
 pip install -r requirements.txt
-```
-
-### Install protobuf-compiler
-
-```bash
-sudo apt-get install libprotobuf-dev protobuf-compiler
 ```
 
 ### Build controller and protobuf messages
@@ -36,11 +38,11 @@ make
 ### Test player controller
 
 ```bash
-    cd /path/to/webots
-    ./webots /path/to/elsiros_webots/worlds/elsiros_training.wbt
+cd /path/to/webots
+./webots /path/to/elsiros_webots/worlds/elsiros_training.wbt
 ```
 
 ```bash
-    cd /path/to/elsiros_webots/controllers/player
-    python communication_manager_test.py
+cd /path/to/elsiros_webots/controllers/player
+python communication_manager_test.py
 ```
