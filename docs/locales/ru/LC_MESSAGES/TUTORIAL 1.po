@@ -19,7 +19,7 @@ msgstr ""
 
 #: ../../source/TUTORIAL 1.md:1
 msgid "TUTORIAL 1"
-msgstr "Руководство 1"
+msgstr "TUTORIAL 1"
 
 #: ../../source/TUTORIAL 1.md:2
 #, fuzzy
