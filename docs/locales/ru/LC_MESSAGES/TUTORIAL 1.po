@@ -147,12 +147,15 @@ msgid ""
 "matrix prior to undertaking similar modifications to other section. For "
 "this click on “Record” button."
 msgstr ""
+"Прежде чем переходить к другой клетке сохраните текущие значения в матрице. "
+"Для этого надо нажать на кнопку “Record”. "
 
 #: ../../source/TUTORIAL 1.md:35
 msgid ""
 "Click on section which is next to current and located 7-th from top and "
 "10-th from left."
 msgstr ""
+"Кликните на соседнюю клетку, расположенную 7-й сверху и 10-й слева"
 
 #: ../../source/TUTORIAL 1.md:37
 msgid ""
@@ -166,14 +169,18 @@ msgid ""
 "Click on “Record” button one more time in order to use same direction and"
 " power for this section."
 msgstr ""
+"Кликните на кнопку “Record” ещё раз для записи такого же значения направления "
+"и силы удара в эту клетку. "
 
 #: ../../source/TUTORIAL 1.md:40
 msgid ""
 "In order store changes into strategy_data.json file click on button "
 "“SaveExit”"
 msgstr ""
+"Для сохранения изменений в файле strategy_data.json кликните на кнопку"
+"“SaveExit”"
 
 #: ../../source/TUTORIAL 1.md:41
 msgid "Launch game and observe result of changes made into strategy."
-msgstr ""
+msgstr "Запустите игру и посмотрите результат корректировки стратегии."
 
