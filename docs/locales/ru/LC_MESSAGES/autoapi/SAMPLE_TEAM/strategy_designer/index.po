@@ -1,0 +1,127 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021, Starkit Team
+# This file is distributed under the same license as the ELSIROS package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ELSIROS \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-09-27 19:05+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:2
+msgid ":py:mod:`SAMPLE_TEAM.strategy_designer`"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:8
+msgid ""
+"The module is designed by team Robokit of Phystech Lyceum and team "
+"Starkit of MIPT under mentorship of Azer Babaev with paticipation of "
+"junior student Matvei Ivaschenko and team coach Dmitrij Ustinov. The "
+"module is designed for creating strategy matrix of \"forward\" player. "
+"Strategy is defined by direction and power of kick in selected segment of"
+" field. Order of operation with \"strategy_designer\" module: - launch "
+"under python interpreter; - using menu item \"Load from file\" choose "
+"file with strategy data. Usually"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:17
+msgid "with name \"Init_params/startegy_data.json\";"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:18
+msgid "select sector for modification by click;"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:19
+msgid "operating slider \"YAW\" at right upper side set direction of kick;"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:20
+msgid "operating slider \"POWER\" set power of kick;"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:21
+msgid "click button \"RECORD\""
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:22
+msgid "select next sector for modification;"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:23
+msgid "save changes into file;"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:24
+msgid "quit;"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:25
+msgid ""
+"There is console window at right side of program window reporting about "
+"steps of operation. Last configuration of program is saved in the file "
+"\"startegy_designer_config.json\" which must be in the same directory as "
+"program itself."
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:32
+msgid "Module Contents"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:35
+msgid "Classes"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:44:<autosummary>:1
+msgid ":obj:`RedirectText <SAMPLE_TEAM.strategy_designer.RedirectText>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:44:<autosummary>:1
+msgid ":obj:`MyPanel <SAMPLE_TEAM.strategy_designer.MyPanel>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:44:<autosummary>:1
+msgid ""
+":obj:`Strategy_Designer "
+"<SAMPLE_TEAM.strategy_designer.Strategy_Designer>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:46
+msgid "Functions"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:53:<autosummary>:1
+msgid ":obj:`main <SAMPLE_TEAM.strategy_designer.main>`\\ \\(\\)"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:55
+msgid "Attributes"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:62:<autosummary>:1
+msgid ""
+":obj:`current_work_directory "
+"<SAMPLE_TEAM.strategy_designer.current_work_directory>`\\"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:75
+msgid "Bases: :py:obj:`object`"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:83
+msgid "Bases: :py:obj:`wx.Panel`"
+msgstr ""
+
+#: ../../source/autoapi/SAMPLE_TEAM/strategy_designer/index.rst:91
+msgid "Bases: :py:obj:`wx.Frame`"
+msgstr ""
+
