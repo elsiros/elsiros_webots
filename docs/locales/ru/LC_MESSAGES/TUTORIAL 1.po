@@ -98,8 +98,9 @@ msgid ""
 "“C:\\Elsiros\\controllers\\SAMPLE_TEAM\\Init_params\\ "
 "strategy_data.json”. Following window will appear:"
 msgstr ""
-"Футбольное поле разделено на сектора. В каждом секторе короткий отрезок с"
-" кружочком, который отображает направление и силу удара."
+"Кдикните на кнопку “Load File” и загрузите следующий файл: "
+"“C:\\Elsiros\\controllers\\SAMPLE_TEAM\\Init_params\\strategy_data.json”."
+"После этого появится такое окно: "
 
 #: ../../source/TUTORIAL 1.md:22
 msgid ""
@@ -110,7 +111,7 @@ msgstr ""
 
 #: ../../source/TUTORIAL 1.md:24
 msgid "Click on field section which is 7-th from top and 9-th from left."
-msgstr ""
+msgstr "Кликните по сектору поля, которое 7-е сверху и 9-е слева."
 
 #: ../../source/TUTORIAL 1.md:26
 msgid ""
@@ -121,7 +122,7 @@ msgstr ""
 
 #: ../../source/TUTORIAL 1.md:28
 msgid "Yellow line represents supposed distance of kick."
-msgstr ""
+msgstr "Желтая линия отображает предполагаемую дистанцию удара. "
 
 #: ../../source/TUTORIAL 1.md:29
 msgid ""
@@ -130,6 +131,9 @@ msgid ""
 " right or type 3 in input window in order to select new attenuation of "
 "kick power."
 msgstr ""
+"Потяните вправо ползунок "YAW", или введите в окне рядом с ним 45 для того чтобы "
+"выбрать угол 45 градусов. Потяните ползунок "POWER" или введите в окно рядом с ним "
+"цифру 3 для назначения степени ослабления удара."
 
 #: ../../source/TUTORIAL 1.md:32
 msgid ""
