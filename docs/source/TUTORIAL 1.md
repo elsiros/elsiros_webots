@@ -6,6 +6,7 @@ central circle within 10 seconds after game start therefore blue player 2 stands
 circle.  Red player 2 kicks ball directly to blue player 2. Direction of kick is not beneficiary in this case. 
 It makes sense to change kick direction. There are several ways to change kick direction. Here we 
 consider how to change it using strategy matrix. 
+
 1.Open DOS console window by command “cmd”;
 
 2.Type in command prompt “cd C:\Elsiros\controllers\SAMPLE_TEAM”. This will change current directory to “C:\Elsiros\controllers\SAMPLE_TEAM>”
