@@ -50,7 +50,7 @@ msgstr ""
 
 #: ../../source/TUTORIAL 1.md:10
 msgid "1.Open DOS console window by command “cmd”;"
-msgstr ""
+msgstr "1.Откройте консоль операционной системы командой \"cmd\". "
 
 #: ../../source/TUTORIAL 1.md:12
 msgid ""
@@ -58,16 +58,22 @@ msgid ""
 " will change current directory to "
 "“C:\\Elsiros\\controllers\\SAMPLE_TEAM>”"
 msgstr ""
+"2.Введите с клавиатуры в командную строку"
+" “cd C:\\Elsiros\\controllers\\SAMPLE_TEAM”. Это "
+"изменит текущую директорию на "
+"“C:\\Elsiros\\controllers\\SAMPLE_TEAM>”"
 
 #: ../../source/TUTORIAL 1.md:14
 msgid "3.Type in command prompt “python strategy_designer.py”"
-msgstr ""
+msgstr "Введите в командную строку “python strategy_designer.py”"
 
 #: ../../source/TUTORIAL 1.md:16
 msgid ""
 "4.When strategy_designer.py will be launched and you can see following "
 "window:"
 msgstr ""
+"4.Когда запустится программа strategy_designer.py "
+"вы увидите следующее окно"
 
 #: ../../source/TUTORIAL 1.md:18
 msgid ""
@@ -96,8 +102,10 @@ msgid ""
 "“C:\\Elsiros\\controllers\\SAMPLE_TEAM\\Init_params\\ "
 "strategy_data.json”. Following window will appear:"
 msgstr ""
-"Футбольное поле разделено на сектора. В каждом секторе короткий отрезок с"
-" кружочком, который отображает направление и силу удара."
+"5.Кликните на кнопку “Load File” и "
+"загрузите следующий файл: "
+"“C:\\Elsiros\\controllers\\SAMPLE_TEAM\\Init_params\\strategy_data.json”.После"
+" этого появится такое окно: "
 
 #: ../../source/TUTORIAL 1.md:26
 msgid ""
@@ -109,7 +117,7 @@ msgstr ""
 #: ../../source/TUTORIAL 1.md:28
 #, fuzzy
 msgid "6.Click on field section which is 7-th from top and 9-th from left."
-msgstr "Кликните по сектору поля, которое 7-е сверху и 9-е слева."
+msgstr "6.Кликните по сектору поля, которое 7-е сверху и 9-е слева."
 
 #: ../../source/TUTORIAL 1.md:30
 msgid ""
@@ -120,7 +128,7 @@ msgstr ""
 
 #: ../../source/TUTORIAL 1.md:32
 msgid "7.Yellow line represents supposed distance of kick."
-msgstr ""
+msgstr "7.Желтая линия отображает предполагаемую дистанцию удара. "
 
 #: ../../source/TUTORIAL 1.md:34
 #, fuzzy
@@ -130,7 +138,7 @@ msgid ""
 "slider to right or type 3 in input window in order to select new "
 "attenuation of kick power."
 msgstr ""
-"Потяните вправо ползунок \"YAW\", или введите в окне рядом с ним 45 для "
+"8.Потяните вправо ползунок \"YAW\", или введите в окне рядом с ним 45 для "
 "того чтобы выбрать угол 45 градусов. Потяните ползунок \"POWER\" или "
 "введите в окно рядом с ним цифру 3 для назначения степени ослабления "
 "удара."
@@ -148,7 +156,7 @@ msgid ""
 "matrix prior to undertaking similar modifications to other section. For "
 "this click on “Record” button."
 msgstr ""
-"Прежде чем переходить к другой клетке сохраните текущие значения в "
+"9.Прежде чем переходить к другой клетке сохраните текущие значения в "
 "матрице. Для этого надо нажать на кнопку “Record”. "
 
 #: ../../source/TUTORIAL 1.md:41
@@ -156,7 +164,7 @@ msgstr ""
 msgid ""
 "10.Click on section which is next to current and located 7-th from top "
 "and 10-th from left."
-msgstr "Кликните по сектору поля, которое 7-е сверху и 9-е слева."
+msgstr "10.Кликните по сектору поля, которое 7-е сверху и 10-е слева."
 
 #: ../../source/TUTORIAL 1.md:43
 msgid ""
@@ -170,16 +178,22 @@ msgid ""
 "11.Click on “Record” button one more time in order to use same direction "
 "and power for this section."
 msgstr ""
+"11.Кликните на кнопку “Record” ещё раз "
+"для записи такого же значения "
+"направления и силы удара в эту "
+"клетку. "
 
 #: ../../source/TUTORIAL 1.md:47
 msgid ""
 "12.In order store changes into strategy_data.json file click on button "
 "“SaveExit”"
 msgstr ""
+"12.Для сохранения изменений в файле "
+"strategy_data.json кликните на кнопку“SaveExit”"
 
 #: ../../source/TUTORIAL 1.md:49
 msgid "13.Launch game and observe result of changes made into strategy."
-msgstr ""
+msgstr "13.Запустите игру и посмотрите результат корректировки стратегии."
 
 #~ msgid ""
 #~ "Click on “Load File” button and "
