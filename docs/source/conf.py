@@ -36,7 +36,13 @@ release = '0.0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 
-master_doc = 'index'
+language = os.environ.get('LANGUAGE')
+if (language == "en"):
+    master_doc = 'index'
+elif (language == "ru"):
+    master_doc = 'index_ru'
+else: 
+    master_doc = 'index'
 extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
