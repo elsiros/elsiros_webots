@@ -1,0 +1,63 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2021, Starkit Team
+# This file is distributed under the same license as the ELSIROS package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: ELSIROS \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-10-03 17:36+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: ../../source/ubuntu_ru.md:1
+msgid "Установка на ubuntu"
+msgstr ""
+
+#: ../../source/ubuntu_ru.md:3
+msgid "Installing dependencies"
+msgstr ""
+
+#: ../../source/ubuntu_ru.md:5
+msgid ""
+"Install GameController - "
+"[https://github.com/elsiros/GameController](https://github.com/elsiros/GameController)"
+msgstr ""
+
+#: ../../source/ubuntu_ru.md:6
+msgid ""
+"Install Webots R2021b - "
+"[https://cyberbotics.com/](https://cyberbotics.com/)"
+msgstr ""
+
+#: ../../source/ubuntu_ru.md:8
+msgid "Installing elsiros"
+msgstr ""
+
+#: ../../source/ubuntu_ru.md:10
+msgid "Clone code"
+msgstr ""
+
+#: ../../source/ubuntu_ru.md:16
+msgid "Install libs from requirements.txt"
+msgstr ""
+
+#: ../../source/ubuntu_ru.md:23
+msgid "Install protobuf-compiler"
+msgstr ""
+
+#: ../../source/ubuntu_ru.md:29
+msgid "Build controller and protobuf messages"
+msgstr ""
+
+#: ../../source/ubuntu_ru.md:36
+msgid "Test player controller"
+msgstr ""
+
