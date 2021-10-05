@@ -4,7 +4,7 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-ports = [10001]
+ports = [7001]
 
 # managers = []
 threads = []

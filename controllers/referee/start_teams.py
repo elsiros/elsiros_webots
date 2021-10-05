@@ -12,9 +12,9 @@ import json
 
 # following 3 lines provide minimizing of console in Windows
 # you can comment them if you need console window.
-import win32gui, win32con
-t = win32gui.GetForegroundWindow()
-win32gui.ShowWindow(t, win32con.SW_MINIMIZE)
+# import win32gui, win32con
+# t = win32gui.GetForegroundWindow()
+# win32gui.ShowWindow(t, win32con.SW_MINIMIZE)
 
 with open('game.json', "r") as f:
     game_data = json.loads(f.read())

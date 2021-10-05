@@ -55,7 +55,7 @@ port01 = '7001'
 filename01 = "output" + f"{port01}"+ ".txt"
 with open(filename01, "w") as f01:
     print(datetime.datetime.now(), file = f01)
-    p01 = subprocess.Popen(['python', 'main_pb.py', port01, team_id, robot_color, robot_number, role01, second_pressed_button, initial_coord], stderr=f01)
+    p01 = subprocess.Popen(['python3', 'main_pb.py', port01, team_id, robot_color, robot_number, role01, second_pressed_button, initial_coord], stderr=f01)
 
 """
 depending of how many players you have at training scene you can uncomment following sections of module
