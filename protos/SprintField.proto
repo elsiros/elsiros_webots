@@ -1,0 +1,180 @@
+#VRML_SIM R2021b utf8
+# license: Apache License 2.0
+# license url: http://www.apache.org/licenses/LICENSE-2.0
+# Field for Sprint competition.
+
+PROTO SprintField [
+  field SFVec3f                     translation 0 0 0
+  field SFRotation                  rotation    0 1 0 0
+  field SFString                    name        "sprint_field" 
+  field SFBool                      turfPhysics FALSE 
+]
+{
+
+  %{
+
+    LINE_WIDTH = 0.05 -- Line width
+
+    A = 3.0
+    B = 1.0
+    C = 1.0
+    D = 1.0
+    I = 0
+
+
+    if fields.turfPhysics.value then
+      DEPTH = 0.01
+    else
+      DEPTH = 0
+    end
+    -- Points for a quarter field (except central circle)
+    pts = {}
+        pts[1]  = {x = 0,                           y = 0,                               z = DEPTH}
+    pts[2]  = {x = 0,                           y = B,                               z = DEPTH}
+    pts[3]  = {x = A,                           y = 0,                               z = DEPTH}
+    pts[4]  = {x = A,                           y = B,                               z = DEPTH}
+    pts[5]  = {x = 0,                           y = -LINE_WIDTH,                     z = DEPTH}
+    pts[6]  = {x = A ,              y = -LINE_WIDTH,                     z = DEPTH}
+    pts[7]  = {x = 0 ,              y = B + LINE_WIDTH,                     z = DEPTH}
+    pts[8]  = {x = A ,              y = B + LINE_WIDTH,                     z = DEPTH}
+    pts[9]  = {x = -LINE_WIDTH ,              y = B + LINE_WIDTH,                     z = DEPTH}
+    pts[10]  = {x = -LINE_WIDTH ,              y = -LINE_WIDTH,                     z = DEPTH}
+    pts[11]  = {x = A + LINE_WIDTH ,              y = B + LINE_WIDTH,                     z = DEPTH}
+    pts[12]  = {x = A + LINE_WIDTH,              y = -LINE_WIDTH,                     z = DEPTH}
+    pts[13]  = {x = -D - LINE_WIDTH,              y = -C-LINE_WIDTH,                     z = DEPTH}
+    pts[14]  = {x = - LINE_WIDTH,              y = -C -LINE_WIDTH,                     z = DEPTH}
+    pts[15]  = {x = -D - LINE_WIDTH,              y = C + B + LINE_WIDTH,                     z = DEPTH}
+    pts[16]  = {x = - LINE_WIDTH,              y = C + B + LINE_WIDTH,                     z = DEPTH}
+    pts[17]  = {x = A + LINE_WIDTH,              y = C+ B + LINE_WIDTH,                     z = DEPTH}
+    pts[18]  = {x = A + D + LINE_WIDTH,              y = C+ B + LINE_WIDTH,                     z = DEPTH}
+    pts[19]  = {x = A + LINE_WIDTH,              y = -C-LINE_WIDTH,                     z = DEPTH}
+    pts[20]  = {x = A + D + LINE_WIDTH,              y = -C-LINE_WIDTH,                     z = DEPTH}
+    -- Triangles for a quarter field (except central circle)
+
+    -- Triangles for Grass
+    tg = {}
+
+    tg[1]  = {a = 1,  b = 2, c = 4}
+    tg[2]  = {a = 1,  b = 4,  c = 3}
+    tg[3]  = {a = 16,  b = 13,  c = 15}
+    tg[4]  = {a = 13,  b = 16,  c = 14}
+    tg[5]  = {a = 17,  b = 9, c = 16}
+    tg[6]  = {a = 9,  b = 17,  c = 11}
+    tg[7]  = {a = 12,  b = 14, c = 10}
+    tg[8]  = {a = 14,  b = 12, c = 19}
+    tg[9]  = {a = 17, b = 20, c = 19}
+    tg[10] = {a = 20, b = 17, c = 18}
+
+
+    -- Triangles for Lines
+    tl = {}
+
+    tl[1]  = {a = 1,  b = 3, c = 5}
+    tl[2]  = {a = 5,  b = 3,  c = 6}
+    tl[3]  = {a = 2,  b = 7, c = 8}
+    tl[4]  = {a = 2,  b = 8,  c = 4}
+    tl[5]  = {a = 5, b = 10, c = 9}
+    tl[6]  = {a = 7, b = 5, c = 9}
+    tl[7]  = {a = 8,  b = 12, c = 6} --
+    tl[8]  = {a = 12,  b = 8,  c = 11} --
+
+    -- Offset to have origin on the center of the field
+    OFFSET_X = 0
+    OFFSET_Y = (B) / 2
+    Npts = table.maxn(pts)
+    for i = 1, Npts do
+      pts[i].x = pts[i].x - OFFSET_X
+      pts[i].y = pts[i].y - OFFSET_Y
+    end
+
+  }%
+
+  Solid {
+    translation IS translation
+    rotation IS rotation
+    locked TRUE
+    children [
+      %{ if fields.turfPhysics.value then }%
+      DEF BLADES Solid {
+        contactMaterial "grass"
+        translation 0 0 0.01
+        rotation 1 0 0 1.5707996938995747
+        boundingObject Plane {
+          size %{= 2 * I + A }% %{= 2 * I + B }%
+        }
+      }
+      %{ end }%
+      DEF GRASS Shape {
+        #appearance Grass {
+        #  colorOverride 0.6 1 0.3
+        #  type "artificial"
+        #  textureTransform TextureTransform {
+        #    scale %{= 2 * A }% %{= 2 * A }%
+        #  }
+        #}
+        appearance DEF GREEN_APPEARANCE CarpetFibers {
+          colorOverride    0 1 0
+          type             "synthetic"
+          textureTransform TextureTransform {
+            scale %{= 2 * A }% %{= 2 * A }%
+          }
+          IBLStrength      1.0
+        }        
+        geometry IndexedFaceSet {
+          coord Coordinate {
+            point [
+             %{ for k, v in pairs(pts) do }%
+                %{= v.x }% %{= v.y }% %{= v.z }%
+             %{ end }%
+            ]
+          }
+          ccw FALSE
+          coordIndex [ # v.X - 1 because coordIndex starts at 0, while the points (defined in Lua) start at 1
+            %{ for k, v in pairs(tg) do }%
+               %{= v.a - 1 }% %{= v.b - 1 }% %{= v.c - 1 }% -1,
+            %{ end }%
+          ]
+        }
+      }
+      DEF LINES Shape {
+        #appearance Grass {
+        #  colorOverride 1 1 1
+        #  type "artificial_white"
+        #  IBLStrength 1.5
+        #  textureTransform TextureTransform {
+        #    scale %{= 2 * A }% %{= 2 * A }%
+        #  }
+        #}
+        appearance DEF WHITE_APPEARANCE Plastic {
+          colorOverride    1 1 1
+        }        
+        geometry IndexedFaceSet {
+          coord Coordinate {
+            point [
+             %{ for k, v in pairs(pts) do }%
+                %{= v.x }% %{= v.y }% %{= v.z }%
+             %{ end }%
+            ]
+          }
+          ccw FALSE
+          coordIndex [ # v.X - 1 because coordIndex starts at 0, while the points (defined in Lua) start at 1
+            %{ for k, v in pairs(tl) do }%
+               %{= v.a - 1 }% %{= v.b - 1 }% %{= v.c - 1 }% -1
+            %{ end }%
+          ]
+        }
+      }
+    ]
+    boundingObject Transform {
+      rotation 1 0 0 1.5707996938995747
+      translation 1 0 0
+      children [
+        Shape {
+          geometry Plane {
+            size %{= 2 * (A + 2 * C) }% %{= 2 * (A + 2 * C) }%
+          }
+        }
+      ]
+    }
+  }
+}

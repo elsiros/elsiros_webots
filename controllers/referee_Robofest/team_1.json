@@ -1,0 +1,62 @@
+{
+  "name": "Red Team",
+  "robotStartCmd": "SAMPLE_TEAM/main_pb.py",
+  "players": {
+    "1": {
+      "proto": "Robokit1",
+      "needToBePlacedByRefereeInReady": true,
+      "role": "goalkeeper",
+      "borderStartingPose": {
+        "translation": [ -0.9, -1.3, 0.30 ],
+        "rotation": [ 0, 0, 1, 1.57 ]
+      },
+      "readyStartingPose": {
+        "translation": [ -1.68, 0, 0.30 ],
+        "rotation": [ 0, 0, 1, 0 ],
+        "pf_coord": [ -1.68, 0, 0 ]
+      },
+      "reentryStartingPose": {
+        "translation": [ -0.9, -1.3, 0.30 ],
+        "rotation": [ 0, 0, 1, 1.57 ]
+      },
+      "shootoutStartingPose": {
+        "translation": [ 0.2, 0, 0.30 ],
+        "rotation": [ 0, 0, 1, 0 ],
+        "pf_coord": [ 0.2, 0, 0 ]
+      },
+      "goalKeeperStartingPose": {
+        "translation": [ -1.68, 0, 0.30 ],
+        "rotation": [ 0, 0, 1, 0 ],
+        "pf_coord": [ -1.68, 0, 0 ]
+      }
+    },
+    "2": {
+      "proto": "Robokit1",
+      "needToBePlacedByRefereeInReady": true,
+      "role": "forward",
+      "borderStartingPose": {
+        "translation": [ -0.9, 1.3, 0.30 ],
+        "rotation": [ 0, 0, 1, -1.57 ]
+      },
+      "readyStartingPose": {
+        "translation": [ -0.4, 0, 0.30 ],
+        "rotation": [ 0, 0, 1, 0 ],
+        "pf_coord": [ -0.4, 0, 0 ]
+      },
+      "reentryStartingPose": {
+        "translation": [ -0.9, 1.3, 0.30 ],
+        "rotation": [ 0, 0, 1, -1.57 ]
+      },
+      "shootoutStartingPose": {
+        "translation": [ 0.2, 0, 0.30 ],
+        "rotation": [ 0, 0, 1, 0 ],
+        "pf_coord": [ 0.2, 0, 0 ]
+      },
+      "goalKeeperStartingPose": {
+        "translation": [ -1.68, 0, 0.30 ],
+        "rotation": [ 0, 0, 1, 0 ],
+        "pf_coord": [ -1.68, 0, 0 ]
+      }
+    }
+  }
+}

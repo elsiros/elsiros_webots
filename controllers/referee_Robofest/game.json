@@ -1,0 +1,48 @@
+{
+  "_comment": "in ELSIROS(Junior) league game type below can be KNOCKOUT or PENALTY if only penalties are needed",
+  "type": "PENALTY",
+  "kickoff": 62,
+  "class": "JUNIOR",
+  "host": "127.0.0.1",
+  "limit_speed_to_realtime": true,
+  "side_left": 62,
+  "press_a_key_to_terminate": true,
+  "use_bouncing_server": false,
+  "_comment2": "record_simulation value should be a filename with .mp4 or .html extension, or can be skipped totally",
+  "record_simulation_": "video.mp4",
+  "close_webots_on_exit": true,
+  "red": {
+    "id": 61,
+    "config": "team_1.json",
+    "hosts": [
+      "127.0.0.1",
+      "192.168.123.21",
+      "192.168.123.22",
+      "192.168.123.23",
+      "192.168.123.24"
+    ],
+    "ports": [
+      7001,
+      7002,
+      7003,
+      7004
+    ]
+  },
+  "blue": {
+    "id": 62,
+    "config": "team_2.json",
+    "hosts": [
+      "127.0.0.1",
+      "192.168.123.41",
+      "192.168.123.42",
+      "192.168.123.43",
+      "192.168.123.44"
+    ],
+    "ports": [
+      7021,
+      7022,
+      7023,
+      7024
+    ]
+  }
+}

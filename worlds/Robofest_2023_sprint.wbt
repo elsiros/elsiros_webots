@@ -1,0 +1,63 @@
+#VRML_SIM R2021b utf8
+WorldInfo {
+  info [
+    "Description: official soccer simulation for the 2021 Robocup Virtual Humanoid League (kid size)"
+    "Version 0.2"
+  ]
+  title "ELSIROS training"
+  basicTimeStep 5
+  physicsDisableTime 0.1
+  physicsDisableLinearThreshold 0.1
+  physicsDisableAngularThreshold 0.1
+  contactProperties [
+    ContactProperties {
+      material1 "grass"
+      coulombFriction [
+        0.5
+      ]
+      softCFM 0.03
+    }
+    ContactProperties {
+      material1 "grass"
+      material2 "robocup soccer ball"
+      coulombFriction [
+        0.5
+      ]
+      bounce 0.76
+      softCFM 0.05
+    }
+    ContactProperties {
+      material2 "robocup soccer ball"
+      bounce 0.76
+    }
+  ]
+}
+Viewpoint {
+  orientation 0.9677756283507021 -0.12960164822359704 -0.21590216753921443 1.1103774761354777
+  position 0.21459724437827957 -5.069828804471689 2.641901682435842
+}
+TexturedBackground {
+  texture "stadium_dry"
+}
+TexturedBackgroundLight {
+  texture "stadium_dry"
+}
+DEF BLUE_PLAYER_1 Robokit1 {
+  translation 0 0 0.288354
+  name "blue player 1"
+  controllerArgs [
+    "7001"
+    "2"
+    "127.0.0.1"
+    "192.168.123.21"
+    "192.168.123.22"
+    "192.168.123.23"
+    "192.168.123.24"
+  ]
+}
+Robot {
+  controller "sprint"
+  supervisor TRUE
+}
+SprintField {
+}
